@@ -13,7 +13,7 @@ import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager;
 import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager.RenderMode;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
-import net.minecraft.client.renderer.chunk.RenderSectionRegion;
+import net.minecraft.client.renderer.chunk.RenderChunkRegion;
 import net.minecraft.client.renderer.chunk.SectionCompiler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.RenderShape;
@@ -24,15 +24,15 @@ import net.minecraft.world.level.block.state.BlockState;
 public class SectionCompilerMixin {
     @Unique private OBEBlockRenderer obeBlockRenderer;
     @Unique private final ThreadLocal<BlockPos> obe$pos = ThreadLocal.withInitial(() -> null);
-    @Unique private final ThreadLocal<RenderSectionRegion> obe$region = ThreadLocal.withInitial(() -> null);
+    @Unique private final ThreadLocal<RenderChunkRegion> obe$region = ThreadLocal.withInitial(() -> null);
 
     @Inject(method = "<init>", at = @At("TAIL"))
     private void obe$init(BlockRenderDispatcher blockRenderDispatcher, BlockEntityRenderDispatcher blockEntityRenderDispatcher, CallbackInfo ci) {
         this.obeBlockRenderer = new OBEBlockRenderer();
     }
 
-    @Redirect(method = "compile", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/chunk/RenderSectionRegion;getBlockState(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;"))
-    private BlockState obe$getBlockState(RenderSectionRegion region, BlockPos pos){
+    @Redirect(method = "compile", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/chunk/RenderChunkRegion;getBlockState(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;"))
+    private BlockState obe$getBlockState(RenderChunkRegion region, BlockPos pos){
         this.obe$pos.set(pos);
         this.obe$region.set(region);
         return region.getBlockState(pos);

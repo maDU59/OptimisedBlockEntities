@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager;
 import net.minecraft.client.renderer.LevelRenderer;
-import net.minecraft.client.renderer.chunk.SectionMesh;
+import net.minecraft.client.renderer.chunk.SectionRenderDispatcher.CompiledSection;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import java.util.List;
 
@@ -22,7 +22,7 @@ public class LevelRendererMixin {
         ),
         require = 0
     )
-    private <T extends SectionMesh> List<BlockEntity> obe$redirectGetRenderableBlockEntities(T sectionMeshInstance) {
+    private <T extends CompiledSection> List<BlockEntity> obe$redirectGetRenderableBlockEntities(T sectionMeshInstance) {
         List<BlockEntity> original = sectionMeshInstance.getRenderableBlockEntities();
 
         if (original == null || original.isEmpty())  return original;

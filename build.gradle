@@ -39,11 +39,12 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
 	modImplementation ("com.terraformersmc:modmenu:${project.modmenu_version}")
-	modImplementation "maven.modrinth:sodium:pJRT8Zxt"
-	
-	localRuntime 'org.anarres:jcpp:1.4.14'
-    localRuntime 'io.github.douira:glsl-transformer:3.0.0-pre3'
-	modImplementation("maven.modrinth:iris:1.9.6+1.21.8-fabric")
+	modImplementation "maven.modrinth:sodium:mc1.21.5-0.6.13-fabric"
+
+	modImplementation("org.antlr:antlr4-runtime:4.13.1")
+    modImplementation("io.github.douira:glsl-transformer:2.0.1")
+    modImplementation("org.anarres:jcpp:1.4.14")
+	modImplementation "maven.modrinth:iris:1.8.11+1.21.5-fabric"
 	
 }
 
@@ -115,8 +116,8 @@ publishMods {
 		changelogType = "markdown"
         
 		minecraftVersionRange {
-            start = "1.21.6"
-            end = "1.21.8"
+            start = "1.21.5"
+            end = "1.21.5"
         }
 
         client = true
@@ -129,8 +130,8 @@ publishMods {
         accessToken = providers.environmentVariable("MODRINTH_TOKEN")
 
 		minecraftVersionRange {
-            start = "1.21.6"
-            end = "1.21.8"
+            start = "1.21.5"
+            end = "1.21.5"
         }
 
 		requires("fabric-api")

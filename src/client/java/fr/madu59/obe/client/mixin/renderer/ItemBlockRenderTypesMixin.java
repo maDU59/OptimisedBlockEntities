@@ -1,7 +1,7 @@
 package fr.madu59.obe.client.mixin.renderer;
 
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.level.block.AbstractSkullBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.CeilingHangingSignBlock;
@@ -17,12 +17,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class ItemBlockRenderTypesMixin {
 
     @Inject(method = "getChunkRenderType", at = @At("RETURN"), cancellable = true)
-    private static void onGetChunkRenderType(BlockState blockState, CallbackInfoReturnable<ChunkSectionLayer> cir) {
+    private static void onGetChunkRenderType(BlockState blockState, CallbackInfoReturnable<RenderType> cir) {
         if(blockState.hasBlockEntity()){
-            if(cir.getReturnValue() == ChunkSectionLayer.SOLID){
+            if(cir.getReturnValue() == RenderType.solid()){
                 Block block = blockState.getBlock();
                 if(block instanceof ShulkerBoxBlock || block instanceof AbstractSkullBlock || block instanceof CeilingHangingSignBlock || block instanceof WallHangingSignBlock){
-                    cir.setReturnValue(ChunkSectionLayer.CUTOUT);
+                    cir.setReturnValue(RenderType.cutoutMipped());
                     return;
                 }
             }
