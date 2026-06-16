@@ -5,7 +5,6 @@ import com.mojang.math.Axis;
 
 import fr.madu59.obe.client.compat.ModCompat;
 import fr.madu59.obe.client.config.SettingsManager;
-import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityRenderStateExt;
 import fr.madu59.obe.client.renderer.blockentity.sign.ext.SignBlockEntityExt;
 import fr.madu59.obe.client.renderer.blockentity.sign.ext.SignRenderStateExt;
 
@@ -14,11 +13,10 @@ import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font.DisplayMode;
 import net.minecraft.client.model.Model;
-import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.AbstractSignRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.renderer.blockentity.state.SignRenderState;
-import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.SignBlock;
@@ -40,12 +38,12 @@ public abstract class OBEAbstractSignRenderer extends AbstractSignRenderer {
     }
 
     @Override
-    public void submitSignWithText(SignRenderState signRenderState, PoseStack poseStack, BlockState blockState, SignBlock signBlock, WoodType woodType, Model.Simple simple, ModelFeatureRenderer.@Nullable CrumblingOverlay crumblingOverlay, SubmitNodeCollector submitNodeCollector) {
+    public void renderSignWithText(SignBlockEntity signBlockEntity, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j, BlockState blockState, SignBlock signBlock, WoodType woodType, Model model) {
         poseStack.pushPose();
         this.translateSign(poseStack, -signBlock.getYRotationDegrees(blockState), blockState);
-        if(!SettingsManager.OPTIMISED_SIGNS.getValue()) this.submitSign(poseStack, signRenderState.lightCoords, woodType, simple, crumblingOverlay, submitNodeCollector);
-        this.submitSignText(signRenderState, poseStack, submitNodeCollector, true);
-        this.submitSignText(signRenderState, poseStack, submitNodeCollector, false);
+        if(!SettingsManager.OPTIMISED_SIGNS.getValue()) this.renderSign(poseStack, multiBufferSource, i, j, woodType, model);
+        this.renderSignText(signBlockEntity.getBlockPos(), signBlockEntity.getFrontText(), poseStack, multiBufferSource, i, signBlockEntity.getTextLineHeight(), signBlockEntity.getMaxTextLineWidth(), true);
+        this.renderSignText(signBlockEntity.getBlockPos(), signBlockEntity.getBackText(), poseStack, multiBufferSource, i, signBlockEntity.getTextLineHeight(), signBlockEntity.getMaxTextLineWidth(), false);
         poseStack.popPose();
     }
 
@@ -62,87 +60,44 @@ public abstract class OBEAbstractSignRenderer extends AbstractSignRenderer {
         return forwardVector.dot(pos) < 0.0f;
     }
 
-    private void submitSignText(SignRenderState signRenderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, boolean bl) {
-        SignText signText = bl ? signRenderState.frontText : signRenderState.backText;
-        SignRenderStateExt stateExt = (SignRenderStateExt) (Object) signRenderState;
-        if (signText != null) {
-            Vec3 cameraPos = Minecraft.getInstance().getCameraEntity().position();
-            poseStack.pushPose();
-            this.translateSignText(poseStack, bl, this.getTextOffset());
-            if (!isFacingCamera(poseStack, cameraPos) || ModCompat.isShadowPass()) {
-                poseStack.popPose();
-                return;
-            }
-            int i = getDarkColor(signText);
-            int j = 4 * signRenderState.textLineHeight / 2;
-            int k;
-            boolean bl2;
-            int l;
-            if (signText.hasGlowingText()) {
-                k = signText.getColor().getTextColor();
-                bl2 = k == DyeColor.BLACK.getTextColor() || signRenderState.drawOutline;
-                l = 15728880;
-            } else {
-                k = i;
-                bl2 = false;
-                l = signRenderState.lightCoords;
-            }
-
-            for(int m = 0; m < 4; ++m) {
-                FormattedCharSequence formattedCharSequence = stateExt.getCachedLines(bl)[m];
-                float f = stateExt.getLineWidths(bl)[m];
-                submitNodeCollector.submitText(poseStack, f, (float)(m * signRenderState.textLineHeight - j), formattedCharSequence, false, DisplayMode.POLYGON_OFFSET, l, k, 0, bl2 ? i : 0);
-            }
-
+    private void renderSignText(BlockPos blockPos, SignText signText, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j, int k, boolean bl) {
+        if (signText == null) return;
+        poseStack.pushPose();
+        this.translateSignText(poseStack, bl, this.getTextOffset());
+        Vec3 cameraPos = Minecraft.getInstance().getCameraEntity().position();
+        if (!isFacingCamera(poseStack, cameraPos) || ModCompat.isShadowPass()) {
             poseStack.popPose();
+            return;
         }
-    }
-
-    private void translateSignText(PoseStack poseStack, boolean bl, Vec3 vec3) {
-        if (!bl) {
-            poseStack.mulPose(Axis.YP.rotationDegrees(180.0F));
-        }
-
-        float f = 0.015625F * this.getSignTextRenderScale();
-        poseStack.translate(vec3);
-        poseStack.scale(f, -f, f);
-    }
-
-    public void extractRenderState(SignBlockEntity blockEntity, SignRenderState state, float f, Vec3 vec3, ModelFeatureRenderer.@Nullable CrumblingOverlay crumblingOverlay) {
-        super.extractRenderState(blockEntity, state, f, vec3, crumblingOverlay);
-
-        ((BlockEntityRenderStateExt)state).blockEntity(blockEntity);
-
-        SignBlockEntityExt beExt = (SignBlockEntityExt) (Object) blockEntity;
-        SignRenderStateExt stateExt = (SignRenderStateExt) (Object) state;
-
-        boolean filteringChanged = state.isTextFilteringEnabled != beExt.getLastFiltering();
-        if (filteringChanged) {
-            beExt.setLastFiltering(state.isTextFilteringEnabled);
+        int l = getDarkColor(signText);
+        int m = 4 * j / 2;
+        FormattedCharSequence[] formattedCharSequences = signText.getRenderMessages(Minecraft.getInstance().isTextFilteringEnabled(), (component) -> {
+            List<FormattedCharSequence> list = this.font.split(component, k);
+            return list.isEmpty() ? FormattedCharSequence.EMPTY : (FormattedCharSequence)list.get(0);
+        });
+        int n;
+        boolean bl2;
+        int o;
+        if (signText.hasGlowingText()) {
+            n = signText.getColor().getTextColor();
+            bl2 = isOutlineVisible(blockPos, n);
+            o = 15728880;
+        } else {
+            n = l;
+            bl2 = false;
+            o = i;
         }
 
-        rebuildIfDirty(blockEntity.getFrontText(), true,  filteringChanged, beExt, state);
-        rebuildIfDirty(blockEntity.getBackText(),  false, filteringChanged, beExt, state);
-
-        stateExt.setCachedLines(beExt.getCachedLines(true), beExt.getCachedLines(false));
-        stateExt.setLineWidths(beExt.getLineWidths(true), beExt.getLineWidths(false));
-    }
-
-    private void rebuildIfDirty(SignText text, boolean front, boolean filteringChanged, SignBlockEntityExt beExt, SignRenderState state) {
-        if (!filteringChanged && text == beExt.getLastText(front)) return;
-
-        FormattedCharSequence[] lines = text.getRenderMessages(
-            state.isTextFilteringEnabled,
-            input -> {
-                List<FormattedCharSequence> split = this.font.split(input, state.maxTextLineWidth);
-                return split.isEmpty() ? FormattedCharSequence.EMPTY : split.get(0);
+        for(int p = 0; p < 4; ++p) {
+            FormattedCharSequence formattedCharSequence = formattedCharSequences[p];
+            float f = (float)(-this.font.width(formattedCharSequence) / 2);
+            if (bl2) {
+                this.font.drawInBatch8xOutline(formattedCharSequence, f, (float)(p * j - m), n, l, poseStack.last().pose(), multiBufferSource, o);
+            } else {
+                this.font.drawInBatch(formattedCharSequence, f, (float)(p * j - m), n, false, poseStack.last().pose(), multiBufferSource, DisplayMode.POLYGON_OFFSET, 0, o);
             }
-        );
-        float[] widths = new float[4];
-        for (int i = 0; i < 4; i++) widths[i] = -this.font.width(lines[i]) / 2f;
+        }
 
-        beExt.setCachedLines(front, lines);
-        beExt.setLineWidths(front, widths);
-        beExt.setLastText(front, text);
+        poseStack.popPose();
     }
 }

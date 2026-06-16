@@ -92,26 +92,25 @@ public class BlockEntityStateModel implements BlockStateModel{
 
                 for (int i = 0; i < 4; i++) {
                     ModelPart.Vertex vertex = polygon.vertices()[i];
-                    Vector3f vec = pose.pose().transformPosition(vertex.worldX(), vertex.worldY(), vertex.worldZ(), new Vector3f());
+
+                    Vector3f pos = new Vector3f(vertex.pos());
+
+                    Vector3f vec = pose.pose().transformPosition(pos.mul(1.0F / 16.0F));
                     
                     float u = sprite.getU(vertex.u());
                     float v = sprite.getV(vertex.v());
 
                     int offset = i * 8;
 
-                    // 1. Pack Spatial Positions (X, Y, Z)
                     packedVertices[offset + 0] = Float.floatToRawIntBits(vec.x());
                     packedVertices[offset + 1] = Float.floatToRawIntBits(vec.y());
                     packedVertices[offset + 2] = Float.floatToRawIntBits(vec.z());
 
-                    // 2. Pack Default Color (White / Full Alpha: 0xFFFFFFFF)
                     packedVertices[offset + 3] = -1; 
 
-                    // 3. Pack Texture Coordinates (U, V)
                     packedVertices[offset + 4] = Float.floatToRawIntBits(u);
                     packedVertices[offset + 5] = Float.floatToRawIntBits(v);
 
-                    // 4. Pack Light/Overlay and Normals (Fallback placeholders)
                     packedVertices[offset + 6] = 0;
                     packedVertices[offset + 7] = 0; 
                 }

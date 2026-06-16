@@ -1,24 +1,19 @@
 package fr.madu59.obe.client.renderer.blockentity.chest;
 
-import org.jetbrains.annotations.Nullable;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityRenderStateExt;
 import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager;
-import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.ChestRenderer;
-import net.minecraft.client.renderer.blockentity.state.ChestRenderState;
-import net.minecraft.client.renderer.blockentity.state.ChestRenderState.ChestMaterialType;
-import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.resources.model.Material;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.CopperChestBlock;
 import net.minecraft.world.level.block.EnderChestBlock;
 import net.minecraft.world.level.block.TrappedChestBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.LidBlockEntity;
+import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraft.world.phys.Vec3;
 
 public class OBEChestRenderer<T extends BlockEntity & LidBlockEntity> extends ChestRenderer<T> {
@@ -28,34 +23,25 @@ public class OBEChestRenderer<T extends BlockEntity & LidBlockEntity> extends Ch
     }
 
     @Override
-    public void submit(final ChestRenderState state, final PoseStack poseStack, final SubmitNodeCollector submitNodeCollector, final CameraRenderState camera) {
-        if(RenderModeManager.shouldRenderEntity(state)) super.submit(state, poseStack, submitNodeCollector, camera);
+    public void render(T blockEntity, float f, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j, Vec3 vec3) {
+        if(RenderModeManager.shouldRenderEntity(blockEntity)) super.render(blockEntity, f, poseStack, multiBufferSource, i, j, vec3);
     }
 
-    public static ChestRenderState.ChestMaterialType getChestMaterial(Block block, boolean bl) {
-        if (block instanceof CopperChestBlock copperChestBlock) {
-            ChestRenderState.ChestMaterialType var10000;
-            switch (copperChestBlock.getState()) {
-                case UNAFFECTED -> var10000 = ChestMaterialType.COPPER_UNAFFECTED;
-                case EXPOSED -> var10000 = ChestMaterialType.COPPER_EXPOSED;
-                case WEATHERED -> var10000 = ChestMaterialType.COPPER_WEATHERED;
-                case OXIDIZED -> var10000 = ChestMaterialType.COPPER_OXIDIZED;
-                default -> throw new MatchException((String)null, (Throwable)null);
-            }
-
-            return var10000;
-        } else if (block instanceof EnderChestBlock) {
-            return ChestMaterialType.ENDER_CHEST;
+    public static Material getChestMaterial(Block block, ChestType chestType, boolean bl) {
+        if (block instanceof EnderChestBlock) {
+            return Sheets.ENDER_CHEST_LOCATION;
         } else if (bl) {
-            return ChestMaterialType.CHRISTMAS;
+            return chooseMaterial(chestType, Sheets.CHEST_XMAS_LOCATION, Sheets.CHEST_XMAS_LOCATION_LEFT, Sheets.CHEST_XMAS_LOCATION_RIGHT);
         } else {
-            return block instanceof TrappedChestBlock ? ChestMaterialType.TRAPPED : ChestMaterialType.REGULAR;
+            return block instanceof TrappedChestBlock ? chooseMaterial(chestType, Sheets.CHEST_TRAP_LOCATION, Sheets.CHEST_TRAP_LOCATION_LEFT, Sheets.CHEST_TRAP_LOCATION_RIGHT) : chooseMaterial(chestType, Sheets.CHEST_LOCATION, Sheets.CHEST_LOCATION_LEFT, Sheets.CHEST_LOCATION_RIGHT);
         }
     }
 
-    @Override
-    public void extractRenderState(final T blockEntity, final ChestRenderState state, final float partialTicks, final Vec3 cameraPosition, final ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress) {
-        ((BlockEntityRenderStateExt)state).blockEntity(blockEntity);
-        if(RenderModeManager.shouldRenderEntity(blockEntity)) super.extractRenderState(blockEntity, state, partialTicks, cameraPosition, breakProgress);
+    private static Material chooseMaterial(ChestType chestType, Material material, Material material2, Material material3) {
+        return switch (chestType) {
+            case ChestType.RIGHT -> material3;
+            case ChestType.LEFT -> material2;
+            case null, default -> material;
+        };
     }
 }

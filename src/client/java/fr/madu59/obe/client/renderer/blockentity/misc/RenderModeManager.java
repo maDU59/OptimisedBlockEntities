@@ -2,19 +2,13 @@ package fr.madu59.obe.client.renderer.blockentity.misc;
 
 import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
-import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityRenderStateExt;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class RenderModeManager {
-
-    public static boolean isTerrain(BlockEntityRenderState state){
-        return isTerrain(((BlockEntityRenderStateExt)state).blockEntity());
-    }
 
     public static <T extends BlockEntity> boolean isTerrain(T entity){
         return isTerrain((BlockEntityExt)entity);
@@ -39,12 +33,8 @@ public class RenderModeManager {
         }
     }
 
-    public static boolean shouldRenderEntity(BlockEntityRenderState state){
-        return shouldRenderEntity(((BlockEntityRenderStateExt)state).blockEntity());
-    }
-
     public static <T extends BlockEntity> boolean shouldRenderEntity(T be){
-        return shouldRenderEntity((BlockEntityExt) be);
+        return shouldRenderEntity(((BlockEntityExt)be));
     }
 
     public static boolean shouldRenderEntity(BlockEntityExt ext){
@@ -95,9 +85,6 @@ public class RenderModeManager {
         }
         else if (be.getType() == BlockEntityType.DECORATED_POT) {
             ext.isEnabled(SettingsManager.OPTIMISED_DECORATED_POTS.getValue());
-        }
-        else if (be.getType() == BlockEntityType.COPPER_GOLEM_STATUE) {
-            ext.isEnabled(SettingsManager.OPTIMISED_COPPER_GOLEMS.getValue());
         }
         if(ext.isEnabled()){
             if(ext.isTimerFinished()){

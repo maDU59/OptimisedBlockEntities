@@ -11,15 +11,16 @@ import net.minecraft.client.renderer.chunk.SectionMesh;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import java.util.List;
 
-@Mixin(LevelRenderer.class)
+@Mixin(value = LevelRenderer.class, priority = 1001) //We don't want to prevent sodium from injecting here
 public class LevelRendererMixin {
 
     @Redirect(
-        method = "extractVisibleBlockEntities",
+        method = "renderBlockEntities",
         at = @At(
             value = "INVOKE", 
             target = "Lnet/minecraft/client/renderer/chunk/SectionMesh;getRenderableBlockEntities()Ljava/util/List;" 
-        )
+        ),
+        require = 0
     )
     private <T extends SectionMesh> List<BlockEntity> obe$redirectGetRenderableBlockEntities(T sectionMeshInstance) {
         List<BlockEntity> original = sectionMeshInstance.getRenderableBlockEntities();

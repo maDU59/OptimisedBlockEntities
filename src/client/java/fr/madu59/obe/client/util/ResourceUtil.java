@@ -15,12 +15,10 @@ import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.blockentity.HangingSignRenderer;
 import net.minecraft.client.renderer.block.model.BlockModelPart;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.data.AtlasIds;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.ChestBlock;
-import net.minecraft.world.level.block.CopperGolemStatueBlock;
 import net.minecraft.world.level.block.SkullBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BedPart;
@@ -32,6 +30,8 @@ public class ResourceUtil{
     private static Map<ModelLayerLocation, BlockStateModel> modelCache = new ConcurrentHashMap<>();
     private static Map<BlockState, BlockStateModel> transformedModelCache = new ConcurrentHashMap<>();
     private static Map<ModelCacheKey, BlockStateModel> transformedSubModelCache = new ConcurrentHashMap<>();
+
+    private static ResourceLocation blockAtlas = ResourceLocation.tryParse("minecraft:textures/atlas/blocks.png");
 
     public static ModelLayerLocation getSignLayerLocation(BlockState state, boolean isWallSign, WoodType woodType){
         if (isWallSign) {
@@ -82,15 +82,6 @@ public class ResourceUtil{
         return isWall? ModelLayers.WALL_BANNER : ModelLayers.STANDING_BANNER;
     }
 
-    public static ModelLayerLocation getCopperGolemStatueLayerLocation(BlockState state){
-        return switch(state.getValue(CopperGolemStatueBlock.POSE)) {
-            case CopperGolemStatueBlock.Pose.STANDING-> ModelLayers.COPPER_GOLEM;
-            case CopperGolemStatueBlock.Pose.RUNNING-> ModelLayers.COPPER_GOLEM_RUNNING;
-            case CopperGolemStatueBlock.Pose.SITTING-> ModelLayers.COPPER_GOLEM_SITTING;
-            case CopperGolemStatueBlock.Pose.STAR-> ModelLayers.COPPER_GOLEM_STAR;
-        };
-    }
-
     public static ModelLayerLocation getShulkerBoxLayerLocation(BlockState state){
         return ModelLayers.SHULKER_BOX;
     }
@@ -100,7 +91,7 @@ public class ResourceUtil{
     }
 
     public static TextureAtlasSprite getSprite(ResourceLocation id) {
-        return Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(AtlasIds.BLOCKS).getSprite(id);
+        return Minecraft.getInstance().getTextureAtlas(blockAtlas).apply(id);
     }
 
     public static TextureAtlasSprite getBakedMaterial(TextureAtlasSprite sprite) {

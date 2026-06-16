@@ -17,9 +17,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 @Mixin(value = SodiumWorldRenderer.class, remap = false)
 public class SodiumWorldRendererMixin {
 
-    @Inject(method = "extractBlockEntity", at = @At("HEAD"), cancellable = true)
-    public void obe$preventUselessExtraction(CallbackInfo ci, @Local BlockEntity be){
-
+    @Inject(method = "renderBlockEntity", at = @At("HEAD"), cancellable = true)
+    private static void obe$preventUselessExtraction(CallbackInfo ci, @Local BlockEntity be){
         BlockEntityExt ext = (BlockEntityExt) be;
         if (ext != null && !RenderModeManager.shouldRenderEntity(ext)) {
             ci.cancel();

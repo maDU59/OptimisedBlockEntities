@@ -18,7 +18,6 @@ import net.minecraft.world.level.block.BannerBlock;
 import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.CeilingHangingSignBlock;
-import net.minecraft.world.level.block.CopperGolemStatueBlock;
 import net.minecraft.world.level.block.DecoratedPotBlock;
 import net.minecraft.world.level.block.ShulkerBoxBlock;
 import net.minecraft.world.level.block.StandingSignBlock;
@@ -63,9 +62,6 @@ public class BlockStateModelSetMixin {
         //     OBEBlockRenderer.originalBellModel = (BlockStateModel)set.modelByState.getOrDefault(state, new BlockEntityStateModel());
         //     cir.setReturnValue(new CompositeBlockStateModel(obeBlockRenderer.getBellModel(state, random), (BlockStateModel)set.modelByState.getOrDefault(state, new BlockEntityStateModel())));
         // }
-        else if(block instanceof CopperGolemStatueBlock){
-            cir.setReturnValue(obeBlockRenderer.getCopperGolemStatueModel(state, random));
-        }
         else if(block instanceof ShulkerBoxBlock){
             cir.setReturnValue(obeBlockRenderer.getShulkerBoxModel(state, random));
         }

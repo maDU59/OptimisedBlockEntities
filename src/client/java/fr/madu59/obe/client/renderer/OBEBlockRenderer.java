@@ -25,16 +25,13 @@ import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.animal.coppergolem.CopperGolemOxidationLevels;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.AbstractSkullBlock;
 import net.minecraft.world.level.block.BannerBlock;
 import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ChestBlock;
-import net.minecraft.world.level.block.CopperGolemStatueBlock;
 import net.minecraft.world.level.block.DecoratedPotBlock;
 import net.minecraft.world.level.block.ShulkerBoxBlock;
 import net.minecraft.world.level.block.SignBlock;
@@ -42,7 +39,6 @@ import net.minecraft.world.level.block.SkullBlock;
 import net.minecraft.world.level.block.WallBannerBlock;
 import net.minecraft.world.level.block.WallSignBlock;
 import net.minecraft.world.level.block.WallSkullBlock;
-import net.minecraft.world.level.block.WeatheringCopper.WeatherState;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.DecoratedPotPatterns;
@@ -175,7 +171,8 @@ public class OBEBlockRenderer {
         poseStack.translate(-0.5F, -0.5F, -0.5F);
 
         ChestType type = state.getValueOrElse(ChestBlock.TYPE, ChestType.SINGLE);
-        BlockStateModel model = ResourceUtil.getModel(layerLocation, Sheets.chooseMaterial(OBEChestRenderer.getChestMaterial(block, xmasTexture), type).texture(), state, poseStack, SettingsManager.CHEST_AMBIENT_OCCLUSION.getValue());
+        
+        BlockStateModel model = ResourceUtil.getModel(layerLocation, OBEChestRenderer.getChestMaterial(block, type, xmasTexture).texture(), state, poseStack, SettingsManager.CHEST_AMBIENT_OCCLUSION.getValue());
 
         return model;
     }
@@ -213,31 +210,6 @@ public class OBEBlockRenderer {
         poseStack.scale(0.6666667F, -0.6666667F, -0.6666667F);
 
         return ResourceUtil.getModel(layerLocation, MaterialResolver.entityTextureFormatter(ModelBakery.BANNER_BASE.texture()), state, poseStack, SettingsManager.BANNER_AMBIENT_OCCLUSION.getValue());
-    }
-
-    public BlockStateModel getCopperGolemStatueModel(BlockState state, RandomSource random) {
-        if(ResourceUtil.cacheContains(state)) return ResourceUtil.getModel(state);
-        PoseStack poseStack = new PoseStack();
-        
-        ModelLayerLocation layerLocation = ResourceUtil.getCopperGolemStatueLayerLocation(state);
-
-        Direction facing = state.getValue(CopperGolemStatueBlock.FACING);
-        poseStack.pushPose();
-        poseStack.translate(0.5F, 0.0F, 0.5F);
-        poseStack.mulPose(Axis.YP.rotationDegrees(facing.toYRot()));
-
-        WeatherState oxydationLevel;
-        if (state.getBlock() instanceof CopperGolemStatueBlock copperGolemStatueBlock) {
-            oxydationLevel = copperGolemStatueBlock.getWeatheringState();
-        } else {
-            oxydationLevel = WeatherState.UNAFFECTED;
-        }
-
-        poseStack.mulPose(Axis.ZP.rotationDegrees(180.0F));
-
-        ResourceLocation identifier = CopperGolemOxidationLevels.getOxidationLevel(oxydationLevel).texture();
-
-        return ResourceUtil.getModel(layerLocation, MaterialResolver.entityTextureFormatter(identifier), state, poseStack, SettingsManager.COPPER_GOLEM_AMBIENT_OCCLUSION.getValue());
     }
 
     public BlockStateModel getShulkerBoxModel(BlockState state, RandomSource random) {

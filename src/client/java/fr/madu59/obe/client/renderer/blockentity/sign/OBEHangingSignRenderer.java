@@ -2,6 +2,7 @@ package fr.madu59.obe.client.renderer.blockentity.sign;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 
 import java.util.Arrays;
@@ -18,16 +19,12 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.Sheets;
-import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.HangingSignRenderer;
 import net.minecraft.client.renderer.blockentity.HangingSignRenderer.AttachmentType;
-import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.Material;
-import net.minecraft.client.resources.model.MaterialSet;
-import net.minecraft.util.Unit;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.phys.Vec3;
@@ -41,14 +38,14 @@ public class OBEHangingSignRenderer extends OBEAbstractSignRenderer {
    public OBEHangingSignRenderer(BlockEntityRendererProvider.Context context) {
       super(context);
       Stream<ModelKey> stream = WoodType.values().flatMap((woodType) -> Arrays.stream(AttachmentType.values()).map((attachmentType) -> new ModelKey(woodType, attachmentType)));
-      this.hangingSignModels = (Map)stream.collect(ImmutableMap.toImmutableMap((modelKey) -> modelKey, (modelKey) -> createSignModel(context.entityModelSet(), modelKey.woodType, modelKey.attachmentType)));
+      this.hangingSignModels = (Map)stream.collect(ImmutableMap.toImmutableMap((modelKey) -> modelKey, (modelKey) -> createSignModel(context.getModelSet(), modelKey.woodType, modelKey.attachmentType)));
    }
 
-   public static Model.Simple createSignModel(EntityModelSet entityModelSet, WoodType woodType, AttachmentType attachmentType) {
+   public static Model createSignModel(EntityModelSet entityModelSet, WoodType woodType, AttachmentType attachmentType) {
       return new Model.Simple(entityModelSet.bakeLayer(ModelLayers.createHangingSignModelName(woodType, attachmentType)), RenderType::entityCutoutNoCull);
    }
 
-   public float getSignModelRenderScale() {
+   protected float getSignModelRenderScale() {
       return 1.0F;
    }
 
@@ -62,13 +59,13 @@ public class OBEHangingSignRenderer extends OBEAbstractSignRenderer {
       poseStack.translate(0.0F, -0.3125F, 0.0F);
    }
 
-   public void translateSign(PoseStack poseStack, float f, BlockState blockState) {
+   protected void translateSign(PoseStack poseStack, float f, BlockState blockState) {
       translateBase(poseStack, f);
    }
 
-   protected Model.Simple getSignModel(BlockState blockState, WoodType woodType) {
+   protected Model getSignModel(BlockState blockState, WoodType woodType) {
       AttachmentType attachmentType = HangingSignRenderer.AttachmentType.byBlockState(blockState);
-      return (Model.Simple)this.hangingSignModels.get(new ModelKey(woodType, attachmentType));
+      return (Model)this.hangingSignModels.get(new ModelKey(woodType, attachmentType));
    }
 
    protected Material getSignMaterial(WoodType woodType) {
@@ -79,13 +76,13 @@ public class OBEHangingSignRenderer extends OBEAbstractSignRenderer {
       return TEXT_OFFSET;
    }
 
-   public static void submitSpecial(MaterialSet materialSet, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int i, int j, Model.Simple simple, Material material) {
+   public static void renderInHand(PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j, Model model, Material material) {
       poseStack.pushPose();
       translateBase(poseStack, 0.0F);
       poseStack.scale(1.0F, -1.0F, -1.0F);
-      Unit var10002 = Unit.INSTANCE;
-      Objects.requireNonNull(simple);
-      submitNodeCollector.submitModel(simple, var10002, poseStack, material.renderType(simple::renderType), i, j, -1, materialSet.get(material), OverlayTexture.NO_OVERLAY, (ModelFeatureRenderer.CrumblingOverlay)null);
+      Objects.requireNonNull(model);
+      VertexConsumer vertexConsumer = material.buffer(multiBufferSource, model::renderType);
+      model.renderToBuffer(poseStack, vertexConsumer, i, j);
       poseStack.popPose();
    }
 

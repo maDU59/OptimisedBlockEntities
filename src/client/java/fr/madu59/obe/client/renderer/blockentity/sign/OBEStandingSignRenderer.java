@@ -2,6 +2,7 @@ package fr.madu59.obe.client.renderer.blockentity.sign;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 
 import java.util.Map;
@@ -19,13 +20,10 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.Sheets;
-import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.model.Material;
-import net.minecraft.client.resources.model.MaterialSet;
-import net.minecraft.util.Unit;
 import net.minecraft.world.level.block.StandingSignBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.WoodType;
@@ -37,10 +35,10 @@ public class OBEStandingSignRenderer extends OBEAbstractSignRenderer {
 
    public OBEStandingSignRenderer(BlockEntityRendererProvider.Context context) {
       super(context);
-      this.signModels = (Map)WoodType.values().collect(ImmutableMap.toImmutableMap((woodType) -> woodType, (woodType) -> new Models(createSignModel(context.entityModelSet(), woodType, true), createSignModel(context.entityModelSet(), woodType, false))));
+      this.signModels = (Map)WoodType.values().collect(ImmutableMap.toImmutableMap((woodType) -> woodType, (woodType) -> new Models(createSignModel(context.getModelSet(), woodType, true), createSignModel(context.getModelSet(), woodType, false))));
    }
 
-   protected Model.Simple getSignModel(BlockState blockState, WoodType woodType) {
+   protected Model getSignModel(BlockState blockState, WoodType woodType) {
       Models models = (Models)this.signModels.get(woodType);
       return blockState.getBlock() instanceof StandingSignBlock ? models.standing() : models.wall();
    }
@@ -73,12 +71,12 @@ public class OBEStandingSignRenderer extends OBEAbstractSignRenderer {
       return TEXT_OFFSET;
    }
 
-   public static void submitSpecial(MaterialSet materialSet, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int i, int j, Model.Simple simple, Material material) {
+   public static void renderInHand(PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j, Model model, Material material) {
       poseStack.pushPose();
       applyInHandTransforms(poseStack);
-      Unit var10002 = Unit.INSTANCE;
-      Objects.requireNonNull(simple);
-      submitNodeCollector.submitModel(simple, var10002, poseStack, material.renderType(simple::renderType), i, j, -1, materialSet.get(material), 0, (ModelFeatureRenderer.CrumblingOverlay)null);
+      Objects.requireNonNull(model);
+      VertexConsumer vertexConsumer = material.buffer(multiBufferSource, model::renderType);
+      model.renderToBuffer(poseStack, vertexConsumer, i, j);
       poseStack.popPose();
    }
 
@@ -87,7 +85,7 @@ public class OBEStandingSignRenderer extends OBEAbstractSignRenderer {
       poseStack.scale(0.6666667F, -0.6666667F, -0.6666667F);
    }
 
-   public static Model.Simple createSignModel(EntityModelSet entityModelSet, WoodType woodType, boolean bl) {
+   public static Model createSignModel(EntityModelSet entityModelSet, WoodType woodType, boolean bl) {
       ModelLayerLocation modelLayerLocation = bl ? ModelLayers.createStandingSignModelName(woodType) : ModelLayers.createWallSignModelName(woodType);
       return new Model.Simple(entityModelSet.bakeLayer(modelLayerLocation), RenderType::entityCutoutNoCull);
    }
@@ -104,6 +102,6 @@ public class OBEStandingSignRenderer extends OBEAbstractSignRenderer {
    }
 
    @Environment(EnvType.CLIENT)
-   static record Models(Model.Simple standing, Model.Simple wall) {
+   static record Models(Model standing, Model wall) {
    }
 }

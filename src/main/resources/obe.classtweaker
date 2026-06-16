@@ -9,13 +9,11 @@ accessible field net/minecraft/world/level/block/entity/SkullBlockEntity isAnima
 
 # Sign rendering
 accessible field net/minecraft/client/renderer/blockentity/AbstractSignRenderer font Lnet/minecraft/client/gui/Font;
-extendable method net/minecraft/client/renderer/blockentity/AbstractSignRenderer submitSignWithText (Lnet/minecraft/client/renderer/blockentity/state/SignRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/block/SignBlock;Lnet/minecraft/world/level/block/state/properties/WoodType;Lnet/minecraft/client/model/Model$Simple;Lnet/minecraft/client/renderer/feature/ModelFeatureRenderer$CrumblingOverlay;Lnet/minecraft/client/renderer/SubmitNodeCollector;)V
-
-# Chest rendering
-accessible method net/minecraft/client/renderer/blockentity/ChestRenderer getChestMaterial (Lnet/minecraft/world/level/block/entity/BlockEntity;Z)Lnet/minecraft/client/renderer/blockentity/state/ChestRenderState$ChestMaterialType;
+extendable method net/minecraft/client/renderer/blockentity/AbstractSignRenderer renderSignWithText (Lnet/minecraft/world/level/block/entity/SignBlockEntity;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;IILnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/block/SignBlock;Lnet/minecraft/world/level/block/state/properties/WoodType;Lnet/minecraft/client/model/Model;)V
+accessible method net/minecraft/client/renderer/blockentity/AbstractSignRenderer isOutlineVisible (Lnet/minecraft/core/BlockPos;I)Z
+accessible method net/minecraft/client/renderer/blockentity/AbstractSignRenderer translateSignText (Lcom/mojang/blaze3d/vertex/PoseStack;ZLnet/minecraft/world/phys/Vec3;)V
 
 # Banner rendering
-accessible field net/minecraft/client/renderer/blockentity/BannerRenderer materials Lnet/minecraft/client/resources/model/MaterialSet;
 accessible field net/minecraft/client/renderer/blockentity/BannerRenderer standingFlagModel Lnet/minecraft/client/model/BannerFlagModel;
 accessible field net/minecraft/client/renderer/blockentity/BannerRenderer standingModel Lnet/minecraft/client/model/BannerModel;
 accessible field net/minecraft/client/renderer/blockentity/BannerRenderer wallFlagModel Lnet/minecraft/client/model/BannerFlagModel;

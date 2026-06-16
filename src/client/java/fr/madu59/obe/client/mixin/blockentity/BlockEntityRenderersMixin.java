@@ -9,7 +9,6 @@ import fr.madu59.obe.client.renderer.blockentity.banner.OBEBannerRenderer;
 import fr.madu59.obe.client.renderer.blockentity.bed.OBEBedRenderer;
 import fr.madu59.obe.client.renderer.blockentity.bell.OBEBellRenderer;
 import fr.madu59.obe.client.renderer.blockentity.chest.OBEChestRenderer;
-import fr.madu59.obe.client.renderer.blockentity.coppergolemstatues.OBECopperGolemStatueBlockRenderer;
 import fr.madu59.obe.client.renderer.blockentity.decoratedpot.OBEDecoratedPotRenderer;
 import fr.madu59.obe.client.renderer.blockentity.shulkerbox.OBEShulkerBoxRenderer;
 import fr.madu59.obe.client.renderer.blockentity.sign.OBEHangingSignRenderer;
@@ -24,8 +23,8 @@ public abstract class BlockEntityRenderersMixin {
     
     @SuppressWarnings("rawtypes")
     @ModifyVariable(method = "register", at = @At("HEAD"), argsOnly = true)
-    private static BlockEntityRendererProvider<?, ?> obe$overrideRegister(
-        BlockEntityRendererProvider<?, ?> renderer, 
+    private static BlockEntityRendererProvider<?> obe$overrideRegister(
+        BlockEntityRendererProvider<?> renderer, 
         BlockEntityType<?> type
     ) {
         if (type == BlockEntityType.SIGN) {
@@ -55,10 +54,6 @@ public abstract class BlockEntityRenderersMixin {
         else if (type == BlockEntityType.BANNER) {
             OBEClient.debug("Replaced banner block entity renderer");
             renderer = (BlockEntityRendererProvider) (ctx) -> new OBEBannerRenderer(ctx);
-        }
-        else if (type == BlockEntityType.COPPER_GOLEM_STATUE) {
-            OBEClient.debug("Replaced copper golem statue block entity renderer");
-            renderer = (BlockEntityRendererProvider) (ctx) -> new OBECopperGolemStatueBlockRenderer(ctx);
         }
         else if (type == BlockEntityType.SHULKER_BOX) {
             OBEClient.debug("Replaced sulker boxes block entity renderer");

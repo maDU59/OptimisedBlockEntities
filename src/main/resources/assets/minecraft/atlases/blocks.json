@@ -7,7 +7,6 @@
     { "type": "directory", "source": "entity/decorated_pot", "prefix": "entity/decorated_pot/" },
     { "type": "directory", "source": "entity/bed", "prefix": "entity/bed/" },
     { "type": "directory", "source": "entity/banner", "prefix": "entity/banner/" },
-    { "type": "directory", "source": "entity/copper_golem", "prefix": "entity/copper_golem/" },
     { "type": "directory", "source": "entity/zombie", "prefix": "entity/zombie/" },
     { "type": "directory", "source": "entity/skeleton", "prefix": "entity/skeleton/" },
     { "type": "directory", "source": "entity/wither_skeleton", "prefix": "entity/wither_skeleton/" },

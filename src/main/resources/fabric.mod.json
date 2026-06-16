@@ -34,7 +34,7 @@
 	"accessWidener": "obe.classtweaker",
 	"depends": {
 		"fabricloader": ">=0.19",
-		"minecraft": "~1.21.9",
+		"minecraft": "~1.21.6",
 		"java": ">=21",
 		"fabric-api": "*"
 	}
