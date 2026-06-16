@@ -3,8 +3,12 @@ package fr.madu59.obe.client.renderer.blockentity.sign;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import com.mojang.math.Transformation;
+
+import java.util.Arrays;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Stream;
+
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -17,139 +21,104 @@ import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.HangingSignRenderer;
-import net.minecraft.client.renderer.blockentity.WallAndGroundTransformations;
-import net.minecraft.client.renderer.blockentity.state.HangingSignRenderState;
-import net.minecraft.client.renderer.blockentity.state.SignRenderState;
+import net.minecraft.client.renderer.blockentity.HangingSignRenderer.AttachmentType;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
-import net.minecraft.client.resources.model.sprite.SpriteGetter;
-import net.minecraft.client.resources.model.sprite.SpriteId;
-import net.minecraft.core.Direction;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.resources.model.Material;
+import net.minecraft.client.resources.model.MaterialSet;
 import net.minecraft.util.Unit;
-import net.minecraft.world.level.block.CeilingHangingSignBlock;
-import net.minecraft.world.level.block.HangingSignBlock;
-import net.minecraft.world.level.block.WallHangingSignBlock;
-import net.minecraft.world.level.block.HangingSignBlock.Attachment;
-import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.RotationSegment;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.phys.Vec3;
-import org.joml.Matrix4f;
-import org.joml.Vector3f;
-import org.joml.Vector3fc;
-import org.jspecify.annotations.Nullable;
 
-public class OBEHangingSignRenderer extends OBEAbstractSignRenderer<HangingSignRenderState> {
-   private static final Vector3fc TEXT_OFFSET = new Vector3f(0.0F, -0.32F, 0.073F);
-   public static final WallAndGroundTransformations<SignRenderState.SignTransformations> TRANSFORMATIONS = new WallAndGroundTransformations<>(OBEHangingSignRenderer::createWallTransformation, OBEHangingSignRenderer::createGroundTransformation, 16);
-   private final Map<WoodType, Models> signModels;
+public class OBEHangingSignRenderer extends OBEAbstractSignRenderer {
+   private static final String PLANK = "plank";
+   private static final String V_CHAINS = "vChains";
+   private static final String NORMAL_CHAINS = "normalChains";
+   private static final String CHAIN_L_1 = "chainL1";
+   private static final String CHAIN_L_2 = "chainL2";
+   private static final String CHAIN_R_1 = "chainR1";
+   private static final String CHAIN_R_2 = "chainR2";
+   private static final String BOARD = "board";
+   public static final float MODEL_RENDER_SCALE = 1.0F;
+   private static final float TEXT_RENDER_SCALE = 0.9F;
+   private static final Vec3 TEXT_OFFSET = new Vec3((double)0.0F, (double)-0.32F, (double)0.073F);
+   private final Map<ModelKey, Model.Simple> hangingSignModels;
 
-   public OBEHangingSignRenderer(final BlockEntityRendererProvider.Context context) {
+   public OBEHangingSignRenderer(BlockEntityRendererProvider.Context context) {
       super(context);
-      this.signModels = (Map)WoodType.values().collect(ImmutableMap.toImmutableMap((type) -> type, (type) -> OBEHangingSignRenderer.Models.create(context, type)));
+      Stream<ModelKey> stream = WoodType.values().flatMap((woodType) -> Arrays.stream(AttachmentType.values()).map((attachmentType) -> new ModelKey(woodType, attachmentType)));
+      this.hangingSignModels = (Map)stream.collect(ImmutableMap.toImmutableMap((modelKey) -> modelKey, (modelKey) -> createSignModel(context.entityModelSet(), modelKey.woodType, modelKey.attachmentType)));
    }
 
-   public HangingSignRenderState createRenderState() {
-      return new HangingSignRenderState();
+   public static Model.Simple createSignModel(EntityModelSet entityModelSet, WoodType woodType, AttachmentType attachmentType) {
+      return new Model.Simple(entityModelSet.bakeLayer(ModelLayers.createHangingSignModelName(woodType, attachmentType)), RenderTypes::entityCutoutNoCull);
    }
 
-   public void extractRenderState(final SignBlockEntity blockEntity, final HangingSignRenderState state, final float partialTicks, final Vec3 cameraPosition, final ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress) {
-      super.extractRenderState(blockEntity, state, partialTicks, cameraPosition, breakProgress);
-      BlockState blockState = blockEntity.getBlockState();
-      state.attachmentType = HangingSignBlock.getAttachmentPoint(blockState);
-      if (blockState.getBlock() instanceof WallHangingSignBlock) {
-         state.transformations = (SignRenderState.SignTransformations)TRANSFORMATIONS.wallTransformation((Direction)blockState.getValue(WallHangingSignBlock.FACING));
-      } else {
-         state.transformations = (SignRenderState.SignTransformations)TRANSFORMATIONS.freeTransformations((Integer)blockState.getValue(CeilingHangingSignBlock.ROTATION));
-      }
+   public float getSignModelRenderScale() {
+      return 1.0F;
    }
 
-   public static Model.Simple createSignModel(final EntityModelSet entityModelSet, final WoodType woodType, final HangingSignBlock.Attachment attachmentType) {
-      return new Model.Simple(entityModelSet.bakeLayer(ModelLayers.createHangingSignModelName(woodType, attachmentType)), RenderTypes::entityCutout);
+   protected float getSignTextRenderScale() {
+      return 0.9F;
    }
 
-   private static Matrix4f baseTransformation(final float angle) {
-      return (new Matrix4f()).translation(0.5F, 0.9375F, 0.5F).rotate(Axis.YP.rotationDegrees(-angle)).translate(0.0F, -0.3125F, 0.0F);
+   public static void translateBase(PoseStack poseStack, float f) {
+      poseStack.translate((double)0.5F, (double)0.9375F, (double)0.5F);
+      poseStack.mulPose(Axis.YP.rotationDegrees(f));
+      poseStack.translate(0.0F, -0.3125F, 0.0F);
    }
 
-   private static Transformation bodyTransformation(final float angle) {
-      return new Transformation(baseTransformation(angle).scale(1.0F, -1.0F, -1.0F));
+   public void translateSign(PoseStack poseStack, float f, BlockState blockState) {
+      translateBase(poseStack, f);
    }
 
-   private static Transformation textTransformation(final float angle, final boolean isFrontText) {
-      Matrix4f result = baseTransformation(angle);
-      if (!isFrontText) {
-         result.rotate(Axis.YP.rotationDegrees(180.0F));
-      }
-
-      result.translate(TEXT_OFFSET);
-      result.scale(0.0140625F, -0.0140625F, 0.0140625F);
-      return new Transformation(result);
+   protected Model.Simple getSignModel(BlockState blockState, WoodType woodType) {
+      AttachmentType attachmentType = HangingSignRenderer.AttachmentType.byBlockState(blockState);
+      return (Model.Simple)this.hangingSignModels.get(new ModelKey(woodType, attachmentType));
    }
 
-   private static SignRenderState.SignTransformations createTransformations(final float angle) {
-      return new SignRenderState.SignTransformations(bodyTransformation(angle), textTransformation(angle, true), textTransformation(angle, false));
+   protected Material getSignMaterial(WoodType woodType) {
+      return Sheets.getHangingSignMaterial(woodType);
    }
 
-   private static SignRenderState.SignTransformations createGroundTransformation(final int segment) {
-      return createTransformations(RotationSegment.convertToDegrees(segment));
+   protected Vec3 getTextOffset() {
+      return TEXT_OFFSET;
    }
 
-   private static SignRenderState.SignTransformations createWallTransformation(final Direction direction) {
-      return createTransformations(direction.toYRot());
+   public static void submitSpecial(MaterialSet materialSet, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int i, int j, Model.Simple simple, Material material) {
+      poseStack.pushPose();
+      translateBase(poseStack, 0.0F);
+      poseStack.scale(1.0F, -1.0F, -1.0F);
+      Unit var10002 = Unit.INSTANCE;
+      Objects.requireNonNull(simple);
+      submitNodeCollector.submitModel(simple, var10002, poseStack, material.renderType(simple::renderType), i, j, -1, materialSet.get(material), OverlayTexture.NO_OVERLAY, (ModelFeatureRenderer.CrumblingOverlay)null);
+      poseStack.popPose();
    }
 
-   protected Model.Simple getSignModel(final HangingSignRenderState state) {
-      return ((Models)this.signModels.get(state.woodType)).get(state.attachmentType);
-   }
-
-   protected SpriteId getSignSprite(final WoodType type) {
-      return Sheets.getHangingSignSprite(type);
-   }
-
-   public static void submitSpecial(final SpriteGetter sprites, final PoseStack poseStack, final SubmitNodeCollector submitNodeCollector, final int lightCoords, final int overlayCoords, final Model.Simple model, final SpriteId sprite) {
-      submitNodeCollector.submitModel(model, Unit.INSTANCE, poseStack, lightCoords, overlayCoords, -1, sprite, sprites, 0, (ModelFeatureRenderer.CrumblingOverlay)null);
-   }
-
-   public static LayerDefinition createHangingSignLayer(final HangingSignBlock.Attachment type) {
-      MeshDefinition mesh = new MeshDefinition();
-      PartDefinition root = mesh.getRoot();
-      root.addOrReplaceChild("board", CubeListBuilder.create().texOffs(0, 12).addBox(-7.0F, 0.0F, -1.0F, 14.0F, 10.0F, 2.0F), PartPose.ZERO);
-      if (type == Attachment.WALL) {
-         root.addOrReplaceChild("plank", CubeListBuilder.create().texOffs(0, 0).addBox(-8.0F, -6.0F, -2.0F, 16.0F, 2.0F, 4.0F), PartPose.ZERO);
+   public static LayerDefinition createHangingSignLayer(AttachmentType attachmentType) {
+      MeshDefinition meshDefinition = new MeshDefinition();
+      PartDefinition partDefinition = meshDefinition.getRoot();
+      partDefinition.addOrReplaceChild("board", CubeListBuilder.create().texOffs(0, 12).addBox(-7.0F, 0.0F, -1.0F, 14.0F, 10.0F, 2.0F), PartPose.ZERO);
+      if (attachmentType == HangingSignRenderer.AttachmentType.WALL) {
+         partDefinition.addOrReplaceChild("plank", CubeListBuilder.create().texOffs(0, 0).addBox(-8.0F, -6.0F, -2.0F, 16.0F, 2.0F, 4.0F), PartPose.ZERO);
       }
 
-      if (type == Attachment.WALL || type == Attachment.CEILING) {
-         PartDefinition normalChains = root.addOrReplaceChild("normalChains", CubeListBuilder.create(), PartPose.ZERO);
-         normalChains.addOrReplaceChild("chainL1", CubeListBuilder.create().texOffs(0, 6).addBox(-1.5F, 0.0F, 0.0F, 3.0F, 6.0F, 0.0F), PartPose.offsetAndRotation(-5.0F, -6.0F, 0.0F, 0.0F, (-(float)Math.PI / 4F), 0.0F));
-         normalChains.addOrReplaceChild("chainL2", CubeListBuilder.create().texOffs(6, 6).addBox(-1.5F, 0.0F, 0.0F, 3.0F, 6.0F, 0.0F), PartPose.offsetAndRotation(-5.0F, -6.0F, 0.0F, 0.0F, ((float)Math.PI / 4F), 0.0F));
-         normalChains.addOrReplaceChild("chainR1", CubeListBuilder.create().texOffs(0, 6).addBox(-1.5F, 0.0F, 0.0F, 3.0F, 6.0F, 0.0F), PartPose.offsetAndRotation(5.0F, -6.0F, 0.0F, 0.0F, (-(float)Math.PI / 4F), 0.0F));
-         normalChains.addOrReplaceChild("chainR2", CubeListBuilder.create().texOffs(6, 6).addBox(-1.5F, 0.0F, 0.0F, 3.0F, 6.0F, 0.0F), PartPose.offsetAndRotation(5.0F, -6.0F, 0.0F, 0.0F, ((float)Math.PI / 4F), 0.0F));
+      if (attachmentType == HangingSignRenderer.AttachmentType.WALL || attachmentType == HangingSignRenderer.AttachmentType.CEILING) {
+         PartDefinition partDefinition2 = partDefinition.addOrReplaceChild("normalChains", CubeListBuilder.create(), PartPose.ZERO);
+         partDefinition2.addOrReplaceChild("chainL1", CubeListBuilder.create().texOffs(0, 6).addBox(-1.5F, 0.0F, 0.0F, 3.0F, 6.0F, 0.0F), PartPose.offsetAndRotation(-5.0F, -6.0F, 0.0F, 0.0F, (-(float)Math.PI / 4F), 0.0F));
+         partDefinition2.addOrReplaceChild("chainL2", CubeListBuilder.create().texOffs(6, 6).addBox(-1.5F, 0.0F, 0.0F, 3.0F, 6.0F, 0.0F), PartPose.offsetAndRotation(-5.0F, -6.0F, 0.0F, 0.0F, ((float)Math.PI / 4F), 0.0F));
+         partDefinition2.addOrReplaceChild("chainR1", CubeListBuilder.create().texOffs(0, 6).addBox(-1.5F, 0.0F, 0.0F, 3.0F, 6.0F, 0.0F), PartPose.offsetAndRotation(5.0F, -6.0F, 0.0F, 0.0F, (-(float)Math.PI / 4F), 0.0F));
+         partDefinition2.addOrReplaceChild("chainR2", CubeListBuilder.create().texOffs(6, 6).addBox(-1.5F, 0.0F, 0.0F, 3.0F, 6.0F, 0.0F), PartPose.offsetAndRotation(5.0F, -6.0F, 0.0F, 0.0F, ((float)Math.PI / 4F), 0.0F));
       }
 
-      if (type == Attachment.CEILING_MIDDLE) {
-         root.addOrReplaceChild("vChains", CubeListBuilder.create().texOffs(14, 6).addBox(-6.0F, -6.0F, 0.0F, 12.0F, 6.0F, 0.0F), PartPose.ZERO);
+      if (attachmentType == HangingSignRenderer.AttachmentType.CEILING_MIDDLE) {
+         partDefinition.addOrReplaceChild("vChains", CubeListBuilder.create().texOffs(14, 6).addBox(-6.0F, -6.0F, 0.0F, 12.0F, 6.0F, 0.0F), PartPose.ZERO);
       }
 
-      return LayerDefinition.create(mesh, 64, 32);
+      return LayerDefinition.create(meshDefinition, 64, 32);
    }
 
-   private static record Models(Model.Simple ceiling, Model.Simple ceilingMiddle, Model.Simple wall) {
-      public static Models create(final BlockEntityRendererProvider.Context context, final WoodType type) {
-         return new Models(HangingSignRenderer.createSignModel(context.entityModelSet(), type, Attachment.CEILING), HangingSignRenderer.createSignModel(context.entityModelSet(), type, Attachment.CEILING_MIDDLE), HangingSignRenderer.createSignModel(context.entityModelSet(), type, Attachment.WALL));
-      }
-
-      public Model.Simple get(final HangingSignBlock.Attachment attachmentType) {
-         Model.Simple var10000;
-         switch (attachmentType) {
-            case CEILING -> var10000 = this.ceiling;
-            case CEILING_MIDDLE -> var10000 = this.ceilingMiddle;
-            case WALL -> var10000 = this.wall;
-            default -> throw new MatchException((String)null, (Throwable)null);
-         }
-
-         return var10000;
-      }
-   }
+   public static record ModelKey(WoodType woodType, AttachmentType attachmentType) {}
 }

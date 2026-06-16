@@ -11,9 +11,7 @@ import fr.madu59.obe.client.renderer.OBEBlockRenderer;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager;
 import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager.RenderMode;
-import net.minecraft.client.color.block.BlockColors;
-import net.minecraft.client.renderer.block.BlockStateModelSet;
-import net.minecraft.client.renderer.block.FluidStateModelSet;
+import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.chunk.RenderSectionRegion;
 import net.minecraft.client.renderer.chunk.SectionCompiler;
@@ -29,7 +27,7 @@ public class SectionCompilerMixin {
     @Unique private final ThreadLocal<RenderSectionRegion> obe$region = ThreadLocal.withInitial(() -> null);
 
     @Inject(method = "<init>", at = @At("TAIL"))
-    private void obe$init(final boolean ambientOcclusion, final boolean cutoutLeaves, final BlockStateModelSet blockModelSet, final FluidStateModelSet fluidModelSet, final BlockColors blockColors, final BlockEntityRenderDispatcher blockEntityRenderer, CallbackInfo ci) {
+    private void obe$init(BlockRenderDispatcher blockRenderDispatcher, BlockEntityRenderDispatcher blockEntityRenderDispatcher, CallbackInfo ci) {
         this.obeBlockRenderer = new OBEBlockRenderer();
     }
 

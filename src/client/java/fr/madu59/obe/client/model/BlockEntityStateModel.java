@@ -8,7 +8,6 @@ import java.util.Map;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 
-import com.mojang.blaze3d.platform.Transparency;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import fr.madu59.obe.client.util.ResourceUtil;
@@ -16,15 +15,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.builders.UVPair;
-import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
-import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
-import net.minecraft.client.renderer.block.dispatch.SingleVariant;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.BlockModelPart;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
+import net.minecraft.client.renderer.block.model.SimpleModelWrapper;
+import net.minecraft.client.renderer.block.model.SingleVariant;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.SimpleModelWrapper;
-import net.minecraft.client.resources.model.geometry.BakedQuad;
-import net.minecraft.client.resources.model.geometry.BakedQuad.MaterialInfo;
-import net.minecraft.client.resources.model.geometry.QuadCollection;
-import net.minecraft.client.resources.model.sprite.Material;
+import net.minecraft.client.resources.model.QuadCollection;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
@@ -32,7 +29,7 @@ import net.minecraft.util.RandomSource;
 public class BlockEntityStateModel implements BlockStateModel{
     private final List<SingleVariant> models = new ArrayList<>();
     private final Map<String, BlockStateModel> partsMap = new HashMap<>();
-    private final Material.Baked particleMaterial;
+    private final TextureAtlasSprite particleMaterial;
 
     public BlockEntityStateModel(ModelLayerLocation modelLayerLocation, Identifier texture, boolean useAo){
         this(modelLayerLocation, texture, new PoseStack(), useAo);
@@ -49,7 +46,7 @@ public class BlockEntityStateModel implements BlockStateModel{
     }
 
     @Override
-    public void collectParts(RandomSource randomSource, List<BlockStateModelPart> list) {
+    public void collectParts(RandomSource randomSource, List<BlockModelPart> list) {
         if (models.isEmpty()) return;
 
         long seed = randomSource.nextLong();
@@ -105,19 +102,21 @@ public class BlockEntityStateModel implements BlockStateModel{
                     uvs[i] = UVPair.pack(u, v);
                 }
 
-                Material.Baked bakedMat = new Material.Baked(sprite, false);
-                MaterialInfo matInfo = MaterialInfo.of(bakedMat, Transparency.TRANSPARENT, -1, true, 0);
-
                 BakedQuad baked = new BakedQuad(
-                        positions[0], positions[1], positions[2], positions[3],
-                        uvs[0], uvs[1], uvs[2], uvs[3],
-                        dir,
-                        matInfo
+                    positions[0], positions[1], positions[2], positions[3],
+                    uvs[0], uvs[1], uvs[2], uvs[3],
+                    0,
+                    dir,
+                    sprite,
+                    true,
+                    0
                 );
                 bakedQuadsList.add(baked);
                 if(fixBfc){
                     // Same geometry but with inverted winding order so they are visible from the other side of the model
-                    baked = new BakedQuad(positions[0], positions[3], positions[2], positions[1], uvs[0], uvs[3], uvs[2], uvs[1], dir, matInfo );
+                    baked = new BakedQuad(
+                        positions[0], positions[3], positions[2], positions[1], uvs[0], uvs[3], uvs[2], uvs[1], 0, dir, sprite, true, 0
+                    );
                     bakedQuadsList.add(baked);
                 }
             }
@@ -147,12 +146,7 @@ public class BlockEntityStateModel implements BlockStateModel{
     }
 
     @Override
-    public Material.Baked particleMaterial() {
+    public TextureAtlasSprite particleIcon() {
         return particleMaterial;
-    }
-
-    @Override
-    public @BakedQuad.MaterialFlags int materialFlags() {
-        return 0;
     }
 }

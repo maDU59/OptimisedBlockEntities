@@ -8,14 +8,13 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import fr.madu59.obe.client.OBEClient;
 import fr.madu59.obe.client.model.BlockEntityStateModel;
-import fr.madu59.obe.client.renderer.blockentity.chest.OBEChestRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelLayers;
-import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
-import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
+import net.minecraft.client.renderer.blockentity.HangingSignRenderer;
+import net.minecraft.client.renderer.block.model.BlockModelPart;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.data.AtlasIds;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
@@ -23,7 +22,6 @@ import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.CopperGolemStatueBlock;
 import net.minecraft.world.level.block.SkullBlock;
-import net.minecraft.world.level.block.HangingSignBlock.Attachment;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BedPart;
 import net.minecraft.world.level.block.state.properties.ChestType;
@@ -35,6 +33,10 @@ public class ResourceUtil{
     private static Map<BlockState, BlockStateModel> transformedModelCache = new ConcurrentHashMap<>();
     private static Map<ModelCacheKey, BlockStateModel> transformedSubModelCache = new ConcurrentHashMap<>();
 
+    public static ModelLayerLocation getSignLayerLocation(BlockState state, boolean isWallSign){
+        return getSignLayerLocation(state, isWallSign, WoodType.OAK);
+    }
+
     public static ModelLayerLocation getSignLayerLocation(BlockState state, boolean isWallSign, WoodType woodType){
         if (isWallSign) {
             return ModelLayers.createWallSignModelName(woodType);
@@ -44,7 +46,11 @@ public class ResourceUtil{
         }
     }
 
-    public static ModelLayerLocation getHangingSignLayerLocation(BlockState state, Attachment attachment, WoodType woodType){
+    public static ModelLayerLocation getHangingSignLayerLocation(BlockState state, HangingSignRenderer.AttachmentType attachment){
+        return getHangingSignLayerLocation(state, attachment, WoodType.OAK);
+    }
+
+    public static ModelLayerLocation getHangingSignLayerLocation(BlockState state, HangingSignRenderer.AttachmentType attachment, WoodType woodType){
         return ModelLayers.createHangingSignModelName(woodType, attachment);
     }
 
@@ -69,7 +75,11 @@ public class ResourceUtil{
     }
 
     public static ModelLayerLocation getChestLayerLocation(BlockState state){
-        return OBEChestRenderer.LAYERS.select(state.getValueOrElse(ChestBlock.TYPE, ChestType.SINGLE));
+        return switch(state.getValueOrElse(ChestBlock.TYPE, ChestType.SINGLE)){
+            case ChestType.SINGLE -> ModelLayers.CHEST;
+            case ChestType.LEFT -> ModelLayers.DOUBLE_CHEST_LEFT;
+            case ChestType.RIGHT -> ModelLayers.DOUBLE_CHEST_RIGHT;
+        };
     }
 
     public static ModelLayerLocation getBellLayerLocation(BlockState state){
@@ -101,11 +111,15 @@ public class ResourceUtil{
         return Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(AtlasIds.BLOCKS).getSprite(id);
     }
 
-    public static Material.Baked getBakedMaterial(TextureAtlasSprite sprite) {
-        return new Material.Baked(sprite, false);
+    public static TextureAtlasSprite getBakedMaterial(TextureAtlasSprite sprite) {
+        return sprite;
     }
 
-    public static void collectParts(List<BlockStateModelPart> partsList, BlockStateModel model, RandomSource random){
+    public static void collectParts(List<BlockModelPart> partsList, ModelLayerLocation modelLayerLocation, RandomSource random, Identifier texture, boolean useAo){
+        modelCache.computeIfAbsent(modelLayerLocation, layer -> new BlockEntityStateModel(layer, texture, useAo)).collectParts(random, partsList);
+    }
+
+    public static void collectParts(List<BlockModelPart> partsList, BlockStateModel model, RandomSource random){
         model.collectParts(random, partsList);
     }
 

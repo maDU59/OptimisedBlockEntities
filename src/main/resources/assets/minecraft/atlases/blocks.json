@@ -14,6 +14,7 @@
     { "type": "directory", "source": "entity/player", "prefix": "entity/player/" },
     { "type": "directory", "source": "entity/piglin", "prefix": "entity/piglin/" },
     { "type": "directory", "source": "entity/creeper", "prefix": "entity/creeper/" },
-    { "type": "directory", "source": "entity/enderdragon", "prefix": "entity/enderdragon/" }
+    { "type": "directory", "source": "entity/enderdragon", "prefix": "entity/enderdragon/" },
+    { "type": "single", "resource": "minecraft:entity/banner_base" }
   ]
 }

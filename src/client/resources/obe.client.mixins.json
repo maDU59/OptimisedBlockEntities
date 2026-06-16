@@ -1,7 +1,7 @@
 {
 	"required": true,
 	"package": "fr.madu59.obe.client.mixin",
-	"compatibilityLevel": "JAVA_25",
+	"compatibilityLevel": "JAVA_21",
 	"client": [
 		"blockentity.banner.BannerBlockEntityMixin",
 		"blockentity.bell.BellBlockEntityMixin",
@@ -20,7 +20,7 @@
 		"renderer.SectionCompilerMixin",
 		"renderer.ModelBlockRendererMixin",
 		"renderer.LevelRendererMixin",
-		"renderer.compat.indigo.AltModelBlockRendererImplMixin",
+		"renderer.ItemBlockRenderTypesMixin",
 		"renderer.compat.sodium.BlockRendererMixin",
 		"renderer.compat.sodium.SodiumWorldRendererMixin",
 		"core.ReloadableResourceManagerMixin",

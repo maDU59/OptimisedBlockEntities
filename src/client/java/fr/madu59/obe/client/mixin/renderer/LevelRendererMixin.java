@@ -18,7 +18,7 @@ public class LevelRendererMixin {
         method = "extractVisibleBlockEntities",
         at = @At(
             value = "INVOKE", 
-            target = "getRenderableBlockEntities" 
+            target = "Lnet/minecraft/client/renderer/chunk/SectionMesh;getRenderableBlockEntities()Ljava/util/List;" 
         )
     )
     private <T extends SectionMesh> List<BlockEntity> obe$redirectGetRenderableBlockEntities(T sectionMeshInstance) {

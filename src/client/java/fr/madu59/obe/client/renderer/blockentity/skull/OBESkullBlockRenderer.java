@@ -11,7 +11,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.SkullBlockRenderer;
 import net.minecraft.client.renderer.blockentity.state.SkullBlockRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
-import net.minecraft.client.renderer.state.level.CameraRenderState;
+import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.minecraft.world.phys.Vec3;
 

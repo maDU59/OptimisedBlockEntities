@@ -1,6 +1,7 @@
 package fr.madu59.obe.client.renderer.blockentity.sign;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 
 import fr.madu59.obe.client.compat.ModCompat;
 import fr.madu59.obe.client.config.SettingsManager;
@@ -20,8 +21,11 @@ import net.minecraft.client.renderer.blockentity.state.SignRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.level.block.SignBlock;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraft.world.level.block.entity.SignText;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.phys.Vec3;
 
 import org.joml.Matrix3f;
@@ -29,43 +33,20 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.jspecify.annotations.Nullable;
 
-public abstract class OBEAbstractSignRenderer<S extends SignRenderState> extends AbstractSignRenderer<S> {
+public abstract class OBEAbstractSignRenderer extends AbstractSignRenderer {
 
     public OBEAbstractSignRenderer(final BlockEntityRendererProvider.Context context) {
         super(context);
     }
 
     @Override
-    public void submitSignWithText(final S state, final PoseStack poseStack, final ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress, final SubmitNodeCollector submitNodeCollector) {
-
-        if(!SettingsManager.OPTIMISED_SIGNS.getValue()){
-            Model.Simple bodyModel = this.getSignModel(state);
-            poseStack.pushPose();
-            poseStack.mulPose(state.transformations.body());
-            this.submitSign(poseStack, state.lightCoords, state.woodType, bodyModel, breakProgress, submitNodeCollector);
-            poseStack.popPose();
-        }
-        if(ModCompat.isShadowPass()) return;
-        if (state.frontText == null && state.backText == null) return;
-        Vec3 cameraPos = Minecraft.getInstance().getCameraEntity().position();
+    public void submitSignWithText(SignRenderState signRenderState, PoseStack poseStack, BlockState blockState, SignBlock signBlock, WoodType woodType, Model.Simple simple, ModelFeatureRenderer.@Nullable CrumblingOverlay crumblingOverlay, SubmitNodeCollector submitNodeCollector) {
         poseStack.pushPose();
-        poseStack.mulPose(state.transformations.frontText());
-
-        if (isFacingCamera(poseStack, cameraPos)) {
-            if (state.frontText != null) {
-                this.submitSignText(state, poseStack, submitNodeCollector, state.frontText, true);
-                poseStack.popPose();
-            }
-        }
-        else{
-            if (state.backText != null) {
-                poseStack.popPose();
-                poseStack.pushPose();
-                poseStack.mulPose(state.transformations.backText());
-                this.submitSignText(state, poseStack, submitNodeCollector, state.backText, false);
-                poseStack.popPose();
-            }
-        }
+        this.translateSign(poseStack, -signBlock.getYRotationDegrees(blockState), blockState);
+        if(!SettingsManager.OPTIMISED_SIGNS.getValue()) this.submitSign(poseStack, signRenderState.lightCoords, woodType, simple, crumblingOverlay, submitNodeCollector);
+        this.submitSignText(signRenderState, poseStack, submitNodeCollector, true);
+        this.submitSignText(signRenderState, poseStack, submitNodeCollector, false);
+        poseStack.popPose();
     }
 
     private static boolean isFacingCamera(PoseStack poseStack, Vec3 cameraPos) {
@@ -81,33 +62,54 @@ public abstract class OBEAbstractSignRenderer<S extends SignRenderState> extends
         return forwardVector.dot(pos) < 0.0f;
     }
 
-    public void submitSignText(final S state, final PoseStack poseStack, final SubmitNodeCollector submitNodeCollector, final SignText signText, final boolean front) {
-        SignRenderStateExt stateExt = (SignRenderStateExt) (Object) state;
-        int darkColor = getDarkColor(signText);
-        int signMidpoint = 4 * state.textLineHeight / 2;
-        int textColor;
-        boolean drawOutline;
-        int lightVal;
-        if (signText.hasGlowingText()) {
-            textColor = signText.getColor().getTextColor();
-            drawOutline = textColor == DyeColor.BLACK.getTextColor() || state.drawOutline;
-            lightVal = 15728880;
-        } else {
-            textColor = darkColor;
-            drawOutline = false;
-            lightVal = state.lightCoords;
-        }
+    private void submitSignText(SignRenderState signRenderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, boolean bl) {
+        SignText signText = bl ? signRenderState.frontText : signRenderState.backText;
+        SignRenderStateExt stateExt = (SignRenderStateExt) (Object) signRenderState;
+        if (signText != null) {
+            Vec3 cameraPos = Minecraft.getInstance().getCameraEntity().position();
+            poseStack.pushPose();
+            this.translateSignText(poseStack, bl, this.getTextOffset());
+            if (!isFacingCamera(poseStack, cameraPos) || ModCompat.isShadowPass()) {
+                poseStack.popPose();
+                return;
+            }
+            int i = getDarkColor(signText);
+            int j = 4 * signRenderState.textLineHeight / 2;
+            int k;
+            boolean bl2;
+            int l;
+            if (signText.hasGlowingText()) {
+                k = signText.getColor().getTextColor();
+                bl2 = k == DyeColor.BLACK.getTextColor() || signRenderState.drawOutline;
+                l = 15728880;
+            } else {
+                k = i;
+                bl2 = false;
+                l = signRenderState.lightCoords;
+            }
 
-        for(int i = 0; i < 4; ++i) {
-            FormattedCharSequence actualLine = stateExt.getCachedLines(front)[i];
-            float x1 = stateExt.getLineWidths(front)[i];
-            submitNodeCollector.submitText(poseStack, x1, (float)(i * state.textLineHeight - signMidpoint), actualLine, false, DisplayMode.POLYGON_OFFSET, lightVal, textColor, 0, drawOutline ? darkColor : 0);
-        }
+            for(int m = 0; m < 4; ++m) {
+                FormattedCharSequence formattedCharSequence = stateExt.getCachedLines(bl)[m];
+                float f = stateExt.getLineWidths(bl)[m];
+                submitNodeCollector.submitText(poseStack, f, (float)(m * signRenderState.textLineHeight - j), formattedCharSequence, false, DisplayMode.POLYGON_OFFSET, l, k, 0, bl2 ? i : 0);
+            }
 
+            poseStack.popPose();
+        }
     }
 
-    public void extractRenderState(final SignBlockEntity blockEntity, final S state, final float partialTicks, final Vec3 cameraPosition, final ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress) {
-        super.extractRenderState(blockEntity, state, partialTicks, cameraPosition, breakProgress);
+    private void translateSignText(PoseStack poseStack, boolean bl, Vec3 vec3) {
+        if (!bl) {
+            poseStack.mulPose(Axis.YP.rotationDegrees(180.0F));
+        }
+
+        float f = 0.015625F * this.getSignTextRenderScale();
+        poseStack.translate(vec3);
+        poseStack.scale(f, -f, f);
+    }
+
+    public void extractRenderState(SignBlockEntity blockEntity, SignRenderState state, float f, Vec3 vec3, ModelFeatureRenderer.@Nullable CrumblingOverlay crumblingOverlay) {
+        super.extractRenderState(blockEntity, state, f, vec3, crumblingOverlay);
 
         ((BlockEntityRenderStateExt)state).blockEntity(blockEntity);
 
@@ -126,8 +128,7 @@ public abstract class OBEAbstractSignRenderer<S extends SignRenderState> extends
         stateExt.setLineWidths(beExt.getLineWidths(true), beExt.getLineWidths(false));
     }
 
-    private void rebuildIfDirty(SignText text, boolean front, boolean filteringChanged,
-            SignBlockEntityExt beExt, S state) {
+    private void rebuildIfDirty(SignText text, boolean front, boolean filteringChanged, SignBlockEntityExt beExt, SignRenderState state) {
         if (!filteringChanged && text == beExt.getLastText(front)) return;
 
         FormattedCharSequence[] lines = text.getRenderMessages(

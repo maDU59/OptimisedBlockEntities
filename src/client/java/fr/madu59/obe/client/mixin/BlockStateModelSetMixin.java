@@ -9,17 +9,17 @@ import fr.madu59.obe.client.renderer.OBEBlockRenderer;
 
 import org.spongepowered.asm.mixin.injection.At;
 
-import net.minecraft.client.renderer.block.BlockStateModelSet;
-import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
+import net.minecraft.client.renderer.block.BlockModelShaper;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.AbstractChestBlock;
 import net.minecraft.world.level.block.AbstractSkullBlock;
 import net.minecraft.world.level.block.BannerBlock;
 import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.CeilingHangingSignBlock;
 import net.minecraft.world.level.block.CopperGolemStatueBlock;
 import net.minecraft.world.level.block.DecoratedPotBlock;
-import net.minecraft.world.level.block.HangingSignBlock;
 import net.minecraft.world.level.block.ShulkerBoxBlock;
 import net.minecraft.world.level.block.StandingSignBlock;
 import net.minecraft.world.level.block.WallBannerBlock;
@@ -27,20 +27,20 @@ import net.minecraft.world.level.block.WallHangingSignBlock;
 import net.minecraft.world.level.block.WallSignBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
-@Mixin(BlockStateModelSet.class)
+@Mixin(BlockModelShaper.class)
 public class BlockStateModelSetMixin {
 
     @Unique private final OBEBlockRenderer obeBlockRenderer = new OBEBlockRenderer();
     @Unique private final RandomSource random = RandomSource.create();
 
-    @Inject(method = "get", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "getBlockModel", at = @At("HEAD"), cancellable = true)
     public void obe$getBlockStateModel(BlockState state, CallbackInfoReturnable<BlockStateModel> cir){
         if (!state.hasBlockEntity()) return;
 
         Block block = state.getBlock();
         random.setSeed(42);
 
-        if(block instanceof HangingSignBlock || block instanceof WallHangingSignBlock){
+        if(block instanceof CeilingHangingSignBlock || block instanceof WallHangingSignBlock){
             cir.setReturnValue(obeBlockRenderer.getHangingSignModel(state, random));
         }
         else if(block instanceof StandingSignBlock || block instanceof WallSignBlock){

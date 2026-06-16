@@ -13,7 +13,7 @@ import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager;
 import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager.RenderMode;
 import net.caffeinemc.mods.sodium.client.render.chunk.compile.pipeline.BlockRenderer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
