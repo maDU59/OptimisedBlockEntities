@@ -16,7 +16,7 @@ import net.minecraft.client.renderer.blockentity.HangingSignRenderer;
 import net.minecraft.client.renderer.block.model.BlockModelPart;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.data.AtlasIds;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.ChestBlock;
@@ -33,10 +33,6 @@ public class ResourceUtil{
     private static Map<BlockState, BlockStateModel> transformedModelCache = new ConcurrentHashMap<>();
     private static Map<ModelCacheKey, BlockStateModel> transformedSubModelCache = new ConcurrentHashMap<>();
 
-    public static ModelLayerLocation getSignLayerLocation(BlockState state, boolean isWallSign){
-        return getSignLayerLocation(state, isWallSign, WoodType.OAK);
-    }
-
     public static ModelLayerLocation getSignLayerLocation(BlockState state, boolean isWallSign, WoodType woodType){
         if (isWallSign) {
             return ModelLayers.createWallSignModelName(woodType);
@@ -44,10 +40,6 @@ public class ResourceUtil{
         else{
             return ModelLayers.createStandingSignModelName(woodType);
         }
-    }
-
-    public static ModelLayerLocation getHangingSignLayerLocation(BlockState state, HangingSignRenderer.AttachmentType attachment){
-        return getHangingSignLayerLocation(state, attachment, WoodType.OAK);
     }
 
     public static ModelLayerLocation getHangingSignLayerLocation(BlockState state, HangingSignRenderer.AttachmentType attachment, WoodType woodType){
@@ -107,7 +99,7 @@ public class ResourceUtil{
         return isCenter? ModelLayers.DECORATED_POT_BASE : ModelLayers.DECORATED_POT_SIDES;
     }
 
-    public static TextureAtlasSprite getSprite(Identifier id) {
+    public static TextureAtlasSprite getSprite(ResourceLocation id) {
         return Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(AtlasIds.BLOCKS).getSprite(id);
     }
 
@@ -115,23 +107,19 @@ public class ResourceUtil{
         return sprite;
     }
 
-    public static void collectParts(List<BlockModelPart> partsList, ModelLayerLocation modelLayerLocation, RandomSource random, Identifier texture, boolean useAo){
-        modelCache.computeIfAbsent(modelLayerLocation, layer -> new BlockEntityStateModel(layer, texture, useAo)).collectParts(random, partsList);
-    }
-
     public static void collectParts(List<BlockModelPart> partsList, BlockStateModel model, RandomSource random){
         model.collectParts(random, partsList);
     }
 
-    public static BlockStateModel getModel(ModelLayerLocation modelLayerLocation, Identifier texture, boolean useAo){
+    public static BlockStateModel getModel(ModelLayerLocation modelLayerLocation, ResourceLocation texture, boolean useAo){
         return modelCache.computeIfAbsent(modelLayerLocation, layer -> new BlockEntityStateModel(modelLayerLocation, texture, useAo));
     }
 
-    public static BlockStateModel getModel(ModelLayerLocation modelLayerLocation, Identifier texture, BlockState blockState, PoseStack poseStack, boolean useAo){
+    public static BlockStateModel getModel(ModelLayerLocation modelLayerLocation, ResourceLocation texture, BlockState blockState, PoseStack poseStack, boolean useAo){
         return transformedModelCache.computeIfAbsent(blockState, layer -> new BlockEntityStateModel(modelLayerLocation, texture, poseStack, useAo));
     }
 
-    public static BlockStateModel getSubModel(ModelLayerLocation modelLayerLocation, Identifier texture, BlockState blockState, PoseStack poseStack, boolean useAo){
+    public static BlockStateModel getSubModel(ModelLayerLocation modelLayerLocation, ResourceLocation texture, BlockState blockState, PoseStack poseStack, boolean useAo){
         return transformedSubModelCache.computeIfAbsent(new ModelCacheKey(modelLayerLocation, blockState), layer -> new BlockEntityStateModel(modelLayerLocation, texture, poseStack, useAo));
     }
 

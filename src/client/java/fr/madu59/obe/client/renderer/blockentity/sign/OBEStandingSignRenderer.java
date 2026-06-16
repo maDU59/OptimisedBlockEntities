@@ -22,7 +22,7 @@ import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.resources.model.MaterialSet;
 import net.minecraft.util.Unit;
@@ -32,7 +32,6 @@ import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.phys.Vec3;
 
 public class OBEStandingSignRenderer extends OBEAbstractSignRenderer {
-   public static final float RENDER_SCALE = 0.6666667F;
    private static final Vec3 TEXT_OFFSET = new Vec3((double)0.0F, (double)0.33333334F, (double)0.046666667F);
    private final Map<WoodType, Models> signModels;
 
@@ -90,7 +89,7 @@ public class OBEStandingSignRenderer extends OBEAbstractSignRenderer {
 
    public static Model.Simple createSignModel(EntityModelSet entityModelSet, WoodType woodType, boolean bl) {
       ModelLayerLocation modelLayerLocation = bl ? ModelLayers.createStandingSignModelName(woodType) : ModelLayers.createWallSignModelName(woodType);
-      return new Model.Simple(entityModelSet.bakeLayer(modelLayerLocation), RenderTypes::entityCutoutNoCull);
+      return new Model.Simple(entityModelSet.bakeLayer(modelLayerLocation), RenderType::entityCutoutNoCull);
    }
 
    public static LayerDefinition createSignLayer(boolean bl) {

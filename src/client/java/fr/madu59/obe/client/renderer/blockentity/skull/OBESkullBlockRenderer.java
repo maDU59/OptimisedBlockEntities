@@ -1,6 +1,6 @@
 package fr.madu59.obe.client.renderer.blockentity.skull;
 
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 

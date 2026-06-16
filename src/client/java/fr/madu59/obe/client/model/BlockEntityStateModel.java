@@ -14,7 +14,6 @@ import fr.madu59.obe.client.util.ResourceUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.model.geom.builders.UVPair;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.BlockModelPart;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
@@ -23,7 +22,7 @@ import net.minecraft.client.renderer.block.model.SingleVariant;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.QuadCollection;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 
 public class BlockEntityStateModel implements BlockStateModel{
@@ -31,11 +30,11 @@ public class BlockEntityStateModel implements BlockStateModel{
     private final Map<String, BlockStateModel> partsMap = new HashMap<>();
     private final TextureAtlasSprite particleMaterial;
 
-    public BlockEntityStateModel(ModelLayerLocation modelLayerLocation, Identifier texture, boolean useAo){
+    public BlockEntityStateModel(ModelLayerLocation modelLayerLocation, ResourceLocation texture, boolean useAo){
         this(modelLayerLocation, texture, new PoseStack(), useAo);
     }
 
-    public BlockEntityStateModel(ModelLayerLocation modelLayerLocation, Identifier texture, PoseStack poseStack, boolean useAo){
+    public BlockEntityStateModel(ModelLayerLocation modelLayerLocation, ResourceLocation texture, PoseStack poseStack, boolean useAo){
         TextureAtlasSprite sprite = ResourceUtil.getSprite(texture);
         particleMaterial = ResourceUtil.getBakedMaterial(sprite);
         generateModel(modelLayerLocation, sprite, poseStack, useAo);
@@ -89,22 +88,36 @@ public class BlockEntityStateModel implements BlockStateModel{
                 
                 Direction dir = getDirection(normal);
 
-                Vector3f[] positions = new Vector3f[4];
-                long[] uvs = new long[4];
+                int[] packedVertices = new int[32];
 
                 for (int i = 0; i < 4; i++) {
                     ModelPart.Vertex vertex = polygon.vertices()[i];
                     Vector3f vec = pose.pose().transformPosition(vertex.worldX(), vertex.worldY(), vertex.worldZ(), new Vector3f());
-                    positions[i] = vec;
-
+                    
                     float u = sprite.getU(vertex.u());
                     float v = sprite.getV(vertex.v());
-                    uvs[i] = UVPair.pack(u, v);
+
+                    int offset = i * 8;
+
+                    // 1. Pack Spatial Positions (X, Y, Z)
+                    packedVertices[offset + 0] = Float.floatToRawIntBits(vec.x());
+                    packedVertices[offset + 1] = Float.floatToRawIntBits(vec.y());
+                    packedVertices[offset + 2] = Float.floatToRawIntBits(vec.z());
+
+                    // 2. Pack Default Color (White / Full Alpha: 0xFFFFFFFF)
+                    packedVertices[offset + 3] = -1; 
+
+                    // 3. Pack Texture Coordinates (U, V)
+                    packedVertices[offset + 4] = Float.floatToRawIntBits(u);
+                    packedVertices[offset + 5] = Float.floatToRawIntBits(v);
+
+                    // 4. Pack Light/Overlay and Normals (Fallback placeholders)
+                    packedVertices[offset + 6] = 0;
+                    packedVertices[offset + 7] = 0; 
                 }
 
                 BakedQuad baked = new BakedQuad(
-                    positions[0], positions[1], positions[2], positions[3],
-                    uvs[0], uvs[1], uvs[2], uvs[3],
+                    packedVertices,
                     0,
                     dir,
                     sprite,
@@ -113,9 +126,19 @@ public class BlockEntityStateModel implements BlockStateModel{
                 );
                 bakedQuadsList.add(baked);
                 if(fixBfc){
-                    // Same geometry but with inverted winding order so they are visible from the other side of the model
+                    int[] invertedVertices = new int[32];
+                    for (int i = 0; i < 4; i++) {
+                        int srcOffset = i * 8;
+                        int destOffset = ((4 - i) % 4) * 8;
+                        System.arraycopy(packedVertices, srcOffset, invertedVertices, destOffset, 8);
+                    }
                     baked = new BakedQuad(
-                        positions[0], positions[3], positions[2], positions[1], uvs[0], uvs[3], uvs[2], uvs[1], 0, dir, sprite, true, 0
+                        invertedVertices,
+                    0,
+                    dir,
+                    sprite,
+                    true,
+                    0
                     );
                     bakedQuadsList.add(baked);
                 }

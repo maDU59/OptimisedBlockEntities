@@ -8,6 +8,7 @@ import com.mojang.math.Axis;
 import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.model.CompositeBlockStateModel;
 import fr.madu59.obe.client.model.MaterialResolver;
+import fr.madu59.obe.client.renderer.blockentity.bed.OBEBedRenderer;
 import fr.madu59.obe.client.renderer.blockentity.bell.OBEBellRenderer;
 import fr.madu59.obe.client.renderer.blockentity.chest.OBEChestRenderer;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
@@ -24,9 +25,9 @@ import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.animal.golem.CopperGolemOxidationLevels;
+import net.minecraft.world.entity.animal.coppergolem.CopperGolemOxidationLevels;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.AbstractSkullBlock;
 import net.minecraft.world.level.block.BannerBlock;
@@ -46,6 +47,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.DecoratedPotPatterns;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BedPart;
 import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraft.world.level.block.state.properties.RotationSegment;
 import net.minecraft.world.level.block.state.properties.WoodType;
@@ -104,9 +106,8 @@ public class OBEBlockRenderer {
 
         SignBlock block = (SignBlock) state.getBlock();
 
-        ModelLayerLocation layerLocation = ResourceUtil.getHangingSignLayerLocation(state, HangingSignRenderer.AttachmentType.byBlockState(state));
-
         WoodType woodType = ((SignBlock) state.getBlock()).type();
+        ModelLayerLocation layerLocation = ResourceUtil.getHangingSignLayerLocation(state, HangingSignRenderer.AttachmentType.byBlockState(state), woodType);
 
         OBEHangingSignRenderer.translateBase(poseStack, -block.getYRotationDegrees(state));
 
@@ -185,7 +186,7 @@ public class OBEBlockRenderer {
         
         ModelLayerLocation layerLocation = ResourceUtil.getBellLayerLocation(state);
 
-        BlockStateModel model = ResourceUtil.getModel(layerLocation, OBEBellRenderer.BELL_TEXTURE.texture(), state, poseStack, SettingsManager.BELL_AMBIENT_OCCLUSION.getValue());
+        BlockStateModel model = ResourceUtil.getModel(layerLocation, OBEBellRenderer.BELL_RESOURCE_LOCATION.texture(), state, poseStack, SettingsManager.BELL_AMBIENT_OCCLUSION.getValue());
         model = new CompositeBlockStateModel(model, Minecraft.getInstance().getModelManager().getBlockModelShaper().getBlockModel(state));
         ResourceUtil.cache(layerLocation, state, model);
         return model;
@@ -234,7 +235,7 @@ public class OBEBlockRenderer {
 
         poseStack.mulPose(Axis.ZP.rotationDegrees(180.0F));
 
-        Identifier identifier = CopperGolemOxidationLevels.getOxidationLevel(oxydationLevel).texture();
+        ResourceLocation identifier = CopperGolemOxidationLevels.getOxidationLevel(oxydationLevel).texture();
 
         return ResourceUtil.getModel(layerLocation, MaterialResolver.entityTextureFormatter(identifier), state, poseStack, SettingsManager.COPPER_GOLEM_AMBIENT_OCCLUSION.getValue());
     }

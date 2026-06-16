@@ -23,7 +23,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.HangingSignRenderer;
 import net.minecraft.client.renderer.blockentity.HangingSignRenderer.AttachmentType;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.resources.model.MaterialSet;
@@ -33,14 +33,6 @@ import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.phys.Vec3;
 
 public class OBEHangingSignRenderer extends OBEAbstractSignRenderer {
-   private static final String PLANK = "plank";
-   private static final String V_CHAINS = "vChains";
-   private static final String NORMAL_CHAINS = "normalChains";
-   private static final String CHAIN_L_1 = "chainL1";
-   private static final String CHAIN_L_2 = "chainL2";
-   private static final String CHAIN_R_1 = "chainR1";
-   private static final String CHAIN_R_2 = "chainR2";
-   private static final String BOARD = "board";
    public static final float MODEL_RENDER_SCALE = 1.0F;
    private static final float TEXT_RENDER_SCALE = 0.9F;
    private static final Vec3 TEXT_OFFSET = new Vec3((double)0.0F, (double)-0.32F, (double)0.073F);
@@ -53,7 +45,7 @@ public class OBEHangingSignRenderer extends OBEAbstractSignRenderer {
    }
 
    public static Model.Simple createSignModel(EntityModelSet entityModelSet, WoodType woodType, AttachmentType attachmentType) {
-      return new Model.Simple(entityModelSet.bakeLayer(ModelLayers.createHangingSignModelName(woodType, attachmentType)), RenderTypes::entityCutoutNoCull);
+      return new Model.Simple(entityModelSet.bakeLayer(ModelLayers.createHangingSignModelName(woodType, attachmentType)), RenderType::entityCutoutNoCull);
    }
 
    public float getSignModelRenderScale() {
