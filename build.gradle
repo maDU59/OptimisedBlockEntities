@@ -39,12 +39,12 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
 	modImplementation ("com.terraformersmc:modmenu:${project.modmenu_version}")
-	modCompileOnly("maven.modrinth:sodium:mc1.21.3-0.6.1-fabric")
+	modImplementation("maven.modrinth:sodium:mc1.21.3-0.6.1-fabric")
 
 	modImplementation("org.antlr:antlr4-runtime:4.13.1")
     modImplementation("io.github.douira:glsl-transformer:2.0.1")
     modImplementation("org.anarres:jcpp:1.4.14")
-	modCompileOnly "maven.modrinth:iris:1.8.1+1.21.3-fabric"
+	modImplementation "maven.modrinth:iris:1.8.1+1.21.3-fabric"
 	
 }
 

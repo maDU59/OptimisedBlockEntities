@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -28,7 +29,7 @@ public class RenderModeManager {
     }
 
     public static boolean hasBlockEntity(Block block){
-        return block instanceof BaseEntityBlock;
+        return block instanceof EntityBlock;
     }
 
     public static void setRenderMode(BlockEntity be, RenderMode mode, BlockPos pos){

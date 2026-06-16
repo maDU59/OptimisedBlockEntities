@@ -20,6 +20,7 @@
 		"renderer.ItemBlockRenderTypesMixin",
 		"renderer.compat.sodium.BlockRendererMixin",
 		"renderer.compat.sodium.SodiumWorldRendererMixin",
+		"renderer.compat.sodium.ChunkBuilderMeshingTaskMixin",
 		"core.ReloadableResourceManagerMixin",
 		"BlockStateModelSetMixin"
 	],
