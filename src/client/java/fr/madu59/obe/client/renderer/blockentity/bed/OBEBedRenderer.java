@@ -1,7 +1,5 @@
 package fr.madu59.obe.client.renderer.blockentity.bed;
 
-import org.jetbrains.annotations.Nullable;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import fr.madu59.obe.client.config.SettingsManager;

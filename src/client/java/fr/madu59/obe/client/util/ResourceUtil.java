@@ -1,6 +1,5 @@
 package fr.madu59.obe.client.util;
 
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -11,10 +10,8 @@ import fr.madu59.obe.client.model.BlockEntityStateModel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelLayers;
-import net.minecraft.client.renderer.blockentity.HangingSignRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.SkullBlock;
@@ -41,8 +38,8 @@ public class ResourceUtil{
         }
     }
 
-    public static ModelLayerLocation getHangingSignLayerLocation(BlockState state, HangingSignRenderer.AttachmentType attachment, WoodType woodType){
-        return ModelLayers.createHangingSignModelName(woodType, attachment);
+    public static ModelLayerLocation getHangingSignLayerLocation(BlockState state, WoodType woodType){
+        return ModelLayers.createHangingSignModelName(woodType);
     }
 
     public static ModelLayerLocation getSkullBlockLayerLocation(BlockState state, SkullBlock.Type type){
@@ -77,8 +74,8 @@ public class ResourceUtil{
         return ModelLayers.BELL;
     }
 
-    public static ModelLayerLocation getBannerLayerLocation(BlockState state, boolean isWall){
-        return isWall? ModelLayers.WALL_BANNER : ModelLayers.STANDING_BANNER;
+    public static ModelLayerLocation getBannerLayerLocation(BlockState state){
+        return ModelLayers.BANNER;
     }
 
     public static ModelLayerLocation getShulkerBoxLayerLocation(BlockState state){
@@ -98,15 +95,15 @@ public class ResourceUtil{
     }
 
     public static BakedModel getModel(ModelLayerLocation modelLayerLocation, ResourceLocation texture, boolean useAo){
-        return modelCache.computeIfAbsent(modelLayerLocation, layer -> new BlockEntityStateModel(modelLayerLocation, texture, useAo));
+        return modelCache.computeIfAbsent(modelLayerLocation, layer -> new BlockEntityStateModel(modelLayerLocation, texture, useAo, null));
     }
 
     public static BakedModel getModel(ModelLayerLocation modelLayerLocation, ResourceLocation texture, BlockState blockState, PoseStack poseStack, boolean useAo){
-        return transformedModelCache.computeIfAbsent(blockState, layer -> new BlockEntityStateModel(modelLayerLocation, texture, poseStack, useAo));
+        return transformedModelCache.computeIfAbsent(blockState, layer -> new BlockEntityStateModel(modelLayerLocation, texture, poseStack, useAo, blockState));
     }
 
     public static BakedModel getSubModel(ModelLayerLocation modelLayerLocation, ResourceLocation texture, BlockState blockState, PoseStack poseStack, boolean useAo){
-        return transformedSubModelCache.computeIfAbsent(new ModelCacheKey(modelLayerLocation, blockState), layer -> new BlockEntityStateModel(modelLayerLocation, texture, poseStack, useAo));
+        return transformedSubModelCache.computeIfAbsent(new ModelCacheKey(modelLayerLocation, blockState), layer -> new BlockEntityStateModel(modelLayerLocation, texture, poseStack, useAo, blockState));
     }
 
     public static BakedModel getModel(BlockState state){

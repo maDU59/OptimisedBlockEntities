@@ -25,7 +25,7 @@ public class BlockRendererMixin {
 
     @ModifyVariable(method = "renderModel", at = @At("HEAD"), argsOnly = true)
     public BakedModel renderModel(BakedModel model, BakedModel originalModel, BlockState state, BlockPos pos, BlockPos origin) {
-        if(state.hasBlockEntity()){
+        if(RenderModeManager.hasBlockEntity(state)){
             BlockEntity be = Minecraft.getInstance().level.getBlockEntity(pos);
             BlockEntityExt ext = (BlockEntityExt) be;
             if(ext != null) {

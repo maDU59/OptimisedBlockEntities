@@ -1,5 +1,7 @@
 package fr.madu59.obe.client.renderer;
 
+import java.util.Calendar;
+
 import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -11,14 +13,12 @@ import fr.madu59.obe.client.model.MaterialResolver;
 import fr.madu59.obe.client.renderer.blockentity.bell.OBEBellRenderer;
 import fr.madu59.obe.client.renderer.blockentity.chest.OBEChestRenderer;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
+import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager;
 import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager.RenderMode;
-import fr.madu59.obe.client.renderer.blockentity.sign.OBEHangingSignRenderer;
-import fr.madu59.obe.client.renderer.blockentity.sign.OBEStandingSignRenderer;
 import fr.madu59.obe.client.util.ResourceUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.Sheets;
-import net.minecraft.client.renderer.blockentity.HangingSignRenderer;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.core.BlockPos;
@@ -29,11 +29,14 @@ import net.minecraft.world.level.block.AbstractSkullBlock;
 import net.minecraft.world.level.block.BannerBlock;
 import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.CeilingHangingSignBlock;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.ShulkerBoxBlock;
 import net.minecraft.world.level.block.SignBlock;
 import net.minecraft.world.level.block.SkullBlock;
+import net.minecraft.world.level.block.StandingSignBlock;
 import net.minecraft.world.level.block.WallBannerBlock;
+import net.minecraft.world.level.block.WallHangingSignBlock;
 import net.minecraft.world.level.block.WallSignBlock;
 import net.minecraft.world.level.block.WallSkullBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -48,12 +51,13 @@ import net.minecraft.client.resources.model.BakedModel;
 
 public class OBEBlockRenderer {
 
-    private static final boolean xmasTexture = OBEChestRenderer.xmasTextures();
+    private static final Calendar calendar = Calendar.getInstance();
+    private static final boolean xmasTexture = calendar.get(2) + 1 == 12 && calendar.get(5) >= 24 && calendar.get(5) <= 26;
 
     public OBEBlockRenderer(){}
 
     public @Nullable BakedModel getModel(BlockState state, BlockPos pos, long seed){
-        if (!state.hasBlockEntity()) return null;
+        if (!RenderModeManager.hasBlockEntity(state)) return null;
 
         BlockEntity be = Minecraft.getInstance().level.getBlockEntity(pos);
         if (be == null) return null;
@@ -81,8 +85,9 @@ public class OBEBlockRenderer {
         WoodType woodType = SignBlock.getWoodType(state.getBlock());
         final ModelLayerLocation layerLocation = ResourceUtil.getSignLayerLocation(state, isWallSign, woodType);
 
-        OBEStandingSignRenderer.translateBase(poseStack, -block.getYRotationDegrees(state));
-        if (isWallSign) {
+        poseStack.translate(0.5F, 0.75F * 0.6666667F, 0.5F);
+        poseStack.mulPose(Axis.YP.rotationDegrees(-block.getYRotationDegrees(state)));
+        if (!(block instanceof StandingSignBlock)) {
             poseStack.translate(0.0F, -0.3125F, -0.4375F);
         }
 
@@ -101,14 +106,20 @@ public class OBEBlockRenderer {
         SignBlock block = (SignBlock) state.getBlock();
 
         WoodType woodType = ((SignBlock) state.getBlock()).type();
-        ModelLayerLocation layerLocation = ResourceUtil.getHangingSignLayerLocation(state, HangingSignRenderer.AttachmentType.byBlockState(state), woodType);
+        ModelLayerLocation layerLocation = ResourceUtil.getHangingSignLayerLocation(state, woodType);
 
-        OBEHangingSignRenderer.translateBase(poseStack, -block.getYRotationDegrees(state));
+        poseStack.translate((double)0.5F, (double)0.9375F, (double)0.5F);
+        poseStack.mulPose(Axis.YP.rotationDegrees(-block.getYRotationDegrees(state)));
+        poseStack.translate(0.0F, -0.3125F, 0.0F);
 
         float f = 1f;
         poseStack.scale(f, -f, -f);
 
-        return ResourceUtil.getModel(layerLocation, Sheets.getHangingSignMaterial(woodType).texture(), state, poseStack, SettingsManager.SIGN_AMBIENT_OCCLUSION.getValue());
+        BakedModel model = ResourceUtil.getModel(layerLocation, Sheets.getHangingSignMaterial(woodType).texture(), state, poseStack, SettingsManager.SIGN_AMBIENT_OCCLUSION.getValue());
+
+        ResourceUtil.cache(layerLocation, state, model);
+
+        return model;
     }
 
     public BakedModel getSkullBlockModel(BlockState state, RandomSource random) {
@@ -151,7 +162,7 @@ public class OBEBlockRenderer {
         poseStack.mulPose(Axis.ZP.rotationDegrees(180.0F + facing.toYRot()));
         poseStack.translate(-0.5F, -0.5F, -0.5F);
 
-        return ResourceUtil.getModel(layerLocation, Sheets.getBedMaterial(block.getColor()).texture(), state, poseStack, SettingsManager.BED_AMBIENT_OCCLUSION.getValue());
+        return ResourceUtil.getModel(layerLocation, Sheets.BED_TEXTURES[block.getColor().getId()].texture(), state, poseStack, SettingsManager.BED_AMBIENT_OCCLUSION.getValue());
     }
 
     public BakedModel getChestModel(BlockState state, RandomSource random) {
@@ -194,17 +205,20 @@ public class OBEBlockRenderer {
         Block block = state.getBlock();
         boolean isWall = block instanceof WallBannerBlock;
         
-        ModelLayerLocation layerLocation = ResourceUtil.getBannerLayerLocation(state, isWall);
+        ModelLayerLocation layerLocation = ResourceUtil.getBannerLayerLocation(state);
 
-        float angle;
+        poseStack.pushPose();
         if (!isWall) {
-            angle = -RotationSegment.convertToDegrees(state.getValue(BannerBlock.ROTATION));
+            float angle = -RotationSegment.convertToDegrees(state.getValue(BannerBlock.ROTATION));
+            poseStack.translate(0.5F, 0.5F, 0.5F);
+            poseStack.mulPose(Axis.YP.rotationDegrees(angle));
         } else {
-            angle = -(state.getValue(WallBannerBlock.FACING)).toYRot();
+            float angle = -(state.getValue(WallBannerBlock.FACING)).toYRot();
+            poseStack.translate(0.5F, -0.16666667F, 0.5F);
+            poseStack.mulPose(Axis.YP.rotationDegrees(angle));
+            poseStack.translate(0.0F, -0.3125F, -0.4375F);
         }
         poseStack.pushPose();
-        poseStack.translate(0.5F, 0.0F, 0.5F);
-        poseStack.mulPose(Axis.YP.rotationDegrees(angle));
         poseStack.scale(0.6666667F, -0.6666667F, -0.6666667F);
 
         return ResourceUtil.getModel(layerLocation, MaterialResolver.entityTextureFormatter(ModelBakery.BANNER_BASE.texture()), state, poseStack, SettingsManager.BANNER_AMBIENT_OCCLUSION.getValue());
@@ -231,7 +245,7 @@ public class OBEBlockRenderer {
         if (color == null) {
             sprite = Sheets.DEFAULT_SHULKER_TEXTURE_LOCATION;
         } else {
-            sprite = Sheets.getShulkerBoxMaterial(color);
+            sprite = (Material)Sheets.SHULKER_TEXTURE_LOCATION.get(block.getColor().getId());
         }
 
         return ResourceUtil.getModel(layerLocation, sprite.texture(), state, poseStack, SettingsManager.SHULKER_BOX_AMBIENT_OCCLUSION.getValue());

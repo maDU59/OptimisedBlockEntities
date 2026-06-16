@@ -40,13 +40,16 @@ public class SectionCompilerMixin {
 
     @Redirect(method = "compile", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getRenderShape()Lnet/minecraft/world/level/block/RenderShape;"))
     private RenderShape obe$getRenderShape(BlockState state){
-        if(state.hasBlockEntity()){
+        if(RenderModeManager.hasBlockEntity(state)){
             BlockEntity be = obe$region.get().getBlockEntity(obe$pos.get());
             BlockEntityExt ext = (BlockEntityExt) be;
             if(ext != null) {
                 RenderModeManager.updateBlockEntity(ext, be);
                 if(ext.isSupportedBlockEntity() && !ext.hasSpecialRenderer() && ext.renderMode() != RenderMode.TERRAIN){
                     return RenderShape.INVISIBLE;
+                }
+                if(ext.isSupportedBlockEntity() && ext.renderMode() == RenderMode.TERRAIN){
+                    return RenderShape.MODEL;
                 }
             }
         }

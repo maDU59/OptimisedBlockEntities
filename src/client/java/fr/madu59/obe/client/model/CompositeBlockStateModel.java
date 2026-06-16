@@ -52,4 +52,9 @@ public class CompositeBlockStateModel implements BakedModel {
     public boolean usesBlockLight() {
         return firstModel.usesBlockLight();
     }
+
+    @Override
+    public boolean isCustomRenderer() {
+        return firstModel.isCustomRenderer();
+    }
 }

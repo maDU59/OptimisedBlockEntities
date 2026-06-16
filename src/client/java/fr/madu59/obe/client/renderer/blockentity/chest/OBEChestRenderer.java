@@ -14,7 +14,6 @@ import net.minecraft.world.level.block.TrappedChestBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.LidBlockEntity;
 import net.minecraft.world.level.block.state.properties.ChestType;
-import net.minecraft.world.phys.Vec3;
 
 public class OBEChestRenderer<T extends BlockEntity & LidBlockEntity> extends ChestRenderer<T> {
 

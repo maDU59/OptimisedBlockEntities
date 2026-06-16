@@ -12,7 +12,7 @@ import fr.madu59.obe.client.renderer.blockentity.chest.OBEChestRenderer;
 import fr.madu59.obe.client.renderer.blockentity.decoratedpot.OBEDecoratedPotRenderer;
 import fr.madu59.obe.client.renderer.blockentity.shulkerbox.OBEShulkerBoxRenderer;
 import fr.madu59.obe.client.renderer.blockentity.sign.OBEHangingSignRenderer;
-import fr.madu59.obe.client.renderer.blockentity.sign.OBEStandingSignRenderer;
+import fr.madu59.obe.client.renderer.blockentity.sign.OBESignRenderer;
 import fr.madu59.obe.client.renderer.blockentity.skull.OBESkullBlockRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
@@ -29,7 +29,7 @@ public abstract class BlockEntityRenderersMixin {
     ) {
         if (type == BlockEntityType.SIGN) {
             OBEClient.debug("Replaced sign block entity renderer");
-            renderer = (BlockEntityRendererProvider) (ctx) -> new OBEStandingSignRenderer(ctx);
+            renderer = (BlockEntityRendererProvider) (ctx) -> new OBESignRenderer(ctx);
         }
         else if (type == BlockEntityType.HANGING_SIGN) {
             OBEClient.debug("Replaced hanging sign block entity renderer");

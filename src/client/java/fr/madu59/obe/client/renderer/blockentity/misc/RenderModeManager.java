@@ -4,6 +4,8 @@ import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -19,6 +21,14 @@ public class RenderModeManager {
             return false;
         }
         return ext.renderMode() == RenderMode.TERRAIN;
+    }
+
+    public static boolean hasBlockEntity(BlockState state){
+        return hasBlockEntity(state.getBlock());
+    }
+
+    public static boolean hasBlockEntity(Block block){
+        return block instanceof BaseEntityBlock;
     }
 
     public static void setRenderMode(BlockEntity be, RenderMode mode, BlockPos pos){

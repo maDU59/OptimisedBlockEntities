@@ -1,18 +1,18 @@
 package fr.madu59.obe.client.renderer.blockentity.banner;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 
 import fr.madu59.obe.client.config.SettingsManager;
 import net.minecraft.client.model.geom.EntityModelSet;
-import net.minecraft.client.model.BannerFlagModel;
-import net.minecraft.client.model.BannerModel;
 import net.minecraft.client.renderer.blockentity.BannerRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.BannerBlock;
 import net.minecraft.world.level.block.WallBannerBlock;
@@ -32,34 +32,41 @@ public class OBEBannerRenderer extends BannerRenderer{
 
     @Override
     public void render(BannerBlockEntity bannerBlockEntity, float f, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j) {
-        BlockState blockState = bannerBlockEntity.getBlockState();
-        BannerModel bannerModel;
-        BannerFlagModel bannerFlagModel;
-        float g;
-        if (blockState.getBlock() instanceof BannerBlock) {
-            g = -RotationSegment.convertToDegrees(blockState.getValue(BannerBlock.ROTATION));
-            bannerModel = this.standingModel;
-            bannerFlagModel = this.standingFlagModel;
+        float g = 0.6666667F;
+        boolean bl = bannerBlockEntity.getLevel() == null;
+        poseStack.pushPose();
+        long l;
+        if (bl) {
+            l = 0L;
+            poseStack.translate(0.5F, 0.5F, 0.5F);
+            this.pole.visible = true;
         } else {
-            g = -(blockState.getValue(WallBannerBlock.FACING)).toYRot();
-            bannerModel = this.wallModel;
-            bannerFlagModel = this.wallFlagModel;
+            l = bannerBlockEntity.getLevel().getGameTime();
+            BlockState blockState = bannerBlockEntity.getBlockState();
+            if (blockState.getBlock() instanceof BannerBlock) {
+                poseStack.translate(0.5F, 0.5F, 0.5F);
+                float h = -RotationSegment.convertToDegrees((Integer)blockState.getValue(BannerBlock.ROTATION));
+                poseStack.mulPose(Axis.YP.rotationDegrees(h));
+                this.pole.visible = true;
+            } else {
+                poseStack.translate(0.5F, -0.16666667F, 0.5F);
+                float h = -(blockState.getValue(WallBannerBlock.FACING)).toYRot();
+                poseStack.mulPose(Axis.YP.rotationDegrees(h));
+                poseStack.translate(0.0F, -0.3125F, -0.4375F);
+                this.pole.visible = false;
+            }
         }
 
-        long l = bannerBlockEntity.getLevel().getGameTime();
-        BlockPos blockPos = bannerBlockEntity.getBlockPos();
-        float h = ((float)Math.floorMod((long)(blockPos.getX() * 7 + blockPos.getY() * 9 + blockPos.getZ() * 13) + l, 100L) + f) / 100.0F;
-        OBEBannerRenderer.renderBanner(poseStack, multiBufferSource, i, j, g, bannerModel, bannerFlagModel, h, bannerBlockEntity.getBaseColor(), bannerBlockEntity.getPatterns());
-    }
-
-    private static void renderBanner(PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j, float f, BannerModel bannerModel, BannerFlagModel bannerFlagModel, float g, DyeColor dyeColor, BannerPatternLayers bannerPatternLayers) {
         poseStack.pushPose();
-        poseStack.translate(0.5F, 0.0F, 0.5F);
-        poseStack.mulPose(Axis.YP.rotationDegrees(f));
         poseStack.scale(0.6666667F, -0.6666667F, -0.6666667F);
-        if(!SettingsManager.OPTIMISED_BANNERS.getValue()) bannerModel.renderToBuffer(poseStack, ModelBakery.BANNER_BASE.buffer(multiBufferSource, RenderType::entitySolid), i, j);
-        bannerFlagModel.setupAnim(g);
-        renderPatterns(poseStack, multiBufferSource, i, j, bannerFlagModel.root(), ModelBakery.BANNER_BASE, true, dyeColor, bannerPatternLayers);
+        VertexConsumer vertexConsumer = ModelBakery.BANNER_BASE.buffer(multiBufferSource, RenderType::entitySolid);
+        if(!SettingsManager.OPTIMISED_BANNERS.getValue()) this.pole.render(poseStack, vertexConsumer, i, j);
+        if(!SettingsManager.OPTIMISED_BANNERS.getValue()) this.bar.render(poseStack, vertexConsumer, i, j);
+        BlockPos blockPos = bannerBlockEntity.getBlockPos();
+        float k = ((float)Math.floorMod((long)(blockPos.getX() * 7 + blockPos.getY() * 9 + blockPos.getZ() * 13) + l, 100L) + f) / 100.0F;
+        this.flag.xRot = (-0.0125F + 0.01F * Mth.cos(((float)Math.PI * 2F) * k)) * (float)Math.PI;
+        renderPatterns(poseStack, multiBufferSource, i, j, this.flag, ModelBakery.BANNER_BASE, true, bannerBlockEntity.getBaseColor(), bannerBlockEntity.getPatterns());
+        poseStack.popPose();
         poseStack.popPose();
     }
 }

@@ -14,8 +14,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font.DisplayMode;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.blockentity.AbstractSignRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.level.block.SignBlock;
@@ -29,9 +29,9 @@ import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
-public abstract class OBEAbstractSignRenderer extends AbstractSignRenderer {
+public class OBESignRenderer extends SignRenderer {
 
-    public OBEAbstractSignRenderer(final BlockEntityRendererProvider.Context context) {
+    public OBESignRenderer(final BlockEntityRendererProvider.Context context) {
         super(context);
     }
 

@@ -20,6 +20,10 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.block.BannerBlock;
+import net.minecraft.world.level.block.CeilingHangingSignBlock;
+import net.minecraft.world.level.block.WallBannerBlock;
+import net.minecraft.world.level.block.WallHangingSignBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.SimpleBakedModel;
@@ -28,21 +32,25 @@ public class BlockEntityStateModel implements BakedModel{
     private final List<SimpleBakedModel> models = new ArrayList<>();
     private final Map<String, BakedModel> partsMap = new HashMap<>();
     private final TextureAtlasSprite particleMaterial;
-    private boolean useAo = true;
+    private final boolean useAo;
+    private final BlockState state;
 
-    public BlockEntityStateModel(ModelLayerLocation modelLayerLocation, ResourceLocation texture, boolean useAo){
-        this(modelLayerLocation, texture, new PoseStack(), useAo);
+    public BlockEntityStateModel(ModelLayerLocation modelLayerLocation, ResourceLocation texture, boolean useAo, BlockState state){
+        this(modelLayerLocation, texture, new PoseStack(), useAo, state);
     }
 
-    public BlockEntityStateModel(ModelLayerLocation modelLayerLocation, ResourceLocation texture, PoseStack poseStack, boolean useAo){
+    public BlockEntityStateModel(ModelLayerLocation modelLayerLocation, ResourceLocation texture, PoseStack poseStack, boolean useAo, BlockState state){
         TextureAtlasSprite sprite = ResourceUtil.getSprite(texture);
         particleMaterial = ResourceUtil.getBakedMaterial(sprite);
         this.useAo = useAo;
+        this.state = state;
         generateModel(modelLayerLocation, sprite, poseStack, useAo);
     }
 
     public BlockEntityStateModel(){
-        particleMaterial = null;
+        this.particleMaterial = null;
+        this.state = null;
+        this.useAo = false;
     }
 
     public BakedModel getPart(String name){
@@ -53,13 +61,32 @@ public class BlockEntityStateModel implements BakedModel{
         ModelPart root = Minecraft.getInstance().getEntityModels().bakeLayer(modelLayerLocation);
         Map<String, ModelPart> children = root.children;
         children.forEach((key, part) -> {
-            List<BakedQuad> bakedQuadsList = getBakedQuads(part, poseStack, sprite, shouldFixBFC(key));
+            if(shouldAddModelPart(key, state)){
+                List<BakedQuad> bakedQuadsList = getBakedQuads(part, poseStack, sprite, shouldFixBFC(key));
 
-            Map<Direction, List<BakedQuad>> dirs = new HashMap<>();
-            SimpleBakedModel bakedModel = new SimpleBakedModel(bakedQuadsList, dirs, true, useAo, false, particleMaterial, null);
+                Map<Direction, List<BakedQuad>> dirs = new HashMap<>();
+                SimpleBakedModel bakedModel = new SimpleBakedModel(bakedQuadsList, dirs, true, useAo, false, particleMaterial, null);
 
-            addModelPart(key, bakedModel);
+                addModelPart(key, bakedModel);
+            }
         });
+    }
+
+    private boolean shouldAddModelPart(String key, BlockState state){
+        if(state == null) return true;
+        else if(state.getBlock() instanceof WallHangingSignBlock){
+            return key != "vChains";
+        }
+        else if(state.getBlock() instanceof CeilingHangingSignBlock){
+            return key != "normalChains";
+        }
+        else if(state.getBlock() instanceof WallBannerBlock){
+            return key != "pole" && key != "flag";
+        }
+        else if(state.getBlock() instanceof BannerBlock){
+            return key != "flag";
+        }
+        return true;
     }
 
     private List<BakedQuad> getBakedQuads(ModelPart part, PoseStack poseStack, TextureAtlasSprite sprite, boolean fixBfc){
@@ -179,6 +206,11 @@ public class BlockEntityStateModel implements BakedModel{
 
     @Override
     public boolean usesBlockLight() {
+        return true;
+    }
+
+    @Override
+    public boolean isCustomRenderer() {
         return true;
     }
 }

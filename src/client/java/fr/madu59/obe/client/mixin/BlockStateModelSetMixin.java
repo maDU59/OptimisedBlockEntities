@@ -6,6 +6,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import fr.madu59.obe.client.renderer.OBEBlockRenderer;
+import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager;
 
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -34,7 +35,7 @@ public class BlockStateModelSetMixin {
 
     @Inject(method = "getBlockModel", at = @At("HEAD"), cancellable = true)
     public void obe$getBlockStateModel(BlockState state, CallbackInfoReturnable<BakedModel> cir){
-        if (!state.hasBlockEntity()) return;
+        if (!RenderModeManager.hasBlockEntity(state)) return;
 
         Block block = state.getBlock();
         random.setSeed(42);

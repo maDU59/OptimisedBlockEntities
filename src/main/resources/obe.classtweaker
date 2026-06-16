@@ -8,13 +8,15 @@ accessible field net/minecraft/client/renderer/blockentity/SkullBlockRenderer SK
 accessible field net/minecraft/world/level/block/entity/SkullBlockEntity isAnimating Z
 
 # Sign rendering
-accessible field net/minecraft/client/renderer/blockentity/AbstractSignRenderer font Lnet/minecraft/client/gui/Font;
-extendable method net/minecraft/client/renderer/blockentity/AbstractSignRenderer renderSignWithText (Lnet/minecraft/world/level/block/entity/SignBlockEntity;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;IILnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/block/SignBlock;Lnet/minecraft/world/level/block/state/properties/WoodType;Lnet/minecraft/client/model/Model;)V
-accessible method net/minecraft/client/renderer/blockentity/AbstractSignRenderer isOutlineVisible (Lnet/minecraft/core/BlockPos;I)Z
-accessible method net/minecraft/client/renderer/blockentity/AbstractSignRenderer translateSignText (Lcom/mojang/blaze3d/vertex/PoseStack;ZLnet/minecraft/world/phys/Vec3;)V
+accessible field net/minecraft/client/renderer/blockentity/SignRenderer font Lnet/minecraft/client/gui/Font;
+extendable method net/minecraft/client/renderer/blockentity/SignRenderer renderSignWithText (Lnet/minecraft/world/level/block/entity/SignBlockEntity;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;IILnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/block/SignBlock;Lnet/minecraft/world/level/block/state/properties/WoodType;Lnet/minecraft/client/model/Model;)V
+accessible method net/minecraft/client/renderer/blockentity/SignRenderer isOutlineVisible (Lnet/minecraft/core/BlockPos;I)Z
+accessible method net/minecraft/client/renderer/blockentity/SignRenderer translateSignText (Lcom/mojang/blaze3d/vertex/PoseStack;ZLnet/minecraft/world/phys/Vec3;)V
+accessible method net/minecraft/client/renderer/blockentity/SignRenderer translateSign (Lcom/mojang/blaze3d/vertex/PoseStack;FLnet/minecraft/world/level/block/state/BlockState;)V
+accessible method net/minecraft/client/renderer/blockentity/SignRenderer getTextOffset ()Lnet/minecraft/world/phys/Vec3;
+accessible method net/minecraft/client/renderer/blockentity/SignRenderer renderSign (Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;IILnet/minecraft/world/level/block/state/properties/WoodType;Lnet/minecraft/client/model/Model;)V
 
 # Banner rendering
-accessible field net/minecraft/client/renderer/blockentity/BannerRenderer standingFlagModel Lnet/minecraft/client/model/BannerFlagModel;
-accessible field net/minecraft/client/renderer/blockentity/BannerRenderer standingModel Lnet/minecraft/client/model/BannerModel;
-accessible field net/minecraft/client/renderer/blockentity/BannerRenderer wallFlagModel Lnet/minecraft/client/model/BannerFlagModel;
-accessible field net/minecraft/client/renderer/blockentity/BannerRenderer wallModel Lnet/minecraft/client/model/BannerModel;
+accessible field net/minecraft/client/renderer/blockentity/BannerRenderer flag Lnet/minecraft/client/model/geom/ModelPart;
+accessible field net/minecraft/client/renderer/blockentity/BannerRenderer pole Lnet/minecraft/client/model/geom/ModelPart;
+accessible field net/minecraft/client/renderer/blockentity/BannerRenderer bar Lnet/minecraft/client/model/geom/ModelPart;
