@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.BlockEntityTypes;
 import net.minecraft.world.level.block.entity.CopperGolemStatueBlockEntity;
 
 @Mixin(CopperGolemStatueBlockEntity.class)
@@ -18,6 +18,6 @@ public class CopperGolemStatueBlockEntityMixin{
         BlockEntity be = (BlockEntity)(Object)this;
         BlockEntityExt ext = (BlockEntityExt)be;
         
-        ext.isSupportedBlockEntity(be.getType() == BlockEntityType.COPPER_GOLEM_STATUE);
+        ext.isSupportedBlockEntity(be.getType() == BlockEntityTypes.COPPER_GOLEM_STATUE);
     }
 }

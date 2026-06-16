@@ -6,12 +6,12 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager;
-import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.chunk.SectionMesh;
+import net.minecraft.client.renderer.extract.LevelExtractor;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import java.util.List;
 
-@Mixin(LevelRenderer.class)
+@Mixin(LevelExtractor.class)
 public class LevelRendererMixin {
 
     @Redirect(

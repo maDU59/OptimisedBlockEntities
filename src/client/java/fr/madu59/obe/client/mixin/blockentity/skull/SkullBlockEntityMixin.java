@@ -10,7 +10,7 @@ import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager;
 import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager.RenderMode;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.BlockEntityTypes;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -23,7 +23,7 @@ public class SkullBlockEntityMixin{
         BlockEntityExt ext = (BlockEntityExt)be;
         
         if(be.getOwnerProfile() != null) ext.renderMode(RenderMode.ENTITY);
-        ext.isSupportedBlockEntity(be.getType() == BlockEntityType.SKULL);
+        ext.isSupportedBlockEntity(be.getType() == BlockEntityTypes.SKULL);
     }
 
     @Inject(method = "animation", at = @At("TAIL"))

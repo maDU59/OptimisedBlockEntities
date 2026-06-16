@@ -19,34 +19,17 @@ import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.data.AtlasIds;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.CopperGolemStatueBlock;
 import net.minecraft.world.level.block.SkullBlock;
-import net.minecraft.world.level.block.HangingSignBlock.Attachment;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BedPart;
 import net.minecraft.world.level.block.state.properties.ChestType;
-import net.minecraft.world.level.block.state.properties.WoodType;
 
 public class ResourceUtil{
 
     private static Map<ModelLayerLocation, BlockStateModel> modelCache = new ConcurrentHashMap<>();
     private static Map<BlockState, BlockStateModel> transformedModelCache = new ConcurrentHashMap<>();
     private static Map<ModelCacheKey, BlockStateModel> transformedSubModelCache = new ConcurrentHashMap<>();
-
-    public static ModelLayerLocation getSignLayerLocation(BlockState state, boolean isWallSign, WoodType woodType){
-        if (isWallSign) {
-            return ModelLayers.createWallSignModelName(woodType);
-        }
-        else{
-            return ModelLayers.createStandingSignModelName(woodType);
-        }
-    }
-
-    public static ModelLayerLocation getHangingSignLayerLocation(BlockState state, Attachment attachment, WoodType woodType){
-        return ModelLayers.createHangingSignModelName(woodType, attachment);
-    }
 
     public static ModelLayerLocation getSkullBlockLayerLocation(BlockState state, SkullBlock.Type type){
         if (type instanceof SkullBlock.Types vanillaType) {
@@ -61,11 +44,6 @@ public class ResourceUtil{
             };
         }
         else return null;
-    }
-
-    public static ModelLayerLocation getBedLayerLocation(BlockState state){
-        if(state.getValue(BedBlock.PART) == BedPart.FOOT) return ModelLayers.BED_FOOT;
-        else return ModelLayers.BED_HEAD;
     }
 
     public static ModelLayerLocation getChestLayerLocation(BlockState state){

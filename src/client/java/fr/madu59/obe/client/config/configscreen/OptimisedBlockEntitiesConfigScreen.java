@@ -25,7 +25,7 @@ public class OptimisedBlockEntitiesConfigScreen extends Screen {
             dispatcher.register(
                 literal("obeConfig")
                     .executes(context -> {
-                        Minecraft.getInstance().execute(() -> Minecraft.getInstance().setScreen(new OptimisedBlockEntitiesConfigScreen(null)));
+                        Minecraft.getInstance().execute(() -> Minecraft.getInstance().gui.setScreen(new OptimisedBlockEntitiesConfigScreen(null)));
                         return 1;
                     })
             );
@@ -74,7 +74,7 @@ public class OptimisedBlockEntitiesConfigScreen extends Screen {
         list.button(SettingsManager.COPPER_GOLEM_AMBIENT_OCCLUSION).isEnabled(() -> SettingsManager.OPTIMISED_COPPER_GOLEMS.getValue()).build();
 
         Button doneButton = Button.builder(Component.translatable("obe.config.done"), b -> {
-            this.minecraft.setScreen(this.parent);
+            this.minecraft.gui.setScreen(this.parent);
             SettingsManager.saveSettings();
         }).bounds(this.width / 2 - 50, this.height - 30, 100, 20).build();
 
@@ -84,7 +84,7 @@ public class OptimisedBlockEntitiesConfigScreen extends Screen {
 
     @Override
     public void onClose() {
-        this.minecraft.setScreen(this.parent);
+        this.minecraft.gui.setScreen(this.parent);
         SettingsManager.saveSettings();
     }
 

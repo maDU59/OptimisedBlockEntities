@@ -25,9 +25,9 @@ public class SettingsManager {
     private static Runnable emptyAction = () -> {};
     private static Runnable reloadResourcesAction = () -> {
         ResourceUtil.clearCache();
-        Minecraft.getInstance().levelRenderer.allChanged();
+        Minecraft.getInstance().levelExtractor.allChanged();
     };
-    private static Runnable reloadChunksAction = () -> Minecraft.getInstance().levelRenderer.allChanged();
+    private static Runnable reloadChunksAction = () -> Minecraft.getInstance().levelExtractor.allChanged();
 
     public static Option<Boolean> OPTIMISED_CHESTS = loadOptionWithDefaults("optimized_chest",
         "obe.config.option.optimised_chests",
@@ -148,15 +148,17 @@ public class SettingsManager {
             }
             Set<String> allEntries = new HashSet<>();
 
-            allEntries.addAll(map.keySet());
-            allEntries.addAll(loadedSettings.keySet());
-            for(String key : allEntries){
-                if(!Objects.equals(map.get(key), loadedSettings.get(key))){
-                    Runnable action = SettingsManager.ALL_OPTIONS.get(key).getRunnable();
-                    if(actions.add(action)) action.run();
+            if(map == null || loadedSettings == null){
+                allEntries.addAll(map.keySet());
+                allEntries.addAll(loadedSettings.keySet());
+                for(String key : allEntries){
+                    if(!Objects.equals(map.get(key), loadedSettings.get(key))){
+                        Runnable action = SettingsManager.ALL_OPTIONS.get(key).getRunnable();
+                        if(actions.add(action)) action.run();
+                    }
                 }
             }
-            loadedSettings = map;
+            if(map != null) loadedSettings = map;
         } catch (IOException e) {
             e.printStackTrace();
         }

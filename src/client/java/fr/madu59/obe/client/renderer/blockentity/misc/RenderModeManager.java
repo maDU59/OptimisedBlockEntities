@@ -7,8 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.entity.BlockEntityTypes;
 
 public class RenderModeManager {
 
@@ -67,36 +66,32 @@ public class RenderModeManager {
             Minecraft.getInstance().execute(() -> setDirty(pos));
             return;
         }
-        BlockState state = Minecraft.getInstance().level.getBlockState(pos);
-        Minecraft.getInstance().levelRenderer.blockChanged(Minecraft.getInstance().level, pos, state, state, 8);
+        Minecraft.getInstance().levelExtractor.blockChanged(pos, 8);
     }
 
     public static void updateBlockEntity(BlockEntityExt ext, BlockEntity be){
-        if (be.getType() == BlockEntityType.SIGN || be.getType() == BlockEntityType.HANGING_SIGN) {
+        if (be.getType() == BlockEntityTypes.SIGN || be.getType() == BlockEntityTypes.HANGING_SIGN) {
             ext.isEnabled(SettingsManager.OPTIMISED_SIGNS.getValue());
         }
-        else if (be.getType() == BlockEntityType.CHEST || be.getType() == BlockEntityType.TRAPPED_CHEST || be.getType() == BlockEntityType.ENDER_CHEST) {
+        else if (be.getType() == BlockEntityTypes.CHEST || be.getType() == BlockEntityTypes.TRAPPED_CHEST || be.getType() == BlockEntityTypes.ENDER_CHEST) {
             ext.isEnabled(SettingsManager.OPTIMISED_CHESTS.getValue());
         }
-        else if (be.getType() == BlockEntityType.BANNER) {
+        else if (be.getType() == BlockEntityTypes.BANNER) {
             ext.isEnabled(SettingsManager.OPTIMISED_BANNERS.getValue());
         }
-        else if (be.getType() == BlockEntityType.SHULKER_BOX) {
+        else if (be.getType() == BlockEntityTypes.SHULKER_BOX) {
             ext.isEnabled(SettingsManager.OPTIMISED_SHULKER_BOXES.getValue());
         }
-        else if (be.getType() == BlockEntityType.SKULL) {
+        else if (be.getType() == BlockEntityTypes.SKULL) {
             ext.isEnabled(SettingsManager.OPTIMISED_SKULLS.getValue());
         }
-        else if (be.getType() == BlockEntityType.BED) {
-            ext.isEnabled(SettingsManager.OPTIMISED_BEDS.getValue());
-        }
-        else if (be.getType() == BlockEntityType.BELL) {
+        else if (be.getType() == BlockEntityTypes.BELL) {
             ext.isEnabled(SettingsManager.OPTIMISED_BELLS.getValue());
         }
-        else if (be.getType() == BlockEntityType.DECORATED_POT) {
+        else if (be.getType() == BlockEntityTypes.DECORATED_POT) {
             ext.isEnabled(SettingsManager.OPTIMISED_DECORATED_POTS.getValue());
         }
-        else if (be.getType() == BlockEntityType.COPPER_GOLEM_STATUE) {
+        else if (be.getType() == BlockEntityTypes.COPPER_GOLEM_STATUE) {
             ext.isEnabled(SettingsManager.OPTIMISED_COPPER_GOLEMS.getValue());
         }
         if(ext.isEnabled()){

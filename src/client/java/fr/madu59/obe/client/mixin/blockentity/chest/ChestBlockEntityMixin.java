@@ -11,7 +11,7 @@ import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager.RenderMo
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.BlockEntityTypes;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -23,7 +23,7 @@ public class ChestBlockEntityMixin{
         BlockEntity be = (BlockEntity)(Object)this;
         BlockEntityExt ext = (BlockEntityExt)be;
         
-        ext.isSupportedBlockEntity(be.getType() == BlockEntityType.CHEST || be.getType() == BlockEntityType.TRAPPED_CHEST || be.getType() == BlockEntityType.ENDER_CHEST);
+        ext.isSupportedBlockEntity(be.getType() == BlockEntityTypes.CHEST || be.getType() == BlockEntityTypes.TRAPPED_CHEST || be.getType() == BlockEntityTypes.ENDER_CHEST);
     }
 
     @Inject(method = "lidAnimateTick", at = @At("HEAD"))

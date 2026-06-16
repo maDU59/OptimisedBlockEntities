@@ -28,7 +28,7 @@ public class CompositeBlockStateModel implements BlockStateModel {
     }
 
     @Override
-    public @MaterialFlags Material.Baked particleMaterial() {
+    public Material.Baked particleMaterial() {
         return firstModel.particleMaterial();
     }
 }

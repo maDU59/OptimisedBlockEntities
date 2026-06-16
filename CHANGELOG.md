@@ -1,4 +1,4 @@
 # What's new:
-- Improved performances
-- Updated license
-- Fixed some mixin targets not being fully descipted
+- Fixed crash on exiting config screen with escape key
+- Removed sign text caching
+- Ported to 26.2

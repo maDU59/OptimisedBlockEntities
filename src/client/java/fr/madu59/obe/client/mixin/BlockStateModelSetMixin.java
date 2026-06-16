@@ -15,16 +15,11 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.AbstractChestBlock;
 import net.minecraft.world.level.block.AbstractSkullBlock;
 import net.minecraft.world.level.block.BannerBlock;
-import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.CopperGolemStatueBlock;
 import net.minecraft.world.level.block.DecoratedPotBlock;
-import net.minecraft.world.level.block.HangingSignBlock;
 import net.minecraft.world.level.block.ShulkerBoxBlock;
-import net.minecraft.world.level.block.StandingSignBlock;
 import net.minecraft.world.level.block.WallBannerBlock;
-import net.minecraft.world.level.block.WallHangingSignBlock;
-import net.minecraft.world.level.block.WallSignBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 @Mixin(BlockStateModelSet.class)
@@ -40,17 +35,8 @@ public class BlockStateModelSetMixin {
         Block block = state.getBlock();
         random.setSeed(42);
 
-        if(block instanceof HangingSignBlock || block instanceof WallHangingSignBlock){
-            cir.setReturnValue(obeBlockRenderer.getHangingSignModel(state, random));
-        }
-        else if(block instanceof StandingSignBlock || block instanceof WallSignBlock){
-            cir.setReturnValue(obeBlockRenderer.getStandingSignModel(state, random));
-        }
-        else if(block instanceof AbstractSkullBlock){
+        if(block instanceof AbstractSkullBlock){
             cir.setReturnValue(obeBlockRenderer.getSkullBlockModel(state, random));
-        }
-        else if(block instanceof BedBlock){
-            cir.setReturnValue(obeBlockRenderer.getBedModel(state, random));
         }
         else if(block instanceof AbstractChestBlock){
             cir.setReturnValue(obeBlockRenderer.getChestModel(state, random));

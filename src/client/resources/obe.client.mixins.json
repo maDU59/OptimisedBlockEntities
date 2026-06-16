@@ -5,10 +5,7 @@
 	"client": [
 		"blockentity.banner.BannerBlockEntityMixin",
 		"blockentity.bell.BellBlockEntityMixin",
-		"blockentity.sign.SignBlockEntityMixin",
-		"blockentity.sign.SignRenderStateMixin",
 		"blockentity.skull.SkullBlockEntityMixin",
-		"blockentity.bed.BedBlockEntityMixin",
 		"blockentity.chest.ChestBlockEntityMixin",
 		"blockentity.chest.EnderChestBlockEntityMixin",
 		"blockentity.coppergolemstatues.CopperGolemStatueBlockEntityMixin",

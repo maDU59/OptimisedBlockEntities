@@ -11,7 +11,7 @@ import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager.RenderMo
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.BlockEntityTypes;
 import net.minecraft.world.level.block.entity.ShulkerBoxBlockEntity;
 import net.minecraft.world.level.block.entity.ShulkerBoxBlockEntity.AnimationStatus;
 import net.minecraft.world.level.block.state.BlockState;
@@ -24,7 +24,7 @@ public class ShulkerBoxBlockEntityMixin{
         BlockEntity be = (BlockEntity)(Object)this;
         BlockEntityExt ext = (BlockEntityExt)be;
         
-        ext.isSupportedBlockEntity(be.getType() == BlockEntityType.SHULKER_BOX);
+        ext.isSupportedBlockEntity(be.getType() == BlockEntityTypes.SHULKER_BOX);
     }
 
     @Inject(method = "updateAnimation", at = @At("HEAD"))

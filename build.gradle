@@ -38,8 +38,8 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
-	implementation "net.caffeinemc:sodium-fabric:0.8.12+mc26.1.2"
-	implementation "maven.modrinth:iris:1.10.9+26.1-fabric"
+	implementation "net.caffeinemc:sodium-fabric:0.9.0+mc26.2"
+	implementation "maven.modrinth:iris:1.11.0+26.2-fabric"
 	
 }
 
@@ -111,8 +111,8 @@ publishMods {
 		changelogType = "markdown"
         
 		minecraftVersionRange {
-            start = "26.1"
-            end = "26.1.2"
+            start = "26.2"
+            end = "26.2"
         }
 
         client = true
@@ -125,8 +125,8 @@ publishMods {
         accessToken = providers.environmentVariable("MODRINTH_TOKEN")
 
 		minecraftVersionRange {
-            start = "26.1"
-            end = "26.1.2"
+            start = "26.2"
+            end = "26.2"
         }
 
 		requires("fabric-api")
