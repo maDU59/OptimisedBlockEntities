@@ -1,0 +1,35 @@
+{
+    "obe.config.option.optimised_chests": "Optimize Chests",
+    "obe.config.option.chest_ao": "Chest Ambient Occlusion",
+    "obe.config.option.optimised_banners": "Optimize Banners",
+    "obe.config.option.banner_ao": "Banner Ambient Occlusion",
+    "obe.config.option.optimised_signs": "Optimize Signs",
+    "obe.config.option.sign_ao": "Sign Ambient Occlusion",
+    "obe.config.option.optimised_shulker_boxes": "Optimize Shulker Boxes",
+    "obe.config.option.shulker_box_ao": "Shulker Box Ambient Occlusion",
+    "obe.config.option.optimised_skulls": "Optimize Skulls",
+    "obe.config.option.skull_ao": "Skull Ambient Occlusion",
+    "obe.config.option.optimised_beds": "Optimize Beds",
+    "obe.config.option.bed_ao": "Bed Ambient Occlusion",
+    "obe.config.option.optimised_bells": "Optimize Bells",
+    "obe.config.option.bell_ao": "Bell Ambient Occlusion",
+    "obe.config.option.optimised_decorated_pots": "Optimize Decorated Pots",
+    "obe.config.option.decorated_pot_ao": "Decorated Pot Ambient Occlusion",
+    "obe.config.option.optimised_copper_golems": "Optimize Copper Golems",
+    "obe.config.option.copper_golem_ao": "Copper Golem Ambient Occlusion",
+
+    "obe.config.category.chests": "Chests",
+    "obe.config.category.banners": "Banners",
+    "obe.config.category.signs": "Signs",
+    "obe.config.category.shulker_boxes": "Shulker Boxes",
+    "obe.config.category.skulls": "Skulls & Player Heads",
+    "obe.config.category.beds": "Beds",
+    "obe.config.category.bells": "Bells",
+    "obe.config.category.decorated_pots": "Decorated Pots",
+    "obe.config.category.copper_golems": "Copper Golems",
+
+    "obe.config.value.true": "Enabled",
+    "obe.config.value.false": "Disabled",
+
+    "obe.config.done": "Save"
+}

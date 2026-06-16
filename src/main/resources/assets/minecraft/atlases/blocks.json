@@ -1,0 +1,19 @@
+{
+  "sources": [
+    { "type": "directory", "source": "entity/signs", "prefix": "entity/signs/" },
+    { "type": "directory", "source": "entity/chest", "prefix": "entity/chest/" },
+    { "type": "directory", "source": "entity/shulker", "prefix": "entity/shulker/" },
+    { "type": "directory", "source": "entity/bell", "prefix": "entity/bell/" },
+    { "type": "directory", "source": "entity/decorated_pot", "prefix": "entity/decorated_pot/" },
+    { "type": "directory", "source": "entity/bed", "prefix": "entity/bed/" },
+    { "type": "directory", "source": "entity/banner", "prefix": "entity/banner/" },
+    { "type": "directory", "source": "entity/copper_golem", "prefix": "entity/copper_golem/" },
+    { "type": "directory", "source": "entity/zombie", "prefix": "entity/zombie/" },
+    { "type": "directory", "source": "entity/skeleton", "prefix": "entity/skeleton/" },
+    { "type": "directory", "source": "entity/wither_skeleton", "prefix": "entity/wither_skeleton/" },
+    { "type": "directory", "source": "entity/player", "prefix": "entity/player/" },
+    { "type": "directory", "source": "entity/piglin", "prefix": "entity/piglin/" },
+    { "type": "directory", "source": "entity/creeper", "prefix": "entity/creeper/" },
+    { "type": "directory", "source": "entity/enderdragon", "prefix": "entity/enderdragon/" }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+	"required": true,
+	"package": "fr.madu59.obe.client.mixin",
+	"compatibilityLevel": "JAVA_25",
+	"client": [
+		"blockentity.banner.BannerBlockEntityMixin",
+		"blockentity.bell.BellBlockEntityMixin",
+		"blockentity.sign.SignBlockEntityMixin",
+		"blockentity.sign.SignRenderStateMixin",
+		"blockentity.skull.SkullBlockEntityMixin",
+		"blockentity.bed.BedBlockEntityMixin",
+		"blockentity.chest.ChestBlockEntityMixin",
+		"blockentity.chest.EnderChestBlockEntityMixin",
+		"blockentity.coppergolemstatues.CopperGolemStatueBlockEntityMixin",
+		"blockentity.decoratedpot.DecoratedPotBlockEntityMixin",
+		"blockentity.shulkerbox.ShulkerBoxBlockEntityMixin",
+		"blockentity.ext.BlockEntityMixin",
+		"blockentity.ext.BlockEntityRenderStateMixin",
+		"blockentity.BlockEntityRenderersMixin",
+		"renderer.SectionCompilerMixin",
+		"renderer.ModelBlockRendererMixin",
+		"renderer.LevelRendererMixin",
+		"renderer.compat.indigo.AltModelBlockRendererImplMixin",
+		"renderer.compat.sodium.BlockRendererMixin",
+		"renderer.compat.sodium.SodiumWorldRendererMixin",
+		"core.ReloadableResourceManagerMixin",
+		"BlockStateModelSetMixin"
+	],
+	"mixins": [
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"overwrites": {
+		"requireAnnotations": true
+	}
+}

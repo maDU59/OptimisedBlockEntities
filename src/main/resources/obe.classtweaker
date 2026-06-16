@@ -1,0 +1,24 @@
+classTweaker  v1  official
+
+# Model building
+accessible field net/minecraft/client/model/geom/ModelPart children Ljava/util/Map;
+
+# Model block state set accessing
+accessible field net/minecraft/client/renderer/block/BlockStateModelSet modelByState Ljava/util/Map;
+
+# Skull block rendering
+accessible field net/minecraft/client/renderer/blockentity/SkullBlockRenderer SKIN_BY_TYPE Ljava/util/Map;
+accessible field net/minecraft/world/level/block/entity/SkullBlockEntity isAnimating Z
+
+# Sign rendering
+accessible field net/minecraft/client/renderer/blockentity/AbstractSignRenderer font Lnet/minecraft/client/gui/Font;
+extendable method net/minecraft/client/renderer/blockentity/AbstractSignRenderer submitSignWithText (Lnet/minecraft/client/renderer/blockentity/state/SignRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/feature/ModelFeatureRenderer$CrumblingOverlay;Lnet/minecraft/client/renderer/SubmitNodeCollector;)V
+
+# Chest rendering
+accessible method net/minecraft/client/renderer/blockentity/ChestRenderer getChestMaterial (Lnet/minecraft/world/level/block/entity/BlockEntity;Z)Lnet/minecraft/client/renderer/blockentity/state/ChestRenderState$ChestMaterialType;
+
+# Banner rendering
+accessible method net/minecraft/client/renderer/blockentity/BannerRenderer submitBanner (Lnet/minecraft/client/resources/model/sprite/SpriteGetter;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;IILnet/minecraft/client/model/object/banner/BannerModel;Lnet/minecraft/client/model/object/banner/BannerFlagModel;FLnet/minecraft/world/item/DyeColor;Lnet/minecraft/world/level/block/entity/BannerPatternLayers;Lnet/minecraft/client/renderer/feature/ModelFeatureRenderer$CrumblingOverlay;I)V
+accessible field net/minecraft/client/renderer/blockentity/BannerRenderer sprites Lnet/minecraft/client/resources/model/sprite/SpriteGetter;
+accessible method net/minecraft/client/renderer/blockentity/BannerRenderer flagModel (Lnet/minecraft/world/level/block/BannerBlock$AttachmentType;)Lnet/minecraft/client/model/object/banner/BannerFlagModel;
+accessible method net/minecraft/client/renderer/blockentity/BannerRenderer bannerModel (Lnet/minecraft/world/level/block/BannerBlock$AttachmentType;)Lnet/minecraft/client/model/object/banner/BannerModel;

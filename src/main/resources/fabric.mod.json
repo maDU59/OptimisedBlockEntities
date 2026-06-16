@@ -1,0 +1,41 @@
+{
+	"schemaVersion": 1,
+	"id": "obe",
+	"version": "${version}",
+	"name": "Optimised block entities",
+	"description": "Makes block entities render faster",
+	"authors": [
+		"maDU59_"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "LGPL-3.0-or-later",
+	"icon": "assets/obe/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"fr.madu59.obe.OBE"
+		],
+		"client": [
+			"fr.madu59.obe.client.OBEClient"
+		],
+		"modmenu": [
+			"fr.madu59.obe.client.config.configscreen.ModMenuIntegration"
+		]
+	},
+	"mixins": [
+		{
+			"config": "obe.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"accessWidener": "obe.classtweaker",
+	"depends": {
+		"fabricloader": ">=0.19",
+		"minecraft": "~26.1.2",
+		"java": ">=25",
+		"fabric-api": "*"
+	}
+}
