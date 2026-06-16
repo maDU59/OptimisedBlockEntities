@@ -72,7 +72,6 @@ public class OBEBlockRenderer {
         BlockEntityExt ext = (BlockEntityExt)be;
         if (ext == null || !ext.isSupportedBlockEntity() || !ext.hasSpecialRenderer()) return null;
 
-        Block block = state.getBlock();
         RandomSource random = RandomSource.create(seed);
 
         if(be.getType() == BlockEntityType.BELL && ext.renderMode() == RenderMode.TERRAIN){
