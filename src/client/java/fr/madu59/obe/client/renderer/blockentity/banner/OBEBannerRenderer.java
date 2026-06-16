@@ -20,7 +20,6 @@ import net.minecraft.world.level.block.entity.BannerBlockEntity;
 import net.minecraft.world.level.block.entity.BannerPatternLayers;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RotationSegment;
-import net.minecraft.world.phys.Vec3;
 
 public class OBEBannerRenderer extends BannerRenderer{
 
@@ -31,7 +30,8 @@ public class OBEBannerRenderer extends BannerRenderer{
         entityModelSet = context.getModelSet();
     }
 
-    public void render(BannerBlockEntity bannerBlockEntity, float f, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j, Vec3 vec3) {
+    @Override
+    public void render(BannerBlockEntity bannerBlockEntity, float f, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j) {
         BlockState blockState = bannerBlockEntity.getBlockState();
         BannerModel bannerModel;
         BannerFlagModel bannerFlagModel;

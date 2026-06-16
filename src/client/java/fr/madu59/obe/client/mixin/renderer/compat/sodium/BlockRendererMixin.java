@@ -13,7 +13,7 @@ import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager;
 import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager.RenderMode;
 import net.caffeinemc.mods.sodium.client.render.chunk.compile.pipeline.BlockRenderer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.model.BlockStateModel;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -24,7 +24,7 @@ public class BlockRendererMixin {
     @Unique private final OBEBlockRenderer obeBlockRenderer = new OBEBlockRenderer();
 
     @ModifyVariable(method = "renderModel", at = @At("HEAD"), argsOnly = true)
-    public BlockStateModel renderModel(BlockStateModel model, BlockStateModel originalModel, BlockState state, BlockPos pos, BlockPos origin) {
+    public BakedModel renderModel(BakedModel model, BakedModel originalModel, BlockState state, BlockPos pos, BlockPos origin) {
         if(state.hasBlockEntity()){
             BlockEntity be = Minecraft.getInstance().level.getBlockEntity(pos);
             BlockEntityExt ext = (BlockEntityExt) be;

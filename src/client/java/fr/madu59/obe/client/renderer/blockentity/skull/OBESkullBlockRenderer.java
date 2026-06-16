@@ -7,7 +7,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.SkullBlockRenderer;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
-import net.minecraft.world.phys.Vec3;
 
 public class OBESkullBlockRenderer extends SkullBlockRenderer {
 
@@ -16,9 +15,9 @@ public class OBESkullBlockRenderer extends SkullBlockRenderer {
    }
 
    @Override
-   public void render(SkullBlockEntity skullBlockEntity, float f, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j, Vec3 vec3) {
+   public void render(SkullBlockEntity skullBlockEntity, float f, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j) {
       if(RenderModeManager.shouldRenderEntity(skullBlockEntity)){
-         super.render(skullBlockEntity, f, poseStack, multiBufferSource, i, j, vec3);;
+         super.render(skullBlockEntity, f, poseStack, multiBufferSource, i, j);
       }
    }
 }

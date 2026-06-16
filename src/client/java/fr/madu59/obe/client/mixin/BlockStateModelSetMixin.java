@@ -10,7 +10,7 @@ import fr.madu59.obe.client.renderer.OBEBlockRenderer;
 import org.spongepowered.asm.mixin.injection.At;
 
 import net.minecraft.client.renderer.block.BlockModelShaper;
-import net.minecraft.client.renderer.block.model.BlockStateModel;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.AbstractChestBlock;
 import net.minecraft.world.level.block.AbstractSkullBlock;
@@ -33,7 +33,7 @@ public class BlockStateModelSetMixin {
     @Unique private final RandomSource random = RandomSource.create();
 
     @Inject(method = "getBlockModel", at = @At("HEAD"), cancellable = true)
-    public void obe$getBlockStateModel(BlockState state, CallbackInfoReturnable<BlockStateModel> cir){
+    public void obe$getBlockStateModel(BlockState state, CallbackInfoReturnable<BakedModel> cir){
         if (!state.hasBlockEntity()) return;
 
         Block block = state.getBlock();

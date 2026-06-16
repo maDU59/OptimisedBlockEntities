@@ -8,7 +8,6 @@ import com.mojang.math.Axis;
 import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.model.CompositeBlockStateModel;
 import fr.madu59.obe.client.model.MaterialResolver;
-import fr.madu59.obe.client.renderer.blockentity.bed.OBEBedRenderer;
 import fr.madu59.obe.client.renderer.blockentity.bell.OBEBellRenderer;
 import fr.madu59.obe.client.renderer.blockentity.chest.OBEChestRenderer;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
@@ -19,7 +18,6 @@ import fr.madu59.obe.client.util.ResourceUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.Sheets;
-import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.blockentity.HangingSignRenderer;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.resources.model.ModelBakery;
@@ -32,7 +30,6 @@ import net.minecraft.world.level.block.BannerBlock;
 import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ChestBlock;
-import net.minecraft.world.level.block.DecoratedPotBlock;
 import net.minecraft.world.level.block.ShulkerBoxBlock;
 import net.minecraft.world.level.block.SignBlock;
 import net.minecraft.world.level.block.SkullBlock;
@@ -43,10 +40,11 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.DecoratedPotPatterns;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BedPart;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraft.world.level.block.state.properties.RotationSegment;
 import net.minecraft.world.level.block.state.properties.WoodType;
+import net.minecraft.client.resources.model.BakedModel;
 
 public class OBEBlockRenderer {
 
@@ -54,7 +52,7 @@ public class OBEBlockRenderer {
 
     public OBEBlockRenderer(){}
 
-    public @Nullable BlockStateModel getModel(BlockState state, BlockPos pos, long seed){
+    public @Nullable BakedModel getModel(BlockState state, BlockPos pos, long seed){
         if (!state.hasBlockEntity()) return null;
 
         BlockEntity be = Minecraft.getInstance().level.getBlockEntity(pos);
@@ -73,7 +71,7 @@ public class OBEBlockRenderer {
         return null;
     }
 
-    public BlockStateModel getStandingSignModel(BlockState state, RandomSource random){
+    public BakedModel getStandingSignModel(BlockState state, RandomSource random){
         if(ResourceUtil.cacheContains(state)) return ResourceUtil.getModel(state);
         PoseStack poseStack = new PoseStack();
 
@@ -91,12 +89,12 @@ public class OBEBlockRenderer {
         float f = 0.6666667F;
         poseStack.scale(f, -f, -f);
 
-        BlockStateModel model = ResourceUtil.getModel(layerLocation, Sheets.getSignMaterial(woodType).texture(), state, poseStack, SettingsManager.SIGN_AMBIENT_OCCLUSION.getValue());
+        BakedModel model = ResourceUtil.getModel(layerLocation, Sheets.getSignMaterial(woodType).texture(), state, poseStack, SettingsManager.SIGN_AMBIENT_OCCLUSION.getValue());
 
         return model;
     }
 
-    public BlockStateModel getHangingSignModel(BlockState state, RandomSource random) {
+    public BakedModel getHangingSignModel(BlockState state, RandomSource random) {
         if(ResourceUtil.cacheContains(state)) return ResourceUtil.getModel(state);
         PoseStack poseStack = new PoseStack();
 
@@ -113,7 +111,7 @@ public class OBEBlockRenderer {
         return ResourceUtil.getModel(layerLocation, Sheets.getHangingSignMaterial(woodType).texture(), state, poseStack, SettingsManager.SIGN_AMBIENT_OCCLUSION.getValue());
     }
 
-    public BlockStateModel getSkullBlockModel(BlockState state, RandomSource random) {
+    public BakedModel getSkullBlockModel(BlockState state, RandomSource random) {
         if(ResourceUtil.cacheContains(state)) return ResourceUtil.getModel(state);
         PoseStack poseStack = new PoseStack();
         poseStack.pushPose();
@@ -137,7 +135,7 @@ public class OBEBlockRenderer {
         return  ResourceUtil.getModel(layerLocation, MaterialResolver.getSkullBlockMaterial(type), state, poseStack, SettingsManager.SKULL_AMBIENT_OCCLUSION.getValue());
     }
 
-    public BlockStateModel getBedModel(BlockState state, RandomSource random) {
+    public BakedModel getBedModel(BlockState state, RandomSource random) {
         if(ResourceUtil.cacheContains(state)) return ResourceUtil.getModel(state);
         PoseStack poseStack = new PoseStack();
 
@@ -156,7 +154,7 @@ public class OBEBlockRenderer {
         return ResourceUtil.getModel(layerLocation, Sheets.getBedMaterial(block.getColor()).texture(), state, poseStack, SettingsManager.BED_AMBIENT_OCCLUSION.getValue());
     }
 
-    public BlockStateModel getChestModel(BlockState state, RandomSource random) {
+    public BakedModel getChestModel(BlockState state, RandomSource random) {
         if(ResourceUtil.cacheContains(state)) return ResourceUtil.getModel(state);
         PoseStack poseStack = new PoseStack();
 
@@ -172,24 +170,24 @@ public class OBEBlockRenderer {
 
         ChestType type = state.getValueOrElse(ChestBlock.TYPE, ChestType.SINGLE);
         
-        BlockStateModel model = ResourceUtil.getModel(layerLocation, OBEChestRenderer.getChestMaterial(block, type, xmasTexture).texture(), state, poseStack, SettingsManager.CHEST_AMBIENT_OCCLUSION.getValue());
+        BakedModel model = ResourceUtil.getModel(layerLocation, OBEChestRenderer.getChestMaterial(block, type, xmasTexture).texture(), state, poseStack, SettingsManager.CHEST_AMBIENT_OCCLUSION.getValue());
 
         return model;
     }
 
-    public BlockStateModel getBellModel(BlockState state, RandomSource random) {
+    public BakedModel getBellModel(BlockState state, RandomSource random) {
         if(ResourceUtil.cacheContains(state)) return ResourceUtil.getModel(state);
         PoseStack poseStack = new PoseStack();
         
         ModelLayerLocation layerLocation = ResourceUtil.getBellLayerLocation(state);
 
-        BlockStateModel model = ResourceUtil.getModel(layerLocation, OBEBellRenderer.BELL_RESOURCE_LOCATION.texture(), state, poseStack, SettingsManager.BELL_AMBIENT_OCCLUSION.getValue());
+        BakedModel model = ResourceUtil.getModel(layerLocation, OBEBellRenderer.BELL_RESOURCE_LOCATION.texture(), state, poseStack, SettingsManager.BELL_AMBIENT_OCCLUSION.getValue());
         model = new CompositeBlockStateModel(model, Minecraft.getInstance().getModelManager().getBlockModelShaper().getBlockModel(state));
         ResourceUtil.cache(layerLocation, state, model);
         return model;
     }
 
-    public BlockStateModel getBannerModel(BlockState state, RandomSource random) {
+    public BakedModel getBannerModel(BlockState state, RandomSource random) {
         if(ResourceUtil.cacheContains(state)) return ResourceUtil.getModel(state);
         PoseStack poseStack = new PoseStack();
 
@@ -212,7 +210,7 @@ public class OBEBlockRenderer {
         return ResourceUtil.getModel(layerLocation, MaterialResolver.entityTextureFormatter(ModelBakery.BANNER_BASE.texture()), state, poseStack, SettingsManager.BANNER_AMBIENT_OCCLUSION.getValue());
     }
 
-    public BlockStateModel getShulkerBoxModel(BlockState state, RandomSource random) {
+    public BakedModel getShulkerBoxModel(BlockState state, RandomSource random) {
         if(ResourceUtil.cacheContains(state)) return ResourceUtil.getModel(state);
         PoseStack poseStack = new PoseStack();
         
@@ -239,23 +237,23 @@ public class OBEBlockRenderer {
         return ResourceUtil.getModel(layerLocation, sprite.texture(), state, poseStack, SettingsManager.SHULKER_BOX_AMBIENT_OCCLUSION.getValue());
     }
 
-    public BlockStateModel getDecoratedPotModel(BlockState state, RandomSource random) {
+    public BakedModel getDecoratedPotModel(BlockState state, RandomSource random) {
         if(ResourceUtil.cacheContains(state)) return ResourceUtil.getModel(state);
         PoseStack poseStack = new PoseStack();
         
         ModelLayerLocation layerLocation = ResourceUtil.getDecoratedPotLayerLocation(state, true);
 
-        Direction facing = state.getValue(DecoratedPotBlock.HORIZONTAL_FACING);
+        Direction facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
         poseStack.pushPose();
         poseStack.translate((double)0.5F, (double)0.0F, (double)0.5F);
         poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - facing.toYRot()));
         poseStack.translate((double)-0.5F, (double)0.0F, (double)-0.5F);
 
-        BlockStateModel model = ResourceUtil.getModel(layerLocation, Sheets.DECORATED_POT_BASE.texture(), state, poseStack, true);
+        BakedModel model = ResourceUtil.getModel(layerLocation, Sheets.DECORATED_POT_BASE.texture(), state, poseStack, true);
 
         layerLocation = ResourceUtil.getDecoratedPotLayerLocation(state, false);
 
-        BlockStateModel sideModel = ResourceUtil.getSubModel(layerLocation, Sheets.getDecoratedPotMaterial(DecoratedPotPatterns.BLANK).texture(), state, poseStack, SettingsManager.DECORATED_POT_AMBIENT_OCCLUSION.getValue());
+        BakedModel sideModel = ResourceUtil.getSubModel(layerLocation, Sheets.getDecoratedPotMaterial(DecoratedPotPatterns.BLANK).texture(), state, poseStack, SettingsManager.DECORATED_POT_AMBIENT_OCCLUSION.getValue());
         
         model = new CompositeBlockStateModel(model, sideModel);
 

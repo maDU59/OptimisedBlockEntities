@@ -7,7 +7,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.ShulkerBoxRenderer;
 import net.minecraft.world.level.block.entity.ShulkerBoxBlockEntity;
-import net.minecraft.world.phys.Vec3;
 
 public class OBEShulkerBoxRenderer extends ShulkerBoxRenderer {
 
@@ -16,9 +15,9 @@ public class OBEShulkerBoxRenderer extends ShulkerBoxRenderer {
     }
 
     @Override
-    public void render(ShulkerBoxBlockEntity shulkerBoxBlockEntity, float f, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j, Vec3 vec3) {
+    public void render(ShulkerBoxBlockEntity shulkerBoxBlockEntity, float f, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j) {
         if(RenderModeManager.shouldRenderEntity(shulkerBoxBlockEntity)){
-            super.render(shulkerBoxBlockEntity, f, poseStack, multiBufferSource, i, j, vec3);
+            super.render(shulkerBoxBlockEntity, f, poseStack, multiBufferSource, i, j);
         }
     }
 }

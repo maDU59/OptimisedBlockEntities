@@ -8,7 +8,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BellRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.level.block.entity.BellBlockEntity;
-import net.minecraft.world.phys.Vec3;
 
 public class OBEBellRenderer extends BellRenderer{
 
@@ -17,9 +16,9 @@ public class OBEBellRenderer extends BellRenderer{
     }
 
     @Override
-    public void render(BellBlockEntity bellBlockEntity, float f, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j, Vec3 vec3) {
+    public void render(BellBlockEntity bellBlockEntity, float f, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j) {
         if(RenderModeManager.shouldRenderEntity(bellBlockEntity)){
-            super.render(bellBlockEntity, f, poseStack, multiBufferSource, i, j, vec3);
+            super.render(bellBlockEntity, f, poseStack, multiBufferSource, i, j);
         }
     }
 }

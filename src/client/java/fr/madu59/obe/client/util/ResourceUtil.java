@@ -11,9 +11,7 @@ import fr.madu59.obe.client.model.BlockEntityStateModel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelLayers;
-import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.blockentity.HangingSignRenderer;
-import net.minecraft.client.renderer.block.model.BlockModelPart;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
@@ -24,12 +22,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BedPart;
 import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraft.world.level.block.state.properties.WoodType;
+import net.minecraft.client.resources.model.BakedModel;
 
 public class ResourceUtil{
 
-    private static Map<ModelLayerLocation, BlockStateModel> modelCache = new ConcurrentHashMap<>();
-    private static Map<BlockState, BlockStateModel> transformedModelCache = new ConcurrentHashMap<>();
-    private static Map<ModelCacheKey, BlockStateModel> transformedSubModelCache = new ConcurrentHashMap<>();
+    private static Map<ModelLayerLocation, BakedModel> modelCache = new ConcurrentHashMap<>();
+    private static Map<BlockState, BakedModel> transformedModelCache = new ConcurrentHashMap<>();
+    private static Map<ModelCacheKey, BakedModel> transformedSubModelCache = new ConcurrentHashMap<>();
 
     private static ResourceLocation blockAtlas = ResourceLocation.tryParse("minecraft:textures/atlas/blocks.png");
 
@@ -98,23 +97,19 @@ public class ResourceUtil{
         return sprite;
     }
 
-    public static void collectParts(List<BlockModelPart> partsList, BlockStateModel model, RandomSource random){
-        model.collectParts(random, partsList);
-    }
-
-    public static BlockStateModel getModel(ModelLayerLocation modelLayerLocation, ResourceLocation texture, boolean useAo){
+    public static BakedModel getModel(ModelLayerLocation modelLayerLocation, ResourceLocation texture, boolean useAo){
         return modelCache.computeIfAbsent(modelLayerLocation, layer -> new BlockEntityStateModel(modelLayerLocation, texture, useAo));
     }
 
-    public static BlockStateModel getModel(ModelLayerLocation modelLayerLocation, ResourceLocation texture, BlockState blockState, PoseStack poseStack, boolean useAo){
+    public static BakedModel getModel(ModelLayerLocation modelLayerLocation, ResourceLocation texture, BlockState blockState, PoseStack poseStack, boolean useAo){
         return transformedModelCache.computeIfAbsent(blockState, layer -> new BlockEntityStateModel(modelLayerLocation, texture, poseStack, useAo));
     }
 
-    public static BlockStateModel getSubModel(ModelLayerLocation modelLayerLocation, ResourceLocation texture, BlockState blockState, PoseStack poseStack, boolean useAo){
+    public static BakedModel getSubModel(ModelLayerLocation modelLayerLocation, ResourceLocation texture, BlockState blockState, PoseStack poseStack, boolean useAo){
         return transformedSubModelCache.computeIfAbsent(new ModelCacheKey(modelLayerLocation, blockState), layer -> new BlockEntityStateModel(modelLayerLocation, texture, poseStack, useAo));
     }
 
-    public static BlockStateModel getModel(BlockState state){
+    public static BakedModel getModel(BlockState state){
         return transformedModelCache.get(state);
     }
 
@@ -122,7 +117,7 @@ public class ResourceUtil{
         return transformedModelCache.containsKey(state);
     }
 
-    public static BlockStateModel getPart(ModelLayerLocation modelLayerLocation, String name){
+    public static BakedModel getPart(ModelLayerLocation modelLayerLocation, String name){
         if(modelCache.containsKey(modelLayerLocation)){
             return modelCache.get(modelLayerLocation);
         }
@@ -132,7 +127,7 @@ public class ResourceUtil{
         }
     }
 
-    public static void cache(ModelLayerLocation modelLayerLocation, BlockState blockState, BlockStateModel model){
+    public static void cache(ModelLayerLocation modelLayerLocation, BlockState blockState, BakedModel model){
         transformedModelCache.put(blockState, model);
     }
 

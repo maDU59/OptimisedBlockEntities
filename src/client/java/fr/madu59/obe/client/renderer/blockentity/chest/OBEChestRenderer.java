@@ -23,8 +23,8 @@ public class OBEChestRenderer<T extends BlockEntity & LidBlockEntity> extends Ch
     }
 
     @Override
-    public void render(T blockEntity, float f, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j, Vec3 vec3) {
-        if(RenderModeManager.shouldRenderEntity(blockEntity)) super.render(blockEntity, f, poseStack, multiBufferSource, i, j, vec3);
+    public void render(T blockEntity, float f, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j) {
+        if(RenderModeManager.shouldRenderEntity(blockEntity)) super.render(blockEntity, f, poseStack, multiBufferSource, i, j);
     }
 
     public static Material getChestMaterial(Block block, ChestType chestType, boolean bl) {

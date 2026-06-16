@@ -16,9 +16,9 @@ public class OBEDecoratedPotRenderer extends DecoratedPotRenderer {
     }
     
     @Override
-   public void render(DecoratedPotBlockEntity decoratedPotBlockEntity, float f, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j, Vec3 vec3) {
+   public void render(DecoratedPotBlockEntity decoratedPotBlockEntity, float f, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j) {
         if(RenderModeManager.shouldRenderEntity(decoratedPotBlockEntity)){
-            super.render(decoratedPotBlockEntity, f, poseStack, multiBufferSource, i, j, vec3);
+            super.render(decoratedPotBlockEntity, f, poseStack, multiBufferSource, i, j);
         }
     }
 }

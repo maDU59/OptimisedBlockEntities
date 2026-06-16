@@ -15,20 +15,20 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.BlockModelPart;
-import net.minecraft.client.renderer.block.model.BlockStateModel;
-import net.minecraft.client.renderer.block.model.SimpleModelWrapper;
-import net.minecraft.client.renderer.block.model.SingleVariant;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.QuadCollection;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.SimpleBakedModel;
 
-public class BlockEntityStateModel implements BlockStateModel{
-    private final List<SingleVariant> models = new ArrayList<>();
-    private final Map<String, BlockStateModel> partsMap = new HashMap<>();
+public class BlockEntityStateModel implements BakedModel{
+    private final List<SimpleBakedModel> models = new ArrayList<>();
+    private final Map<String, BakedModel> partsMap = new HashMap<>();
     private final TextureAtlasSprite particleMaterial;
+    private boolean useAo = true;
 
     public BlockEntityStateModel(ModelLayerLocation modelLayerLocation, ResourceLocation texture, boolean useAo){
         this(modelLayerLocation, texture, new PoseStack(), useAo);
@@ -37,6 +37,7 @@ public class BlockEntityStateModel implements BlockStateModel{
     public BlockEntityStateModel(ModelLayerLocation modelLayerLocation, ResourceLocation texture, PoseStack poseStack, boolean useAo){
         TextureAtlasSprite sprite = ResourceUtil.getSprite(texture);
         particleMaterial = ResourceUtil.getBakedMaterial(sprite);
+        this.useAo = useAo;
         generateModel(modelLayerLocation, sprite, poseStack, useAo);
     }
 
@@ -44,19 +45,7 @@ public class BlockEntityStateModel implements BlockStateModel{
         particleMaterial = null;
     }
 
-    @Override
-    public void collectParts(RandomSource randomSource, List<BlockModelPart> list) {
-        if (models.isEmpty()) return;
-
-        long seed = randomSource.nextLong();
-
-        for (BlockStateModel model : this.models) {
-            randomSource.setSeed(seed);
-            model.collectParts(randomSource, list);
-        }
-    }
-
-    public BlockStateModel getPart(String name){
+    public BakedModel getPart(String name){
         return partsMap.get(name);
     }
 
@@ -64,13 +53,12 @@ public class BlockEntityStateModel implements BlockStateModel{
         ModelPart root = Minecraft.getInstance().getEntityModels().bakeLayer(modelLayerLocation);
         Map<String, ModelPart> children = root.children;
         children.forEach((key, part) -> {
-
             List<BakedQuad> bakedQuadsList = getBakedQuads(part, poseStack, sprite, shouldFixBFC(key));
-            QuadCollection collection = createQuadCollection(bakedQuadsList);
-            SimpleModelWrapper wrapper = new SimpleModelWrapper(collection, useAo, particleMaterial);
-            SingleVariant singleVariant = new SingleVariant(wrapper);
 
-            addModelPart(key, singleVariant);
+            Map<Direction, List<BakedQuad>> dirs = new HashMap<>();
+            SimpleBakedModel bakedModel = new SimpleBakedModel(bakedQuadsList, dirs, true, useAo, false, particleMaterial, null);
+
+            addModelPart(key, bakedModel);
         });
     }
 
@@ -154,21 +142,43 @@ public class BlockEntityStateModel implements BlockStateModel{
         return key.equals("vChains") || key.equals("normalChains");
     }
 
-    private void addModelPart(String key, SingleVariant singleVariant){
-        models.add(singleVariant);
-        partsMap.put(key, singleVariant);
-    }
-
-    private QuadCollection createQuadCollection(List<BakedQuad> quads) {
-        QuadCollection.Builder builder = new QuadCollection.Builder();
-        for (BakedQuad quad : quads) {
-            builder.addUnculledFace(quad);
-        }
-        return builder.build();
+    private void addModelPart(String key, SimpleBakedModel simpleBakedModel){
+        models.add(simpleBakedModel);
+        partsMap.put(key, simpleBakedModel);
     }
 
     @Override
-    public TextureAtlasSprite particleIcon() {
+    public TextureAtlasSprite getParticleIcon() {
         return particleMaterial;
+    }
+
+    @Override
+    public List<BakedQuad> getQuads(BlockState arg0, Direction arg1, RandomSource arg2) {
+        List<BakedQuad> output = new ArrayList<BakedQuad>();
+        if(arg1 != null) return output;
+        for(BakedModel model : models){
+            output.addAll(model.getQuads(arg0, arg1, arg2));
+        }
+        return output;
+    }
+
+    @Override
+    public ItemTransforms getTransforms() {
+        return null;
+    }
+
+    @Override
+    public boolean isGui3d() {
+        return true;
+    }
+
+    @Override
+    public boolean useAmbientOcclusion() {
+        return useAo;
+    }
+
+    @Override
+    public boolean usesBlockLight() {
+        return true;
     }
 }
