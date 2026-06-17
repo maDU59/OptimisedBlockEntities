@@ -45,10 +45,6 @@ public class OptimisedBlockEntitiesConfigScreen extends Screen {
         list.button(SettingsManager.OPTIMISED_BANNERS).build();
         list.button(SettingsManager.BANNER_AMBIENT_OCCLUSION).isEnabled(() -> SettingsManager.OPTIMISED_BANNERS.getValue()).build();
 
-        list.category("obe.config.category.signs").build();
-        list.button(SettingsManager.OPTIMISED_SIGNS).build();
-        list.button(SettingsManager.SIGN_AMBIENT_OCCLUSION).isEnabled(() -> SettingsManager.OPTIMISED_SIGNS.getValue()).build();
-
         list.category("obe.config.category.shulker_boxes").build();
         list.button(SettingsManager.OPTIMISED_SHULKER_BOXES).build();
         list.button(SettingsManager.SHULKER_BOX_AMBIENT_OCCLUSION).isEnabled(() -> SettingsManager.OPTIMISED_SHULKER_BOXES.getValue()).build();
@@ -56,10 +52,6 @@ public class OptimisedBlockEntitiesConfigScreen extends Screen {
         list.category("obe.config.category.skulls").build();
         list.button(SettingsManager.OPTIMISED_SKULLS).build();
         list.button(SettingsManager.SKULL_AMBIENT_OCCLUSION).isEnabled(() -> SettingsManager.OPTIMISED_SKULLS.getValue()).build();
-
-        list.category("obe.config.category.beds").build();
-        list.button(SettingsManager.OPTIMISED_BEDS).build();
-        list.button(SettingsManager.BED_AMBIENT_OCCLUSION).isEnabled(() -> SettingsManager.OPTIMISED_BEDS.getValue()).build();
 
         list.category("obe.config.category.bells").build();
         list.button(SettingsManager.OPTIMISED_BELLS).build();

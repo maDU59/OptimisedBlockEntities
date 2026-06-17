@@ -148,14 +148,12 @@ public class SettingsManager {
             }
             Set<String> allEntries = new HashSet<>();
 
-            if(map == null || loadedSettings == null){
-                allEntries.addAll(map.keySet());
-                allEntries.addAll(loadedSettings.keySet());
-                for(String key : allEntries){
-                    if(!Objects.equals(map.get(key), loadedSettings.get(key))){
-                        Runnable action = SettingsManager.ALL_OPTIONS.get(key).getRunnable();
-                        if(actions.add(action)) action.run();
-                    }
+            allEntries.addAll(map.keySet());
+            allEntries.addAll(loadedSettings.keySet());
+            for(String key : allEntries){
+                if(!Objects.equals(map.get(key), loadedSettings.get(key))){
+                    Runnable action = SettingsManager.ALL_OPTIONS.get(key).getRunnable();
+                    if(actions.add(action)) action.run();
                 }
             }
             if(map != null) loadedSettings = map;
@@ -179,7 +177,7 @@ public class SettingsManager {
             return map;
         } catch (Exception e) {
             OBE.LOGGER.info("[OBE] Config file not found or invalid, using default");
-            return null;
+            return new HashMap<>();
         }
     }
 
