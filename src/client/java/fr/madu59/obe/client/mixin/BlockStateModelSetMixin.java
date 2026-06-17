@@ -31,14 +31,13 @@ import net.minecraft.world.level.block.state.BlockState;
 public class BlockStateModelSetMixin {
 
     @Unique private final OBEBlockRenderer obeBlockRenderer = new OBEBlockRenderer();
-    @Unique private final RandomSource random = RandomSource.create();
 
     @Inject(method = "getBlockModel", at = @At("HEAD"), cancellable = true)
     public void obe$getBlockStateModel(BlockState state, CallbackInfoReturnable<BlockStateModel> cir){
         if (!state.hasBlockEntity()) return;
 
         Block block = state.getBlock();
-        random.setSeed(42);
+        RandomSource random = RandomSource.create(42);
 
         if(block instanceof CeilingHangingSignBlock || block instanceof WallHangingSignBlock){
             cir.setReturnValue(obeBlockRenderer.getHangingSignModel(state, random));
