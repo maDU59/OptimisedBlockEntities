@@ -177,7 +177,7 @@ public class SettingsManager {
             return map;
         } catch (Exception e) {
             OBE.LOGGER.info("[OBE] Config file not found or invalid, using default");
-            return null;
+            return new HashMap<>();
         }
     }
 
