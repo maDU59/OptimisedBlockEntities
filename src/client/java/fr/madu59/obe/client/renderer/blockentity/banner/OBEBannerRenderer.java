@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 
 import fr.madu59.obe.client.config.SettingsManager;
+import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.blockentity.BannerRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -58,8 +59,10 @@ public class OBEBannerRenderer extends BannerRenderer{
         poseStack.pushPose();
         poseStack.scale(0.6666667F, -0.6666667F, -0.6666667F);
         VertexConsumer vertexConsumer = ModelBakery.BANNER_BASE.buffer(multiBufferSource, RenderType::entitySolid);
-        if(!SettingsManager.OPTIMISED_BANNERS.getValue()) this.pole.render(poseStack, vertexConsumer, i, j);
-        if(!SettingsManager.OPTIMISED_BANNERS.getValue()) this.bar.render(poseStack, vertexConsumer, i, j);
+        if(RenderModeManager.shouldRenderEntity(!SettingsManager.OPTIMISED_BANNERS.getValue(), bannerBlockEntity)){
+            this.pole.render(poseStack, vertexConsumer, i, j);
+            this.bar.render(poseStack, vertexConsumer, i, j);
+        }
         BlockPos blockPos = bannerBlockEntity.getBlockPos();
         float k = ((float)Math.floorMod((long)(blockPos.getX() * 7 + blockPos.getY() * 9 + blockPos.getZ() * 13) + l, 100L) + f) / 100.0F;
         this.flag.xRot = (-0.0125F + 0.01F * Mth.cos(((float)Math.PI * 2F) * k)) * (float)Math.PI;

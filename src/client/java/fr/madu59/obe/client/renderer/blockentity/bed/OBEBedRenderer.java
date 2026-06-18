@@ -3,6 +3,7 @@ package fr.madu59.obe.client.renderer.blockentity.bed;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import fr.madu59.obe.client.config.SettingsManager;
+import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BedRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -16,6 +17,6 @@ public class OBEBedRenderer extends BedRenderer{
 
     @Override
     public void render(BedBlockEntity bedBlockEntity, float f, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j) {
-        if(!SettingsManager.OPTIMISED_BEDS.getValue()) super.render(bedBlockEntity, f, poseStack, multiBufferSource, i, j);
+        if(RenderModeManager.shouldRenderEntity(!SettingsManager.OPTIMISED_BEDS.getValue(), bedBlockEntity)) super.render(bedBlockEntity, f, poseStack, multiBufferSource, i, j);
     }
 }

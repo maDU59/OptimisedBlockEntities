@@ -1,12 +1,10 @@
 package fr.madu59.obe.client.renderer.blockentity.sign;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 
 import fr.madu59.obe.client.compat.ModCompat;
 import fr.madu59.obe.client.config.SettingsManager;
-import fr.madu59.obe.client.renderer.blockentity.sign.ext.SignBlockEntityExt;
-import fr.madu59.obe.client.renderer.blockentity.sign.ext.SignRenderStateExt;
+import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager;
 
 import java.util.List;
 
@@ -39,7 +37,7 @@ public class OBESignRenderer extends SignRenderer {
     public void renderSignWithText(SignBlockEntity signBlockEntity, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j, BlockState blockState, SignBlock signBlock, WoodType woodType, Model model) {
         poseStack.pushPose();
         this.translateSign(poseStack, -signBlock.getYRotationDegrees(blockState), blockState);
-        if(!SettingsManager.OPTIMISED_SIGNS.getValue()) this.renderSign(poseStack, multiBufferSource, i, j, woodType, model);
+        if(RenderModeManager.shouldRenderEntity(!SettingsManager.OPTIMISED_SIGNS.getValue(), signBlockEntity)) this.renderSign(poseStack, multiBufferSource, i, j, woodType, model);
         this.renderSignText(signBlockEntity.getBlockPos(), signBlockEntity.getFrontText(), poseStack, multiBufferSource, i, signBlockEntity.getTextLineHeight(), signBlockEntity.getMaxTextLineWidth(), true);
         this.renderSignText(signBlockEntity.getBlockPos(), signBlockEntity.getBackText(), poseStack, multiBufferSource, i, signBlockEntity.getTextLineHeight(), signBlockEntity.getMaxTextLineWidth(), false);
         poseStack.popPose();
