@@ -69,10 +69,6 @@ public class OptimisedBlockEntitiesConfigScreen extends Screen {
         list.button(SettingsManager.OPTIMISED_DECORATED_POTS).build();
         list.button(SettingsManager.DECORATED_POT_AMBIENT_OCCLUSION).isEnabled(() -> SettingsManager.OPTIMISED_DECORATED_POTS.getValue()).build();
 
-        list.category("obe.config.category.copper_golems").build();
-        list.button(SettingsManager.OPTIMISED_COPPER_GOLEMS).build();
-        list.button(SettingsManager.COPPER_GOLEM_AMBIENT_OCCLUSION).isEnabled(() -> SettingsManager.OPTIMISED_COPPER_GOLEMS.getValue()).build();
-
         Button doneButton = Button.builder(Component.translatable("obe.config.done"), b -> {
             this.minecraft.setScreen(this.parent);
             SettingsManager.saveSettings();
