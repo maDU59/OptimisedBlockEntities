@@ -19,7 +19,6 @@ import net.minecraft.world.level.block.state.BlockState;
 @Mixin(ModelBlockRenderer.class)
 public class ModelBlockRendererMixin {
     @Unique private final OBEBlockRenderer obeBlockRenderer = new OBEBlockRenderer();
-    @Unique private final RandomSource random = RandomSource.create();
 
     @ModifyVariable(method = "tesselateBlock", at = @At("HEAD"), argsOnly = true)
     private BakedModel obe$modifyModel(BakedModel model, BlockAndTintGetter blockAndTintGetter, BakedModel originalModel, BlockState blockState, BlockPos blockPos, PoseStack poseStack, VertexConsumer vertexConsumer, boolean bl, RandomSource randomSource, long l, int i) {
