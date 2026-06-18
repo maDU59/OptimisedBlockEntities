@@ -25,7 +25,7 @@ public class OptimisedBlockEntitiesConfigScreen extends Screen {
             dispatcher.register(
                 literal("obeConfig")
                     .executes(context -> {
-                        Minecraft.getInstance().schedule(() -> Minecraft.getInstance().setScreen(new OptimisedBlockEntitiesConfigScreen(null)));
+                        Minecraft.getInstance().tell(() -> Minecraft.getInstance().setScreen(new OptimisedBlockEntitiesConfigScreen(null)));
                         return 1;
                     })
             );

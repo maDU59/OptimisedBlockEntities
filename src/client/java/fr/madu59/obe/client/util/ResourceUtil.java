@@ -29,13 +29,8 @@ public class ResourceUtil{
 
     private static ResourceLocation blockAtlas = ResourceLocation.tryParse("minecraft:textures/atlas/blocks.png");
 
-    public static ModelLayerLocation getSignLayerLocation(BlockState state, boolean isWallSign, WoodType woodType){
-        if (isWallSign) {
-            return ModelLayers.createWallSignModelName(woodType);
-        }
-        else{
-            return ModelLayers.createStandingSignModelName(woodType);
-        }
+    public static ModelLayerLocation getSignLayerLocation(BlockState state, WoodType woodType){
+        return ModelLayers.createSignModelName(woodType);
     }
 
     public static ModelLayerLocation getHangingSignLayerLocation(BlockState state, WoodType woodType){
@@ -63,7 +58,7 @@ public class ResourceUtil{
     }
 
     public static ModelLayerLocation getChestLayerLocation(BlockState state){
-        return switch(state.getValueOrElse(ChestBlock.TYPE, ChestType.SINGLE)){
+        return switch(BackportUtil.getValueOrElse(state, ChestBlock.TYPE, ChestType.SINGLE)){
             case ChestType.SINGLE -> ModelLayers.CHEST;
             case ChestType.LEFT -> ModelLayers.DOUBLE_CHEST_LEFT;
             case ChestType.RIGHT -> ModelLayers.DOUBLE_CHEST_RIGHT;
@@ -79,7 +74,7 @@ public class ResourceUtil{
     }
 
     public static ModelLayerLocation getShulkerBoxLayerLocation(BlockState state){
-        return ModelLayers.SHULKER_BOX;
+        return ModelLayers.SHULKER;
     }
 
     public static ModelLayerLocation getDecoratedPotLayerLocation(BlockState state, boolean isCenter){

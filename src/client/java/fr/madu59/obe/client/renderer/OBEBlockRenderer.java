@@ -15,6 +15,7 @@ import fr.madu59.obe.client.renderer.blockentity.chest.OBEChestRenderer;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager;
 import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager.RenderMode;
+import fr.madu59.obe.client.util.BackportUtil;
 import fr.madu59.obe.client.util.ResourceUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -29,15 +30,12 @@ import net.minecraft.world.level.block.AbstractSkullBlock;
 import net.minecraft.world.level.block.BannerBlock;
 import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.CeilingHangingSignBlock;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.ShulkerBoxBlock;
 import net.minecraft.world.level.block.SignBlock;
 import net.minecraft.world.level.block.SkullBlock;
 import net.minecraft.world.level.block.StandingSignBlock;
 import net.minecraft.world.level.block.WallBannerBlock;
-import net.minecraft.world.level.block.WallHangingSignBlock;
-import net.minecraft.world.level.block.WallSignBlock;
 import net.minecraft.world.level.block.WallSkullBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -47,6 +45,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraft.world.level.block.state.properties.RotationSegment;
 import net.minecraft.world.level.block.state.properties.WoodType;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.client.resources.model.BakedModel;
 
 public class OBEBlockRenderer {
@@ -80,10 +79,9 @@ public class OBEBlockRenderer {
         PoseStack poseStack = new PoseStack();
 
         SignBlock block = (SignBlock) state.getBlock();
-        boolean isWallSign = block instanceof WallSignBlock;
 
         WoodType woodType = SignBlock.getWoodType(state.getBlock());
-        final ModelLayerLocation layerLocation = ResourceUtil.getSignLayerLocation(state, isWallSign, woodType);
+        final ModelLayerLocation layerLocation = ResourceUtil.getSignLayerLocation(state, woodType);
 
         poseStack.translate(0.5F, 0.75F * 0.6666667F, 0.5F);
         poseStack.mulPose(Axis.YP.rotationDegrees(-block.getYRotationDegrees(state)));
@@ -141,6 +139,10 @@ public class OBEBlockRenderer {
 
         poseStack.scale(-1.0F, -1.0F, 1.0F);
         SkullBlock.Type type = ((AbstractSkullBlock)state.getBlock()).getType();
+        if(type == SkullBlock.Types.DRAGON){
+            poseStack.translate(0.0F, -0.374375F, 0.0F);
+            poseStack.scale(0.75F, 0.75F, 0.75F);
+        }
         
         ModelLayerLocation layerLocation = ResourceUtil.getSkullBlockLayerLocation(state, type);
         return  ResourceUtil.getModel(layerLocation, MaterialResolver.getSkullBlockMaterial(type), state, poseStack, SettingsManager.SKULL_AMBIENT_OCCLUSION.getValue());
@@ -179,7 +181,7 @@ public class OBEBlockRenderer {
         poseStack.mulPose(Axis.YP.rotationDegrees(-facing.toYRot()));
         poseStack.translate(-0.5F, -0.5F, -0.5F);
 
-        ChestType type = state.getValueOrElse(ChestBlock.TYPE, ChestType.SINGLE);
+        ChestType type = BackportUtil.getValueOrElse(state, ChestBlock.TYPE, ChestType.SINGLE);
         
         BakedModel model = ResourceUtil.getModel(layerLocation, OBEChestRenderer.getChestMaterial(block, type, xmasTexture).texture(), state, poseStack, SettingsManager.CHEST_AMBIENT_OCCLUSION.getValue());
 

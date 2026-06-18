@@ -66,6 +66,7 @@ public class OBEBannerRenderer extends BannerRenderer{
         BlockPos blockPos = bannerBlockEntity.getBlockPos();
         float k = ((float)Math.floorMod((long)(blockPos.getX() * 7 + blockPos.getY() * 9 + blockPos.getZ() * 13) + l, 100L) + f) / 100.0F;
         this.flag.xRot = (-0.0125F + 0.01F * Mth.cos(((float)Math.PI * 2F) * k)) * (float)Math.PI;
+        this.flag.y = -32.0F;
         renderPatterns(poseStack, multiBufferSource, i, j, this.flag, ModelBakery.BANNER_BASE, true, bannerBlockEntity.getBaseColor(), bannerBlockEntity.getPatterns());
         poseStack.popPose();
         poseStack.popPose();

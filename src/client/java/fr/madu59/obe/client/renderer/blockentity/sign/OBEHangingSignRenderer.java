@@ -2,6 +2,7 @@ package fr.madu59.obe.client.renderer.blockentity.sign;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 
 import java.util.Map;
@@ -30,8 +31,6 @@ import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.phys.Vec3;
 
 public class OBEHangingSignRenderer extends OBESignRenderer {
-   private static final float MODEL_RENDER_SCALE = 1.0F;
-   private static final float TEXT_RENDER_SCALE = 0.9F;
    private static final Vec3 TEXT_OFFSET = new Vec3((double)0.0F, (double)-0.32F, (double)0.073F);
    private final Map<WoodType, HangingSignModel> hangingSignModels;
 
@@ -63,6 +62,11 @@ public class OBEHangingSignRenderer extends OBESignRenderer {
       poseStack.translate(0.0F, -0.3125F, 0.0F);
    }
 
+   public void renderSignModel(PoseStack poseStack, int i, int j, Model model, VertexConsumer vertexConsumer) {
+      HangingSignModel hangingSignModel = (HangingSignModel)model;
+      hangingSignModel.root.render(poseStack, vertexConsumer, i, j);
+   }
+
    public Material getSignMaterial(WoodType woodType) {
       return Sheets.getHangingSignMaterial(woodType);
    }
@@ -87,12 +91,14 @@ public class OBEHangingSignRenderer extends OBESignRenderer {
 
    @Environment(EnvType.CLIENT)
    public static final class HangingSignModel extends Model {
+      public final ModelPart root;
       public final ModelPart plank;
       public final ModelPart vChains;
       public final ModelPart normalChains;
 
       public HangingSignModel(ModelPart modelPart) {
-         super(modelPart, RenderType::entityCutoutNoCull);
+         super(RenderType::entityCutoutNoCull);
+         this.root = modelPart;
          this.plank = modelPart.getChild("plank");
          this.normalChains = modelPart.getChild("normalChains");
          this.vChains = modelPart.getChild("vChains");
@@ -109,6 +115,10 @@ public class OBEHangingSignRenderer extends OBESignRenderer {
             this.vChains.visible = bl2;
          }
 
+      }
+
+      public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int i, int j, int k) {
+         this.root.render(poseStack, vertexConsumer, i, j, k);
       }
    }
 }

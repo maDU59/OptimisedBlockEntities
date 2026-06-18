@@ -15,6 +15,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
@@ -24,6 +25,7 @@ import net.minecraft.world.level.block.BannerBlock;
 import net.minecraft.world.level.block.CeilingHangingSignBlock;
 import net.minecraft.world.level.block.WallBannerBlock;
 import net.minecraft.world.level.block.WallHangingSignBlock;
+import net.minecraft.world.level.block.WallSignBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.SimpleBakedModel;
@@ -65,7 +67,7 @@ public class BlockEntityStateModel implements BakedModel{
                 List<BakedQuad> bakedQuadsList = getBakedQuads(part, poseStack, sprite, shouldFixBFC(key));
 
                 Map<Direction, List<BakedQuad>> dirs = new HashMap<>();
-                SimpleBakedModel bakedModel = new SimpleBakedModel(bakedQuadsList, dirs, true, useAo, false, particleMaterial, null);
+                SimpleBakedModel bakedModel = new SimpleBakedModel(bakedQuadsList, dirs, true, useAo, false, particleMaterial, null, null);
 
                 addModelPart(key, bakedModel);
             }
@@ -86,6 +88,9 @@ public class BlockEntityStateModel implements BakedModel{
         else if(state.getBlock() instanceof BannerBlock){
             return key != "flag";
         }
+        else if(state.getBlock() instanceof WallSignBlock){
+            return key != "stick";
+        }
         return true;
     }
 
@@ -93,27 +98,27 @@ public class BlockEntityStateModel implements BakedModel{
         List<BakedQuad> bakedQuadsList = new ArrayList<>();
         part.visit(poseStack, (pose, name, idx, cube) -> {
             for(ModelPart.Polygon polygon : cube.polygons){
-                if (polygon.vertices().length != 4) {
+                if (polygon.vertices.length != 4) {
                     continue;
                 }
 
                 Vector3f normal = new Vector3f();
 
-                polygon.normal().mul(pose.normal(), normal);
+                polygon.normal.mul(pose.normal(), normal);
                 
                 Direction dir = getDirection(normal);
 
                 int[] packedVertices = new int[32];
 
                 for (int i = 0; i < 4; i++) {
-                    ModelPart.Vertex vertex = polygon.vertices()[i];
+                    ModelPart.Vertex vertex = polygon.vertices[i];
 
-                    Vector3f pos = new Vector3f(vertex.pos());
+                    Vector3f pos = new Vector3f(vertex.pos);
 
                     Vector3f vec = pose.pose().transformPosition(pos.mul(1.0F / 16.0F));
                     
-                    float u = sprite.getU(vertex.u());
-                    float v = sprite.getV(vertex.v());
+                    float u = sprite.getU(vertex.u);
+                    float v = sprite.getV(vertex.v);
 
                     int offset = i * 8;
 
@@ -135,8 +140,7 @@ public class BlockEntityStateModel implements BakedModel{
                     0,
                     dir,
                     sprite,
-                    true,
-                    0
+                    true
                 );
                 bakedQuadsList.add(baked);
                 if(fixBfc){
@@ -151,8 +155,7 @@ public class BlockEntityStateModel implements BakedModel{
                     0,
                     dir,
                     sprite,
-                    true,
-                    0
+                    true
                     );
                     bakedQuadsList.add(baked);
                 }
@@ -162,7 +165,7 @@ public class BlockEntityStateModel implements BakedModel{
     }
 
     private Direction getDirection(Vector3fc vec){
-        return Direction.getApproximateNearest(vec.x(), vec.y(), vec.z());
+        return Direction.getNearest(vec.x(), vec.y(), vec.z());
     }
 
     private boolean shouldFixBFC(String key){
@@ -212,5 +215,10 @@ public class BlockEntityStateModel implements BakedModel{
     @Override
     public boolean isCustomRenderer() {
         return true;
+    }
+
+    @Override
+    public ItemOverrides getOverrides() {
+        return null;
     }
 }
