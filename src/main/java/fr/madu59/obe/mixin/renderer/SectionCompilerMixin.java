@@ -23,7 +23,7 @@ import net.minecraft.world.level.block.state.BlockState;
 @Mixin(SectionCompiler.class)
 public class SectionCompilerMixin {
     @Unique private OBEBlockRenderer obeBlockRenderer;
-    @Unique private BlockEntity obe$be;
+    @Unique private final ThreadLocal<BlockEntity> obe$be = new ThreadLocal<>();
 
     @Inject(method = "<init>", at = @At("TAIL"))
     private void obe$init(BlockRenderDispatcher blockRenderDispatcher, BlockEntityRenderDispatcher blockEntityRenderDispatcher, CallbackInfo ci) {
@@ -32,16 +32,17 @@ public class SectionCompilerMixin {
 
     @Redirect(method = "compile(Lnet/minecraft/core/SectionPos;Lnet/minecraft/client/renderer/chunk/RenderChunkRegion;Lcom/mojang/blaze3d/vertex/VertexSorting;Lnet/minecraft/client/renderer/SectionBufferBuilderPack;Ljava/util/List;)Lnet/minecraft/client/renderer/chunk/SectionCompiler$Results;", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/chunk/RenderChunkRegion;getBlockState(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;"))
     private BlockState obe$getBlockState(RenderChunkRegion region, BlockPos pos){
-        this.obe$be = region.getBlockEntity(pos);
+        this.obe$be.set(region.getBlockEntity(pos));
         return region.getBlockState(pos);
     }
 
-    @Redirect(method = "compile(Lnet/minecraft/core/SectionPos;Lnet/minecraft/client/renderer/chunk/RenderChunkRegion;Lcom/mojang/blaze3d/vertex/VertexSorting;Lnet/minecraft/client/renderer/SectionBufferBuilderPack;Ljava/util/List;)Lnet/minecraft/client/renderer/chunk/SectionCompiler$Results;", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getRenderShape()Lnet/minecraft/world/level/block/RenderShape;"))
+    @Redirect(method = "compile(Lnet/minecraft/core/SectionPos;Lnet/minecraft/client/renderer/chunk/RenderChunkRegion;Lcom/mojang/blaze3d/vertex/VertexSorting;Lnet/minecraft/client/renderer/SectionBufferBuilderPack;Ljava/util/List;)Lnet/minecraft/client/renderer/chunk/SectionCompiler$Results;", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getRenderShape()Lnet/minecraft/world/level/block/RenderShape;", ordinal = 0))
     private RenderShape obe$getRenderShape(BlockState state){
         if(RenderModeManager.hasBlockEntity(state)){
-            BlockEntityExt ext = (BlockEntityExt) obe$be;
+            BlockEntity be =  this.obe$be.get();
+            BlockEntityExt ext = (BlockEntityExt) be;
             if(ext != null) {
-                RenderModeManager.updateBlockEntity(ext, obe$be);
+                RenderModeManager.updateBlockEntity(ext, be);
                 if(ext.isSupportedBlockEntity() && !ext.hasSpecialRenderer() && ext.renderMode() != RenderMode.TERRAIN){
                     return RenderShape.INVISIBLE;
                 }

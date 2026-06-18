@@ -1,2 +1,2 @@
 # What's new:
-- Fixed crash with invalid or outdated config
+- Fixed threading issue on neoforge
