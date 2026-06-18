@@ -119,8 +119,8 @@ public class BlockEntityStateModel implements BakedModel{
 
                     Vector3f vec = pose.pose().transformPosition(pos.mul(1.0F / 16.0F));
                     
-                    float u = sprite.getU(vertex.u);
-                    float v = sprite.getV(vertex.v);
+                    float u = sprite.getU(vertex.u * 16.0F);
+                    float v = sprite.getV(vertex.v * 16.0F);
 
                     int offset = i * 8;
 
