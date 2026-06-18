@@ -112,8 +112,6 @@ dependencies {
 
     implementation("maven.modrinth:sodium:mc1.21.1-0.6.13-neoforge")
 
-	compileOnly "com.logisticscraft:occlusionculling:0.0.8-SNAPSHOT"
-
     // Example optional mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
     // compileOnly "mezz.jei:jei-${mc_version}-common-api:${jei_version}"

@@ -10,7 +10,7 @@ import net.neoforged.fml.common.Mod;
 
 @Mod(OBE.MOD_ID)
 public class OBE {
-	public static final String MOD_ID = "fwa";
+	public static final String MOD_ID = "obe";
 
 	// This logger is used to write text to the console and the log file.
 	// It is considered best practice to use your mod id as the logger's name.

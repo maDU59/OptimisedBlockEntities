@@ -4,13 +4,11 @@ import fr.madu59.obe.config.configscreen.OptimisedBlockEntitiesConfigScreen;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 
 @Mod(value = OBE.MOD_ID, dist = Dist.CLIENT)
-@EventBusSubscriber(modid = OBE.MOD_ID, value = Dist.CLIENT)
 public class OBEClient {
 
 	public OBEClient(ModContainer container, IEventBus bus){
