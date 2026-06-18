@@ -37,10 +37,11 @@ public class OBEChestRenderer<T extends BlockEntity & LidBlockEntity> extends Ch
     }
 
     private static Material chooseMaterial(ChestType chestType, Material material, Material material2, Material material3) {
+        if(chestType == null) return material;
         return switch (chestType) {
-            case ChestType.RIGHT -> material3;
-            case ChestType.LEFT -> material2;
-            case null, default -> material;
+            case RIGHT -> material3;
+            case LEFT -> material2;
+            case SINGLE -> material;
         };
     }
 }
