@@ -23,7 +23,7 @@ public class OBEDecoratedPotRenderer extends DecoratedPotRenderer {
     
     @Override
     public void submit(final DecoratedPotRenderState state, final PoseStack poseStack, final SubmitNodeCollector submitNodeCollector, final CameraRenderState camera) {
-        if(!RenderModeManager.isTerrain(state)){
+        if(!RenderModeManager.shouldRenderEntity(state)){
             super.submit(state, poseStack, submitNodeCollector, camera);
         }
     }

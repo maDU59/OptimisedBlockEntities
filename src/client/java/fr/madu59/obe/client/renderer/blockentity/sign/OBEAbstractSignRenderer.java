@@ -6,6 +6,7 @@ import com.mojang.math.Axis;
 import fr.madu59.obe.client.compat.ModCompat;
 import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityRenderStateExt;
+import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager;
 import fr.madu59.obe.client.renderer.blockentity.sign.ext.SignBlockEntityExt;
 import fr.madu59.obe.client.renderer.blockentity.sign.ext.SignRenderStateExt;
 
@@ -31,7 +32,7 @@ import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class OBEAbstractSignRenderer extends AbstractSignRenderer {
 
@@ -43,7 +44,7 @@ public abstract class OBEAbstractSignRenderer extends AbstractSignRenderer {
     public void submitSignWithText(SignRenderState signRenderState, PoseStack poseStack, BlockState blockState, SignBlock signBlock, WoodType woodType, Model.Simple simple, ModelFeatureRenderer.@Nullable CrumblingOverlay crumblingOverlay, SubmitNodeCollector submitNodeCollector) {
         poseStack.pushPose();
         this.translateSign(poseStack, -signBlock.getYRotationDegrees(blockState), blockState);
-        if(!SettingsManager.OPTIMISED_SIGNS.getValue()) this.submitSign(poseStack, signRenderState.lightCoords, woodType, simple, crumblingOverlay, submitNodeCollector);
+        if(RenderModeManager.shouldRenderEntity(!SettingsManager.OPTIMISED_SIGNS.getValue(), signRenderState)) this.submitSign(poseStack, signRenderState.lightCoords, woodType, simple, crumblingOverlay, submitNodeCollector);
         this.submitSignText(signRenderState, poseStack, submitNodeCollector, true);
         this.submitSignText(signRenderState, poseStack, submitNodeCollector, false);
         poseStack.popPose();
