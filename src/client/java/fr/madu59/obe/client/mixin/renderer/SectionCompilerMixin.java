@@ -23,8 +23,7 @@ import net.minecraft.world.level.block.state.BlockState;
 @Mixin(SectionCompiler.class)
 public class SectionCompilerMixin {
     @Unique private OBEBlockRenderer obeBlockRenderer;
-    @Unique private final ThreadLocal<BlockPos> obe$pos = ThreadLocal.withInitial(() -> null);
-    @Unique private final ThreadLocal<RenderChunkRegion> obe$region = ThreadLocal.withInitial(() -> null);
+    @Unique private BlockEntity obe$be;
 
     @Inject(method = "<init>", at = @At("TAIL"))
     private void obe$init(BlockRenderDispatcher blockRenderDispatcher, BlockEntityRenderDispatcher blockEntityRenderDispatcher, CallbackInfo ci) {
@@ -33,20 +32,21 @@ public class SectionCompilerMixin {
 
     @Redirect(method = "compile", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/chunk/RenderChunkRegion;getBlockState(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;"))
     private BlockState obe$getBlockState(RenderChunkRegion region, BlockPos pos){
-        this.obe$pos.set(pos);
-        this.obe$region.set(region);
+        this.obe$be = region.getBlockEntity(pos);
         return region.getBlockState(pos);
     }
 
     @Redirect(method = "compile", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getRenderShape()Lnet/minecraft/world/level/block/RenderShape;"))
     private RenderShape obe$getRenderShape(BlockState state){
         if(state.hasBlockEntity()){
-            BlockEntity be = obe$region.get().getBlockEntity(obe$pos.get());
-            BlockEntityExt ext = (BlockEntityExt) be;
+            BlockEntityExt ext = (BlockEntityExt) obe$be;
             if(ext != null) {
-                RenderModeManager.updateBlockEntity(ext, be);
+                RenderModeManager.updateBlockEntity(ext, obe$be);
                 if(ext.isSupportedBlockEntity() && !ext.hasSpecialRenderer() && ext.renderMode() != RenderMode.TERRAIN){
                     return RenderShape.INVISIBLE;
+                }
+                if(ext.isSupportedBlockEntity() && ext.renderMode() == RenderMode.TERRAIN){
+                    return RenderShape.MODEL;
                 }
             }
         }
