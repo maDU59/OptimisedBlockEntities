@@ -42,12 +42,24 @@ public class RenderModeManager {
         return shouldRenderEntity(((BlockEntityRenderStateExt)state).blockEntity());
     }
 
-    public static <T extends BlockEntity> boolean shouldRenderEntity(T be){
-        return shouldRenderEntity((BlockEntityExt) be);
+    public static <T extends BlockEntity> boolean shouldRenderEntity(boolean setting, BlockEntityRenderState state){
+        return shouldRenderEntity(setting, ((BlockEntityRenderStateExt)state).blockEntity());
     }
 
-    public static boolean shouldRenderEntity(BlockEntityExt ext){
-        return ext.renderMode() == RenderMode.ENTITY || ext.renderModeDelayed() == RenderMode.ENTITY || ext.renderBoth();
+    public static <T extends BlockEntity> boolean shouldRenderEntity(boolean setting, T be){
+        return shouldRenderEntity(setting, (BlockEntityExt) be, be);
+    }
+
+    public static <T extends BlockEntity> boolean shouldRenderEntity(boolean setting, BlockEntityExt ext, BlockEntity be){
+        return ext == null || !be.hasLevel() || !ext.isSupportedBlockEntity() || setting;
+    }
+
+    public static <T extends BlockEntity> boolean shouldRenderEntity(T be){
+        return shouldRenderEntity((BlockEntityExt) be, be);
+    }
+
+    public static <T extends BlockEntity> boolean shouldRenderEntity(BlockEntityExt ext, T be){
+        return ext == null || !be.hasLevel() || !ext.isSupportedBlockEntity() || ext.renderMode() == RenderMode.ENTITY || ext.renderModeDelayed() == RenderMode.ENTITY || ext.renderBoth();
     }
 
     public static <T extends BlockEntity> void setRenderModeDelayed(T be, RenderMode mode, BlockPos pos){

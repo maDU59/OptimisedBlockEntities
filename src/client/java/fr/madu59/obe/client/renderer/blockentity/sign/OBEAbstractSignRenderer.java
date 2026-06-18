@@ -3,30 +3,18 @@ package fr.madu59.obe.client.renderer.blockentity.sign;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import fr.madu59.obe.client.compat.ModCompat;
-import fr.madu59.obe.client.config.SettingsManager;
-import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityRenderStateExt;
-
-import java.util.List;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font.DisplayMode;
-import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.AbstractSignRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.state.SignRenderState;
-import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
-import net.minecraft.util.FormattedCharSequence;
-import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.level.block.entity.SignBlockEntity;
-import net.minecraft.world.level.block.entity.SignText;
 import net.minecraft.world.phys.Vec3;
 
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
-import org.jspecify.annotations.Nullable;
 
 public abstract class OBEAbstractSignRenderer<S extends SignRenderState> extends AbstractSignRenderer<S> {
 
@@ -41,14 +29,14 @@ public abstract class OBEAbstractSignRenderer<S extends SignRenderState> extends
         if (state.frontText != null) {
             poseStack.pushPose();
             poseStack.mulPose(state.transformations.frontText());
-            if(isFacingCamera(poseStack, null)) this.submitSignText(state, poseStack, submitNodeCollector, state.frontText);
+            if(isFacingCamera(poseStack, cameraPos)) this.submitSignText(state, poseStack, submitNodeCollector, state.frontText);
             poseStack.popPose();
         }
 
         if (state.backText != null) {
             poseStack.pushPose();
             poseStack.mulPose(state.transformations.backText());
-            if(isFacingCamera(poseStack, null)) this.submitSignText(state, poseStack, submitNodeCollector, state.backText);
+            if(isFacingCamera(poseStack, cameraPos)) this.submitSignText(state, poseStack, submitNodeCollector, state.backText);
             poseStack.popPose();
         }
    }

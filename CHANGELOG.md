@@ -1,2 +1,3 @@
 # What's new:
-- Fixed a crash rarely occuring when generating chunks
+- Fixed compatibility issues with content mods adding block entities
+- Fixed potential issues regaring out-of-the-world block entity rendering (inventory, GUI etc...)
