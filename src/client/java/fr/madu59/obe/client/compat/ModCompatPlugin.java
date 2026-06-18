@@ -18,7 +18,6 @@ public class ModCompatPlugin implements IMixinConfigPlugin {
         return true;
     }
 
-    // Leave these empty/default
     @Override public void onLoad(String mixinPackage) {}
     @Override public String getRefMapperConfig() { return null; }
     @Override public void acceptTargets(Set<String> myTargets, Set<String> otherTargets) {}

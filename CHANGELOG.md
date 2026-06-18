@@ -1,4 +1,3 @@
 # What's new:
-- Improved performances
-- Updated license
-- Fixed some mixin targets not being fully descipted
+- Fixed compatibility issues with content mods adding block entities
+- Fixed potential issues regaring out-of-the-world block entity rendering (inventory, GUI etc...)
