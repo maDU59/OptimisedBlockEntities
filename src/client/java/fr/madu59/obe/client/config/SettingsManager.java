@@ -152,8 +152,10 @@ public class SettingsManager {
             allEntries.addAll(loadedSettings.keySet());
             for(String key : allEntries){
                 if(!Objects.equals(map.get(key), loadedSettings.get(key))){
-                    Runnable action = SettingsManager.ALL_OPTIONS.get(key).getRunnable();
-                    if(actions.add(action)) action.run();
+                    if(SettingsManager.ALL_OPTIONS.containsKey(key)){
+                        Runnable action = SettingsManager.ALL_OPTIONS.get(key).getRunnable();
+                        if(actions.add(action)) action.run();
+                    }
                 }
             }
             loadedSettings = map;
