@@ -19,20 +19,21 @@ import net.minecraft.world.level.block.state.BlockState;
 @Mixin(value = ChunkBuilderMeshingTask.class, remap = false)
 public class ChunkBuilderMeshingTaskMixin {
 
-    @Unique BlockEntity obe$be;
+    @Unique private final ThreadLocal<BlockEntity> obe$be = new ThreadLocal<>();
 
     @Redirect(method = "execute", at = @At(value = "INVOKE", target = "Lnet/caffeinemc/mods/sodium/client/world/LevelSlice;getBlockState(III)Lnet/minecraft/world/level/block/state/BlockState;"))
     private BlockState obe$getBlockState(LevelSlice slice, int x, int y, int z){
-        obe$be = slice.getBlockEntity(x, y, z);
+        obe$be.set(slice.getBlockEntity(x, y, z));
         return slice.getBlockState(x, y, z);
     }
 
     @Redirect(method = "execute", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getRenderShape()Lnet/minecraft/world/level/block/RenderShape;"))
     private RenderShape obe$getRenderShape(BlockState state){
         if(state.hasBlockEntity()){
-            BlockEntityExt ext = (BlockEntityExt) obe$be;
+            BlockEntity be = obe$be.get();
+            BlockEntityExt ext = (BlockEntityExt) be;
             if(ext != null) {
-                RenderModeManager.updateBlockEntity(ext, obe$be);
+                RenderModeManager.updateBlockEntity(ext, be);
                 if(ext.isSupportedBlockEntity() && !ext.hasSpecialRenderer() && ext.renderMode() != RenderMode.TERRAIN){
                     return RenderShape.INVISIBLE;
                 }
