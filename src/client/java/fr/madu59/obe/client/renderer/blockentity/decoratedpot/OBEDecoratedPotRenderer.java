@@ -23,7 +23,7 @@ public class OBEDecoratedPotRenderer extends DecoratedPotRenderer {
     
     @Override
     public void submit(final DecoratedPotRenderState state, final PoseStack poseStack, final SubmitNodeCollector submitNodeCollector, final CameraRenderState camera) {
-        if(!RenderModeManager.isTerrain(state)){
+        if(RenderModeManager.shouldRenderEntity(state)){
             super.submit(state, poseStack, submitNodeCollector, camera);
         }
     }
@@ -31,6 +31,6 @@ public class OBEDecoratedPotRenderer extends DecoratedPotRenderer {
     @Override
     public void extractRenderState(final DecoratedPotBlockEntity blockEntity, final DecoratedPotRenderState state, final float partialTicks, final Vec3 cameraPosition, final ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress) {
         ((BlockEntityRenderStateExt)state).blockEntity(blockEntity);
-        if(RenderModeManager.shouldRenderEntity(state)) super.extractRenderState(blockEntity, state, partialTicks, cameraPosition, breakProgress);
+        if(RenderModeManager.shouldRenderEntity(blockEntity)) super.extractRenderState(blockEntity, state, partialTicks, cameraPosition, breakProgress);
     }
 }

@@ -10,6 +10,7 @@ import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityRenderStateExt;
 
 @Mixin(BlockEntityRenderState.class)
 public class BlockEntityRenderStateMixin implements BlockEntityRenderStateExt {
+    // Thanks to Ceeden and Better Block Entities for this tricks, it allows to pass the block entity from the extraction to rendering stage
     @Unique private BlockEntity blockEntity;
 
     @Override public void blockEntity(BlockEntity blockEntity) { this.blockEntity = blockEntity; }
