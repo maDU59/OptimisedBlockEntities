@@ -80,6 +80,7 @@ public class RenderModeManager {
     }
 
     public static void updateBlockEntity(BlockEntityExt ext, BlockEntity be){
+        if(be == null || ext == null) return;
         if (be.getType() == BlockEntityType.SIGN || be.getType() == BlockEntityType.HANGING_SIGN) {
             ext.isEnabled(SettingsManager.OPTIMISED_SIGNS.getValue());
         }

@@ -132,7 +132,7 @@ public class BlockEntityStateModel implements BakedModel{
                     packedVertices[offset + 5] = Float.floatToRawIntBits(v);
 
                     packedVertices[offset + 6] = 0;
-                    packedVertices[offset + 7] = 0; 
+                    packedVertices[offset + 7] = 0;
                 }
 
                 BakedQuad baked = new BakedQuad(
