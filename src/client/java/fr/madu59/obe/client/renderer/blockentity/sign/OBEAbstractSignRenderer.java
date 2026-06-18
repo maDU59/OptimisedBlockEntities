@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import fr.madu59.obe.client.compat.ModCompat;
 import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityRenderStateExt;
+import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager;
 import fr.madu59.obe.client.renderer.blockentity.sign.ext.SignBlockEntityExt;
 import fr.madu59.obe.client.renderer.blockentity.sign.ext.SignRenderStateExt;
 
@@ -27,7 +28,7 @@ import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class OBEAbstractSignRenderer<S extends SignRenderState> extends AbstractSignRenderer<S> {
 
@@ -38,7 +39,7 @@ public abstract class OBEAbstractSignRenderer<S extends SignRenderState> extends
     @Override
     public void submitSignWithText(final S state, final PoseStack poseStack, final ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress, final SubmitNodeCollector submitNodeCollector) {
 
-        if(!SettingsManager.OPTIMISED_SIGNS.getValue()){
+        if(RenderModeManager.shouldRenderEntity(!SettingsManager.OPTIMISED_SIGNS.getValue(), state)){
             Model.Simple bodyModel = this.getSignModel(state);
             poseStack.pushPose();
             poseStack.mulPose(state.transformations.body());

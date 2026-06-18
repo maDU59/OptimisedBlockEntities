@@ -21,7 +21,7 @@ public class SodiumWorldRendererMixin {
     public void obe$preventUselessExtraction(CallbackInfo ci, @Local BlockEntity be){
 
         BlockEntityExt ext = (BlockEntityExt) be;
-        if (ext != null && !RenderModeManager.shouldRenderEntity(ext)) {
+        if (ext != null && !RenderModeManager.shouldRenderEntity(ext, be)) {
             ci.cancel();
         }
     }
