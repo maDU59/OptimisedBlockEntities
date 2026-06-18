@@ -18,7 +18,7 @@ public class LevelRendererMixin {
         method = "renderBlockEntities",
         at = @At(
             value = "INVOKE", 
-            target = "Lnet/minecraft/client/renderer/chunk/SectionMesh;getRenderableBlockEntities()Ljava/util/List;" 
+            target = "Lnet/minecraft/client/renderer/chunk/SectionRenderDispatcher$CompiledSection;getRenderableBlockEntities()Ljava/util/List;" 
         ),
         require = 0
     )
