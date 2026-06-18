@@ -110,7 +110,7 @@ public class BlockEntityStateModel implements BakedModel{
                 
                 Direction dir = getDirection(normal);
 
-                int[] packedVertices = new int[36];
+                int[] packedVertices = new int[32];
 
                 for (int i = 0; i < 4; i++) {
                     ModelPart.Vertex vertex = polygon.vertices[i];
@@ -122,20 +122,19 @@ public class BlockEntityStateModel implements BakedModel{
                     float u = sprite.getU(vertex.u);
                     float v = sprite.getV(vertex.v);
 
-                    int offset = i * 7;
+                    int offset = i * 8;
 
                     packedVertices[offset + 0] = Float.floatToRawIntBits(vec.x());
                     packedVertices[offset + 1] = Float.floatToRawIntBits(vec.y());
                     packedVertices[offset + 2] = Float.floatToRawIntBits(vec.z());
 
-                    packedVertices[offset + 3] = -1; 
+                    packedVertices[offset + 3] = -1;
 
                     packedVertices[offset + 4] = Float.floatToRawIntBits(u);
                     packedVertices[offset + 5] = Float.floatToRawIntBits(v);
 
                     packedVertices[offset + 6] = 0;
                     packedVertices[offset + 7] = 0;
-                    packedVertices[offset + 8] = 0;
                 }
 
                 BakedQuad baked = new BakedQuad(
