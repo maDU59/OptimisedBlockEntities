@@ -11,7 +11,9 @@ import fr.madu59.obe.client.renderer.OBEBlockRenderer;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager;
 import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager.RenderMode;
-import net.caffeinemc.mods.sodium.client.render.chunk.compile.pipeline.BlockRenderer;
+import me.jellysquid.mods.sodium.client.render.chunk.compile.ChunkBuildBuffers;
+import me.jellysquid.mods.sodium.client.render.chunk.compile.pipeline.BlockRenderContext;
+import me.jellysquid.mods.sodium.client.render.chunk.compile.pipeline.BlockRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
@@ -24,18 +26,24 @@ public class BlockRendererMixin {
     @Unique private final OBEBlockRenderer obeBlockRenderer = new OBEBlockRenderer();
 
     @ModifyVariable(method = "renderModel", at = @At("HEAD"), argsOnly = true)
-    public BakedModel renderModel(BakedModel model, BakedModel originalModel, BlockState state, BlockPos pos, BlockPos origin) {
-        if(RenderModeManager.hasBlockEntity(state)){
-            BlockEntity be = Minecraft.getInstance().level.getBlockEntity(pos);
+    public BlockRenderContext renderModel(BlockRenderContext ctx, BlockRenderContext originalCtx, ChunkBuildBuffers buffers) {
+        if(RenderModeManager.hasBlockEntity(ctx.state())){
+            BlockPos origin = new BlockPos((int)ctx.origin().x(), (int)ctx.origin().y(), (int)ctx.origin().z());
+            BlockEntity be = Minecraft.getInstance().level.getBlockEntity(ctx.pos());
             BlockEntityExt ext = (BlockEntityExt) be;
             if(ext != null) {
                 RenderModeManager.updateBlockEntity(ext, be);
                 if(ext.isSupportedBlockEntity() && !ext.hasSpecialRenderer() && ext.renderMode() != RenderMode.TERRAIN){
-                    return new BlockEntityStateModel();
+                    ctx.update(ctx.pos(), origin, ctx.state(), new BlockEntityStateModel(), ctx.seed());
+                    return ctx;
                 }
-                model = obeBlockRenderer.getModel(state, pos, state.getSeed(pos));
+                BakedModel model = obeBlockRenderer.getModel(ctx.state(), ctx.pos(), ctx.seed());
+                if(model != null) {
+                    ctx.update(ctx.pos(), origin, ctx.state(), model, ctx.seed());
+                    return ctx;
+                }
             }
         }
-        return model == null? originalModel : model;
+        return originalCtx;
     }
 }

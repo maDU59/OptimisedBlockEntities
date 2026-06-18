@@ -37,14 +37,14 @@ public class SkullBlockEntityMixin{
         }
     }
 
-    @Inject(method = "applyImplicitComponents", at = @At("RETURN"))
+    @Inject(method = "setOwner", at = @At("RETURN"))
     private void obe$checkProfile(CallbackInfo ci){
         BlockEntityExt ext = (BlockEntityExt)(Object)this;
         SkullBlockEntity skullBe = (SkullBlockEntity)(Object)this;
         if(skullBe.getOwnerProfile() != null) ext.renderMode(RenderMode.ENTITY);
     }
 
-    @Inject(method = "loadAdditional", at = @At("RETURN"))
+    @Inject(method = "load", at = @At("RETURN"))
     private void obe$checkProfileBis(CallbackInfo ci){
         BlockEntityExt ext = (BlockEntityExt)(Object)this;
         SkullBlockEntity skullBe = (SkullBlockEntity)(Object)this;

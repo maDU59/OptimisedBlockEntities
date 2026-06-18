@@ -1,7 +1,10 @@
 package fr.madu59.obe.client.renderer.blockentity.banner;
 
+import java.util.List;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.datafixers.util.Pair;
 import com.mojang.math.Axis;
 
 import fr.madu59.obe.client.config.SettingsManager;
@@ -13,10 +16,13 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.BannerBlock;
 import net.minecraft.world.level.block.WallBannerBlock;
 import net.minecraft.world.level.block.entity.BannerBlockEntity;
+import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RotationSegment;
 
@@ -31,6 +37,7 @@ public class OBEBannerRenderer extends BannerRenderer{
 
     @Override
     public void render(BannerBlockEntity bannerBlockEntity, float f, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j) {
+        List<Pair<Holder<BannerPattern>, DyeColor>> list = bannerBlockEntity.getPatterns();
         float g = 0.6666667F;
         boolean bl = bannerBlockEntity.getLevel() == null;
         poseStack.pushPose();
@@ -67,7 +74,7 @@ public class OBEBannerRenderer extends BannerRenderer{
         float k = ((float)Math.floorMod((long)(blockPos.getX() * 7 + blockPos.getY() * 9 + blockPos.getZ() * 13) + l, 100L) + f) / 100.0F;
         this.flag.xRot = (-0.0125F + 0.01F * Mth.cos(((float)Math.PI * 2F) * k)) * (float)Math.PI;
         this.flag.y = -32.0F;
-        renderPatterns(poseStack, multiBufferSource, i, j, this.flag, ModelBakery.BANNER_BASE, true, bannerBlockEntity.getBaseColor(), bannerBlockEntity.getPatterns());
+        renderPatterns(poseStack, multiBufferSource, i, j, this.flag, ModelBakery.BANNER_BASE, true, list);
         poseStack.popPose();
         poseStack.popPose();
     }

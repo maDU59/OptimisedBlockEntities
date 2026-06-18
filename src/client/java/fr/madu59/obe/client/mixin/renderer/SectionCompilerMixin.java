@@ -14,19 +14,18 @@ import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager.RenderMo
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.chunk.RenderChunkRegion;
-import net.minecraft.client.renderer.chunk.SectionCompiler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-@Mixin(SectionCompiler.class)
+@Mixin(targets = "net.minecraft.client.renderer.chunk.ChunkRenderDispatcher$RenderChunk$RebuildTask")
 public class SectionCompilerMixin {
     @Unique private OBEBlockRenderer obeBlockRenderer;
     @Unique private BlockEntity obe$be;
 
     @Inject(method = "<init>", at = @At("TAIL"))
-    private void obe$init(BlockRenderDispatcher blockRenderDispatcher, BlockEntityRenderDispatcher blockEntityRenderDispatcher, CallbackInfo ci) {
+    private void obe$init(CallbackInfo ci) {
         this.obeBlockRenderer = new OBEBlockRenderer();
     }
 

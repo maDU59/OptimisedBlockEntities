@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager;
 import net.minecraft.client.renderer.LevelRenderer;
-import net.minecraft.client.renderer.chunk.SectionRenderDispatcher.CompiledSection;
+import net.minecraft.client.renderer.chunk.ChunkRenderDispatcher.CompiledChunk;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import java.util.List;
 
@@ -15,14 +15,14 @@ import java.util.List;
 public class LevelRendererMixin {
 
     @Redirect(
-        method = "renderBlockEntities",
+        method = "renderLevel",
         at = @At(
             value = "INVOKE", 
-            target = "Lnet/minecraft/client/renderer/chunk/SectionMesh;getRenderableBlockEntities()Ljava/util/List;" 
+            target = "Lnet/minecraft/client/renderer/chunk/ChunkRenderDispatcher$CompiledChunk;getRenderableBlockEntities()Ljava/util/List;" 
         ),
         require = 0
     )
-    private <T extends CompiledSection> List<BlockEntity> obe$redirectGetRenderableBlockEntities(T sectionMeshInstance) {
+    private <T extends CompiledChunk> List<BlockEntity> obe$redirectGetRenderableBlockEntities(T sectionMeshInstance) {
         List<BlockEntity> original = sectionMeshInstance.getRenderableBlockEntities();
 
         if (original == null || original.isEmpty())  return original;

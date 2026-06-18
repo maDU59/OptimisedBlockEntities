@@ -8,7 +8,9 @@ import java.util.Map;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexFormat;
 
 import fr.madu59.obe.client.util.ResourceUtil;
 import net.minecraft.client.Minecraft;
@@ -108,7 +110,7 @@ public class BlockEntityStateModel implements BakedModel{
                 
                 Direction dir = getDirection(normal);
 
-                int[] packedVertices = new int[32];
+                int[] packedVertices = new int[36];
 
                 for (int i = 0; i < 4; i++) {
                     ModelPart.Vertex vertex = polygon.vertices[i];
@@ -120,7 +122,7 @@ public class BlockEntityStateModel implements BakedModel{
                     float u = sprite.getU(vertex.u);
                     float v = sprite.getV(vertex.v);
 
-                    int offset = i * 8;
+                    int offset = i * 7;
 
                     packedVertices[offset + 0] = Float.floatToRawIntBits(vec.x());
                     packedVertices[offset + 1] = Float.floatToRawIntBits(vec.y());
@@ -132,7 +134,8 @@ public class BlockEntityStateModel implements BakedModel{
                     packedVertices[offset + 5] = Float.floatToRawIntBits(v);
 
                     packedVertices[offset + 6] = 0;
-                    packedVertices[offset + 7] = 0; 
+                    packedVertices[offset + 7] = 0;
+                    packedVertices[offset + 8] = 0;
                 }
 
                 BakedQuad baked = new BakedQuad(

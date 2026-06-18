@@ -16,6 +16,7 @@ accessible method net/minecraft/client/renderer/blockentity/SignRenderer transla
 accessible method net/minecraft/client/renderer/blockentity/SignRenderer translateSign (Lcom/mojang/blaze3d/vertex/PoseStack;FLnet/minecraft/world/level/block/state/BlockState;)V
 accessible method net/minecraft/client/renderer/blockentity/SignRenderer getTextOffset ()Lnet/minecraft/world/phys/Vec3;
 accessible method net/minecraft/client/renderer/blockentity/SignRenderer renderSign (Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;IILnet/minecraft/world/level/block/state/properties/WoodType;Lnet/minecraft/client/model/Model;)V
+accessible method net/minecraft/client/renderer/blockentity/SignRenderer getDarkColor (Lnet/minecraft/world/level/block/entity/SignText;)I
 
 # Banner rendering
 accessible field net/minecraft/client/renderer/blockentity/BannerRenderer flag Lnet/minecraft/client/model/geom/ModelPart;

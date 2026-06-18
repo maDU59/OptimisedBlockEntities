@@ -26,6 +26,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.AbstractSkullBlock;
 import net.minecraft.world.level.block.BannerBlock;
 import net.minecraft.world.level.block.BedBlock;
@@ -45,7 +46,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraft.world.level.block.state.properties.RotationSegment;
 import net.minecraft.world.level.block.state.properties.WoodType;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.client.resources.model.BakedModel;
 
 public class OBEBlockRenderer {
@@ -265,11 +265,11 @@ public class OBEBlockRenderer {
         poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - facing.toYRot()));
         poseStack.translate((double)-0.5F, (double)0.0F, (double)-0.5F);
 
-        BakedModel model = ResourceUtil.getModel(layerLocation, Sheets.DECORATED_POT_BASE.texture(), state, poseStack, true);
+        BakedModel model = ResourceUtil.getModel(layerLocation, Sheets.getDecoratedPotMaterial(DecoratedPotPatterns.BASE).texture(), state, poseStack, true);
 
         layerLocation = ResourceUtil.getDecoratedPotLayerLocation(state, false);
 
-        BakedModel sideModel = ResourceUtil.getSubModel(layerLocation, Sheets.getDecoratedPotMaterial(DecoratedPotPatterns.BLANK).texture(), state, poseStack, SettingsManager.DECORATED_POT_AMBIENT_OCCLUSION.getValue());
+        BakedModel sideModel = ResourceUtil.getSubModel(layerLocation, Sheets.getDecoratedPotMaterial(DecoratedPotPatterns.getResourceKey(Items.BRICK)).texture(), state, poseStack, SettingsManager.DECORATED_POT_AMBIENT_OCCLUSION.getValue());
         
         model = new CompositeBlockStateModel(model, sideModel);
 

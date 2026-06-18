@@ -12,7 +12,7 @@ import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager.RenderMo
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.DecoratedPotBlockEntity;
-import net.minecraft.world.level.block.entity.PotDecorations;
+import net.minecraft.world.level.block.entity.DecoratedPotBlockEntity.Decorations;
 
 @Mixin(DecoratedPotBlockEntity.class)
 public class DecoratedPotBlockEntityMixin{
@@ -23,22 +23,13 @@ public class DecoratedPotBlockEntityMixin{
         BlockEntityExt ext = (BlockEntityExt)be;
 
         ext.isSupportedBlockEntity(be.getType() == BlockEntityType.DECORATED_POT);
-        if(((DecoratedPotBlockEntity)be).getDecorations() != PotDecorations.EMPTY) ext.renderMode(RenderMode.ENTITY);
-    }
-
-    @Inject(method = "triggerEvent", at = @At("RETURN"))
-    public void obe$triggerEvent(final int event, final int data, CallbackInfoReturnable<Boolean> ci) {
-        DecoratedPotBlockEntity be = (DecoratedPotBlockEntity)(Object)this;
-        BlockEntityExt ext = (BlockEntityExt)be;
-        RenderModeManager.setRenderModeDelayed(ext, RenderMode.ENTITY, be.getBlockPos());
-        ext.setTimer(be.wobbleStartedAtTick, be.lastWobbleStyle.duration);
+        if(((DecoratedPotBlockEntity)be).getDecorations() != Decorations.EMPTY) ext.renderMode(RenderMode.ENTITY);
     }
 
     @Inject(method = "getDecorations", at = @At("RETURN"))
-    public void obe$updateTimer(CallbackInfoReturnable<PotDecorations> cir) {
+    public void obe$updateTimer(CallbackInfoReturnable<Decorations> cir) {
         DecoratedPotBlockEntity be = (DecoratedPotBlockEntity)(Object)this;
         BlockEntityExt ext = (BlockEntityExt)be;
-        if(ext.isTimerFinished()) RenderModeManager.setRenderModeDelayed(ext, RenderMode.TERRAIN, be.getBlockPos());
-        if(cir.getReturnValue() != PotDecorations.EMPTY) RenderModeManager.setRenderModeDelayed(ext, RenderMode.ENTITY, be.getBlockPos());
+        if(cir.getReturnValue() != Decorations.EMPTY) RenderModeManager.setRenderModeDelayed(ext, RenderMode.ENTITY, be.getBlockPos());
     }
 }

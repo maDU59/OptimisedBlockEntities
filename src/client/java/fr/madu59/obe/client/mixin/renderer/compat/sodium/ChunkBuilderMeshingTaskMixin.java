@@ -9,8 +9,8 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager;
 import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager.RenderMode;
-import net.caffeinemc.mods.sodium.client.render.chunk.compile.tasks.ChunkBuilderMeshingTask;
-import net.caffeinemc.mods.sodium.client.world.LevelSlice;
+import me.jellysquid.mods.sodium.client.render.chunk.compile.tasks.ChunkBuilderMeshingTask;
+import me.jellysquid.mods.sodium.client.world.WorldSlice;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -21,8 +21,8 @@ public class ChunkBuilderMeshingTaskMixin {
 
     @Unique BlockEntity obe$be;
 
-    @Redirect(method = "execute", at = @At(value = "INVOKE", target = "Lnet/caffeinemc/mods/sodium/client/world/LevelSlice;getBlockState(III)Lnet/minecraft/world/level/block/state/BlockState;"))
-    private BlockState obe$getBlockState(LevelSlice slice, int x, int y, int z){
+    @Redirect(method = "execute", at = @At(value = "INVOKE", target = "Lme/jellysquid/mods/sodium/client/world/WorldSlice;getBlockState(III)Lnet/minecraft/world/level/block/state/BlockState;"))
+    private BlockState obe$getBlockState(WorldSlice slice, int x, int y, int z){
         obe$be = slice.getBlockEntity(x, y, z);
         return slice.getBlockState(x, y, z);
     }

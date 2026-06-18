@@ -25,6 +25,12 @@ loom {
 		}
 	}
 
+	runs{
+		client{
+			vmArgs "-Dsodium.checks.issue2561=false"
+		}
+	}
+
 	accessWidenerPath = file("src/main/resources/obe.classtweaker")
 }
 
@@ -39,12 +45,12 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
 	modImplementation ("com.terraformersmc:modmenu:${project.modmenu_version}")
-	modImplementation "maven.modrinth:sodium:mc1.21.1-0.6.13-fabric"
+	modImplementation "maven.modrinth:sodium:mc1.20.1-0.5.13-fabric"
 
     modImplementation("org.antlr:antlr4-runtime:4.13.1")
     modImplementation("io.github.douira:glsl-transformer:2.0.1")
     modImplementation("org.anarres:jcpp:1.4.14")
-	modImplementation "maven.modrinth:iris:1.8.8+1.21.1-fabric"
+	modImplementation "maven.modrinth:iris:1.7.6+1.20.1-fabric"
 	
 }
 

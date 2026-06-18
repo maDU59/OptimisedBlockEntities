@@ -10,7 +10,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager;
-import net.caffeinemc.mods.sodium.client.render.SodiumWorldRenderer;
+import me.jellysquid.mods.sodium.client.render.SodiumWorldRenderer;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 @Pseudo
