@@ -7,16 +7,20 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
 import fr.madu59.obe.client.config.SettingsManager;
+import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityRenderStateExt;
 import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager;
 import net.minecraft.client.model.object.banner.BannerFlagModel;
 import net.minecraft.client.model.object.banner.BannerModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BannerRenderer;
 import net.minecraft.client.renderer.blockentity.state.BannerRenderState;
+import net.minecraft.client.renderer.blockentity.state.BedRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -24,7 +28,9 @@ import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.resources.model.MaterialSet;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.level.block.entity.BannerBlockEntity;
 import net.minecraft.world.level.block.entity.BannerPatternLayers;
+import net.minecraft.world.level.block.entity.BedBlockEntity;
 
 @Mixin(BannerRenderer.class)
 public abstract class BannerRendererMixin {
@@ -72,5 +78,10 @@ public abstract class BannerRendererMixin {
         // submitNodeCollector.submitModel(bannerModel, Unit.INSTANCE, poseStack, material.renderType(RenderTypes::entitySolid), i, j, -1, materialSet.get(material), k, crumblingOverlay);
         BannerRenderer.submitPatterns(materialSet, poseStack, submitNodeCollector, i, j, bannerFlagModel, g, material, true, dyeColor, bannerPatternLayers, false, crumblingOverlay, k);
         poseStack.popPose();
+    }
+
+    @Inject(method = "extractRenderState", at = @At("HEAD"), cancellable = true)
+    public void obe$cancelExtract(CallbackInfo ci, @Local BannerRenderState state, @Local BannerBlockEntity be){
+        ((BlockEntityRenderStateExt)state).blockEntity(be);
     }
 }
