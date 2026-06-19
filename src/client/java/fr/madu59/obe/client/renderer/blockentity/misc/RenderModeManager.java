@@ -1,29 +1,22 @@
 package fr.madu59.obe.client.renderer.blockentity.misc;
 
 import fr.madu59.obe.client.config.SettingsManager;
+import fr.madu59.obe.client.registry.Registry;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityRenderStateExt;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTypes;
 
 public class RenderModeManager {
 
-    public static boolean isTerrain(BlockEntityRenderState state){
-        return isTerrain(((BlockEntityRenderStateExt)state).blockEntity());
+    public static  <T extends BlockEntity> boolean isSupportBlockEntity(T entity){
+        return isSupportBlockEntity((BlockEntityExt)entity);
     }
 
-    public static <T extends BlockEntity> boolean isTerrain(T entity){
-        return isTerrain((BlockEntityExt)entity);
-    }
-
-    public static boolean isTerrain(BlockEntityExt ext){
-        if (ext == null) {
-            return false;
-        }
-        return ext.renderMode() == RenderMode.TERRAIN;
+    public static boolean isSupportBlockEntity(BlockEntityExt ext){
+        return ext != null && ext.isSupportedBlockEntity();
     }
 
     public static void setRenderMode(BlockEntity be, RenderMode mode, BlockPos pos){
@@ -82,33 +75,30 @@ public class RenderModeManager {
     }
 
     public static void updateBlockEntity(BlockEntityExt ext, BlockEntity be){
-        if (be.getType() == BlockEntityTypes.SIGN || be.getType() == BlockEntityTypes.HANGING_SIGN) {
-            ext.isEnabled(SettingsManager.OPTIMISED_SIGNS.getValue());
-        }
-        else if (be.getType() == BlockEntityTypes.CHEST || be.getType() == BlockEntityTypes.TRAPPED_CHEST || be.getType() == BlockEntityTypes.ENDER_CHEST) {
+        if (Registry.isSupported("chest", be.getType())) {
             ext.isEnabled(SettingsManager.OPTIMISED_CHESTS.getValue());
         }
-        else if (be.getType() == BlockEntityTypes.BANNER) {
+        else if (Registry.isSupported("banner", be.getType())) {
             ext.isEnabled(SettingsManager.OPTIMISED_BANNERS.getValue());
         }
-        else if (be.getType() == BlockEntityTypes.SHULKER_BOX) {
+        else if (Registry.isSupported("shulker_box", be.getType())) {
             ext.isEnabled(SettingsManager.OPTIMISED_SHULKER_BOXES.getValue());
         }
-        else if (be.getType() == BlockEntityTypes.SKULL) {
+        else if (Registry.isSupported("skull", be.getType())) {
             ext.isEnabled(SettingsManager.OPTIMISED_SKULLS.getValue());
         }
-        else if (be.getType() == BlockEntityTypes.BELL) {
+        else if (Registry.isSupported("bell", be.getType())) {
             ext.isEnabled(SettingsManager.OPTIMISED_BELLS.getValue());
         }
-        else if (be.getType() == BlockEntityTypes.DECORATED_POT) {
+        else if (Registry.isSupported("decorated_pot", be.getType())) {
             ext.isEnabled(SettingsManager.OPTIMISED_DECORATED_POTS.getValue());
         }
-        else if (be.getType() == BlockEntityTypes.COPPER_GOLEM_STATUE) {
+        else if (Registry.isSupported("copper_golem_statue", be.getType())) {
             ext.isEnabled(SettingsManager.OPTIMISED_COPPER_GOLEMS.getValue());
         }
         if(ext.isEnabled()){
             if(ext.isTimerFinished()){
-            ext.renderMode(RenderMode.TERRAIN);
+                ext.renderMode(RenderMode.TERRAIN);
             }
             if(ext.renderMode() != ext.renderModeDelayed()){
                 ext.renderMode(ext.renderModeDelayed());

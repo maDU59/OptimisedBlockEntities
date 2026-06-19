@@ -5,6 +5,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import fr.madu59.obe.client.registry.Registry;
 import fr.madu59.obe.client.renderer.OBEBlockRenderer;
 
 import org.spongepowered.asm.mixin.injection.At;
@@ -12,14 +13,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import net.minecraft.client.renderer.block.BlockStateModelSet;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.block.AbstractChestBlock;
-import net.minecraft.world.level.block.AbstractSkullBlock;
-import net.minecraft.world.level.block.BannerBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.CopperGolemStatueBlock;
-import net.minecraft.world.level.block.DecoratedPotBlock;
-import net.minecraft.world.level.block.ShulkerBoxBlock;
-import net.minecraft.world.level.block.WallBannerBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 @Mixin(BlockStateModelSet.class)
@@ -31,30 +24,29 @@ public class BlockStateModelSetMixin {
     public void obe$getBlockStateModel(BlockState state, CallbackInfoReturnable<BlockStateModel> cir){
         if (!state.hasBlockEntity()) return;
 
-        Block block = state.getBlock();
         RandomSource random = RandomSource.create(42);
 
-        if(block instanceof AbstractSkullBlock){
+        if(Registry.isSupported("skull", state)){
             cir.setReturnValue(obeBlockRenderer.getSkullBlockModel(state, random));
         }
-        else if(block instanceof AbstractChestBlock){
+        else if(Registry.isSupported("chest", state)){
             cir.setReturnValue(obeBlockRenderer.getChestModel(state, random));
         }
-        else if(block instanceof BannerBlock || block instanceof WallBannerBlock){
+        else if(Registry.isSupported("banner", state)){
             cir.setReturnValue(obeBlockRenderer.getBannerModel(state, random));
         }
-        // else if(block instanceof BellBlock){
+        // else if(Registry.isSupported("bell", state)){
         //     BlockStateModelSet set = ((BlockStateModelSet)(Object)this);
         //     OBEBlockRenderer.originalBellModel = (BlockStateModel)set.modelByState.getOrDefault(state, new BlockEntityStateModel());
         //     cir.setReturnValue(new CompositeBlockStateModel(obeBlockRenderer.getBellModel(state, random), (BlockStateModel)set.modelByState.getOrDefault(state, new BlockEntityStateModel())));
         // }
-        else if(block instanceof CopperGolemStatueBlock){
+        else if(Registry.isSupported("copper_golem_statue", state)){
             cir.setReturnValue(obeBlockRenderer.getCopperGolemStatueModel(state, random));
         }
-        else if(block instanceof ShulkerBoxBlock){
+        else if(Registry.isSupported("shulker_box", state)){
             cir.setReturnValue(obeBlockRenderer.getShulkerBoxModel(state, random));
         }
-        else if(block instanceof DecoratedPotBlock){
+        else if(Registry.isSupported("decorated_pot", state)){
             cir.setReturnValue(obeBlockRenderer.getDecoratedPotModel(state, random));
         }
     }

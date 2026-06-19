@@ -8,12 +8,12 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import fr.madu59.obe.client.OBEClient;
 import fr.madu59.obe.client.model.BlockEntityStateModel;
-import fr.madu59.obe.client.renderer.blockentity.chest.OBEChestRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
+import net.minecraft.client.renderer.blockentity.ChestRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.data.AtlasIds;
@@ -47,7 +47,7 @@ public class ResourceUtil{
     }
 
     public static ModelLayerLocation getChestLayerLocation(BlockState state){
-        return OBEChestRenderer.LAYERS.select(state.getValueOrElse(ChestBlock.TYPE, ChestType.SINGLE));
+        return ChestRenderer.LAYERS.select(state.getValueOrElse(ChestBlock.TYPE, ChestType.SINGLE));
     }
 
     public static ModelLayerLocation getBellLayerLocation(BlockState state){
@@ -125,6 +125,10 @@ public class ResourceUtil{
         modelCache.clear();
         transformedModelCache.clear();
         transformedSubModelCache.clear();
+    }
+
+    public static Identifier entityTextureFormatter(Identifier identifier){
+        return Identifier.tryBuild(identifier.getNamespace(), identifier.getPath().replace(".png", "").replace("textures/", ""));
     }
 
     public record ModelCacheKey(ModelLayerLocation modelLayerLocation, BlockState blockState) {}
