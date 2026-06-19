@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 @Mixin(ChestBlockEntity.class)
-public class ChestBlockEntityMixin{
+public abstract class ChestBlockEntityMixin{
     @Inject(method = "<init>(Lnet/minecraft/world/level/block/entity/BlockEntityType;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;)V", at = @At("TAIL"))
     private void obe$init(CallbackInfo ci) {
         

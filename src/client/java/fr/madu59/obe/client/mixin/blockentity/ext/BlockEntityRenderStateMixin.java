@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.Unique;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityRenderStateExt;
 
 @Mixin(BlockEntityRenderState.class)
-public class BlockEntityRenderStateMixin implements BlockEntityRenderStateExt {
+public abstract class BlockEntityRenderStateMixin implements BlockEntityRenderStateExt {
     // Thanks to Ceeden and Better Block Entities for this tricks, it allows to pass the block entity from the extraction to rendering stage
     @Unique private BlockEntity blockEntity;
 

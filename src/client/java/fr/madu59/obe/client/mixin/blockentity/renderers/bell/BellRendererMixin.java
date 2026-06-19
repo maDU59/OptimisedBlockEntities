@@ -14,7 +14,7 @@ import net.minecraft.client.renderer.blockentity.state.BellRenderState;
 import net.minecraft.world.level.block.entity.BellBlockEntity;
 
 @Mixin(BellRenderer.class)
-public class BellRendererMixin {
+public abstract class BellRendererMixin {
     @Inject(method = "submit", at = @At("HEAD"), cancellable = true)
     public void obe$cancelSubmit(CallbackInfo ci, @Local BellRenderState state){
         if(!RenderModeManager.shouldRenderEntity(state)) ci.cancel();

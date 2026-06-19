@@ -14,7 +14,7 @@ import net.minecraft.client.renderer.blockentity.state.DecoratedPotRenderState;
 import net.minecraft.world.level.block.entity.DecoratedPotBlockEntity;
 
 @Mixin(DecoratedPotRenderer.class)
-public class DecoratedPotRendererMixin {
+public abstract class DecoratedPotRendererMixin {
     @Inject(method = "submit", at = @At("HEAD"), cancellable = true)
     public void obe$cancelSubmit(CallbackInfo ci, @Local DecoratedPotRenderState state){
         if(!RenderModeManager.shouldRenderEntity(state)) ci.cancel();

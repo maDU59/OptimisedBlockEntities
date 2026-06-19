@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 @Mixin(SkullBlockEntity.class)
-public class SkullBlockEntityMixin{
+public abstract class SkullBlockEntityMixin{
     @Inject(method = "<init>", at = @At("TAIL"))
     private void obe$init(CallbackInfo ci) {
         

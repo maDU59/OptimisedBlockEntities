@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.CopperGolemStatueBlockEntity;
 
 @Mixin(CopperGolemStatueBlockEntity.class)
-public class CopperGolemStatueBlockEntityMixin{
+public abstract class CopperGolemStatueBlockEntityMixin{
     @Inject(method = "<init>", at = @At("TAIL"))
     private void init(CallbackInfo ci) {
         

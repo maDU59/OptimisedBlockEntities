@@ -20,7 +20,6 @@ import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager;
 
 import org.spongepowered.asm.mixin.injection.At;
 
-import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.AbstractSignRenderer;
 import net.minecraft.client.renderer.blockentity.state.SignRenderState;

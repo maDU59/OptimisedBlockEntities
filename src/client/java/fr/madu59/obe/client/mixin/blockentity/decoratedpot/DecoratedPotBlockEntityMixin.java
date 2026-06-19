@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.entity.DecoratedPotBlockEntity;
 import net.minecraft.world.level.block.entity.PotDecorations;
 
 @Mixin(DecoratedPotBlockEntity.class)
-public class DecoratedPotBlockEntityMixin{
+public abstract class DecoratedPotBlockEntityMixin{
     @Inject(method = "<init>", at = @At("TAIL"))
     private void init(CallbackInfo ci) {
 

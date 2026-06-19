@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.LidBlockEntity;
 
 @Mixin(ChestRenderer.class)
-public class ChestRendererMixin<T extends BlockEntity & LidBlockEntity> {
+public abstract class ChestRendererMixin<T extends BlockEntity & LidBlockEntity> {
     @Inject(method = "submit", at = @At("HEAD"), cancellable = true)
     public void obe$cancelSubmit(CallbackInfo ci, @Local ChestRenderState state){
         if(!RenderModeManager.shouldRenderEntity(state)) ci.cancel();
