@@ -134,15 +134,13 @@ public class OBEBlockRenderer {
     public BlockStateModel getBedModel(BlockState state, RandomSource random) {
         if(ResourceUtil.cacheContains(state)) return ResourceUtil.getModel(state);
         PoseStack poseStack = new PoseStack();
-
-        BedBlock block = (BedBlock) state.getBlock();
         
         ModelLayerLocation layerLocation = ResourceUtil.getBedLayerLocation(state);
 
         Direction facing = state.getValue(BedBlock.FACING);
         poseStack.mulPose(BedRenderer.modelTransform(facing));
 
-        return ResourceUtil.getModel(layerLocation, Sheets.getBedSprite(block.getColor()).texture(), state, poseStack, SettingsManager.BED_AMBIENT_OCCLUSION.getValue());
+        return ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "bed"), state, poseStack, SettingsManager.BED_AMBIENT_OCCLUSION.getValue());
     }
 
     public BlockStateModel getChestModel(BlockState state, RandomSource random) {

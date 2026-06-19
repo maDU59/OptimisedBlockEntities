@@ -6,11 +6,13 @@ import java.util.function.Function;
 
 import fr.madu59.obe.OBE;
 import fr.madu59.obe.client.util.blockentity.BannerUtil;
+import fr.madu59.obe.client.util.blockentity.BedUtil;
 import fr.madu59.obe.client.util.blockentity.BellUtil;
 import fr.madu59.obe.client.util.blockentity.ChestUtil;
 import fr.madu59.obe.client.util.blockentity.CopperGolemStatueUtil;
 import fr.madu59.obe.client.util.blockentity.DecoratedPotUtil;
 import fr.madu59.obe.client.util.blockentity.ShulkerBoxUtil;
+import fr.madu59.obe.client.util.blockentity.SignUtil;
 import fr.madu59.obe.client.util.blockentity.SkullBlockUtil;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -28,6 +30,8 @@ public class MaterialGetter {
         registerDefault("shulker_box", ShulkerBoxUtil::getShulkerBoxMaterial);
         registerDefault("decorated_pot", DecoratedPotUtil::getDecoratedPotMaterial);
         registerDefault("copper_golem_statue", CopperGolemStatueUtil::getCopperGolemStatueMaterial);
+        registerDefault("sign", SignUtil::getSignMaterial);
+        registerDefault("bed", BedUtil::getBedMaterial);
     }
 
     public static void registerDefault(String group, Function<BlockState, Identifier> getter){
