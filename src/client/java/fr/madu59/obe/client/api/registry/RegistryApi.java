@@ -14,7 +14,7 @@ public class RegistryApi {
     /*
      * Register a new group of optimised block entities
      * @param id The id of the group to register
-     * @since 1.0.0
+     * @since 1.1.0
      */
     public static void registerGroup(String id){
         Registry.registerGroup(id);
@@ -24,7 +24,7 @@ public class RegistryApi {
      * Register a new optimised block entity type inside of a group
      * @param type The block entity type to register
      * @param id The id of the group to register the block entity type in
-     * @since 1.0.0
+     * @since 1.1.0
      */
     public static void registerBlockEntityType(BlockEntityType<?> type, String id){
         Registry.addBlockEntityTypeInGroup(id, type);
@@ -34,7 +34,7 @@ public class RegistryApi {
      * Register a material provider for a group
      * @param id The group to which the material provider should be registered
      * @param provider The material provider, it must be a function accepting a BlockState and returning an Identifier
-     * @since 1.0.0
+     * @since 1.1.0
      */
     public static void registerMaterialProvider(String id, Function<BlockState, Identifier> provider){
         MaterialGetter.registerDefault(id, provider);
@@ -44,7 +44,7 @@ public class RegistryApi {
      * Register a material provider for a block entity type
      * @param type The block entity type to which the material provider should be registered
      * @param provider The material provider, it must be a function accepting a BlockState and returning an Identifier
-     * @since 1.0.0
+     * @since 1.1.0
      */
     public static void registerMaterialProvider(BlockEntityType<?> type, Function<BlockState, Identifier> provider){
         MaterialGetter.register(type, provider);
@@ -53,7 +53,7 @@ public class RegistryApi {
     /*
      * Register a block entity as supported - note that if the block entity type of this block entity has already been registered in one of the vanilla groups, this may not be needed
      * @param be The block entity to register as supported - this must be done at the block entity init
-     * @since 1.0.0
+     * @since 1.1.0
      */
     public static <T extends BlockEntity> void registerSupportedBlockEntity(T be){
         ((BlockEntityExt)be).isSupportedBlockEntity(true);
