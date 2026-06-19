@@ -5,6 +5,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import fr.madu59.obe.client.registry.Registry;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager;
 import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager.RenderMode;
@@ -24,7 +25,7 @@ public class ShulkerBoxBlockEntityMixin{
         BlockEntity be = (BlockEntity)(Object)this;
         BlockEntityExt ext = (BlockEntityExt)be;
         
-        ext.isSupportedBlockEntity(be.getType() == BlockEntityTypes.SHULKER_BOX);
+        ext.isSupportedBlockEntity(Registry.isSupported("shulker_box", be.getType()));
     }
 
     @Inject(method = "updateAnimation", at = @At("HEAD"))
