@@ -5,17 +5,17 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import fr.madu59.obe.registry.Registry;
 import fr.madu59.obe.renderer.blockentity.ext.BlockEntityExt;
 import fr.madu59.obe.renderer.blockentity.misc.RenderModeManager;
 import fr.madu59.obe.renderer.blockentity.misc.RenderModeManager.RenderMode;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 @Mixin(SkullBlockEntity.class)
-public class SkullBlockEntityMixin{
+public abstract class SkullBlockEntityMixin{
     @Inject(method = "<init>", at = @At("TAIL"))
     private void obe$init(CallbackInfo ci) {
         
@@ -23,7 +23,7 @@ public class SkullBlockEntityMixin{
         BlockEntityExt ext = (BlockEntityExt)be;
         
         if(be.getOwnerProfile() != null) ext.renderMode(RenderMode.ENTITY);
-        ext.isSupportedBlockEntity(be.getType() == BlockEntityType.SKULL);
+        ext.isSupportedBlockEntity(Registry.isSupported("skull", be.getType()));
     }
 
     @Inject(method = "animation", at = @At("TAIL"))

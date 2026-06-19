@@ -59,9 +59,9 @@ public class ResourceUtil{
 
     public static ModelLayerLocation getChestLayerLocation(BlockState state){
         return switch(BackportUtil.getValueOrElse(state, ChestBlock.TYPE, ChestType.SINGLE)){
-            case ChestType.SINGLE -> ModelLayers.CHEST;
-            case ChestType.LEFT -> ModelLayers.DOUBLE_CHEST_LEFT;
-            case ChestType.RIGHT -> ModelLayers.DOUBLE_CHEST_RIGHT;
+            case SINGLE -> ModelLayers.CHEST;
+            case LEFT -> ModelLayers.DOUBLE_CHEST_LEFT;
+            case RIGHT -> ModelLayers.DOUBLE_CHEST_RIGHT;
         };
     }
 
@@ -127,6 +127,10 @@ public class ResourceUtil{
         modelCache.clear();
         transformedModelCache.clear();
         transformedSubModelCache.clear();
+    }
+
+    public static ResourceLocation entityTextureFormatter(ResourceLocation resourceLocation){
+        return ResourceLocation.tryBuild(resourceLocation.getNamespace(), resourceLocation.getPath().replace(".png", "").replace("textures/", ""));
     }
 
     public record ModelCacheKey(ModelLayerLocation modelLayerLocation, BlockState blockState) {}

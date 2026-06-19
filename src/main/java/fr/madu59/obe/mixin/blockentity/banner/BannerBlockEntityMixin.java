@@ -5,10 +5,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import fr.madu59.obe.registry.Registry;
 import fr.madu59.obe.renderer.blockentity.ext.BlockEntityExt;
 import net.minecraft.world.level.block.entity.BannerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 
 @Mixin(BannerBlockEntity.class)
 public class BannerBlockEntityMixin{
@@ -19,7 +19,7 @@ public class BannerBlockEntityMixin{
         BlockEntity be = (BlockEntity)(Object)this;
         BlockEntityExt ext = (BlockEntityExt)be;
 
-        ext.isSupportedBlockEntity(be.getType() == BlockEntityType.BANNER);
+        ext.isSupportedBlockEntity(Registry.isSupported("banner", be.getType()));
         ext.renderBoth(true);
     }
 

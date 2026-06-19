@@ -1,6 +1,7 @@
 package fr.madu59.obe;
 
 import fr.madu59.obe.config.configscreen.OptimisedBlockEntitiesConfigScreen;
+import fr.madu59.obe.registry.Registry;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -12,6 +13,7 @@ import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 public class OBEClient {
 
 	public OBEClient(ModContainer container, IEventBus bus){
+		Registry.init();
         NeoForge.EVENT_BUS.register(OptimisedBlockEntitiesConfigScreen.class);
         container.registerExtensionPoint(IConfigScreenFactory.class, (client, parent) -> {
             return new OptimisedBlockEntitiesConfigScreen(parent);

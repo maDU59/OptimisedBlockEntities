@@ -1,2 +1,2 @@
 # What's new:
-- Fixed threading issue on neoforge
+- Fixed banners being rendered twice since last update

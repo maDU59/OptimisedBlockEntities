@@ -6,23 +6,23 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import fr.madu59.obe.registry.Registry;
 import fr.madu59.obe.renderer.blockentity.ext.BlockEntityExt;
 import fr.madu59.obe.renderer.blockentity.misc.RenderModeManager;
 import fr.madu59.obe.renderer.blockentity.misc.RenderModeManager.RenderMode;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.DecoratedPotBlockEntity;
 import net.minecraft.world.level.block.entity.PotDecorations;
 
 @Mixin(DecoratedPotBlockEntity.class)
-public class DecoratedPotBlockEntityMixin{
+public abstract class DecoratedPotBlockEntityMixin{
     @Inject(method = "<init>", at = @At("TAIL"))
     private void init(CallbackInfo ci) {
 
         BlockEntity be = (BlockEntity)(Object)this;
         BlockEntityExt ext = (BlockEntityExt)be;
 
-        ext.isSupportedBlockEntity(be.getType() == BlockEntityType.DECORATED_POT);
+        ext.isSupportedBlockEntity(Registry.isSupported("decorated_pot", be.getType()));
         if(((DecoratedPotBlockEntity)be).getDecorations() != PotDecorations.EMPTY) ext.renderMode(RenderMode.ENTITY);
     }
 
