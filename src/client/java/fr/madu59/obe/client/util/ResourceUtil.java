@@ -1,6 +1,5 @@
 package fr.madu59.obe.client.util;
 
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -14,7 +13,6 @@ import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.blockentity.HangingSignRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.SkullBlock;
@@ -67,9 +65,9 @@ public class ResourceUtil{
 
     public static ModelLayerLocation getChestLayerLocation(BlockState state){
         return switch(state.getValueOrElse(ChestBlock.TYPE, ChestType.SINGLE)){
-            case ChestType.SINGLE -> ModelLayers.CHEST;
-            case ChestType.LEFT -> ModelLayers.DOUBLE_CHEST_LEFT;
-            case ChestType.RIGHT -> ModelLayers.DOUBLE_CHEST_RIGHT;
+            case SINGLE -> ModelLayers.CHEST;
+            case LEFT -> ModelLayers.DOUBLE_CHEST_LEFT;
+            case RIGHT -> ModelLayers.DOUBLE_CHEST_RIGHT;
         };
     }
 
@@ -135,6 +133,10 @@ public class ResourceUtil{
         modelCache.clear();
         transformedModelCache.clear();
         transformedSubModelCache.clear();
+    }
+
+    public static ResourceLocation entityTextureFormatter(ResourceLocation resourceLocation){
+        return ResourceLocation.tryBuild(resourceLocation.getNamespace(), resourceLocation.getPath().replace(".png", "").replace("textures/", ""));
     }
 
     public record ModelCacheKey(ModelLayerLocation modelLayerLocation, BlockState blockState) {}
