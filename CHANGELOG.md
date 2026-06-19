@@ -1,2 +1,2 @@
 # What's new:
-- Fixed crash with invalid or outdated config
+- Fixed banners being rendered twice since last update
