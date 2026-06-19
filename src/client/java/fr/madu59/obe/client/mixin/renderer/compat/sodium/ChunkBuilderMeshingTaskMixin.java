@@ -2,7 +2,6 @@ package fr.madu59.obe.client.mixin.renderer.compat.sodium;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
@@ -35,7 +34,7 @@ public class ChunkBuilderMeshingTaskMixin {
         if(state.hasBlockEntity()){
             BlockEntity be = beRef.get();
             BlockEntityExt ext = (BlockEntityExt) be;
-            if(ext != null) {
+            if(ext != null && ext.isSupportedBlockEntity()) {
                 RenderModeManager.updateBlockEntity(ext, be);
                 if(ext.isSupportedBlockEntity() && !ext.hasSpecialRenderer() && ext.renderMode() != RenderMode.TERRAIN){
                     return RenderShape.INVISIBLE;

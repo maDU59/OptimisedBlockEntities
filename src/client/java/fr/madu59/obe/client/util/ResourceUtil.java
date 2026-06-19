@@ -76,9 +76,9 @@ public class ResourceUtil{
 
     public static ModelLayerLocation getChestLayerLocation(BlockState state){
         return switch(state.getValueOrElse(ChestBlock.TYPE, ChestType.SINGLE)){
-            case ChestType.SINGLE -> ModelLayers.CHEST;
-            case ChestType.LEFT -> ModelLayers.DOUBLE_CHEST_LEFT;
-            case ChestType.RIGHT -> ModelLayers.DOUBLE_CHEST_RIGHT;
+            case SINGLE -> ModelLayers.CHEST;
+            case LEFT -> ModelLayers.DOUBLE_CHEST_LEFT;
+            case RIGHT -> ModelLayers.DOUBLE_CHEST_RIGHT;
         };
     }
 
@@ -92,10 +92,10 @@ public class ResourceUtil{
 
     public static ModelLayerLocation getCopperGolemStatueLayerLocation(BlockState state){
         return switch(state.getValue(CopperGolemStatueBlock.POSE)) {
-            case CopperGolemStatueBlock.Pose.STANDING-> ModelLayers.COPPER_GOLEM;
-            case CopperGolemStatueBlock.Pose.RUNNING-> ModelLayers.COPPER_GOLEM_RUNNING;
-            case CopperGolemStatueBlock.Pose.SITTING-> ModelLayers.COPPER_GOLEM_SITTING;
-            case CopperGolemStatueBlock.Pose.STAR-> ModelLayers.COPPER_GOLEM_STAR;
+            case STANDING-> ModelLayers.COPPER_GOLEM;
+            case RUNNING-> ModelLayers.COPPER_GOLEM_RUNNING;
+            case SITTING-> ModelLayers.COPPER_GOLEM_SITTING;
+            case STAR-> ModelLayers.COPPER_GOLEM_STAR;
         };
     }
 
@@ -161,6 +161,10 @@ public class ResourceUtil{
         modelCache.clear();
         transformedModelCache.clear();
         transformedSubModelCache.clear();
+    }
+
+    public static Identifier entityTextureFormatter(Identifier identifier){
+        return Identifier.tryBuild(identifier.getNamespace(), identifier.getPath().replace(".png", "").replace("textures/", ""));
     }
 
     public record ModelCacheKey(ModelLayerLocation modelLayerLocation, BlockState blockState) {}
