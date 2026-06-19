@@ -12,6 +12,11 @@ accessible field net/minecraft/client/renderer/blockentity/AbstractSignRenderer 
 extendable method net/minecraft/client/renderer/blockentity/AbstractSignRenderer renderSignWithText (Lnet/minecraft/world/level/block/entity/SignBlockEntity;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;IILnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/block/SignBlock;Lnet/minecraft/world/level/block/state/properties/WoodType;Lnet/minecraft/client/model/Model;)V
 accessible method net/minecraft/client/renderer/blockentity/AbstractSignRenderer isOutlineVisible (Lnet/minecraft/core/BlockPos;I)Z
 accessible method net/minecraft/client/renderer/blockentity/AbstractSignRenderer translateSignText (Lcom/mojang/blaze3d/vertex/PoseStack;ZLnet/minecraft/world/phys/Vec3;)V
+extendable method net/minecraft/client/renderer/blockentity/AbstractSignRenderer submitSignWithText (Lnet/minecraft/client/renderer/blockentity/state/SignRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/block/SignBlock;Lnet/minecraft/world/level/block/state/properties/WoodType;Lnet/minecraft/client/model/Model$Simple;Lnet/minecraft/client/renderer/feature/ModelFeatureRenderer$CrumblingOverlay;Lnet/minecraft/client/renderer/SubmitNodeCollector;)V
+accessible method net/minecraft/client/renderer/blockentity/SignRenderer translateBase (Lcom/mojang/blaze3d/vertex/PoseStack;F)V
+
+# Chest rendering
+accessible method net/minecraft/client/renderer/blockentity/ChestRenderer getChestMaterial (Lnet/minecraft/world/level/block/entity/BlockEntity;Z)Lnet/minecraft/client/renderer/blockentity/state/ChestRenderState$ChestMaterialType;
 
 # Banner rendering
 accessible field net/minecraft/client/renderer/blockentity/BannerRenderer standingFlagModel Lnet/minecraft/client/model/BannerFlagModel;
