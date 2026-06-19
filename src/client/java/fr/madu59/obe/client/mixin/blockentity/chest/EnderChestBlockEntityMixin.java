@@ -5,13 +5,13 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import fr.madu59.obe.client.registry.Registry;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager;
 import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager.RenderMode;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.EnderChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -23,17 +23,17 @@ public class EnderChestBlockEntityMixin{
         BlockEntity be = (BlockEntity)(Object)this;
         BlockEntityExt ext = (BlockEntityExt)be;
         
-        ext.isSupportedBlockEntity(be.getType() == BlockEntityType.CHEST || be.getType() == BlockEntityType.TRAPPED_CHEST || be.getType() == BlockEntityType.ENDER_CHEST);
+        ext.isSupportedBlockEntity(Registry.isSupported("chest", be.getType()));
     }
 
     @Inject(method = "lidAnimateTick", at = @At("HEAD"))
     private static void obe$lidAnimateTick(final Level level, final BlockPos pos, final BlockState state, final EnderChestBlockEntity entity, CallbackInfo ci) {
         BlockEntityExt ext = (BlockEntityExt)entity;
         if(entity.getOpenNess(0) > 0.05){
-            RenderModeManager.setRenderMode(ext, RenderMode.ENTITY, pos);
+            RenderModeManager.setRenderModeDelayed(ext, RenderMode.ENTITY, pos);
         }
         else{
-            RenderModeManager.setRenderMode(ext, RenderMode.TERRAIN, pos);
+            RenderModeManager.setRenderModeDelayed(ext, RenderMode.TERRAIN, pos);
         }
     }
 }
