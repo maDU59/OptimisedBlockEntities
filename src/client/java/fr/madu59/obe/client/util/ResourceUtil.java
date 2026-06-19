@@ -129,5 +129,9 @@ public class ResourceUtil{
         transformedSubModelCache.clear();
     }
 
+    public static ResourceLocation entityTextureFormatter(ResourceLocation resourceLocation){
+        return ResourceLocation.tryBuild(resourceLocation.getNamespace(), resourceLocation.getPath().replace(".png", "").replace("textures/", ""));
+    }
+
     public record ModelCacheKey(ModelLayerLocation modelLayerLocation, BlockState blockState) {}
 }

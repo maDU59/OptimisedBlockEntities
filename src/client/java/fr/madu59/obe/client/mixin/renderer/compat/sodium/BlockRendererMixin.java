@@ -31,7 +31,7 @@ public class BlockRendererMixin {
             BlockPos origin = new BlockPos((int)ctx.origin().x(), (int)ctx.origin().y(), (int)ctx.origin().z());
             BlockEntity be = Minecraft.getInstance().level.getBlockEntity(ctx.pos());
             BlockEntityExt ext = (BlockEntityExt) be;
-            if(ext != null) {
+            if(ext != null && ext.isSupportedBlockEntity()) {
                 RenderModeManager.updateBlockEntity(ext, be);
                 if(ext.isSupportedBlockEntity() && !ext.hasSpecialRenderer() && ext.renderMode() != RenderMode.TERRAIN){
                     ctx.update(ctx.pos(), origin, ctx.state(), new BlockEntityStateModel(), ctx.seed());
