@@ -6,8 +6,6 @@ import fr.madu59.obe.client.compat.ModCompat;
 import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityRenderStateExt;
 import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager;
-import fr.madu59.obe.client.renderer.blockentity.sign.ext.SignBlockEntityExt;
-import fr.madu59.obe.client.renderer.blockentity.sign.ext.SignRenderStateExt;
 
 import java.util.List;
 
@@ -54,7 +52,7 @@ public abstract class OBEAbstractSignRenderer<S extends SignRenderState> extends
 
         if (isFacingCamera(poseStack, cameraPos)) {
             if (state.frontText != null) {
-                this.submitSignText(state, poseStack, submitNodeCollector, state.frontText, true);
+                this.submitSignText(state, poseStack, submitNodeCollector, state.frontText);
                 poseStack.popPose();
             }
         }
@@ -63,7 +61,7 @@ public abstract class OBEAbstractSignRenderer<S extends SignRenderState> extends
                 poseStack.popPose();
                 poseStack.pushPose();
                 poseStack.mulPose(state.transformations.backText());
-                this.submitSignText(state, poseStack, submitNodeCollector, state.backText, false);
+                this.submitSignText(state, poseStack, submitNodeCollector, state.backText);
                 poseStack.popPose();
             }
         }
@@ -82,10 +80,13 @@ public abstract class OBEAbstractSignRenderer<S extends SignRenderState> extends
         return forwardVector.dot(pos) < 0.0f;
     }
 
-    public void submitSignText(final S state, final PoseStack poseStack, final SubmitNodeCollector submitNodeCollector, final SignText signText, final boolean front) {
-        SignRenderStateExt stateExt = (SignRenderStateExt) (Object) state;
+    private void submitSignText(final S state, final PoseStack poseStack, final SubmitNodeCollector submitNodeCollector, final SignText signText) {
         int darkColor = getDarkColor(signText);
         int signMidpoint = 4 * state.textLineHeight / 2;
+        FormattedCharSequence[] formattedLines = signText.getRenderMessages(state.isTextFilteringEnabled, (input) -> {
+            List<FormattedCharSequence> components = this.font.split(input, state.maxTextLineWidth);
+            return components.isEmpty() ? FormattedCharSequence.EMPTY : (FormattedCharSequence)components.get(0);
+        });
         int textColor;
         boolean drawOutline;
         int lightVal;
@@ -100,49 +101,10 @@ public abstract class OBEAbstractSignRenderer<S extends SignRenderState> extends
         }
 
         for(int i = 0; i < 4; ++i) {
-            FormattedCharSequence actualLine = stateExt.getCachedLines(front)[i];
-            float x1 = stateExt.getLineWidths(front)[i];
+            FormattedCharSequence actualLine = formattedLines[i];
+            float x1 = (float)(-this.font.width(actualLine) / 2);
             submitNodeCollector.submitText(poseStack, x1, (float)(i * state.textLineHeight - signMidpoint), actualLine, false, DisplayMode.POLYGON_OFFSET, lightVal, textColor, 0, drawOutline ? darkColor : 0);
         }
 
-    }
-
-    public void extractRenderState(final SignBlockEntity blockEntity, final S state, final float partialTicks, final Vec3 cameraPosition, final ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress) {
-        super.extractRenderState(blockEntity, state, partialTicks, cameraPosition, breakProgress);
-
-        ((BlockEntityRenderStateExt)state).blockEntity(blockEntity);
-
-        SignBlockEntityExt beExt = (SignBlockEntityExt) (Object) blockEntity;
-        SignRenderStateExt stateExt = (SignRenderStateExt) (Object) state;
-
-        boolean filteringChanged = state.isTextFilteringEnabled != beExt.getLastFiltering();
-        if (filteringChanged) {
-            beExt.setLastFiltering(state.isTextFilteringEnabled);
-        }
-
-        rebuildIfDirty(blockEntity.getFrontText(), true,  filteringChanged, beExt, state);
-        rebuildIfDirty(blockEntity.getBackText(),  false, filteringChanged, beExt, state);
-
-        stateExt.setCachedLines(beExt.getCachedLines(true), beExt.getCachedLines(false));
-        stateExt.setLineWidths(beExt.getLineWidths(true), beExt.getLineWidths(false));
-    }
-
-    private void rebuildIfDirty(SignText text, boolean front, boolean filteringChanged,
-            SignBlockEntityExt beExt, S state) {
-        if (!filteringChanged && text == beExt.getLastText(front)) return;
-
-        FormattedCharSequence[] lines = text.getRenderMessages(
-            state.isTextFilteringEnabled,
-            input -> {
-                List<FormattedCharSequence> split = this.font.split(input, state.maxTextLineWidth);
-                return split.isEmpty() ? FormattedCharSequence.EMPTY : split.get(0);
-            }
-        );
-        float[] widths = new float[4];
-        for (int i = 0; i < 4; i++) widths[i] = -this.font.width(lines[i]) / 2f;
-
-        beExt.setCachedLines(front, lines);
-        beExt.setLineWidths(front, widths);
-        beExt.setLastText(front, text);
-    }
+   }
 }

@@ -8,19 +8,20 @@ import java.util.Set;
 
 import fr.madu59.obe.OBE;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.entity.BlockEntityTypes;
 
 public class Registry {
     private static Map<String, Set<BlockEntityType<?>>> supportedBeTypes = new HashMap<>();
 
     public static void init(){
-        register("chest", BlockEntityTypes.CHEST, BlockEntityTypes.ENDER_CHEST, BlockEntityTypes.TRAPPED_CHEST);
-        register("bell", BlockEntityTypes.BELL);
-        register("skull", BlockEntityTypes.SKULL);
-        register("banner", BlockEntityTypes.BANNER);
-        register("shulker_box", BlockEntityTypes.SHULKER_BOX);
-        register("decorated_pot", BlockEntityTypes.DECORATED_POT);
-        register("copper_golem_statue", BlockEntityTypes.COPPER_GOLEM_STATUE);
+        register("chest", BlockEntityType.CHEST, BlockEntityType.ENDER_CHEST, BlockEntityType.TRAPPED_CHEST);
+        register("bell", BlockEntityType.BELL);
+        register("skull", BlockEntityType.SKULL);
+        register("banner", BlockEntityType.BANNER);
+        register("shulker_box", BlockEntityType.SHULKER_BOX);
+        register("decorated_pot", BlockEntityType.DECORATED_POT);
+        register("copper_golem_statue", BlockEntityType.COPPER_GOLEM_STATUE);
+        register("sign", BlockEntityType.HANGING_SIGN, BlockEntityType.SIGN);
+        register("bed", BlockEntityType.BED);
     }
 
     private static void register(String group, BlockEntityType<?> ... types){
