@@ -14,7 +14,7 @@ import net.minecraft.client.renderer.blockentity.state.SkullBlockRenderState;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
 
 @Mixin(SkullBlockRenderer.class)
-public class SkullBlockRendererMixin {
+public abstract class SkullBlockRendererMixin {
     @Inject(method = "submit", at = @At("HEAD"), cancellable = true)
     public void obe$cancelSubmit(CallbackInfo ci, @Local SkullBlockRenderState state){
         if(!RenderModeManager.shouldRenderEntity(state)) ci.cancel();

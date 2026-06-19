@@ -14,7 +14,7 @@ import net.minecraft.client.renderer.blockentity.state.ShulkerBoxRenderState;
 import net.minecraft.world.level.block.entity.ShulkerBoxBlockEntity;
 
 @Mixin(ShulkerBoxRenderer.class)
-public class ShulkerBoxRendererMixin {
+public abstract class ShulkerBoxRendererMixin {
     @Inject(method = "submit", at = @At("HEAD"), cancellable = true)
     public void obe$cancelSubmit(CallbackInfo ci, @Local ShulkerBoxRenderState state){
         if(!RenderModeManager.shouldRenderEntity(state)) ci.cancel();

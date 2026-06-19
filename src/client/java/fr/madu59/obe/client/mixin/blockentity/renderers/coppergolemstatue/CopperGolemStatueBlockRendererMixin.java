@@ -15,7 +15,7 @@ import net.minecraft.client.renderer.blockentity.state.CopperGolemStatueRenderSt
 import net.minecraft.world.level.block.entity.CopperGolemStatueBlockEntity;
 
 @Mixin(CopperGolemStatueBlockRenderer.class)
-public class CopperGolemStatueBlockRendererMixin {
+public abstract class CopperGolemStatueBlockRendererMixin {
     @Inject(method = "submit", at = @At("HEAD"), cancellable = true)
     public void obe$cancelSubmit(CallbackInfo ci, @Local CopperGolemStatueRenderState state){
          if(!RenderModeManager.shouldRenderEntity(!SettingsManager.OPTIMISED_COPPER_GOLEMS.getValue(), state)) ci.cancel();

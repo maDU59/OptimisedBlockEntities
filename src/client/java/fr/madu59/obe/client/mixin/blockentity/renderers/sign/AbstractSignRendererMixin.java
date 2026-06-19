@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import net.minecraft.client.renderer.blockentity.AbstractSignRenderer;
 
 @Mixin(AbstractSignRenderer.class)
-public class AbstractSignRendererMixin {
+public abstract class AbstractSignRendererMixin {
     @Inject(method = "submitSignText", at = @At("HEAD"), cancellable = true)
     public void obe$cancelSignText(CallbackInfo ci, @Local PoseStack poseStack){
         if(ModCompat.isShadowPass() || !obe$isFacingCamera(poseStack)) ci.cancel();
