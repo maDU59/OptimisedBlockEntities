@@ -49,6 +49,11 @@ public static TextureAtlasSprite getSprite(ResourceLocation id) {
 ```
 if it is null, then you tried to get the texture in the wrong format, or your textures are not being added to the block atlas.
 
+If your textures are not being added to the block atlas, you have two options:
+1. Add a file [like this](https://github.com/maDU59/OptimisedBlockEntities/blob/1.21.1/src/main/resources/assets/minecraft/atlases/blocks.json) to your mod. It should be at that exact place but the source and targets name should be changed to where your textures are stored. To prevent memory issues, that should be made as a built-in resource pack that's only loaded when obe is present.
+
+2. Ask me to add your resource pack directory to obe's `atlases/blocks.json`
+
 
 ## Note
 
