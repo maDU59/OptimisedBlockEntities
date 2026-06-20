@@ -6,6 +6,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
 import fr.madu59.obe.client.config.SettingsManager;
+import fr.madu59.obe.client.model.BlockEntityStateModel;
 import fr.madu59.obe.client.model.CompositeBlockStateModel;
 import fr.madu59.obe.client.registry.MaterialGetter;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
@@ -71,6 +72,7 @@ public class OBEBlockRenderer {
         SkullBlock.Type type = ((AbstractSkullBlock)state.getBlock()).getType();
         
         ModelLayerLocation layerLocation = ResourceUtil.getSkullBlockLayerLocation(state, type);
+        if(layerLocation == null) return new BlockEntityStateModel();
 
         if (state.getBlock() instanceof WallSkullBlock) {
             Direction facing = state.getValue(WallSkullBlock.FACING);
