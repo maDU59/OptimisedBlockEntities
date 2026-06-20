@@ -122,6 +122,7 @@ public class OBEBlockRenderer {
         SkullBlock.Type type = ((AbstractSkullBlock)state.getBlock()).getType();
         
         ModelLayerLocation layerLocation = ResourceUtil.getSkullBlockLayerLocation(state, type);
+        if(layerLocation == null) return new BlockEntityStateModel();
 
         if (state.getBlock() instanceof WallSkullBlock) {
             Direction facing = state.getValue(WallSkullBlock.FACING);
