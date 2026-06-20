@@ -13,6 +13,10 @@
 		"blockentity.coppergolemstatues.CopperGolemStatueBlockEntityMixin",
 		"blockentity.decoratedpot.DecoratedPotBlockEntityMixin",
 		"blockentity.shulkerbox.ShulkerBoxBlockEntityMixin",
+		"blockentity.shelf.ShelfBlockEntityMixin",
+		"blockentity.campfire.CampfireBlockEntityMixin",
+		"blockentity.lectern.LecternBlockEntityMixin",
+		"blockentity.BlockEntityMixin",
 		"blockentity.ext.BlockEntityMixin",
 		"blockentity.ext.BlockEntityRenderStateMixin",
 		"blockentity.renderers.chest.ChestRendererMixin",
@@ -31,7 +35,7 @@
 		"renderer.compat.sodium.ChunkBuilderMeshingTaskMixin",
 		"renderer.compat.sodium.BlockRendererMixin",
 		"renderer.compat.sodium.SodiumWorldRendererMixin",
-		"core.ReloadableResourceManagerMixin",
+		"core.ModelManagerMixin",
 		"BlockStateModelSetMixin"
 	],
 	"mixins": [

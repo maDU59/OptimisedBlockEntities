@@ -22,3 +22,6 @@ accessible method net/minecraft/client/renderer/blockentity/BannerRenderer submi
 accessible field net/minecraft/client/renderer/blockentity/BannerRenderer sprites Lnet/minecraft/client/resources/model/sprite/SpriteGetter;
 accessible method net/minecraft/client/renderer/blockentity/BannerRenderer flagModel (Lnet/minecraft/world/level/block/BannerBlock$AttachmentType;)Lnet/minecraft/client/model/object/banner/BannerFlagModel;
 accessible method net/minecraft/client/renderer/blockentity/BannerRenderer bannerModel (Lnet/minecraft/world/level/block/BannerBlock$AttachmentType;)Lnet/minecraft/client/model/object/banner/BannerModel;
+
+# Campfire
+accessible field net/minecraft/world/level/block/entity/CampfireBlockEntity items Lnet/minecraft/core/NonNullList;

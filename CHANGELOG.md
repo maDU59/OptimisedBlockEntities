@@ -1,2 +1,3 @@
 # What's new:
-- Fixed banners being rendered twice since last update
+- Optimised new block entities: lecterns, shelves and campfires
+- Fixed texture corruption when loading a resource pack
