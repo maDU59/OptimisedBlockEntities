@@ -6,6 +6,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
 import fr.madu59.obe.client.config.SettingsManager;
+import fr.madu59.obe.client.model.BlockEntityStateModel;
 import fr.madu59.obe.client.model.CompositeBlockStateModel;
 import fr.madu59.obe.client.registry.MaterialGetter;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
@@ -205,6 +206,7 @@ public class OBEBlockRenderer {
         PoseStack poseStack = new PoseStack();
         
         ModelLayerLocation layerLocation = ResourceUtil.getShulkerBoxLayerLocation(state);
+        if(layerLocation == null) return new BlockEntityStateModel();
 
         Direction facing = state.getValue(ShulkerBoxBlock.FACING);
         poseStack.mulPose(ShulkerBoxRenderer.modelTransform(facing));
