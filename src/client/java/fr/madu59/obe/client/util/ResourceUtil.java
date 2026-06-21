@@ -94,16 +94,12 @@ public class ResourceUtil{
         return sprite;
     }
 
-    public static BakedModel getModel(ModelLayerLocation modelLayerLocation, ResourceLocation texture, boolean useAo){
-        return modelCache.computeIfAbsent(modelLayerLocation, layer -> new BlockEntityStateModel(modelLayerLocation, texture, useAo, null));
+    public static BakedModel getModel(ModelLayerLocation modelLayerLocation, ResourceLocation texture, BlockState blockState, PoseStack poseStack, boolean useAo, TextureAtlasSprite particleMaterial){
+        return transformedModelCache.computeIfAbsent(blockState, layer -> new BlockEntityStateModel(modelLayerLocation, texture, poseStack, useAo, blockState, particleMaterial));
     }
 
-    public static BakedModel getModel(ModelLayerLocation modelLayerLocation, ResourceLocation texture, BlockState blockState, PoseStack poseStack, boolean useAo){
-        return transformedModelCache.computeIfAbsent(blockState, layer -> new BlockEntityStateModel(modelLayerLocation, texture, poseStack, useAo, blockState));
-    }
-
-    public static BakedModel getSubModel(ModelLayerLocation modelLayerLocation, ResourceLocation texture, BlockState blockState, PoseStack poseStack, boolean useAo){
-        return transformedSubModelCache.computeIfAbsent(new ModelCacheKey(modelLayerLocation, blockState), layer -> new BlockEntityStateModel(modelLayerLocation, texture, poseStack, useAo, blockState));
+    public static BakedModel getSubModel(ModelLayerLocation modelLayerLocation, ResourceLocation texture, BlockState blockState, PoseStack poseStack, boolean useAo, TextureAtlasSprite particleMaterial){
+        return transformedSubModelCache.computeIfAbsent(new ModelCacheKey(modelLayerLocation, blockState), layer -> new BlockEntityStateModel(modelLayerLocation, texture, poseStack, useAo, blockState, particleMaterial));
     }
 
     public static BakedModel getModel(BlockState state){

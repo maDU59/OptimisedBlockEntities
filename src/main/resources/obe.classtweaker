@@ -20,3 +20,6 @@ accessible method net/minecraft/client/renderer/blockentity/SignRenderer renderS
 accessible field net/minecraft/client/renderer/blockentity/BannerRenderer flag Lnet/minecraft/client/model/geom/ModelPart;
 accessible field net/minecraft/client/renderer/blockentity/BannerRenderer pole Lnet/minecraft/client/model/geom/ModelPart;
 accessible field net/minecraft/client/renderer/blockentity/BannerRenderer bar Lnet/minecraft/client/model/geom/ModelPart;
+
+# Campfire
+accessible field net/minecraft/world/level/block/entity/CampfireBlockEntity items Lnet/minecraft/core/NonNullList;
