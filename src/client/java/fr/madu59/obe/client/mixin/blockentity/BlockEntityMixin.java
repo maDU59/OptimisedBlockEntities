@@ -6,6 +6,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
+import fr.madu59.obe.client.util.BackportUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.level.block.LecternBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -21,7 +22,7 @@ public class BlockEntityMixin {
         if (((BlockEntity)(Object)this) instanceof LecternBlockEntity be) {
             BlockEntityExt ext = (BlockEntityExt) be;
             
-            boolean hasBook = newBlockState != null && newBlockState.getValueOrElse(LecternBlock.HAS_BOOK, true);
+            boolean hasBook = newBlockState != null && BackportUtil.getValueOrElse(newBlockState, LecternBlock.HAS_BOOK, true);
 
             ext.shouldSkipBeRendering(!hasBook);
         }

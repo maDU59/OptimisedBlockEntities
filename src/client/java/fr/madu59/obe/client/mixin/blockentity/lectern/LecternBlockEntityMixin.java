@@ -9,6 +9,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.llamalad7.mixinextras.sugar.Local;
 
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
+import fr.madu59.obe.client.util.BackportUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.LecternBlock;
@@ -27,6 +28,6 @@ public abstract class LecternBlockEntityMixin{
         LecternBlockEntity be = (LecternBlockEntity)(Object)this;
         BlockEntityExt ext = (BlockEntityExt)be;
         
-        ext.shouldSkipBeRendering(!state.getValueOrElse(LecternBlock.HAS_BOOK, true));
+        ext.shouldSkipBeRendering(!BackportUtil.getValueOrElse(state, LecternBlock.HAS_BOOK, true));
     }
 }

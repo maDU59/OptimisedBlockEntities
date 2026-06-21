@@ -46,8 +46,8 @@ dependencies {
     modImplementation("org.anarres:jcpp:1.4.14")
 	modImplementation "maven.modrinth:iris:1.8.8+1.21.1-fabric"
 	
-	modImplementation "maven.modrinth:entitytexturefeatures:7.1-fabric-1.21.3"
-	modImplementation "maven.modrinth:entity-model-features:3.2.4-fabric-1.21.3"
+	modImplementation "maven.modrinth:entitytexturefeatures:7.1-fabric-1.21"
+	modImplementation "maven.modrinth:entity-model-features:3.2.4-fabric-1.21"
 }
 
 processResources {
