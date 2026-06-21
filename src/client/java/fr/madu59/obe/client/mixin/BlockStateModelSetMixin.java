@@ -73,10 +73,10 @@ public class BlockStateModelSetMixin {
     @Unique
     public BakedModel obe$getOriginalModel(BlockState state){
         BakedModel bakedModel = (BakedModel)this.modelByStateCache.get(state);
-      if (bakedModel == null) {
-         bakedModel = this.modelManager.getMissingModel();
-      }
+        if (bakedModel == null) {
+            bakedModel = this.modelManager.getMissingModel();
+        }
 
-      return bakedModel;
+        return bakedModel;
     }
 }

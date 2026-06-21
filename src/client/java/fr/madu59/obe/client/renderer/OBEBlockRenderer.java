@@ -85,7 +85,7 @@ public class OBEBlockRenderer {
         float f = 0.6666667F;
         poseStack.scale(f, -f, -f);
 
-        BakedModel model = ResourceUtil.getModel(layerLocation, Sheets.getSignMaterial(woodType).texture(), state, poseStack, SettingsManager.SIGN_AMBIENT_OCCLUSION.getValue(), originalModel.getParticleIcon());
+        BakedModel model = ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "sign"), state, poseStack, SettingsManager.SIGN_AMBIENT_OCCLUSION.getValue(), originalModel.getParticleIcon());
 
         return model;
     }
@@ -106,7 +106,7 @@ public class OBEBlockRenderer {
         float f = 1f;
         poseStack.scale(f, -f, -f);
 
-        return ResourceUtil.getModel(layerLocation, Sheets.getHangingSignMaterial(woodType).texture(), state, poseStack, SettingsManager.SIGN_AMBIENT_OCCLUSION.getValue(), originalModel.getParticleIcon());
+        return ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "sign"), state, poseStack, SettingsManager.SIGN_AMBIENT_OCCLUSION.getValue(), originalModel.getParticleIcon());
     }
 
     public BakedModel getSkullBlockModel(BlockState state, RandomSource random, BakedModel originalModel) {
