@@ -11,6 +11,7 @@ import org.joml.Vector3fc;
 import com.mojang.blaze3d.platform.Transparency;
 import com.mojang.blaze3d.vertex.PoseStack;
 
+import fr.madu59.obe.client.compat.ModCompat;
 import fr.madu59.obe.client.util.ResourceUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -42,7 +43,7 @@ public class BlockEntityStateModel implements BlockStateModel{
     public BlockEntityStateModel(ModelLayerLocation modelLayerLocation, Identifier texture, PoseStack poseStack, boolean useAo, BlockState state, Material.Baked particleMaterial){
         TextureAtlasSprite sprite = ResourceUtil.getSprite(texture);
         this.particleMaterial = particleMaterial;
-        generateModel(modelLayerLocation, sprite, poseStack, useAo);
+        generateModel(modelLayerLocation, sprite, poseStack, useAo, state);
     }
 
     public BlockEntityStateModel(){
@@ -65,8 +66,9 @@ public class BlockEntityStateModel implements BlockStateModel{
         return partsMap.get(name);
     }
 
-    private void generateModel(ModelLayerLocation modelLayerLocation, TextureAtlasSprite sprite, PoseStack poseStack, boolean useAo){
+    private void generateModel(ModelLayerLocation modelLayerLocation, TextureAtlasSprite sprite, PoseStack poseStack, boolean useAo, BlockState state){
         ModelPart root = Minecraft.getInstance().getEntityModels().bakeLayer(modelLayerLocation);
+        ModCompat.applyEMFRestPose(root, state);
         Map<String, ModelPart> children = root.children;
         children.forEach((key, part) -> {
 
