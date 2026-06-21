@@ -28,19 +28,20 @@ import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class BlockEntityStateModel implements BlockStateModel{
     private final List<SingleVariant> models = new ArrayList<>();
     private final Map<String, BlockStateModel> partsMap = new HashMap<>();
     private final Material.Baked particleMaterial;
 
-    public BlockEntityStateModel(ModelLayerLocation modelLayerLocation, Identifier texture, boolean useAo){
-        this(modelLayerLocation, texture, new PoseStack(), useAo);
+    public BlockEntityStateModel(ModelLayerLocation modelLayerLocation, Identifier texture, boolean useAo, BlockState state, Material.Baked particleMaterial){
+        this(modelLayerLocation, texture, new PoseStack(), useAo, state, particleMaterial);
     }
 
-    public BlockEntityStateModel(ModelLayerLocation modelLayerLocation, Identifier texture, PoseStack poseStack, boolean useAo){
+    public BlockEntityStateModel(ModelLayerLocation modelLayerLocation, Identifier texture, PoseStack poseStack, boolean useAo, BlockState state, Material.Baked particleMaterial){
         TextureAtlasSprite sprite = ResourceUtil.getSprite(texture);
-        particleMaterial = ResourceUtil.getBakedMaterial(sprite);
+        this.particleMaterial = particleMaterial;
         generateModel(modelLayerLocation, sprite, poseStack, useAo);
     }
 
