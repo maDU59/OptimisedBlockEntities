@@ -10,6 +10,7 @@ import org.joml.Vector3fc;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
+import fr.madu59.obe.client.compat.ModCompat;
 import fr.madu59.obe.client.util.ResourceUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -30,27 +31,32 @@ public class BlockEntityStateModel implements BakedModel{
     private final TextureAtlasSprite particleMaterial;
     private boolean useAo = true;
 
-    public BlockEntityStateModel(ModelLayerLocation modelLayerLocation, ResourceLocation texture, boolean useAo){
-        this(modelLayerLocation, texture, new PoseStack(), useAo);
+    public BlockEntityStateModel(ModelLayerLocation modelLayerLocation, ResourceLocation texture, boolean useAo, BlockState state, TextureAtlasSprite particleMaterial){
+        this(modelLayerLocation, texture, new PoseStack(), useAo, state, particleMaterial);
     }
 
-    public BlockEntityStateModel(ModelLayerLocation modelLayerLocation, ResourceLocation texture, PoseStack poseStack, boolean useAo){
+    public BlockEntityStateModel(ModelLayerLocation modelLayerLocation, ResourceLocation texture, PoseStack poseStack, boolean useAo, BlockState state, TextureAtlasSprite particleMaterial){
         TextureAtlasSprite sprite = ResourceUtil.getSprite(texture);
-        particleMaterial = ResourceUtil.getBakedMaterial(sprite);
+        this.particleMaterial = particleMaterial;
         this.useAo = useAo;
-        generateModel(modelLayerLocation, sprite, poseStack, useAo);
+        generateModel(modelLayerLocation, sprite, poseStack, useAo, state);
     }
 
     public BlockEntityStateModel(){
         particleMaterial = null;
     }
 
+    public BlockEntityStateModel(TextureAtlasSprite particleMaterial){
+        this.particleMaterial = particleMaterial;
+    }
+
     public BakedModel getPart(String name){
         return partsMap.get(name);
     }
 
-    private void generateModel(ModelLayerLocation modelLayerLocation, TextureAtlasSprite sprite, PoseStack poseStack, boolean useAo){
+    private void generateModel(ModelLayerLocation modelLayerLocation, TextureAtlasSprite sprite, PoseStack poseStack, boolean useAo, BlockState state){
         ModelPart root = Minecraft.getInstance().getEntityModels().bakeLayer(modelLayerLocation);
+        ModCompat.applyEMFRestPose(root, state);
         Map<String, ModelPart> children = root.children;
         children.forEach((key, part) -> {
             List<BakedQuad> bakedQuadsList = getBakedQuads(part, poseStack, sprite, shouldFixBFC(key));
