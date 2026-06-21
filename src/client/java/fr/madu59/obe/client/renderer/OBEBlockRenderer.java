@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
+import fr.madu59.obe.OBE;
 import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.model.BlockEntityStateModel;
 import fr.madu59.obe.client.model.CompositeBlockStateModel;
@@ -93,19 +94,24 @@ public class OBEBlockRenderer {
         if(ResourceUtil.cacheContains(state)) return ResourceUtil.getModel(state);
         PoseStack poseStack = new PoseStack();
 
-        SignBlock block = (SignBlock) state.getBlock();
+        if(state.getBlock() instanceof SignBlock block){
 
-        WoodType woodType = ((SignBlock) state.getBlock()).type();
-        ModelLayerLocation layerLocation = ResourceUtil.getHangingSignLayerLocation(state, woodType);
+            WoodType woodType = block.type();
+            ModelLayerLocation layerLocation = ResourceUtil.getHangingSignLayerLocation(state, woodType);
 
-        poseStack.translate((double)0.5F, (double)0.9375F, (double)0.5F);
-        poseStack.mulPose(Axis.YP.rotationDegrees(-block.getYRotationDegrees(state)));
-        poseStack.translate(0.0F, -0.3125F, 0.0F);
+            poseStack.translate((double)0.5F, (double)0.9375F, (double)0.5F);
+            poseStack.mulPose(Axis.YP.rotationDegrees(-block.getYRotationDegrees(state)));
+            poseStack.translate(0.0F, -0.3125F, 0.0F);
 
-        float f = 1f;
-        poseStack.scale(f, -f, -f);
+            float f = 1f;
+            poseStack.scale(f, -f, -f);
 
-        return ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "sign"), state, poseStack, SettingsManager.SIGN_AMBIENT_OCCLUSION.getValue(), originalModel.getParticleIcon());
+            return ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "sign"), state, poseStack, SettingsManager.SIGN_AMBIENT_OCCLUSION.getValue(), originalModel.getParticleIcon());
+        }
+        else{
+            OBE.LOGGER.warn("Unexpected block " + state.getBlock() + " while trying to generate a block model for hanging signs, cancelling");
+            return new BlockEntityStateModel(originalModel.getParticleIcon());
+        }
     }
 
     public BakedModel getSkullBlockModel(BlockState state, RandomSource random, BakedModel originalModel) {
