@@ -37,7 +37,7 @@ public class BlockRendererMixin {
                     ctx.update(ctx.pos(), origin, ctx.state(), new BlockEntityStateModel(), ctx.seed());
                     return ctx;
                 }
-                BakedModel model = obeBlockRenderer.getModel(ctx.state(), ctx.pos(), ctx.seed());
+                BakedModel model = obeBlockRenderer.getModel(ctx.state(), ctx.pos(), ctx.seed(), ctx.model());
                 if(model != null) {
                     ctx.update(ctx.pos(), origin, ctx.state(), model, ctx.seed());
                     return ctx;

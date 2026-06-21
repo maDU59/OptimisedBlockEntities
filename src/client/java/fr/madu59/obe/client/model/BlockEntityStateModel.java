@@ -12,6 +12,7 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexFormat;
 
+import fr.madu59.obe.client.compat.ModCompat;
 import fr.madu59.obe.client.util.ResourceUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -37,23 +38,25 @@ public class BlockEntityStateModel implements BakedModel{
     private final Map<String, BakedModel> partsMap = new HashMap<>();
     private final TextureAtlasSprite particleMaterial;
     private final boolean useAo;
-    private final BlockState state;
 
-    public BlockEntityStateModel(ModelLayerLocation modelLayerLocation, ResourceLocation texture, boolean useAo, BlockState state){
-        this(modelLayerLocation, texture, new PoseStack(), useAo, state);
+    public BlockEntityStateModel(ModelLayerLocation modelLayerLocation, ResourceLocation texture, boolean useAo, BlockState state, TextureAtlasSprite particleMaterial){
+        this(modelLayerLocation, texture, new PoseStack(), useAo, state, particleMaterial);
     }
 
-    public BlockEntityStateModel(ModelLayerLocation modelLayerLocation, ResourceLocation texture, PoseStack poseStack, boolean useAo, BlockState state){
+    public BlockEntityStateModel(ModelLayerLocation modelLayerLocation, ResourceLocation texture, PoseStack poseStack, boolean useAo, BlockState state, TextureAtlasSprite particleMaterial){
         TextureAtlasSprite sprite = ResourceUtil.getSprite(texture);
-        particleMaterial = ResourceUtil.getBakedMaterial(sprite);
+        this.particleMaterial = particleMaterial;
         this.useAo = useAo;
-        this.state = state;
-        generateModel(modelLayerLocation, sprite, poseStack, useAo);
+        generateModel(modelLayerLocation, sprite, poseStack, useAo, state);
     }
 
     public BlockEntityStateModel(){
         this.particleMaterial = null;
-        this.state = null;
+        this.useAo = false;
+    }
+
+    public BlockEntityStateModel(TextureAtlasSprite particleMaterial){
+        this.particleMaterial = particleMaterial;
         this.useAo = false;
     }
 
@@ -61,8 +64,9 @@ public class BlockEntityStateModel implements BakedModel{
         return partsMap.get(name);
     }
 
-    private void generateModel(ModelLayerLocation modelLayerLocation, TextureAtlasSprite sprite, PoseStack poseStack, boolean useAo){
+    private void generateModel(ModelLayerLocation modelLayerLocation, TextureAtlasSprite sprite, PoseStack poseStack, boolean useAo, BlockState state){
         ModelPart root = Minecraft.getInstance().getEntityModels().bakeLayer(modelLayerLocation);
+        ModCompat.applyEMFRestPose(root, state);
         Map<String, ModelPart> children = root.children;
         children.forEach((key, part) -> {
             if(shouldAddModelPart(key, state)){
