@@ -15,6 +15,7 @@
     { "type": "directory", "source": "entity/piglin", "prefix": "entity/piglin/" },
     { "type": "directory", "source": "entity/creeper", "prefix": "entity/creeper/" },
     { "type": "directory", "source": "entity/enderdragon", "prefix": "entity/enderdragon/" },
-    { "type": "single", "resource": "minecraft:entity/banner_base" }
+    { "type": "single", "resource": "minecraft:entity/banner_base" },
+    { "type": "directory", "source": "quark_variant_chests", "prefix": "quark_variant_chests/" }
   ]
 }

@@ -1,2 +1,4 @@
 # What's new:
-- Fixed banners being rendered twice since last update
+- Added support for the upcoming Quark compatibility
+- Fixed a crash with supplementaries spider heads
+- Fixed wrong breaking particles being used
