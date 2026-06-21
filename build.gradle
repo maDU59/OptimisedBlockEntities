@@ -41,6 +41,8 @@ dependencies {
 	implementation "net.caffeinemc:sodium-fabric:0.8.12+mc26.1.2"
 	implementation "maven.modrinth:iris:1.10.9+26.1-fabric"
 	
+	implementation "maven.modrinth:entitytexturefeatures:7.1-fabric-26.1"
+	implementation "maven.modrinth:entity-model-features:3.2.4-fabric-26.1"
 }
 
 processResources {
