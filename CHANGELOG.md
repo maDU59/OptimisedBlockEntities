@@ -1,2 +1,2 @@
 # What's new:
-- Fixed banners being rendered twice since last update
+- Added compatibility with EMF/ETF packs, this means Fresh Animations : Objects is now supported :D

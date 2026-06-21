@@ -33,7 +33,7 @@ public class BlockRendererMixin {
                 if(ext.isSupportedBlockEntity() && !ext.hasSpecialRenderer() && ext.renderMode() != RenderMode.TERRAIN){
                     return new BlockEntityStateModel();
                 }
-                model = obeBlockRenderer.getModel(state, pos, state.getSeed(pos));
+                model = obeBlockRenderer.getModel(state, pos, state.getSeed(pos), model);
             }
         }
         return model == null? originalModel : model;

@@ -23,4 +23,7 @@ public interface BlockEntityExt {
     
     boolean renderBoth();
     void renderBoth(boolean bl);
+
+    boolean shouldSkipBeRendering();
+    void shouldSkipBeRendering(boolean bl);
 }

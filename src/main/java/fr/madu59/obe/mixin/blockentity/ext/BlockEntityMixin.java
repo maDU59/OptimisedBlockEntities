@@ -18,6 +18,7 @@ public abstract class BlockEntityMixin implements BlockEntityExt {
     @Unique private int timerDuration = 0;
     @Unique private boolean isEnabled = true;
     @Unique private boolean renderBoth = false;
+    @Unique private boolean shouldSkipBeRendering = false;
 
     @Override public boolean isSupportedBlockEntity() { return isSupportedBlockEntity; }
     @Override public void isSupportedBlockEntity(boolean bl) {this.isSupportedBlockEntity = bl; }
@@ -52,4 +53,7 @@ public abstract class BlockEntityMixin implements BlockEntityExt {
         timerStart = start;
         timerDuration = duration;
     }
+
+    @Override public boolean shouldSkipBeRendering() { return shouldSkipBeRendering; };
+    @Override public void shouldSkipBeRendering(boolean bl) { shouldSkipBeRendering = bl; };
 }
