@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
+import fr.madu59.obe.client.model.BlockEntityStateModel;
 import fr.madu59.obe.client.renderer.OBEBlockRenderer;
 import net.minecraft.client.renderer.block.ModelBlockRenderer;
 import net.minecraft.client.renderer.block.model.BlockModelPart;
@@ -26,7 +27,7 @@ public class ModelBlockRendererMixin {
 
     @ModifyVariable(method = "tesselateBlock", at = @At("HEAD"), argsOnly = true)
     private List<BlockModelPart> obe$modifyModel(List<BlockModelPart> list, BlockAndTintGetter blockAndTintGetter, List<BlockModelPart> originalList, BlockState blockState, BlockPos blockPos, PoseStack poseStack, VertexConsumer vertexConsumer, boolean bl, int i) {
-        BlockStateModel model = obeBlockRenderer.getModel(blockState, blockPos, blockState.getSeed(blockPos));
+        BlockStateModel model = obeBlockRenderer.getModel(blockState, blockPos, blockState.getSeed(blockPos), new BlockEntityStateModel(list.get(0).particleIcon()));
         if(model != null){
             random.setSeed(blockState.getSeed(blockPos));
             list = model.collectParts(random);

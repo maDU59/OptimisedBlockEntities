@@ -20,3 +20,6 @@ accessible field net/minecraft/client/renderer/blockentity/BannerRenderer standi
 accessible field net/minecraft/client/renderer/blockentity/BannerRenderer standingModel Lnet/minecraft/client/model/BannerModel;
 accessible field net/minecraft/client/renderer/blockentity/BannerRenderer wallFlagModel Lnet/minecraft/client/model/BannerFlagModel;
 accessible field net/minecraft/client/renderer/blockentity/BannerRenderer wallModel Lnet/minecraft/client/model/BannerModel;
+
+# Campfire
+accessible field net/minecraft/world/level/block/entity/CampfireBlockEntity items Lnet/minecraft/core/NonNullList;
