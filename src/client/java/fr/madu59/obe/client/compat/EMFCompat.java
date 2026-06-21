@@ -9,6 +9,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.EnderChestBlock;
+import net.minecraft.world.level.block.ShulkerBoxBlock;
 import net.minecraft.world.level.block.entity.BellBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
@@ -22,12 +23,14 @@ import traben.entity_texture_features.features.state.ETFEntityRenderState;
 import traben.entity_texture_features.utils.ETFEntity;
 
 public class EMFCompat {
+
+    // Thanks to Traben, EMF/ETF dev for helping fixing issues with the compatibility  :D
     
     public static ModelPart applyRestPose(ModelPart root, BlockState blockState) {
         if(blockState.getBlock() instanceof ChestBlock) return applyChestRestPose(root, blockState);
         else if(blockState.getBlock() instanceof EnderChestBlock) return applyEnderChestRestPose(root, blockState);
         else if(blockState.getBlock() instanceof BellBlock) return applyBellRestPose(root, blockState);
-        else if(blockState.getBlock() instanceof BellBlock) return applyShulkerRestPose(root, blockState);
+        else if(blockState.getBlock() instanceof ShulkerBoxBlock) return applyShulkerRestPose(root, blockState);
 
         return root;
     }
@@ -49,18 +52,19 @@ public class EMFCompat {
     }
 
     public static <T extends BlockEntity> ModelPart applyRestPose(ModelPart root, BlockState blockState, Block block, BiFunction<BlockPos, BlockState, T> beConstructor) {
-        var state = (EMFEntityRenderState) ETFEntityRenderState.forEntity(
-                (ETFEntity) beConstructor.apply(BlockPos.ZERO, block.defaultBlockState()));
-        EMFAnimationEntityContext.setCurrentEntityIteration(state);
-
         if (root instanceof EMFModelPartRoot emfRoot) {
+            
+            var state = (EMFEntityRenderState) ETFEntityRenderState.forEntity(
+                    (ETFEntity) beConstructor.apply(BlockPos.ZERO, block.defaultBlockState()));
+
+            EMFAnimationEntityContext.setCurrentEntityIteration(state);
             emfRoot.animate();
+
             EMFAnimationEntityContext.reset();
+
             return emfRoot;
         }
-
         EMFAnimationEntityContext.reset();
-
         return root;
     }
 }
