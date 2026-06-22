@@ -10,92 +10,20 @@ import fr.madu59.obe.client.OBEClient;
 import fr.madu59.obe.client.model.BlockEntityStateModel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
-import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
-import net.minecraft.client.renderer.blockentity.ChestRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.data.AtlasIds;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.block.BedBlock;
-import net.minecraft.world.level.block.ChestBlock;
-import net.minecraft.world.level.block.CopperGolemStatueBlock;
-import net.minecraft.world.level.block.SkullBlock;
-import net.minecraft.world.level.block.HangingSignBlock.Attachment;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BedPart;
-import net.minecraft.world.level.block.state.properties.ChestType;
-import net.minecraft.world.level.block.state.properties.WoodType;
 
 public class ResourceUtil{
 
     private static Map<ModelLayerLocation, BlockStateModel> modelCache = new ConcurrentHashMap<>();
     private static Map<BlockState, BlockStateModel> transformedModelCache = new ConcurrentHashMap<>();
     private static Map<ModelCacheKey, BlockStateModel> transformedSubModelCache = new ConcurrentHashMap<>();
-
-    public static ModelLayerLocation getSignLayerLocation(BlockState state, boolean isWallSign, WoodType woodType){
-        if (isWallSign) {
-            return ModelLayers.createWallSignModelName(woodType);
-        }
-        else{
-            return ModelLayers.createStandingSignModelName(woodType);
-        }
-    }
-
-    public static ModelLayerLocation getHangingSignLayerLocation(BlockState state, Attachment attachment, WoodType woodType){
-        return ModelLayers.createHangingSignModelName(woodType, attachment);
-    }
-
-    public static ModelLayerLocation getSkullBlockLayerLocation(BlockState state, SkullBlock.Type type){
-        if (type instanceof SkullBlock.Types vanillaType) {
-            return switch (vanillaType) {
-                case SKELETON -> ModelLayers.SKELETON_SKULL;
-                case WITHER_SKELETON -> ModelLayers.WITHER_SKELETON_SKULL;
-                case PLAYER -> ModelLayers.PLAYER_HEAD;
-                case ZOMBIE -> ModelLayers.ZOMBIE_HEAD;
-                case CREEPER -> ModelLayers.CREEPER_HEAD;
-                case DRAGON -> ModelLayers.DRAGON_SKULL;
-                case PIGLIN -> ModelLayers.PIGLIN_HEAD;
-            };
-        }
-        else return null;
-    }
-
-    public static ModelLayerLocation getBedLayerLocation(BlockState state){
-        if(state.getValue(BedBlock.PART) == BedPart.FOOT) return ModelLayers.BED_FOOT;
-        else return ModelLayers.BED_HEAD;
-    }
-
-    public static ModelLayerLocation getChestLayerLocation(BlockState state){
-        return ChestRenderer.LAYERS.select(state.getValueOrElse(ChestBlock.TYPE, ChestType.SINGLE));
-    }
-
-    public static ModelLayerLocation getBellLayerLocation(BlockState state){
-        return ModelLayers.BELL;
-    }
-
-    public static ModelLayerLocation getBannerLayerLocation(BlockState state, boolean isWall){
-        return isWall? ModelLayers.WALL_BANNER : ModelLayers.STANDING_BANNER;
-    }
-
-    public static ModelLayerLocation getCopperGolemStatueLayerLocation(BlockState state){
-        return switch(state.getValue(CopperGolemStatueBlock.POSE)) {
-            case CopperGolemStatueBlock.Pose.STANDING-> ModelLayers.COPPER_GOLEM;
-            case CopperGolemStatueBlock.Pose.RUNNING-> ModelLayers.COPPER_GOLEM_RUNNING;
-            case CopperGolemStatueBlock.Pose.SITTING-> ModelLayers.COPPER_GOLEM_SITTING;
-            case CopperGolemStatueBlock.Pose.STAR-> ModelLayers.COPPER_GOLEM_STAR;
-        };
-    }
-
-    public static ModelLayerLocation getShulkerBoxLayerLocation(BlockState state){
-        return ModelLayers.SHULKER_BOX;
-    }
-
-    public static ModelLayerLocation getDecoratedPotLayerLocation(BlockState state, boolean isCenter){
-        return isCenter? ModelLayers.DECORATED_POT_BASE : ModelLayers.DECORATED_POT_SIDES;
-    }
 
     public static TextureAtlasSprite getSprite(Identifier id) {
         return Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(AtlasIds.BLOCKS).getSprite(id);

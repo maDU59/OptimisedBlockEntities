@@ -3,7 +3,6 @@ package fr.madu59.obe.client.renderer;
 import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 
 import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.model.CompositeBlockStateModel;
@@ -11,44 +10,29 @@ import fr.madu59.obe.client.registry.MaterialGetter;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager.RenderMode;
 import fr.madu59.obe.client.util.ResourceUtil;
+import fr.madu59.obe.client.util.blockentity.BannerUtil;
+import fr.madu59.obe.client.util.blockentity.BedUtil;
+import fr.madu59.obe.client.util.blockentity.BellUtil;
+import fr.madu59.obe.client.util.blockentity.ChestUtil;
+import fr.madu59.obe.client.util.blockentity.CopperGolemStatueUtil;
+import fr.madu59.obe.client.util.blockentity.DecoratedPotUtil;
+import fr.madu59.obe.client.util.blockentity.HangingSignUtil;
+import fr.madu59.obe.client.util.blockentity.ShulkerBoxUtil;
+import fr.madu59.obe.client.util.blockentity.SignUtil;
+import fr.madu59.obe.client.util.blockentity.SkullBlockUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
-import net.minecraft.client.renderer.blockentity.BannerRenderer;
 import net.minecraft.client.renderer.blockentity.BedRenderer;
-import net.minecraft.client.renderer.blockentity.ChestRenderer;
-import net.minecraft.client.renderer.blockentity.CopperGolemStatueBlockRenderer;
-import net.minecraft.client.renderer.blockentity.DecoratedPotRenderer;
-import net.minecraft.client.renderer.blockentity.HangingSignRenderer;
-import net.minecraft.client.renderer.blockentity.ShulkerBoxRenderer;
-import net.minecraft.client.renderer.blockentity.SkullBlockRenderer;
-import net.minecraft.client.renderer.blockentity.StandingSignRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.block.AbstractSkullBlock;
-import net.minecraft.world.level.block.BannerBlock;
 import net.minecraft.world.level.block.BedBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.CeilingHangingSignBlock;
-import net.minecraft.world.level.block.ChestBlock;
-import net.minecraft.world.level.block.CopperGolemStatueBlock;
-import net.minecraft.world.level.block.DecoratedPotBlock;
-import net.minecraft.world.level.block.HangingSignBlock;
-import net.minecraft.world.level.block.PlainSignBlock;
-import net.minecraft.world.level.block.ShulkerBoxBlock;
-import net.minecraft.world.level.block.PlainSignBlock.Attachment;
-import net.minecraft.world.level.block.SignBlock;
-import net.minecraft.world.level.block.SkullBlock;
-import net.minecraft.world.level.block.WallBannerBlock;
-import net.minecraft.world.level.block.WallSkullBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.DecoratedPotPatterns;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.WoodType;
 
 public class OBEBlockRenderer {
 
@@ -75,20 +59,11 @@ public class OBEBlockRenderer {
     public BlockStateModel getStandingSignModel(BlockState state, RandomSource random, BlockStateModel originalModel){
         if(ResourceUtil.cacheContains(state)) return ResourceUtil.getModel(state);
         PoseStack poseStack = new PoseStack();
-        boolean isWallSign = PlainSignBlock.getAttachmentPoint(state) == Attachment.WALL;
 
-        WoodType woodType = SignBlock.getWoodType(state.getBlock());
-        final ModelLayerLocation layerLocation = ResourceUtil.getSignLayerLocation(state, isWallSign, woodType);
+        final ModelLayerLocation layerLocation = SignUtil.getSignModelLayerLocation(state);
         if(layerLocation == null) return null;
 
-        if (isWallSign) {
-            Direction facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
-            poseStack.mulPose(StandingSignRenderer.TRANSFORMATIONS.wallTransformation(facing).body());
-        }
-        else {
-            int rotationSegment = state.getValue(BlockStateProperties.ROTATION_16);
-            poseStack.mulPose(StandingSignRenderer.TRANSFORMATIONS.freeTransformations(rotationSegment).body());
-        }
+        SignUtil.transformSign(state, poseStack);
 
         BlockStateModel model = ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "sign"), state, poseStack, SettingsManager.SIGN_AMBIENT_OCCLUSION.getValue(), originalModel.particleMaterial());
 
@@ -98,21 +73,11 @@ public class OBEBlockRenderer {
     public BlockStateModel getHangingSignModel(BlockState state, RandomSource random, BlockStateModel originalModel) {
         if(ResourceUtil.cacheContains(state)) return ResourceUtil.getModel(state);
         PoseStack poseStack = new PoseStack();
-        
-        boolean isWall = !state.hasProperty(CeilingHangingSignBlock.ATTACHED);
-        WoodType woodType = SignBlock.getWoodType(state.getBlock());
 
-        ModelLayerLocation layerLocation = ResourceUtil.getHangingSignLayerLocation(state, HangingSignBlock.getAttachmentPoint(state), woodType);
+        ModelLayerLocation layerLocation = HangingSignUtil.getHangingSignModelLayerLocation(state);
         if(layerLocation == null) return null;
 
-        if (!isWall) {
-            int rotationSegment = state.getValue(BlockStateProperties.ROTATION_16);
-            poseStack.mulPose(HangingSignRenderer.TRANSFORMATIONS.freeTransformations(rotationSegment).body());
-        }
-        else {
-            Direction facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
-            poseStack.mulPose(HangingSignRenderer.TRANSFORMATIONS.wallTransformation(facing).body());
-        }
+        HangingSignUtil.transformHangingSign(state, poseStack);
 
         return ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "hanging_sign"), state, poseStack, SettingsManager.SIGN_AMBIENT_OCCLUSION.getValue(), originalModel.particleMaterial());
     }
@@ -120,17 +85,11 @@ public class OBEBlockRenderer {
     public BlockStateModel getSkullBlockModel(BlockState state, RandomSource random, BlockStateModel originalModel) {
         if(ResourceUtil.cacheContains(state)) return ResourceUtil.getModel(state);
         PoseStack poseStack = new PoseStack();
-        SkullBlock.Type type = ((AbstractSkullBlock)state.getBlock()).getType();
         
-        ModelLayerLocation layerLocation = ResourceUtil.getSkullBlockLayerLocation(state, type);
+        ModelLayerLocation layerLocation = SkullBlockUtil.getSkullBlockModelLayerLocation(state);
         if(layerLocation == null) return null;
 
-        if (state.getBlock() instanceof WallSkullBlock) {
-            Direction facing = state.getValue(WallSkullBlock.FACING);
-            poseStack.mulPose(SkullBlockRenderer.TRANSFORMATIONS.wallTransformation(facing));
-        } else {
-            poseStack.mulPose(SkullBlockRenderer.TRANSFORMATIONS.freeTransformations(state.getValue(SkullBlock.ROTATION)));
-        }
+        SkullBlockUtil.transformSkullBlock(state, poseStack);
         return ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "skull"), state, poseStack, SettingsManager.SKULL_AMBIENT_OCCLUSION.getValue(), originalModel.particleMaterial());
     }
 
@@ -138,7 +97,7 @@ public class OBEBlockRenderer {
         if(ResourceUtil.cacheContains(state)) return ResourceUtil.getModel(state);
         PoseStack poseStack = new PoseStack();
         
-        ModelLayerLocation layerLocation = ResourceUtil.getBedLayerLocation(state);
+        ModelLayerLocation layerLocation = BedUtil.getBedModelLayerLocation(state);
         if(layerLocation == null) return null;
 
         Direction facing = state.getValue(BedBlock.FACING);
@@ -151,22 +110,21 @@ public class OBEBlockRenderer {
         if(ResourceUtil.cacheContains(state)) return ResourceUtil.getModel(state);
         PoseStack poseStack = new PoseStack();
         
-        ModelLayerLocation layerLocation = ResourceUtil.getChestLayerLocation(state);
+        ModelLayerLocation layerLocation = ChestUtil.getChestModelLayerLocation(state);
         if(layerLocation == null) return null;
 
-        Direction facing = state.getValue(ChestBlock.FACING);
-        poseStack.mulPose(ChestRenderer.modelTransformation(facing));
-        BlockStateModel model = ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "chest"), state, poseStack, SettingsManager.CHEST_AMBIENT_OCCLUSION.getValue(), originalModel.particleMaterial());
-
-        return model;
+        ChestUtil.transformChest(state, poseStack);
+        return ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "chest"), state, poseStack, SettingsManager.CHEST_AMBIENT_OCCLUSION.getValue(), originalModel.particleMaterial());
     }
 
     public BlockStateModel getBellModel(BlockState state, RandomSource random, BlockStateModel originalModel) {
         if(ResourceUtil.cacheContains(state)) return ResourceUtil.getModel(state);
         PoseStack poseStack = new PoseStack();
         
-        ModelLayerLocation layerLocation = ResourceUtil.getBellLayerLocation(state);
+        ModelLayerLocation layerLocation = BellUtil.getBellModelLayerLocation(state);
         if(layerLocation == null) return null;
+
+        BellUtil.transformBell(state, poseStack);
 
         BlockStateModel model = ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "bell"), state, poseStack, SettingsManager.BELL_AMBIENT_OCCLUSION.getValue(), originalModel.particleMaterial());
         model = new CompositeBlockStateModel(model, Minecraft.getInstance().getModelManager().getBlockStateModelSet().get(state));
@@ -177,18 +135,11 @@ public class OBEBlockRenderer {
     public BlockStateModel getBannerModel(BlockState state, RandomSource random, BlockStateModel originalModel) {
         if(ResourceUtil.cacheContains(state)) return ResourceUtil.getModel(state);
         PoseStack poseStack = new PoseStack();
-
-        Block block = state.getBlock();
-        boolean isWall = block instanceof WallBannerBlock;
         
-        ModelLayerLocation layerLocation = ResourceUtil.getBannerLayerLocation(state, isWall);
+        ModelLayerLocation layerLocation = BannerUtil.getBannerModelLayerLocation(state);
         if(layerLocation == null) return null;
-        if (isWall) {
-            Direction facing = state.getValue(WallBannerBlock.FACING);
-            poseStack.mulPose(BannerRenderer.TRANSFORMATIONS.wallTransformation(facing));
-        } else {
-            poseStack.mulPose(BannerRenderer.TRANSFORMATIONS.freeTransformations(state.getValue(BannerBlock.ROTATION)));
-        }
+        
+        BannerUtil.transformBanner(state, poseStack);
 
         return ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "banner"), state, poseStack, SettingsManager.BANNER_AMBIENT_OCCLUSION.getValue(), originalModel.particleMaterial());
     }
@@ -197,13 +148,10 @@ public class OBEBlockRenderer {
         if(ResourceUtil.cacheContains(state)) return ResourceUtil.getModel(state);
         PoseStack poseStack = new PoseStack();
         
-        ModelLayerLocation layerLocation = ResourceUtil.getCopperGolemStatueLayerLocation(state);
+        ModelLayerLocation layerLocation = CopperGolemStatueUtil.getCopperGolemStatueModelLayerLocation(state);
         if(layerLocation == null) return null;
 
-        Direction facing = state.getValue(CopperGolemStatueBlock.FACING);
-        poseStack.mulPose(CopperGolemStatueBlockRenderer.modelTransformation(facing));
-
-        poseStack.mulPose(Axis.ZP.rotationDegrees(180.0F));
+        CopperGolemStatueUtil.transformCopperGolemStatue(state, poseStack);
 
         return ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "copper_golem_statue"), state, poseStack, SettingsManager.COPPER_GOLEM_AMBIENT_OCCLUSION.getValue(), originalModel.particleMaterial());
     }
@@ -212,11 +160,10 @@ public class OBEBlockRenderer {
         if(ResourceUtil.cacheContains(state)) return ResourceUtil.getModel(state);
         PoseStack poseStack = new PoseStack();
         
-        ModelLayerLocation layerLocation = ResourceUtil.getShulkerBoxLayerLocation(state);
+        ModelLayerLocation layerLocation = ShulkerBoxUtil.getShulkerBoxModelLayerLocation(state);
         if(layerLocation == null) return null;
 
-        Direction facing = state.getValue(ShulkerBoxBlock.FACING);
-        poseStack.mulPose(ShulkerBoxRenderer.modelTransform(facing));
+        ShulkerBoxUtil.transformShulkerBox(state, poseStack);
 
         return ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "shulker_box"), state, poseStack, SettingsManager.SHULKER_BOX_AMBIENT_OCCLUSION.getValue(), originalModel.particleMaterial());
     }
@@ -225,15 +172,14 @@ public class OBEBlockRenderer {
         if(ResourceUtil.cacheContains(state)) return ResourceUtil.getModel(state);
         PoseStack poseStack = new PoseStack();
         
-        ModelLayerLocation layerLocation = ResourceUtil.getDecoratedPotLayerLocation(state, true);
+        ModelLayerLocation layerLocation = DecoratedPotUtil.getDecoratedPotModelLayerLocation(state);
         if(layerLocation == null) return null;
 
-        Direction facing = state.getValue(DecoratedPotBlock.HORIZONTAL_FACING);
-        poseStack.mulPose(DecoratedPotRenderer.modelTransformation(facing));
+        DecoratedPotUtil.transformDecoratedPot(state, poseStack);
 
         BlockStateModel model = ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "decorated_pot"), state, poseStack, SettingsManager.DECORATED_POT_AMBIENT_OCCLUSION.getValue(), originalModel.particleMaterial());
 
-        layerLocation = ResourceUtil.getDecoratedPotLayerLocation(state, false);
+        layerLocation = DecoratedPotUtil.getDecoratedPotSideModelLayerLocation(state);
 
         BlockStateModel sideModel = ResourceUtil.getSubModel(layerLocation, Sheets.getDecoratedPotSprite(DecoratedPotPatterns.BLANK).texture(), state, poseStack, SettingsManager.DECORATED_POT_AMBIENT_OCCLUSION.getValue(), originalModel.particleMaterial());
         

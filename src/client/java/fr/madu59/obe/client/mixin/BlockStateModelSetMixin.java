@@ -16,8 +16,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import net.minecraft.client.renderer.block.BlockStateModelSet;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.block.StandingSignBlock;
-import net.minecraft.world.level.block.WallSignBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 @Mixin(BlockStateModelSet.class)
