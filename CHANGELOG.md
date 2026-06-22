@@ -3,3 +3,6 @@
 
 # Hotfix:
 - Fixed forge version not starting
+
+# Hotfix 2:
+- Fixed embeddium compatibility

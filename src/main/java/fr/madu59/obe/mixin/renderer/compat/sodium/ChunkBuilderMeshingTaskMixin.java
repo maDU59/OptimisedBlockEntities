@@ -8,6 +8,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 
@@ -25,17 +26,16 @@ import net.minecraft.world.level.block.state.BlockState;
 @Mixin(value = ChunkBuilderMeshingTask.class, remap = false)
 public class ChunkBuilderMeshingTaskMixin {
 
-    @WrapOperation(method = "execute", at = @At(value = "INVOKE", target = "Lme/jellysquid/mods/sodium/client/world/WorldSlice;getBlockState(III)Lnet/minecraft/world/level/block/state/BlockState;"))
-    private BlockState obe$getBlockState(@Coerce Object slice, int x, int y, int z, Operation<BlockState> original, @Share("be") LocalRef<BlockEntity> beRef){
-        // beRef.set(slice.getBlockEntity(x, y, z)); Can't get it to work, there are always some fabric api errors
-        beRef.set(Minecraft.getInstance().level.getBlockEntity(new BlockPos(x, y, z)));
-        return original.call(slice, x, y, z);
-    }
+    // @WrapOperation(method = "execute", at = @At(value = "INVOKE", target = "Lme/jellysquid/mods/sodium/client/world/WorldSlice;getBlockState(III)Lnet/minecraft/world/level/block/state/BlockState;"))
+    // private BlockState obe$getBlockState(@Coerce Object slice, int x, int y, int z, Operation<BlockState> original, @Share("be") LocalRef<BlockEntity> beRef){
+    //     beRef.set(slice.getBlockEntity(x, y, z)); Can't get it to work, there are always some fabric api errors
+    //     return original.call(slice, x, y, z);
+    // }
 
     @Redirect(method = "execute", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getRenderShape()Lnet/minecraft/world/level/block/RenderShape;"), require = 0)
-    private RenderShape obe$getRenderShape(BlockState state, @Share("be") LocalRef<BlockEntity> beRef){
+    private RenderShape obe$getRenderShape(BlockState state, @Local(ordinal = 8) int x, @Local(ordinal = 6) int y, @Local(ordinal = 7) int z){
         if(RenderModeManager.hasBlockEntity(state)){
-            BlockEntity be = beRef.get();
+            BlockEntity be = Minecraft.getInstance().level.getBlockEntity(new BlockPos(x, y, z));
             BlockEntityExt ext = (BlockEntityExt) be;
             if(ext != null && ext.isSupportedBlockEntity()) {
                 RenderModeManager.updateBlockEntity(ext, be);
@@ -51,9 +51,9 @@ public class ChunkBuilderMeshingTaskMixin {
     }
 
     @Redirect(method = "execute", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;m_60799_()Lnet/minecraft/world/level/block/RenderShape;"), require = 0)
-    private RenderShape obe$getRenderShape2(BlockState state, @Share("be") LocalRef<BlockEntity> beRef){
+    private RenderShape obe$getRenderShape2(BlockState state, @Local(ordinal = 8) int x, @Local(ordinal = 6) int y, @Local(ordinal = 7) int z){
         if(RenderModeManager.hasBlockEntity(state)){
-            BlockEntity be = beRef.get();
+            BlockEntity be = Minecraft.getInstance().level.getBlockEntity(new BlockPos(x, y, z));
             BlockEntityExt ext = (BlockEntityExt) be;
             if(ext != null && ext.isSupportedBlockEntity()) {
                 RenderModeManager.updateBlockEntity(ext, be);
