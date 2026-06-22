@@ -25,8 +25,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.block.AbstractSkullBlock;
-import net.minecraft.world.level.block.SkullBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTypes;
 import net.minecraft.world.level.block.entity.DecoratedPotPattern;
@@ -58,9 +56,8 @@ public class OBEBlockRenderer {
     public BlockStateModel getSkullBlockModel(BlockState state, RandomSource random, BlockStateModel originalModel) {
         if(ResourceUtil.cacheContains(state)) return ResourceUtil.getModel(state);
         PoseStack poseStack = new PoseStack();
-        SkullBlock.Type type = ((AbstractSkullBlock)state.getBlock()).getType();
         
-        ModelLayerLocation layerLocation = SkullBlockUtil.getSkullBlockModelLayerLocation(state, type);
+        ModelLayerLocation layerLocation = SkullBlockUtil.getSkullBlockModelLayerLocation(state);
         if(layerLocation == null) return null;
 
         SkullBlockUtil.transformSkullBlock(state, poseStack);
@@ -75,9 +72,7 @@ public class OBEBlockRenderer {
         if(layerLocation == null) return null;
 
         ChestUtil.transformChest(state, poseStack);
-        BlockStateModel model = ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "chest"), state, poseStack, SettingsManager.CHEST_AMBIENT_OCCLUSION.getValue(), originalModel.particleMaterial());
-
-        return model;
+        return ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "chest"), state, poseStack, SettingsManager.CHEST_AMBIENT_OCCLUSION.getValue(), originalModel.particleMaterial());
     }
 
     public BlockStateModel getBellModel(BlockState state, RandomSource random, BlockStateModel originalModel) {

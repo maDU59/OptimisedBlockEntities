@@ -20,7 +20,8 @@ public class SkullBlockUtil {
         return ResourceUtil.entityTextureFormatter(id);
     }
 
-    public static ModelLayerLocation getSkullBlockModelLayerLocation(BlockState state, SkullBlock.Type type){
+    public static ModelLayerLocation getSkullBlockModelLayerLocation(BlockState state){
+        SkullBlock.Type type = ((AbstractSkullBlock)state.getBlock()).getType();
         if (type instanceof SkullBlock.Types vanillaType) {
             return switch (vanillaType) {
                 case SKELETON -> ModelLayers.SKELETON_SKULL;
