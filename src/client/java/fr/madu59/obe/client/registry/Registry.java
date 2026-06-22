@@ -26,6 +26,8 @@ public class Registry {
         register("hanging_sign", BlockEntityType.HANGING_SIGN);
         register("bed", BlockEntityType.BED);
         MaterialGetter.init();
+        TransformationGetter.init();
+        ModelLayerLocationGetter.init();
     }
 
     private static void register(String group, BlockEntityType<?> ... types){

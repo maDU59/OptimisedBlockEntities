@@ -5,6 +5,7 @@
     "obe.config.option.banner_ao": "Banner Ambient Occlusion",
     "obe.config.option.optimised_signs": "Optimize Signs",
     "obe.config.option.sign_ao": "Sign Ambient Occlusion",
+    "obe.config.option.sign_text_culling": "Sign Text Culling",
     "obe.config.option.optimised_shulker_boxes": "Optimize Shulker Boxes",
     "obe.config.option.shulker_box_ao": "Shulker Box Ambient Occlusion",
     "obe.config.option.optimised_skulls": "Optimize Skulls",
