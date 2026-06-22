@@ -34,30 +34,37 @@ public class BlockStateModelSetMixin {
         if (!state.hasBlockEntity()) return;
 
         RandomSource random = RandomSource.create(42);
-
+        BlockStateModel model;
 
         if(Registry.isSupported("skull", state)){
-            cir.setReturnValue(obeBlockRenderer.getSkullBlockModel(state, random, obe$getOriginalModel(state)));
+            model = obeBlockRenderer.getSkullBlockModel(state, random, obe$getOriginalModel(state));
+            if(model != null) cir.setReturnValue(model);
         }
         else if(Registry.isSupported("chest", state)){
-            cir.setReturnValue(obeBlockRenderer.getChestModel(state, random, obe$getOriginalModel(state)));
+            model = obeBlockRenderer.getChestModel(state, random, obe$getOriginalModel(state));
+            if(model != null) cir.setReturnValue(model);
         }
         else if(Registry.isSupported("banner", state)){
-            cir.setReturnValue(obeBlockRenderer.getBannerModel(state, random, obe$getOriginalModel(state)));
+            model = obeBlockRenderer.getBannerModel(state, random, obe$getOriginalModel(state));
+        if(model != null) cir.setReturnValue(model);
         }
         // else if(Registry.isSupported("bell", state)){
         //     BlockStateModelSet set = ((BlockStateModelSet)(Object)this);
         //     OBEBlockRenderer.originalBellModel = (BlockStateModel)set.modelByState.getOrDefault(state, new BlockEntityStateModel());
-        //     cir.setReturnValue(new CompositeBlockStateModel(obeBlockRenderer.getBellModel(state, random, obe$getOriginalModel(state)), (BlockStateModel)set.modelByState.getOrDefault(state, new BlockEntityStateModel())));
+        //     model = new CompositeBlockStateModel(obeBlockRenderer.getBellModel(state, random, obe$getOriginalModel(state)), (BlockStateModel)set.modelByState.getOrDefault(state, new BlockEntityStateModel());
+        //     if(model != null) cir.setReturnValue(model);
         // }
         else if(Registry.isSupported("copper_golem_statue", state)){
-            cir.setReturnValue(obeBlockRenderer.getCopperGolemStatueModel(state, random, obe$getOriginalModel(state)));
+            model = obeBlockRenderer.getCopperGolemStatueModel(state, random, obe$getOriginalModel(state));
+            if(model != null) cir.setReturnValue(model);
         }
         else if(Registry.isSupported("shulker_box", state)){
-            cir.setReturnValue(obeBlockRenderer.getShulkerBoxModel(state, random, obe$getOriginalModel(state)));
+            model = obeBlockRenderer.getShulkerBoxModel(state, random, obe$getOriginalModel(state));
+            if(model != null) cir.setReturnValue(model);
         }
         else if(Registry.isSupported("decorated_pot", state)){
-            cir.setReturnValue(obeBlockRenderer.getDecoratedPotModel(state, random, obe$getOriginalModel(state)));
+            model = obeBlockRenderer.getDecoratedPotModel(state, random, obe$getOriginalModel(state));
+            if(model != null) cir.setReturnValue(model);
         }
     }
 
