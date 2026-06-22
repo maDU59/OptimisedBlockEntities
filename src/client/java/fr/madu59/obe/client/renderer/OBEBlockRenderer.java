@@ -214,7 +214,7 @@ public class OBEBlockRenderer {
         Direction facing = state.getValue(CopperGolemStatueBlock.FACING);
         poseStack.pushPose();
         poseStack.translate(0.5F, 0.0F, 0.5F);
-        poseStack.mulPose(Axis.YP.rotationDegrees(facing.toYRot()));
+        poseStack.mulPose(Axis.YP.rotationDegrees(-facing.toYRot()));
 
         WeatherState oxydationLevel;
         if (state.getBlock() instanceof CopperGolemStatueBlock copperGolemStatueBlock) {
