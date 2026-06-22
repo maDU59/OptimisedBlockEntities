@@ -8,9 +8,7 @@ import java.util.Map;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexFormat;
 
 import fr.madu59.obe.client.compat.ModCompat;
 import fr.madu59.obe.client.util.ResourceUtil;

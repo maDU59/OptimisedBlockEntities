@@ -7,6 +7,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.llamalad7.mixinextras.sugar.Local;
 
+import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager;
 import net.minecraft.client.renderer.blockentity.DecoratedPotRenderer;
 import net.minecraft.world.level.block.entity.DecoratedPotBlockEntity;
@@ -15,6 +16,6 @@ import net.minecraft.world.level.block.entity.DecoratedPotBlockEntity;
 public abstract class DecoratedPotRendererMixin {
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
     public void obe$cancelSubmit(CallbackInfo ci, @Local DecoratedPotBlockEntity be){
-        if(!RenderModeManager.shouldRenderEntity(be)) ci.cancel();
+        if(!RenderModeManager.shouldRenderEntity(be) && SettingsManager.OPTIMISED_DECORATED_POTS.getValue()) ci.cancel();
     }
 }
