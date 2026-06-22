@@ -40,8 +40,8 @@ public class SectionCompilerMixin {
         return original.call(region, pos);
     }
 
-    @Redirect(method = "compile", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getRenderShape()Lnet/minecraft/world/level/block/RenderShape;"))
-    private RenderShape obe$getRenderShape(BlockState state, @Share("be") LocalRef<BlockEntity> beRef){
+    @WrapOperation(method = "compile", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getRenderShape()Lnet/minecraft/world/level/block/RenderShape;"))
+    private RenderShape obe$getRenderShape(BlockState state, Operation<RenderShape> original, @Share("be") LocalRef<BlockEntity> beRef){
         if(state.hasBlockEntity()){
             BlockEntity be = beRef.get();
             BlockEntityExt ext = (BlockEntityExt) be;
@@ -55,6 +55,6 @@ public class SectionCompilerMixin {
                 }
             }
         }
-        return state.getRenderShape();
+        return original.call(state);
     }
 }
