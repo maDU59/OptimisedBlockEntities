@@ -100,8 +100,7 @@ public class OBEBlockRenderer {
         ModelLayerLocation layerLocation = BedUtil.getBedModelLayerLocation(state);
         if(layerLocation == null) return null;
 
-        Direction facing = state.getValue(BedBlock.FACING);
-        poseStack.mulPose(BedRenderer.modelTransform(facing));
+        BedUtil.transformBed(state, poseStack);
 
         return ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "bed"), state, poseStack, SettingsManager.BED_AMBIENT_OCCLUSION.getValue(), originalModel.particleMaterial());
     }
