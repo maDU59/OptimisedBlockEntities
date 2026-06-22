@@ -6,11 +6,14 @@ import java.util.function.Function;
 
 import fr.madu59.obe.OBE;
 import fr.madu59.obe.client.util.blockentity.BannerUtil;
+import fr.madu59.obe.client.util.blockentity.BedUtil;
 import fr.madu59.obe.client.util.blockentity.BellUtil;
 import fr.madu59.obe.client.util.blockentity.ChestUtil;
 import fr.madu59.obe.client.util.blockentity.CopperGolemStatueUtil;
 import fr.madu59.obe.client.util.blockentity.DecoratedPotUtil;
+import fr.madu59.obe.client.util.blockentity.HangingSignUtil;
 import fr.madu59.obe.client.util.blockentity.ShulkerBoxUtil;
+import fr.madu59.obe.client.util.blockentity.SignUtil;
 import fr.madu59.obe.client.util.blockentity.SkullBlockUtil;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -28,6 +31,9 @@ public class ModelLayerLocationGetter {
         registerDefault("shulker_box", ShulkerBoxUtil::getShulkerBoxModelLayerLocation);
         registerDefault("decorated_pot", DecoratedPotUtil::getDecoratedPotModelLayerLocation);
         registerDefault("copper_golem_statue", CopperGolemStatueUtil::getCopperGolemStatueModelLayerLocation);
+        registerDefault("sign", SignUtil::getSignModelLayerLocation);
+        registerDefault("hanging_sign", HangingSignUtil::getHangingSignModelLayerLocation);
+        registerDefault("bed", BedUtil::getBedModelLayerLocation);
     }
 
     public static void registerDefault(String group, Function<BlockState, ModelLayerLocation> getter){

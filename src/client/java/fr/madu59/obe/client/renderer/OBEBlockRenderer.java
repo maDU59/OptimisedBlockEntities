@@ -62,10 +62,10 @@ public class OBEBlockRenderer {
         if(ResourceUtil.cacheContains(state)) return ResourceUtil.getModel(state);
         PoseStack poseStack = new PoseStack();
 
-        final ModelLayerLocation layerLocation = SignUtil.getSignModelLayerLocation(state);
+        ModelLayerLocation layerLocation = ModelLayerLocationGetter.getModelLayerLocation(state, "sign");
         if(layerLocation == null) return null;
 
-        SignUtil.transformSign(state, poseStack);
+        TransformationGetter.applyTransformation(state, poseStack, "sign");
 
         BlockStateModel model = ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "sign"), state, poseStack, SettingsManager.SIGN_AMBIENT_OCCLUSION.getValue(), originalModel.particleMaterial());
 
@@ -76,10 +76,10 @@ public class OBEBlockRenderer {
         if(ResourceUtil.cacheContains(state)) return ResourceUtil.getModel(state);
         PoseStack poseStack = new PoseStack();
 
-        ModelLayerLocation layerLocation = HangingSignUtil.getHangingSignModelLayerLocation(state);
+        ModelLayerLocation layerLocation = ModelLayerLocationGetter.getModelLayerLocation(state, "hanging_sign");
         if(layerLocation == null) return null;
 
-        HangingSignUtil.transformHangingSign(state, poseStack);
+        TransformationGetter.applyTransformation(state, poseStack, "hanging_sign");
 
         return ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "hanging_sign"), state, poseStack, SettingsManager.SIGN_AMBIENT_OCCLUSION.getValue(), originalModel.particleMaterial());
     }
@@ -99,10 +99,10 @@ public class OBEBlockRenderer {
         if(ResourceUtil.cacheContains(state)) return ResourceUtil.getModel(state);
         PoseStack poseStack = new PoseStack();
         
-        ModelLayerLocation layerLocation = BedUtil.getBedModelLayerLocation(state);
+        ModelLayerLocation layerLocation = ModelLayerLocationGetter.getModelLayerLocation(state, "bed");
         if(layerLocation == null) return null;
 
-        BedUtil.transformBed(state, poseStack);
+        TransformationGetter.applyTransformation(state, poseStack, "bed");
 
         return ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "bed"), state, poseStack, SettingsManager.BED_AMBIENT_OCCLUSION.getValue(), originalModel.particleMaterial());
     }

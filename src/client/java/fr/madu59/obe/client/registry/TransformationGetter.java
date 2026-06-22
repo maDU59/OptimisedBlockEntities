@@ -8,11 +8,14 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import fr.madu59.obe.OBE;
 import fr.madu59.obe.client.util.blockentity.BannerUtil;
+import fr.madu59.obe.client.util.blockentity.BedUtil;
 import fr.madu59.obe.client.util.blockentity.BellUtil;
 import fr.madu59.obe.client.util.blockentity.ChestUtil;
 import fr.madu59.obe.client.util.blockentity.CopperGolemStatueUtil;
 import fr.madu59.obe.client.util.blockentity.DecoratedPotUtil;
+import fr.madu59.obe.client.util.blockentity.HangingSignUtil;
 import fr.madu59.obe.client.util.blockentity.ShulkerBoxUtil;
+import fr.madu59.obe.client.util.blockentity.SignUtil;
 import fr.madu59.obe.client.util.blockentity.SkullBlockUtil;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -29,6 +32,9 @@ public class TransformationGetter {
         registerDefault("shulker_box", ShulkerBoxUtil::transformShulkerBox);
         registerDefault("decorated_pot", DecoratedPotUtil::transformDecoratedPot);
         registerDefault("copper_golem_statue", CopperGolemStatueUtil::transformCopperGolemStatue);
+        registerDefault("sign", SignUtil::transformSign);
+        registerDefault("hanging_sign", HangingSignUtil::transformHangingSign);
+        registerDefault("bed", BedUtil::transformBed);
     }
 
     public static void registerDefault(String group, BiConsumer<BlockState, PoseStack> getter){
