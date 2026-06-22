@@ -1,2 +1,2 @@
 # What's new:
-- Fixed crash with Indigo renderer
+- Fixed settings not being respected with some unconventional mod configurations
