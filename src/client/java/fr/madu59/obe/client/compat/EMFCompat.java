@@ -83,7 +83,6 @@ public class EMFCompat {
             EMFAnimationEntityContext.reset();
             ETFRenderContext.endSpecialRenderOverlayPhase();
             ETFRenderContext.reset();
-            EMFAnimationEntityContext.setCurrentEntityOnShoulder(false);
         }
     }
 }
