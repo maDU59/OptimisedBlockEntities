@@ -39,6 +39,7 @@ public class SkullBlockUtil {
     }
 
     public static void transformSkullBlock(BlockState state, PoseStack poseStack){
+        poseStack.pushPose();
         boolean bl = state.getBlock() instanceof WallSkullBlock;
         Direction direction = bl ? (Direction)state.getValue(WallSkullBlock.FACING) : null;
         if (direction == null) {
@@ -52,5 +53,10 @@ public class SkullBlockUtil {
         poseStack.mulPose(Axis.YP.rotationDegrees(-RotationSegment.convertToDegrees(i)));
 
         poseStack.scale(-1.0F, -1.0F, 1.0F);
+        SkullBlock.Type type = ((AbstractSkullBlock)state.getBlock()).getType();
+        if(type == SkullBlock.Types.DRAGON){
+            poseStack.translate(0.0F, -0.374375F, 0.0F);
+            poseStack.scale(0.75F, 0.75F, 0.75F);
+        }
     }
 }

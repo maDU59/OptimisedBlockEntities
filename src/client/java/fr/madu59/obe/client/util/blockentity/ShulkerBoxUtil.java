@@ -24,7 +24,7 @@ public class ShulkerBoxUtil {
     }
 
     public static ModelLayerLocation getShulkerBoxModelLayerLocation(BlockState state){
-        return ModelLayers.SHULKER_BOX;
+        return ModelLayers.SHULKER;
     }
 
     public static void transformShulkerBox(BlockState state, PoseStack poseStack){

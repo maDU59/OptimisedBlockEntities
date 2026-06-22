@@ -21,16 +21,7 @@ public class SignUtil {
     }
 
     public static ModelLayerLocation getSignModelLayerLocation(BlockState state){
-        WoodType woodType = SignBlock.getWoodType(state.getBlock());
-        if (state.getBlock() instanceof SignBlock block) {
-            if(block instanceof WallSignBlock){
-                return ModelLayers.createWallSignModelName(woodType);
-            }
-            else{
-                return ModelLayers.createStandingSignModelName(woodType);
-            }
-        }
-        else return null;
+        return ModelLayers.createSignModelName(SignBlock.getWoodType(state.getBlock()));
     }
 
     public static void transformSign(BlockState state, PoseStack poseStack){
@@ -40,9 +31,6 @@ public class SignUtil {
             if (!(block instanceof StandingSignBlock)) {
                 poseStack.translate(0.0F, -0.3125F, -0.4375F);
             }
-
-            float f = 0.6666667F;
-            poseStack.scale(f, -f, -f);
         }
     }
 }
