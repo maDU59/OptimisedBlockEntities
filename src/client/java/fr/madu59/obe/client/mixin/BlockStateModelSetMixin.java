@@ -46,7 +46,7 @@ public class BlockStateModelSetMixin {
         }
         else if(Registry.isSupported("banner", state)){
             model = obeBlockRenderer.getBannerModel(state, random, obe$getOriginalModel(state));
-        if(model != null) cir.setReturnValue(model);
+            if(model != null) cir.setReturnValue(model);
         }
         // else if(Registry.isSupported("bell", state)){
         //     BlockStateModelSet set = ((BlockStateModelSet)(Object)this);
