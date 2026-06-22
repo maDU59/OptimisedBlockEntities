@@ -23,14 +23,12 @@ import net.minecraft.world.level.block.state.BlockState;
 @Mixin(ModelBlockRenderer.class)
 public class ModelBlockRendererMixin {
     @Unique private final OBEBlockRenderer obeBlockRenderer = new OBEBlockRenderer();
-    @Unique private final RandomSource random = RandomSource.create();
 
     @ModifyVariable(method = "tesselateBlock", at = @At("HEAD"), argsOnly = true)
     private List<BlockModelPart> obe$modifyModel(List<BlockModelPart> list, BlockAndTintGetter blockAndTintGetter, List<BlockModelPart> originalList, BlockState blockState, BlockPos blockPos, PoseStack poseStack, VertexConsumer vertexConsumer, boolean bl, int i) {
         BlockStateModel model = obeBlockRenderer.getModel(blockState, blockPos, blockState.getSeed(blockPos), new BlockEntityStateModel(list.get(0).particleIcon()));
         if(model != null){
-            random.setSeed(blockState.getSeed(blockPos));
-            list = model.collectParts(random);
+            list = model.collectParts(RandomSource.create(blockState.getSeed(blockPos)));
         }
         return list == null? originalList : list;
     }
