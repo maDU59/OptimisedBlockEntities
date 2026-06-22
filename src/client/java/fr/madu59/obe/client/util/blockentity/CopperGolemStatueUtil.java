@@ -1,5 +1,6 @@
 package fr.madu59.obe.client.util.blockentity;
 
+import fr.madu59.obe.client.util.ResourceUtil;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.animal.golem.CopperGolemOxidationLevels;
 import net.minecraft.world.level.block.CopperGolemStatueBlock;
@@ -14,6 +15,6 @@ public class CopperGolemStatueUtil {
         } else {
             oxydationLevel = WeatherState.UNAFFECTED;
         }
-        return CopperGolemOxidationLevels.getOxidationLevel(oxydationLevel).texture();
+        return ResourceUtil.entityTextureFormatter(CopperGolemOxidationLevels.getOxidationLevel(oxydationLevel).texture());
     }
 }
