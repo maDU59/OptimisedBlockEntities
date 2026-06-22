@@ -66,6 +66,12 @@ public class SettingsManager {
         reloadResourcesAction
     );
 
+    public static Option<Boolean> SIGN_TEXT_CULLING = loadOptionWithDefaults("sign_text_culling",
+        "obe.config.option.sign_text_culling",
+        true,
+        emptyAction
+    );
+
     public static Option<Boolean> OPTIMISED_SHULKER_BOXES = loadOptionWithDefaults("optimized_shulker_box",
         "obe.config.option.optimised_shulker_boxes",
         true,
