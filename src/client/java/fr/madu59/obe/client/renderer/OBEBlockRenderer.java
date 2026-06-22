@@ -90,7 +90,7 @@ public class OBEBlockRenderer {
             poseStack.mulPose(StandingSignRenderer.TRANSFORMATIONS.freeTransformations(rotationSegment).body());
         }
 
-        BlockStateModel model = ResourceUtil.getModel(layerLocation, Sheets.getSignSprite(woodType).texture(), state, poseStack, SettingsManager.SIGN_AMBIENT_OCCLUSION.getValue(), originalModel.particleMaterial());
+        BlockStateModel model = ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "sign"), state, poseStack, SettingsManager.SIGN_AMBIENT_OCCLUSION.getValue(), originalModel.particleMaterial());
 
         return model;
     }
@@ -100,7 +100,7 @@ public class OBEBlockRenderer {
         PoseStack poseStack = new PoseStack();
         
         boolean isWall = !state.hasProperty(CeilingHangingSignBlock.ATTACHED);
-        WoodType woodType = ((SignBlock) state.getBlock()).type();
+        WoodType woodType = SignBlock.getWoodType(state.getBlock());
 
         ModelLayerLocation layerLocation = ResourceUtil.getHangingSignLayerLocation(state, HangingSignBlock.getAttachmentPoint(state), woodType);
 
@@ -113,7 +113,7 @@ public class OBEBlockRenderer {
             poseStack.mulPose(HangingSignRenderer.TRANSFORMATIONS.wallTransformation(facing).body());
         }
 
-        return ResourceUtil.getModel(layerLocation, Sheets.getHangingSignSprite(woodType).texture(), state, poseStack, SettingsManager.SIGN_AMBIENT_OCCLUSION.getValue(), originalModel.particleMaterial());
+        return ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "hanging_sign"), state, poseStack, SettingsManager.SIGN_AMBIENT_OCCLUSION.getValue(), originalModel.particleMaterial());
     }
 
     public BlockStateModel getSkullBlockModel(BlockState state, RandomSource random, BlockStateModel originalModel) {

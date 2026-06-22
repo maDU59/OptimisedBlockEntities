@@ -6,9 +6,9 @@ import net.minecraft.world.level.block.SignBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.WoodType;
 
-public class SignUtil {
-    public static Identifier getSignMaterial(BlockState state){
+public class HangingSignUtil {
+    public static Identifier getHangingSignMaterial(BlockState state){
         WoodType woodType = SignBlock.getWoodType(state.getBlock());
-        return Sheets.getSignSprite(woodType).texture();
+        return Sheets.getHangingSignSprite(woodType).texture();
     }
 }

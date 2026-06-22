@@ -38,10 +38,10 @@ public class BlockStateModelSetMixin {
         RandomSource random = RandomSource.create(42);
 
         if(Registry.isSupported("sign", state)){
-            if(state.getBlock() instanceof StandingSignBlock || state.getBlock() instanceof WallSignBlock){
-                cir.setReturnValue(obeBlockRenderer.getStandingSignModel(state, random, obe$getOriginalModel(state)));
-            }
-            else cir.setReturnValue(obeBlockRenderer.getHangingSignModel(state, random, obe$getOriginalModel(state)));
+            cir.setReturnValue(obeBlockRenderer.getStandingSignModel(state, random, obe$getOriginalModel(state)));
+        }
+        else if(Registry.isSupported("hanging_sign", state)){
+            cir.setReturnValue(obeBlockRenderer.getHangingSignModel(state, random, obe$getOriginalModel(state)));
         }
         else if(Registry.isSupported("bed", state)){
             cir.setReturnValue(obeBlockRenderer.getBedModel(state, random, obe$getOriginalModel(state)));
