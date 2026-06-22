@@ -22,9 +22,12 @@ public class Registry {
         register("banner", BlockEntityType.BANNER);
         register("shulker_box", BlockEntityType.SHULKER_BOX);
         register("decorated_pot", BlockEntityType.DECORATED_POT);
-        register("sign", BlockEntityType.HANGING_SIGN, BlockEntityType.SIGN);
+        register("sign", BlockEntityType.SIGN);
+        register("hanging_sign", BlockEntityType.HANGING_SIGN);
         register("bed", BlockEntityType.BED);
         MaterialGetter.init();
+        TransformationGetter.init();
+        ModelLayerLocationGetter.init();
     }
 
     private static void register(String group, BlockEntityType<?> ... types){

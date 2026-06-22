@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import fr.madu59.obe.OBE;
+import fr.madu59.obe.compat.ModCompat;
 import fr.madu59.obe.config.SettingsManager;
 import fr.madu59.obe.platform.PlatformHelper;
 import fr.madu59.obe.util.ResourceUtil;
@@ -37,7 +38,7 @@ public class SettingsManager {
 
     public static Option<Boolean> CHEST_AMBIENT_OCCLUSION = loadOptionWithDefaults("chest_ambient_occlusion",
         "obe.config.option.chest_ao",
-        true,
+        false,
         reloadResourcesAction
     );
 
@@ -49,7 +50,7 @@ public class SettingsManager {
 
     public static Option<Boolean> BANNER_AMBIENT_OCCLUSION = loadOptionWithDefaults("banner_ambient_occlusion",
         "obe.config.option.banner_ao",
-        true,
+        ModCompat.isSodiumLoaded(),
         reloadResourcesAction
     );
 
@@ -61,8 +62,14 @@ public class SettingsManager {
 
     public static Option<Boolean> SIGN_AMBIENT_OCCLUSION = loadOptionWithDefaults("sign_ambient_occlusion",
         "obe.config.option.sign_ao",
-        true,
+        ModCompat.isSodiumLoaded(),
         reloadResourcesAction
+    );
+
+    public static Option<Boolean> SIGN_TEXT_CULLING = loadOptionWithDefaults("sign_text_culling",
+        "obe.config.option.sign_text_culling",
+        true,
+        emptyAction
     );
 
     public static Option<Boolean> OPTIMISED_SHULKER_BOXES = loadOptionWithDefaults("optimized_shulker_box",
@@ -73,7 +80,7 @@ public class SettingsManager {
 
     public static Option<Boolean> SHULKER_BOX_AMBIENT_OCCLUSION = loadOptionWithDefaults("shulker_box_ambient_occlusion",
         "obe.config.option.shulker_box_ao",
-        true,
+        false,
         reloadResourcesAction
     );
 
@@ -85,7 +92,7 @@ public class SettingsManager {
 
     public static Option<Boolean> SKULL_AMBIENT_OCCLUSION = loadOptionWithDefaults("skull_ambient_occlusion",
         "obe.config.option.skull_ao",
-        true,
+        false,
         reloadResourcesAction
     );
 
@@ -97,7 +104,7 @@ public class SettingsManager {
 
     public static Option<Boolean> BED_AMBIENT_OCCLUSION = loadOptionWithDefaults("bed_ambient_occlusion",
         "obe.config.option.bed_ao",
-        true,
+        ModCompat.isSodiumLoaded(),
         reloadResourcesAction
     );
 
@@ -121,7 +128,7 @@ public class SettingsManager {
 
     public static Option<Boolean> DECORATED_POT_AMBIENT_OCCLUSION = loadOptionWithDefaults("decorated_pot_ambient_occlusion",
         "obe.config.option.decorated_pot_ao",
-        true,
+        false,
         reloadResourcesAction
     );
 
@@ -133,7 +140,7 @@ public class SettingsManager {
 
     public static Option<Boolean> COPPER_GOLEM_AMBIENT_OCCLUSION = loadOptionWithDefaults("copper_golem_ambient_occlusion",
         "obe.config.option.copper_golem_ao",
-        true,
+        ModCompat.isSodiumLoaded(),
         reloadResourcesAction
     );
 

@@ -22,5 +22,4 @@ public class BannerBlockEntityMixin{
         ext.isSupportedBlockEntity(Registry.isSupported("banner", be.getType()));
         ext.renderBoth(true);
     }
-
 }

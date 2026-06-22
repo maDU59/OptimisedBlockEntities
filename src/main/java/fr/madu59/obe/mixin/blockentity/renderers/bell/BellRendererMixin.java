@@ -7,6 +7,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.llamalad7.mixinextras.sugar.Local;
 
+import fr.madu59.obe.config.SettingsManager;
 import fr.madu59.obe.renderer.blockentity.misc.RenderModeManager;
 import net.minecraft.client.renderer.blockentity.BellRenderer;
 import net.minecraft.world.level.block.entity.BellBlockEntity;
@@ -15,6 +16,6 @@ import net.minecraft.world.level.block.entity.BellBlockEntity;
 public abstract class BellRendererMixin {
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
     public void obe$cancelSubmit(CallbackInfo ci, @Local BellBlockEntity be){
-        if(!RenderModeManager.shouldRenderEntity(be)) ci.cancel();
+        if(!RenderModeManager.shouldRenderEntity(be) && SettingsManager.OPTIMISED_BELLS.getValue()) ci.cancel();
     }
 }

@@ -1,8 +1,2 @@
 # What's new:
-- Added compatibility with EMF/ETF packs, this means Fresh Animations : Objects is now supported :D
-
-# Hotfix:
-- Fixed forge version not starting
-
-# Hotfix 2:
-- Fixed embeddium compatibility
+- Added a setting to disable sign text culling
