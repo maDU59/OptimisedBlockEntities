@@ -1,8 +1,12 @@
 package fr.madu59.obe.client.util.blockentity;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.blockentity.ShulkerBoxRenderer;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.ShulkerBoxBlock;
@@ -22,5 +26,10 @@ public class ShulkerBoxUtil {
 
     public static ModelLayerLocation getShulkerBoxModelLayerLocation(BlockState state){
         return ModelLayers.SHULKER_BOX;
+    }
+
+    public static void transformShulkerBox(BlockState state, PoseStack poseStack){
+        Direction facing = state.getValue(ShulkerBoxBlock.FACING);
+        poseStack.mulPose(ShulkerBoxRenderer.modelTransform(facing));
     }
 }
