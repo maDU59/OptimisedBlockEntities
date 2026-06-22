@@ -17,8 +17,6 @@ import net.minecraft.client.renderer.block.BlockModelShaper;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.block.StandingSignBlock;
-import net.minecraft.world.level.block.WallSignBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 @Mixin(BlockModelShaper.class)
@@ -38,34 +36,45 @@ public class BlockStateModelSetMixin {
 
         RandomSource random = RandomSource.create(42);
 
+        BlockStateModel model;
+
         if(Registry.isSupported("sign", state)){
-            if(state.getBlock() instanceof StandingSignBlock || state.getBlock() instanceof WallSignBlock){
-                cir.setReturnValue(obeBlockRenderer.getStandingSignModel(state, random, obe$getOriginalModel(state)));
-            }
-            else cir.setReturnValue(obeBlockRenderer.getHangingSignModel(state, random, obe$getOriginalModel(state)));
+            model = obeBlockRenderer.getStandingSignModel(state, random, obe$getOriginalModel(state));
+            if(model != null) cir.setReturnValue(model);
+        }
+        else if(Registry.isSupported("hanging_sign", state)){
+            model = obeBlockRenderer.getHangingSignModel(state, random, obe$getOriginalModel(state));
+            if(model != null) cir.setReturnValue(model);
         }
         else if(Registry.isSupported("bed", state)){
-            cir.setReturnValue(obeBlockRenderer.getBedModel(state, random, obe$getOriginalModel(state)));
+            model = obeBlockRenderer.getBedModel(state, random, obe$getOriginalModel(state));
+            if(model != null) cir.setReturnValue(model);
         }
         else if(Registry.isSupported("skull", state)){
-            cir.setReturnValue(obeBlockRenderer.getSkullBlockModel(state, random, obe$getOriginalModel(state)));
+            model = obeBlockRenderer.getSkullBlockModel(state, random, obe$getOriginalModel(state));
+            if(model != null) cir.setReturnValue(model);
         }
         else if(Registry.isSupported("chest", state)){
-            cir.setReturnValue(obeBlockRenderer.getChestModel(state, random, obe$getOriginalModel(state)));
+            model = obeBlockRenderer.getChestModel(state, random, obe$getOriginalModel(state));
+            if(model != null) cir.setReturnValue(model);
         }
         else if(Registry.isSupported("banner", state)){
-            cir.setReturnValue(obeBlockRenderer.getBannerModel(state, random, obe$getOriginalModel(state)));
+            model = obeBlockRenderer.getBannerModel(state, random, obe$getOriginalModel(state));
+            if(model != null) cir.setReturnValue(model);
         }
         // else if(Registry.isSupported("bell", state)){
         //     BlockStateModelSet set = ((BlockStateModelSet)(Object)this);
         //     OBEBlockRenderer.originalBellModel = (BlockStateModel)set.modelByState.getOrDefault(state, new BlockEntityStateModel());
-        //     cir.setReturnValue(new CompositeBlockStateModel(obeBlockRenderer.getBellModel(state, random, obe$getOriginalModel(state)), (BlockStateModel)set.modelByState.getOrDefault(state, new BlockEntityStateModel())));
+        //     model = new CompositeBlockStateModel(obeBlockRenderer.getBellModel(state, random, obe$getOriginalModel(state)), (BlockStateModel)set.modelByState.getOrDefault(state, new BlockEntityStateModel());
+        //     if(model != null) cir.setReturnValue(model);
         // }
         else if(Registry.isSupported("shulker_box", state)){
-            cir.setReturnValue(obeBlockRenderer.getShulkerBoxModel(state, random, obe$getOriginalModel(state)));
+            model = obeBlockRenderer.getShulkerBoxModel(state, random, obe$getOriginalModel(state));
+            if(model != null) cir.setReturnValue(model);
         }
         else if(Registry.isSupported("decorated_pot", state)){
-            cir.setReturnValue(obeBlockRenderer.getDecoratedPotModel(state, random, obe$getOriginalModel(state)));
+            model = obeBlockRenderer.getDecoratedPotModel(state, random, obe$getOriginalModel(state));
+            if(model != null) cir.setReturnValue(model);
         }
     }
 

@@ -10,6 +10,7 @@ import fr.madu59.obe.client.util.blockentity.BedUtil;
 import fr.madu59.obe.client.util.blockentity.BellUtil;
 import fr.madu59.obe.client.util.blockentity.ChestUtil;
 import fr.madu59.obe.client.util.blockentity.DecoratedPotUtil;
+import fr.madu59.obe.client.util.blockentity.HangingSignUtil;
 import fr.madu59.obe.client.util.blockentity.ShulkerBoxUtil;
 import fr.madu59.obe.client.util.blockentity.SignUtil;
 import fr.madu59.obe.client.util.blockentity.SkullBlockUtil;
@@ -29,6 +30,7 @@ public class MaterialGetter {
         registerDefault("shulker_box", ShulkerBoxUtil::getShulkerBoxMaterial);
         registerDefault("decorated_pot", DecoratedPotUtil::getDecoratedPotMaterial);
         registerDefault("sign", SignUtil::getSignMaterial);
+        registerDefault("hanging_sign", HangingSignUtil::getHangingSignMaterial);
         registerDefault("bed", BedUtil::getBedMaterial);
     }
 

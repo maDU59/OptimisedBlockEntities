@@ -37,7 +37,7 @@ public class SettingsManager {
 
     public static Option<Boolean> CHEST_AMBIENT_OCCLUSION = loadOptionWithDefaults("chest_ambient_occlusion",
         "obe.config.option.chest_ao",
-        true,
+        false,
         reloadResourcesAction
     );
 
@@ -49,7 +49,7 @@ public class SettingsManager {
 
     public static Option<Boolean> BANNER_AMBIENT_OCCLUSION = loadOptionWithDefaults("banner_ambient_occlusion",
         "obe.config.option.banner_ao",
-        true,
+        false,
         reloadResourcesAction
     );
 
@@ -61,7 +61,7 @@ public class SettingsManager {
 
     public static Option<Boolean> SIGN_AMBIENT_OCCLUSION = loadOptionWithDefaults("sign_ambient_occlusion",
         "obe.config.option.sign_ao",
-        true,
+        false,
         reloadResourcesAction
     );
 
@@ -73,7 +73,7 @@ public class SettingsManager {
 
     public static Option<Boolean> SHULKER_BOX_AMBIENT_OCCLUSION = loadOptionWithDefaults("shulker_box_ambient_occlusion",
         "obe.config.option.shulker_box_ao",
-        true,
+        false,
         reloadResourcesAction
     );
 
@@ -85,7 +85,7 @@ public class SettingsManager {
 
     public static Option<Boolean> SKULL_AMBIENT_OCCLUSION = loadOptionWithDefaults("skull_ambient_occlusion",
         "obe.config.option.skull_ao",
-        true,
+        false,
         reloadResourcesAction
     );
 
@@ -97,7 +97,7 @@ public class SettingsManager {
 
     public static Option<Boolean> BED_AMBIENT_OCCLUSION = loadOptionWithDefaults("bed_ambient_occlusion",
         "obe.config.option.bed_ao",
-        true,
+        false,
         reloadResourcesAction
     );
 
@@ -109,7 +109,7 @@ public class SettingsManager {
 
     public static Option<Boolean> BELL_AMBIENT_OCCLUSION = loadOptionWithDefaults("bell_ambient_occlusion",
         "obe.config.option.bell_ao",
-        true,
+        false,
         reloadResourcesAction
     );
 
@@ -121,7 +121,7 @@ public class SettingsManager {
 
     public static Option<Boolean> DECORATED_POT_AMBIENT_OCCLUSION = loadOptionWithDefaults("decorated_pot_ambient_occlusion",
         "obe.config.option.decorated_pot_ao",
-        true,
+        false,
         reloadResourcesAction
     );
 
@@ -133,7 +133,7 @@ public class SettingsManager {
 
     public static Option<Boolean> COPPER_GOLEM_AMBIENT_OCCLUSION = loadOptionWithDefaults("copper_golem_ambient_occlusion",
         "obe.config.option.copper_golem_ao",
-        true,
+        false,
         reloadResourcesAction
     );
 
