@@ -1,3 +1,2 @@
 # What's new:
-- Disabled ambient occlusion by default
-- Fixed copper golem statues texture
+- Fixed settings not being respected with some unconventional mod configurations
