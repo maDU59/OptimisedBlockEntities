@@ -12,6 +12,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import fr.madu59.obe.client.compat.ModCompat;
+import fr.madu59.obe.client.config.SettingsManager;
 
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -21,7 +22,7 @@ import net.minecraft.client.renderer.blockentity.AbstractSignRenderer;
 public abstract class AbstractSignRendererMixin {
     @Inject(method = "submitSignText", at = @At("HEAD"), cancellable = true)
     public void obe$cancelSignText(CallbackInfo ci, @Local PoseStack poseStack){
-        if(ModCompat.isShadowPass() || !obe$isFacingCamera(poseStack)) ci.cancel();
+        if((ModCompat.isShadowPass() || !obe$isFacingCamera(poseStack)) && SettingsManager.SIGN_TEXT_CULLING.getValue()) ci.cancel();
     }
 
     @Unique
