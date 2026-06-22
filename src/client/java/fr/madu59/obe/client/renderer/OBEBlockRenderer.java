@@ -6,7 +6,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
 import fr.madu59.obe.client.config.SettingsManager;
-import fr.madu59.obe.client.model.BlockEntityStateModel;
 import fr.madu59.obe.client.model.CompositeBlockStateModel;
 import fr.madu59.obe.client.registry.MaterialGetter;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
@@ -80,6 +79,7 @@ public class OBEBlockRenderer {
 
         WoodType woodType = SignBlock.getWoodType(state.getBlock());
         final ModelLayerLocation layerLocation = ResourceUtil.getSignLayerLocation(state, isWallSign, woodType);
+        if(layerLocation == null) return null;
 
         if (isWallSign) {
             Direction facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
@@ -103,6 +103,7 @@ public class OBEBlockRenderer {
         WoodType woodType = SignBlock.getWoodType(state.getBlock());
 
         ModelLayerLocation layerLocation = ResourceUtil.getHangingSignLayerLocation(state, HangingSignBlock.getAttachmentPoint(state), woodType);
+        if(layerLocation == null) return null;
 
         if (!isWall) {
             int rotationSegment = state.getValue(BlockStateProperties.ROTATION_16);
@@ -122,7 +123,7 @@ public class OBEBlockRenderer {
         SkullBlock.Type type = ((AbstractSkullBlock)state.getBlock()).getType();
         
         ModelLayerLocation layerLocation = ResourceUtil.getSkullBlockLayerLocation(state, type);
-        if(layerLocation == null) return new BlockEntityStateModel();
+        if(layerLocation == null) return null;
 
         if (state.getBlock() instanceof WallSkullBlock) {
             Direction facing = state.getValue(WallSkullBlock.FACING);
@@ -138,6 +139,7 @@ public class OBEBlockRenderer {
         PoseStack poseStack = new PoseStack();
         
         ModelLayerLocation layerLocation = ResourceUtil.getBedLayerLocation(state);
+        if(layerLocation == null) return null;
 
         Direction facing = state.getValue(BedBlock.FACING);
         poseStack.mulPose(BedRenderer.modelTransform(facing));
@@ -150,6 +152,7 @@ public class OBEBlockRenderer {
         PoseStack poseStack = new PoseStack();
         
         ModelLayerLocation layerLocation = ResourceUtil.getChestLayerLocation(state);
+        if(layerLocation == null) return null;
 
         Direction facing = state.getValue(ChestBlock.FACING);
         poseStack.mulPose(ChestRenderer.modelTransformation(facing));
@@ -163,6 +166,7 @@ public class OBEBlockRenderer {
         PoseStack poseStack = new PoseStack();
         
         ModelLayerLocation layerLocation = ResourceUtil.getBellLayerLocation(state);
+        if(layerLocation == null) return null;
 
         BlockStateModel model = ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "bell"), state, poseStack, SettingsManager.BELL_AMBIENT_OCCLUSION.getValue(), originalModel.particleMaterial());
         model = new CompositeBlockStateModel(model, Minecraft.getInstance().getModelManager().getBlockStateModelSet().get(state));
@@ -178,6 +182,7 @@ public class OBEBlockRenderer {
         boolean isWall = block instanceof WallBannerBlock;
         
         ModelLayerLocation layerLocation = ResourceUtil.getBannerLayerLocation(state, isWall);
+        if(layerLocation == null) return null;
         if (isWall) {
             Direction facing = state.getValue(WallBannerBlock.FACING);
             poseStack.mulPose(BannerRenderer.TRANSFORMATIONS.wallTransformation(facing));
@@ -193,6 +198,7 @@ public class OBEBlockRenderer {
         PoseStack poseStack = new PoseStack();
         
         ModelLayerLocation layerLocation = ResourceUtil.getCopperGolemStatueLayerLocation(state);
+        if(layerLocation == null) return null;
 
         Direction facing = state.getValue(CopperGolemStatueBlock.FACING);
         poseStack.mulPose(CopperGolemStatueBlockRenderer.modelTransformation(facing));
@@ -207,7 +213,7 @@ public class OBEBlockRenderer {
         PoseStack poseStack = new PoseStack();
         
         ModelLayerLocation layerLocation = ResourceUtil.getShulkerBoxLayerLocation(state);
-        if(layerLocation == null) return new BlockEntityStateModel();
+        if(layerLocation == null) return null;
 
         Direction facing = state.getValue(ShulkerBoxBlock.FACING);
         poseStack.mulPose(ShulkerBoxRenderer.modelTransform(facing));
@@ -220,6 +226,7 @@ public class OBEBlockRenderer {
         PoseStack poseStack = new PoseStack();
         
         ModelLayerLocation layerLocation = ResourceUtil.getDecoratedPotLayerLocation(state, true);
+        if(layerLocation == null) return null;
 
         Direction facing = state.getValue(DecoratedPotBlock.HORIZONTAL_FACING);
         poseStack.mulPose(DecoratedPotRenderer.modelTransformation(facing));
