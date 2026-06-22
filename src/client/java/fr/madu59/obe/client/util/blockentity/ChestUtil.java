@@ -1,8 +1,14 @@
 package fr.madu59.obe.client.util.blockentity;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
+
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.ChestRenderer;
 import net.minecraft.client.renderer.blockentity.state.ChestRenderState.ChestMaterialType;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ChestBlock;
@@ -35,5 +41,21 @@ public class ChestUtil {
         }
         ChestType type = state.getValueOrElse(ChestBlock.TYPE, ChestType.SINGLE);
         return Sheets.chooseMaterial(materialType, type).texture();
+    }
+
+    public static ModelLayerLocation getChestModelLayerLocation(BlockState state){
+        return switch(state.getValueOrElse(ChestBlock.TYPE, ChestType.SINGLE)){
+            case SINGLE -> ModelLayers.CHEST;
+            case LEFT -> ModelLayers.DOUBLE_CHEST_LEFT;
+            case RIGHT -> ModelLayers.DOUBLE_CHEST_RIGHT;
+        };
+    }
+
+    public static void transformChest(BlockState state, PoseStack poseStack){
+        Direction facing = state.getValue(ChestBlock.FACING);
+        poseStack.pushPose();
+        poseStack.translate(0.5F, 0.5F, 0.5F);
+        poseStack.mulPose(Axis.YP.rotationDegrees(-facing.toYRot()));
+        poseStack.translate(-0.5F, -0.5F, -0.5F);
     }
 }

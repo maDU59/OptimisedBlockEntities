@@ -23,7 +23,8 @@ public class Registry {
         register("shulker_box", BlockEntityType.SHULKER_BOX);
         register("decorated_pot", BlockEntityType.DECORATED_POT);
         register("copper_golem_statue", BlockEntityType.COPPER_GOLEM_STATUE);
-        register("sign", BlockEntityType.HANGING_SIGN, BlockEntityType.SIGN);
+        register("sign", BlockEntityType.SIGN);
+        register("hanging_sign", BlockEntityType.HANGING_SIGN);
         register("bed", BlockEntityType.BED);
         MaterialGetter.init();
     }
