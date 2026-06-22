@@ -9,7 +9,7 @@
 	],
 	"contact": {
 		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"sources": "https://github.com/maDU59/OptimisedBlockEntities"
 	},
 	"license": "LGPL-3.0-or-later",
 	"icon": "assets/obe/icon.png",
