@@ -69,7 +69,7 @@ public class RegistryApi {
      * Register a transformation provider for a group
      * @param id The group to which the transformation provider should be registered
      * @param provider The transformation provider, it must be a consumer accepting a BlockState and a PoseStack
-     * @since 1.1.6
+     * @since 1.1.7
      */
     public static void registerTransformationProvider(String id, BiConsumer<BlockState, PoseStack> provider){
         TransformationGetter.registerDefault(id, provider);
@@ -79,7 +79,7 @@ public class RegistryApi {
      * Register a transformation provider for a block entity type
      * @param type The block entity type to which the transformation provider should be registered
      * @param provider The transformation provider, it must be a function accepting a BlockState and returning an ModelLayerLocation
-     * @since 1.1.6
+     * @since 1.1.7
      */
     public static void registerTransformationProvider(BlockEntityType<?> type, BiConsumer<BlockState, PoseStack> provider){
         TransformationGetter.register(type, provider);
@@ -89,7 +89,7 @@ public class RegistryApi {
      * Register a model layer location provider for a group
      * @param id The group to which the transformation provider should be registered
      * @param provider The transformation provider, it must be a function accepting a BlockState and returning an ModelLayerLocation
-     * @since 1.1.6
+     * @since 1.1.7
      */
     public static void registerModelLayerLocationProvider(String id, Function<BlockState, ModelLayerLocation> provider){
         ModelLayerLocationGetter.registerDefault(id, provider);
@@ -99,7 +99,7 @@ public class RegistryApi {
      * Register a model layer location provider for a block entity type
      * @param type The block entity type to which the model layer location provider should be registered
      * @param provider The model layer location provider, it must be a consumer accepting a BlockState and a PoseStack
-     * @since 1.1.6
+     * @since 1.1.7
      */
     public static void registerModelLayerLocationProvider(BlockEntityType<?> type, Function<BlockState, ModelLayerLocation> provider){
         ModelLayerLocationGetter.register(type, provider);
