@@ -60,11 +60,11 @@ public class EMFCompat {
             EMFAnimationEntityContext.setCurrentEntityIteration(state);
             emfRoot.animate();
 
-            EMFAnimationEntityContext.reset();
+            EMFAnimationEntityContext.globalReset();
 
             return emfRoot;
         }
-        EMFAnimationEntityContext.reset();
+        EMFAnimationEntityContext.globalReset();
         return root;
     }
 }
