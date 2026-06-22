@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import fr.madu59.obe.OBE;
+import fr.madu59.obe.client.compat.ModCompat;
 import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.platform.PlatformHelper;
 import fr.madu59.obe.client.util.ResourceUtil;
@@ -49,7 +50,7 @@ public class SettingsManager {
 
     public static Option<Boolean> BANNER_AMBIENT_OCCLUSION = loadOptionWithDefaults("banner_ambient_occlusion",
         "obe.config.option.banner_ao",
-        false,
+        ModCompat.isSodiumLoaded(),
         reloadResourcesAction
     );
 
@@ -61,7 +62,7 @@ public class SettingsManager {
 
     public static Option<Boolean> SIGN_AMBIENT_OCCLUSION = loadOptionWithDefaults("sign_ambient_occlusion",
         "obe.config.option.sign_ao",
-        false,
+        ModCompat.isSodiumLoaded(),
         reloadResourcesAction
     );
 
@@ -97,7 +98,7 @@ public class SettingsManager {
 
     public static Option<Boolean> BED_AMBIENT_OCCLUSION = loadOptionWithDefaults("bed_ambient_occlusion",
         "obe.config.option.bed_ao",
-        false,
+        ModCompat.isSodiumLoaded(),
         reloadResourcesAction
     );
 
@@ -109,7 +110,7 @@ public class SettingsManager {
 
     public static Option<Boolean> BELL_AMBIENT_OCCLUSION = loadOptionWithDefaults("bell_ambient_occlusion",
         "obe.config.option.bell_ao",
-        false,
+        true,
         reloadResourcesAction
     );
 
@@ -133,7 +134,7 @@ public class SettingsManager {
 
     public static Option<Boolean> COPPER_GOLEM_AMBIENT_OCCLUSION = loadOptionWithDefaults("copper_golem_ambient_occlusion",
         "obe.config.option.copper_golem_ao",
-        false,
+        ModCompat.isSodiumLoaded(),
         reloadResourcesAction
     );
 
