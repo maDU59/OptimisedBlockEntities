@@ -31,6 +31,9 @@ public class SignUtil {
             if (!(block instanceof StandingSignBlock)) {
                 poseStack.translate(0.0F, -0.3125F, -0.4375F);
             }
+
+            float f = 0.6666667F;
+            poseStack.scale(f, -f, -f);
         }
     }
 }
