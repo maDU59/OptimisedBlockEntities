@@ -12,6 +12,8 @@ In case of extending a vanilla block entity (e.g. iron chests that have bigger s
 
 2. Register a material provider for the block entity's type using RegistryApi#registerMaterialProvider.
 
+3. **OPTIONAL** In case your model is not rotated correctly, register a material provider for the block entity's type using RegistryApi#registerTransformationProvider.
+
 ### Case 2: Adding a completly new block entity
 
 This is not fully possible using only the API yet, some functions are there to help, but you'll also need to look at the mod's code and mixin at some places (mainly BlockStateModelSetMixin)

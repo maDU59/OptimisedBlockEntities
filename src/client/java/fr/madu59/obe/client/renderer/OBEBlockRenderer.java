@@ -7,6 +7,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.model.CompositeBlockStateModel;
 import fr.madu59.obe.client.registry.MaterialGetter;
+import fr.madu59.obe.client.registry.TransformationGetter;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager.RenderMode;
 import fr.madu59.obe.client.util.ResourceUtil;
@@ -60,7 +61,7 @@ public class OBEBlockRenderer {
         ModelLayerLocation layerLocation = SkullBlockUtil.getSkullBlockModelLayerLocation(state);
         if(layerLocation == null) return null;
 
-        SkullBlockUtil.transformSkullBlock(state, poseStack);
+        TransformationGetter.applyTransformation(state, poseStack, "skull");
         return ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "skull"), state, poseStack, SettingsManager.SKULL_AMBIENT_OCCLUSION.getValue(), originalModel.particleMaterial());
     }
 
@@ -71,7 +72,7 @@ public class OBEBlockRenderer {
         ModelLayerLocation layerLocation = ChestUtil.getChestModelLayerLocation(state);
         if(layerLocation == null) return null;
 
-        ChestUtil.transformChest(state, poseStack);
+        TransformationGetter.applyTransformation(state, poseStack, "chest");
         return ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "chest"), state, poseStack, SettingsManager.CHEST_AMBIENT_OCCLUSION.getValue(), originalModel.particleMaterial());
     }
 
@@ -82,7 +83,7 @@ public class OBEBlockRenderer {
         ModelLayerLocation layerLocation = BellUtil.getBellModelLayerLocation(state);
         if(layerLocation == null) return null;
 
-        BellUtil.transformBell(state, poseStack);
+        TransformationGetter.applyTransformation(state, poseStack, "bell");
 
         BlockStateModel model = ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "bell"), state, poseStack, SettingsManager.BELL_AMBIENT_OCCLUSION.getValue(), originalModel.particleMaterial());
         model = new CompositeBlockStateModel(model, Minecraft.getInstance().getModelManager().getBlockStateModelSet().get(state));
@@ -97,7 +98,7 @@ public class OBEBlockRenderer {
         ModelLayerLocation layerLocation = BannerUtil.getBannerModelLayerLocation(state);
         if(layerLocation == null) return null;
         
-        BannerUtil.transformBanner(state, poseStack);
+        TransformationGetter.applyTransformation(state, poseStack, "banner");
 
         return ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "banner"), state, poseStack, SettingsManager.BANNER_AMBIENT_OCCLUSION.getValue(), originalModel.particleMaterial());
     }
@@ -109,7 +110,7 @@ public class OBEBlockRenderer {
         ModelLayerLocation layerLocation = CopperGolemStatueUtil.getCopperGolemStatueModelLayerLocation(state);
         if(layerLocation == null) return null;
 
-        CopperGolemStatueUtil.transformCopperGolemStatue(state, poseStack);
+        TransformationGetter.applyTransformation(state, poseStack, "copper_golem_statue");
 
         return ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "copper_golem_statue"), state, poseStack, SettingsManager.COPPER_GOLEM_AMBIENT_OCCLUSION.getValue(), originalModel.particleMaterial());
     }
@@ -121,7 +122,7 @@ public class OBEBlockRenderer {
         ModelLayerLocation layerLocation = ShulkerBoxUtil.getShulkerBoxModelLayerLocation(state);
         if(layerLocation == null) return null;
 
-        ShulkerBoxUtil.transformShulkerBox(state, poseStack);
+        TransformationGetter.applyTransformation(state, poseStack, "shulker_box");
 
         return ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "shulker_box"), state, poseStack, SettingsManager.SHULKER_BOX_AMBIENT_OCCLUSION.getValue(), originalModel.particleMaterial());
     }
@@ -133,7 +134,7 @@ public class OBEBlockRenderer {
         ModelLayerLocation layerLocation = DecoratedPotUtil.getDecoratedPotModelLayerLocation(state);
         if(layerLocation == null) return null;
 
-        DecoratedPotUtil.transformDecoratedPot(state, poseStack);
+        TransformationGetter.applyTransformation(state, poseStack, "decorated_pot");
 
         BlockStateModel model = ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "decorated_pot"), state, poseStack, SettingsManager.DECORATED_POT_AMBIENT_OCCLUSION.getValue(), originalModel.particleMaterial());
 

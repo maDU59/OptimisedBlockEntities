@@ -1,9 +1,13 @@
 package fr.madu59.obe.client.api.registry;
 
+import java.util.function.BiConsumer;
 import java.util.function.Function;
+
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import fr.madu59.obe.client.registry.MaterialGetter;
 import fr.madu59.obe.client.registry.Registry;
+import fr.madu59.obe.client.registry.TransformationGetter;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -57,5 +61,25 @@ public class RegistryApi {
      */
     public static <T extends BlockEntity> void registerSupportedBlockEntity(T be){
         ((BlockEntityExt)be).isSupportedBlockEntity(true);
+    }
+
+    /*
+     * Register a transformation provider for a group
+     * @param id The group to which the transformation provider should be registered
+     * @param provider The transformation provider, it must be a consumer accepting a BlockState and a PoseStack
+     * @since 1.1.6
+     */
+    public static void registerTransformationProvider(String id, BiConsumer<BlockState, PoseStack> provider){
+        TransformationGetter.registerDefault(id, provider);
+    }
+
+    /*
+     * Register a transformation provider for a block entity type
+     * @param type The block entity type to which the transformation provider should be registered
+     * @param provider The transformation provider, it must be a consumer accepting a BlockState and a PoseStack
+     * @since 1.1.6
+     */
+    public static void registerTransformationProvider(BlockEntityType<?> type, BiConsumer<BlockState, PoseStack> provider){
+        TransformationGetter.register(type, provider);
     }
 }
