@@ -47,7 +47,7 @@ public abstract class AbstractSignRendererMixin {
     public void obe$cancelSignText(BlockPos blockPos, SignText signText, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j, int k, boolean bl, CallbackInfo ci){
         poseStack.pushPose();
         this.translateSignText(poseStack, bl, this.getTextOffset());
-        if(ModCompat.isShadowPass() || !obe$isFacingCamera(poseStack)) {
+        if((ModCompat.isShadowPass() || !obe$isFacingCamera(poseStack)) && SettingsManager.SIGN_TEXT_CULLING.getValue()) {
             poseStack.popPose();
             ci.cancel();
         }
