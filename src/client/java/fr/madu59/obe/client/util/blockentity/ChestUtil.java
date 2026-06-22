@@ -36,7 +36,7 @@ public class ChestUtil {
     }
 
     private static ResourceLocation chooseMaterial(ChestType chestType, Material material, Material material2, Material material3) {
-        if(chestType == null) return material3.texture();
+        if(chestType == null) return material.texture();
         return switch (chestType) {
             case RIGHT -> material3.texture();
             case LEFT -> material2.texture();

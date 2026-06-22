@@ -1,5 +1,2 @@
 # What's new:
-- Fixed settings not being respected with some unconventional mod configurations
-
-# Hotfix:
-- Fixed double chests having the wrong texture
+- Added a setting to disable sign text culling
