@@ -3,6 +3,7 @@ package fr.madu59.obe.client.compat;
 import java.util.function.BiFunction;
 
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.BellBlock;
 import net.minecraft.world.level.block.Block;
@@ -21,6 +22,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import traben.entity_model_features.models.animation.EMFAnimationEntityContext;
 import traben.entity_model_features.models.animation.state.EMFEntityRenderState;
 import traben.entity_model_features.models.parts.EMFModelPartRoot;
+import traben.entity_texture_features.features.ETFRenderContext;
 import traben.entity_texture_features.features.state.ETFEntityRenderState;
 import traben.entity_texture_features.utils.ETFEntity;
 
@@ -68,17 +70,20 @@ public class EMFCompat {
                 EMFAnimationEntityContext.setCurrentEntityIteration(state);
                 emfRoot.animate();
                 
-                EMFAnimationEntityContext.reset();
                 return emfRoot;
             }
 
-            EMFAnimationEntityContext.reset();
             return root;
         }
         catch(Exception e){
             System.out.println(e);
-            EMFAnimationEntityContext.reset();
             return root;
+        }
+        finally{
+            EMFAnimationEntityContext.reset();
+            ETFRenderContext.endSpecialRenderOverlayPhase();
+            ETFRenderContext.reset();
+            EMFAnimationEntityContext.setCurrentEntityOnShoulder(false);
         }
     }
 }
