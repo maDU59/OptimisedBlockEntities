@@ -3,7 +3,6 @@ package fr.madu59.obe.client.compat;
 import java.util.function.BiFunction;
 
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.BellBlock;
 import net.minecraft.world.level.block.Block;
