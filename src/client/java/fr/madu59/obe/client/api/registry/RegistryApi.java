@@ -6,9 +6,11 @@ import java.util.function.Function;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import fr.madu59.obe.client.registry.MaterialGetter;
+import fr.madu59.obe.client.registry.ModelLayerLocationGetter;
 import fr.madu59.obe.client.registry.Registry;
 import fr.madu59.obe.client.registry.TransformationGetter;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
+import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -76,10 +78,30 @@ public class RegistryApi {
     /*
      * Register a transformation provider for a block entity type
      * @param type The block entity type to which the transformation provider should be registered
-     * @param provider The transformation provider, it must be a consumer accepting a BlockState and a PoseStack
+     * @param provider The transformation provider, it must be a function accepting a BlockState and returning an ModelLayerLocation
      * @since 1.1.6
      */
     public static void registerTransformationProvider(BlockEntityType<?> type, BiConsumer<BlockState, PoseStack> provider){
         TransformationGetter.register(type, provider);
+    }
+
+    /*
+     * Register a model layer location provider for a group
+     * @param id The group to which the transformation provider should be registered
+     * @param provider The transformation provider, it must be a function accepting a BlockState and returning an ModelLayerLocation
+     * @since 1.1.6
+     */
+    public static void registerModelLayerLocationProvider(String id, Function<BlockState, ModelLayerLocation> provider){
+        ModelLayerLocationGetter.registerDefault(id, provider);
+    }
+
+    /*
+     * Register a model layer location provider for a block entity type
+     * @param type The block entity type to which the model layer location provider should be registered
+     * @param provider The model layer location provider, it must be a consumer accepting a BlockState and a PoseStack
+     * @since 1.1.6
+     */
+    public static void registerModelLayerLocationProvider(BlockEntityType<?> type, Function<BlockState, ModelLayerLocation> provider){
+        ModelLayerLocationGetter.register(type, provider);
     }
 }

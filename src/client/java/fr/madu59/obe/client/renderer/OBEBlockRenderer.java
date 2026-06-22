@@ -7,6 +7,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.model.CompositeBlockStateModel;
 import fr.madu59.obe.client.registry.MaterialGetter;
+import fr.madu59.obe.client.registry.ModelLayerLocationGetter;
 import fr.madu59.obe.client.registry.TransformationGetter;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager.RenderMode;
@@ -58,7 +59,7 @@ public class OBEBlockRenderer {
         if(ResourceUtil.cacheContains(state)) return ResourceUtil.getModel(state);
         PoseStack poseStack = new PoseStack();
         
-        ModelLayerLocation layerLocation = SkullBlockUtil.getSkullBlockModelLayerLocation(state);
+        ModelLayerLocation layerLocation = ModelLayerLocationGetter.getModelLayerLocation(state, "skull");
         if(layerLocation == null) return null;
 
         TransformationGetter.applyTransformation(state, poseStack, "skull");
@@ -69,7 +70,7 @@ public class OBEBlockRenderer {
         if(ResourceUtil.cacheContains(state)) return ResourceUtil.getModel(state);
         PoseStack poseStack = new PoseStack();
         
-        ModelLayerLocation layerLocation = ChestUtil.getChestModelLayerLocation(state);
+        ModelLayerLocation layerLocation = ModelLayerLocationGetter.getModelLayerLocation(state, "chest");
         if(layerLocation == null) return null;
 
         TransformationGetter.applyTransformation(state, poseStack, "chest");
@@ -80,7 +81,7 @@ public class OBEBlockRenderer {
         if(ResourceUtil.cacheContains(state)) return ResourceUtil.getModel(state);
         PoseStack poseStack = new PoseStack();
         
-        ModelLayerLocation layerLocation = BellUtil.getBellModelLayerLocation(state);
+        ModelLayerLocation layerLocation = ModelLayerLocationGetter.getModelLayerLocation(state, "bell");
         if(layerLocation == null) return null;
 
         TransformationGetter.applyTransformation(state, poseStack, "bell");
@@ -95,7 +96,7 @@ public class OBEBlockRenderer {
         if(ResourceUtil.cacheContains(state)) return ResourceUtil.getModel(state);
         PoseStack poseStack = new PoseStack();
         
-        ModelLayerLocation layerLocation = BannerUtil.getBannerModelLayerLocation(state);
+        ModelLayerLocation layerLocation = ModelLayerLocationGetter.getModelLayerLocation(state, "banner");
         if(layerLocation == null) return null;
         
         TransformationGetter.applyTransformation(state, poseStack, "banner");
@@ -107,7 +108,7 @@ public class OBEBlockRenderer {
         if(ResourceUtil.cacheContains(state)) return ResourceUtil.getModel(state);
         PoseStack poseStack = new PoseStack();
         
-        ModelLayerLocation layerLocation = CopperGolemStatueUtil.getCopperGolemStatueModelLayerLocation(state);
+        ModelLayerLocation layerLocation = ModelLayerLocationGetter.getModelLayerLocation(state, "copper_golem_statue");
         if(layerLocation == null) return null;
 
         TransformationGetter.applyTransformation(state, poseStack, "copper_golem_statue");
@@ -119,7 +120,7 @@ public class OBEBlockRenderer {
         if(ResourceUtil.cacheContains(state)) return ResourceUtil.getModel(state);
         PoseStack poseStack = new PoseStack();
         
-        ModelLayerLocation layerLocation = ShulkerBoxUtil.getShulkerBoxModelLayerLocation(state);
+        ModelLayerLocation layerLocation = ModelLayerLocationGetter.getModelLayerLocation(state, "shulker_box");
         if(layerLocation == null) return null;
 
         TransformationGetter.applyTransformation(state, poseStack, "shulker_box");
@@ -131,7 +132,7 @@ public class OBEBlockRenderer {
         if(ResourceUtil.cacheContains(state)) return ResourceUtil.getModel(state);
         PoseStack poseStack = new PoseStack();
         
-        ModelLayerLocation layerLocation = DecoratedPotUtil.getDecoratedPotModelLayerLocation(state);
+        ModelLayerLocation layerLocation = ModelLayerLocationGetter.getModelLayerLocation(state, "decorated_pot");
         if(layerLocation == null) return null;
 
         TransformationGetter.applyTransformation(state, poseStack, "decorated_pot");

@@ -26,6 +26,7 @@ public class Registry {
         register("copper_golem_statue", BlockEntityTypes.COPPER_GOLEM_STATUE);
         MaterialGetter.init();
         TransformationGetter.init();
+        ModelLayerLocationGetter.init();
     }
 
     private static void register(String group, BlockEntityType<?> ... types){
