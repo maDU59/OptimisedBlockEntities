@@ -50,7 +50,7 @@ public abstract class AbstractSignRendererMixin<S extends SignRenderState> {
     public void obe$cancelSignText(SignRenderState signRenderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, boolean bl, CallbackInfo ci){
         poseStack.pushPose();
         this.translateSignText(poseStack, bl, this.getTextOffset());
-        if(ModCompat.isShadowPass() || !obe$isFacingCamera(poseStack)) {
+        if((ModCompat.isShadowPass() || !obe$isFacingCamera(poseStack)) && SettingsManager.SIGN_TEXT_CULLING.getValue()) {
             poseStack.popPose();
             ci.cancel();
         }
