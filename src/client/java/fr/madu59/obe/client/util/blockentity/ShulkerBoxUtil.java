@@ -1,5 +1,7 @@
 package fr.madu59.obe.client.util.blockentity;
 
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.DyeColor;
@@ -16,5 +18,9 @@ public class ShulkerBoxUtil {
         } else {
             return Sheets.getShulkerBoxSprite(color).texture();
         }
+    }
+
+    public static ModelLayerLocation getShulkerBoxModelLayerLocation(BlockState state){
+        return ModelLayers.SHULKER_BOX;
     }
 }

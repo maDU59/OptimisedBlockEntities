@@ -1,5 +1,6 @@
 package fr.madu59.obe.client.util.blockentity;
 
+import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.ChestRenderer;
 import net.minecraft.client.renderer.blockentity.state.ChestRenderState.ChestMaterialType;
@@ -35,5 +36,9 @@ public class ChestUtil {
         }
         ChestType type = state.getValueOrElse(ChestBlock.TYPE, ChestType.SINGLE);
         return Sheets.chooseSprite(materialType, type).texture();
+    }
+
+    public static ModelLayerLocation getChestModelLayerLocation(BlockState state){
+        return ChestRenderer.LAYERS.select(state.getValueOrElse(ChestBlock.TYPE, ChestType.SINGLE));
     }
 }
