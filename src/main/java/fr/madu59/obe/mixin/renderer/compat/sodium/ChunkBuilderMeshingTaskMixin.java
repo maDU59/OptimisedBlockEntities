@@ -3,6 +3,7 @@ package fr.madu59.obe.mixin.renderer.compat.sodium;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Coerce;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
@@ -14,7 +15,6 @@ import fr.madu59.obe.renderer.blockentity.ext.BlockEntityExt;
 import fr.madu59.obe.renderer.blockentity.misc.RenderModeManager;
 import fr.madu59.obe.renderer.blockentity.misc.RenderModeManager.RenderMode;
 import me.jellysquid.mods.sodium.client.render.chunk.compile.tasks.ChunkBuilderMeshingTask;
-import me.jellysquid.mods.sodium.client.world.WorldSlice;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.RenderShape;
@@ -26,14 +26,32 @@ import net.minecraft.world.level.block.state.BlockState;
 public class ChunkBuilderMeshingTaskMixin {
 
     @WrapOperation(method = "execute", at = @At(value = "INVOKE", target = "Lme/jellysquid/mods/sodium/client/world/WorldSlice;getBlockState(III)Lnet/minecraft/world/level/block/state/BlockState;"))
-    private BlockState obe$getBlockState(WorldSlice slice, int x, int y, int z, Operation<BlockState> original, @Share("be") LocalRef<BlockEntity> beRef){
+    private BlockState obe$getBlockState(@Coerce Object slice, int x, int y, int z, Operation<BlockState> original, @Share("be") LocalRef<BlockEntity> beRef){
         // beRef.set(slice.getBlockEntity(x, y, z)); Can't get it to work, there are always some fabric api errors
         beRef.set(Minecraft.getInstance().level.getBlockEntity(new BlockPos(x, y, z)));
         return original.call(slice, x, y, z);
     }
 
-    @Redirect(method = "execute", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getRenderShape()Lnet/minecraft/world/level/block/RenderShape;"))
+    @Redirect(method = "execute", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getRenderShape()Lnet/minecraft/world/level/block/RenderShape;"), require = 0)
     private RenderShape obe$getRenderShape(BlockState state, @Share("be") LocalRef<BlockEntity> beRef){
+        if(RenderModeManager.hasBlockEntity(state)){
+            BlockEntity be = beRef.get();
+            BlockEntityExt ext = (BlockEntityExt) be;
+            if(ext != null && ext.isSupportedBlockEntity()) {
+                RenderModeManager.updateBlockEntity(ext, be);
+                if(ext.isSupportedBlockEntity() && !ext.hasSpecialRenderer() && ext.renderMode() != RenderMode.TERRAIN){
+                    return RenderShape.INVISIBLE;
+                }
+                if(ext.isSupportedBlockEntity() && ext.renderMode() == RenderMode.TERRAIN){
+                    return RenderShape.MODEL;
+                }
+            }
+        }
+        return state.getRenderShape();
+    }
+
+    @Redirect(method = "execute", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;m_60799_()Lnet/minecraft/world/level/block/RenderShape;"), require = 0)
+    private RenderShape obe$getRenderShape2(BlockState state, @Share("be") LocalRef<BlockEntity> beRef){
         if(RenderModeManager.hasBlockEntity(state)){
             BlockEntity be = beRef.get();
             BlockEntityExt ext = (BlockEntityExt) be;
