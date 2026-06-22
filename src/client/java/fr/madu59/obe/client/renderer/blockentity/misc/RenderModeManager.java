@@ -70,6 +70,9 @@ public class RenderModeManager {
         if (Registry.isSupported("sign", be.getType())) {
             ext.isEnabled(SettingsManager.OPTIMISED_SIGNS.getValue());
         }
+        else if (Registry.isSupported("hanging_sign", be.getType())) {
+            ext.isEnabled(SettingsManager.OPTIMISED_SIGNS.getValue());
+        }
         else if (Registry.isSupported("bed", be.getType())) {
             ext.isEnabled(SettingsManager.OPTIMISED_BEDS.getValue());
         }
