@@ -131,7 +131,7 @@ dependencies {
 
     compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.4"))
     implementation("io.github.llamalad7:mixinextras-forge:0.5.4")
-    jarJar(group: 'io.github.llamalad7', name: 'mixinextras-forge', version: '[0.5.4,)')
+    jarJar("io.github.llamalad7:mixinextras-forge:0.5.4")
 
     compileOnly "maven.modrinth:forgified-fabric-api:0.92.6+1.11.14+1.20.1"
 
