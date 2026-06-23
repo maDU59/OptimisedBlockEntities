@@ -53,7 +53,7 @@ public class OBEBlockRenderer {
             originalModel = Minecraft.getInstance().getModelManager().getBlockModelShaper().getBlockModel(state);
         }
 
-        if(be.getType() == BlockEntityType.BELL && ext.renderMode() == RenderMode.TERRAIN){
+        if(be.getType() == BlockEntityType.BELL && (ext.renderMode() == RenderMode.TERRAIN || ext.renderMode() == RenderMode.INTERMEDIATE)){
             return getBellModel(state, random, originalModel);
         }
 
@@ -121,6 +121,7 @@ public class OBEBlockRenderer {
     }
 
     public BlockStateModel getBellModel(BlockState state, RandomSource random, BlockStateModel originalModel) {
+        System.out.println("Getting bell for state " + state);
         if(ResourceUtil.cacheContains(state)) return ResourceUtil.getModel(state);
         PoseStack poseStack = new PoseStack();
         
