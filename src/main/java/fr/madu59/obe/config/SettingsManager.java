@@ -116,7 +116,7 @@ public class SettingsManager {
 
     public static Option<Boolean> OPTIMISED_BELLS = loadOptionWithDefaults("optimized_bell",
         "obe.config.option.optimised_bells",
-        true,
+        false,
        reloadChunksAction
     );
 
