@@ -120,7 +120,6 @@ public class OBEBlockRenderer {
     }
 
     public BlockStateModel getBellModel(BlockState state, RandomSource random, BlockStateModel originalModel) {
-        System.out.println("Getting bell for state " + state);
         if(ResourceUtil.cacheContains(state)) return ResourceUtil.getModel(state);
         PoseStack poseStack = new PoseStack();
         
