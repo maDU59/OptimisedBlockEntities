@@ -1,5 +1,6 @@
 package fr.madu59.obe.renderer.blockentity.misc;
 
+import fr.madu59.obe.compat.ModCompat;
 import fr.madu59.obe.config.SettingsManager;
 import fr.madu59.obe.registry.Registry;
 import fr.madu59.obe.renderer.blockentity.ext.BlockEntityExt;
@@ -53,7 +54,7 @@ public class RenderModeManager {
     }
 
     public static <T extends BlockEntity> boolean shouldRenderEntity(BlockEntityExt ext, T be){
-        return ext == null || !be.hasLevel() || !ext.isSupportedBlockEntity() || ext.renderMode() == RenderMode.ENTITY || ext.renderModeDelayed() == RenderMode.ENTITY || ext.renderBoth() || ext.renderMode() == RenderMode.INTERMEDIATE;
+        return ext == null || !be.hasLevel() || !ext.isSupportedBlockEntity() || ext.renderMode() == RenderMode.ENTITY || ext.renderModeDelayed() == RenderMode.ENTITY || ext.renderBoth() || ext.renderMode() == RenderMode.INTERMEDIATE || ModCompat.shouldRenderEntity(be);
     }
 
     public static <T extends BlockEntity> void setRenderModeDelayed(T be, RenderMode mode, BlockPos pos){
