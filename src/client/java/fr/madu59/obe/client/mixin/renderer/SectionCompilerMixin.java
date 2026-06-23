@@ -28,12 +28,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 @Mixin(SectionCompiler.class)
 public class SectionCompilerMixin {
-    @Unique private OBEBlockRenderer obeBlockRenderer;
-
-    @Inject(method = "<init>", at = @At("TAIL"))
-    private void obe$init(final boolean ambientOcclusion, final boolean cutoutLeaves, final BlockStateModelSet blockModelSet, final FluidStateModelSet fluidModelSet, final BlockColors blockColors, final BlockEntityRenderDispatcher blockEntityRenderer, CallbackInfo ci) {
-        this.obeBlockRenderer = new OBEBlockRenderer();
-    }
+    @Unique private OBEBlockRenderer obeBlockRenderer = new OBEBlockRenderer();;
 
     @WrapOperation(method = "compile", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/chunk/RenderSectionRegion;getBlockState(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;"))
     private BlockState obe$getBlockState(RenderSectionRegion region, BlockPos pos, Operation<BlockState> original, @Share("be") LocalRef<BlockEntity> beRef){
