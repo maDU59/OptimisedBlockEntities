@@ -1,2 +1,2 @@
 # What's new:
-- Added a setting to disable sign text culling
+- Added a setting to disable EMF compatibility
