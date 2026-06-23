@@ -17,5 +17,6 @@ public abstract class ShulkerBoxRendererMixin {
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
     public void obe$cancelSubmit(CallbackInfo ci, @Local ShulkerBoxBlockEntity be){
         if(!RenderModeManager.shouldRenderEntity(be) && SettingsManager.OPTIMISED_SHULKER_BOXES.getValue()) ci.cancel();
+        RenderModeManager.updateOnRender(be);
     }
 }

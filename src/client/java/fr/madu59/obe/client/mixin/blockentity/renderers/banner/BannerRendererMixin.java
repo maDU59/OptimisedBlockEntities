@@ -78,5 +78,6 @@ public abstract class BannerRendererMixin {
             poseStack.popPose();
             poseStack.popPose();
         }
+        RenderModeManager.updateOnRender(bannerBlockEntity);
     }
 }

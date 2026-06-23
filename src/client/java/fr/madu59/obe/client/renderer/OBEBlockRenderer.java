@@ -55,7 +55,7 @@ public class OBEBlockRenderer {
             originalModel = Minecraft.getInstance().getModelManager().getBlockModelShaper().getBlockModel(state);
         }
 
-        if(be.getType() == BlockEntityType.BELL && ext.renderMode() == RenderMode.TERRAIN){
+        if(be.getType() == BlockEntityType.BELL && (ext.renderMode() == RenderMode.TERRAIN || ext.renderMode() == RenderMode.INTERMEDIATE)){
             return getBellModel(state, random, originalModel);
         }
 
