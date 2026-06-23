@@ -2,7 +2,7 @@
 	"schemaVersion": 1,
 	"id": "obe",
 	"version": "${version}",
-	"name": "Optimised block entities",
+	"name": "Optimized block entities",
 	"description": "Makes block entities render faster",
 	"authors": [
 		"maDU59_"
