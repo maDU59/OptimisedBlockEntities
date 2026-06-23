@@ -23,12 +23,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 @Mixin(targets = "net.minecraft.client.renderer.chunk.ChunkRenderDispatcher$RenderChunk$RebuildTask")
 public class SectionCompilerMixin {
-    @Unique private OBEBlockRenderer obeBlockRenderer;
-
-    @Inject(method = "<init>", at = @At("TAIL"))
-    private void obe$init(CallbackInfo ci) {
-        this.obeBlockRenderer = new OBEBlockRenderer();
-    }
+    @Unique private OBEBlockRenderer obeBlockRenderer = new OBEBlockRenderer();;
 
     @WrapOperation(method = "compile", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/chunk/RenderChunkRegion;getBlockState(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;"))
     private BlockState obe$getBlockState(RenderChunkRegion region, BlockPos pos, Operation<BlockState> original, @Share("be") LocalRef<BlockEntity> beRef){
@@ -42,11 +37,11 @@ public class SectionCompilerMixin {
             BlockEntity be = beRef.get();
             BlockEntityExt ext = (BlockEntityExt) be;
             if(ext != null) {
-                RenderModeManager.updateBlockEntity(ext, be);
-                if(ext.isSupportedBlockEntity() && !ext.hasSpecialRenderer() && ext.renderMode() != RenderMode.TERRAIN){
+                RenderModeManager.updateBlockEntityOnChunkRemesh(ext, be);
+                if(ext.isSupportedBlockEntity() && !ext.hasSpecialRenderer() && ext.renderMode() != RenderMode.TERRAIN && ext.renderMode() != RenderMode.INTERMEDIATE){
                     return RenderShape.INVISIBLE;
                 }
-                if(ext.isSupportedBlockEntity() && ext.renderMode() == RenderMode.TERRAIN){
+                if(ext.isSupportedBlockEntity() && (ext.renderMode() == RenderMode.TERRAIN || ext.renderMode() == RenderMode.INTERMEDIATE)){
                     return RenderShape.MODEL;
                 }
             }

@@ -25,7 +25,7 @@ public class BlockRenderDispatcherMixin {
             BlockEntity be = Minecraft.getInstance().level.getBlockEntity(pos);
             BlockEntityExt ext = (BlockEntityExt) be;
             if(ext != null) {
-                RenderModeManager.updateBlockEntity(ext, be);
+                RenderModeManager.updateBlockEntityOnChunkRemesh(ext, be);
                 if(ext.isSupportedBlockEntity() && !ext.hasSpecialRenderer() && ext.renderMode() != RenderMode.TERRAIN){
                     return RenderShape.INVISIBLE;
                 }
