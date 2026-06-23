@@ -1,2 +1,2 @@
 # What's new:
-- Added a setting to disable sign text culling
+- Improved chests animations reponsiveness
