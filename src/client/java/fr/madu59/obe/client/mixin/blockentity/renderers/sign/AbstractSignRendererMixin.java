@@ -66,6 +66,7 @@ public abstract class AbstractSignRendererMixin {
             this.renderSignText(signBlockEntity.getBlockPos(), signBlockEntity.getBackText(), poseStack, multiBufferSource, i, signBlockEntity.getTextLineHeight(), signBlockEntity.getMaxTextLineWidth(), false);
             poseStack.popPose();
         }
+        RenderModeManager.updateOnRender(signBlockEntity);
     }
 
     @Unique
