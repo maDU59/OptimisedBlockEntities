@@ -10,6 +10,7 @@ import fr.madu59.obe.client.registry.MaterialGetter;
 import fr.madu59.obe.client.registry.ModelLayerLocationGetter;
 import fr.madu59.obe.client.registry.TransformationGetter;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
+import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityRenderStateExt;
 import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager.RenderMode;
 import fr.madu59.obe.client.util.ResourceUtil;
 import fr.madu59.obe.client.util.blockentity.BannerUtil;
@@ -54,7 +55,7 @@ public class OBEBlockRenderer {
             originalModel = Minecraft.getInstance().getModelManager().getBlockModelShaper().getBlockModel(state);
         }
 
-        if(be.getType() == BlockEntityType.BELL && ext.renderMode() == RenderMode.TERRAIN){
+        if(be.getType() == BlockEntityType.BELL && (ext.renderMode() == RenderMode.TERRAIN || ext.renderMode() == RenderMode.INTERMEDIATE)){
             return getBellModel(state, random, originalModel);
         }
 
@@ -122,6 +123,7 @@ public class OBEBlockRenderer {
     }
 
     public BlockStateModel getBellModel(BlockState state, RandomSource random, BlockStateModel originalModel) {
+        System.out.println("Getting bell for state " + state);
         if(ResourceUtil.cacheContains(state)) return ResourceUtil.getModel(state);
         PoseStack poseStack = new PoseStack();
         
