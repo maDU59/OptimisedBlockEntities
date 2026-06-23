@@ -30,6 +30,12 @@ public class SettingsManager {
     };
     private static Runnable reloadChunksAction = () -> Minecraft.getInstance().levelExtractor.allChanged();
 
+    public static Option<Boolean> EMF_COMPAT = loadOptionWithDefaults("emf_compat",
+        "obe.config.option.emf_compat",
+        false,
+        reloadResourcesAction
+    );
+
     public static Option<Boolean> OPTIMISED_CHESTS = loadOptionWithDefaults("optimized_chest",
         "obe.config.option.optimised_chests",
         true,
