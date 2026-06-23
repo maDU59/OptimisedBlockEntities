@@ -225,7 +225,7 @@ publishMods {
         server = false
     }
     modrinth {
-		displayName = "Optimised Block Entities $project.mod_version"
+		displayName = "Optimized Block Entities $project.mod_version"
         projectId = project.modrinth_id
         accessToken = providers.environmentVariable("MODRINTH_TOKEN")
 

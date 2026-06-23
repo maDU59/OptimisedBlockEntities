@@ -38,11 +38,11 @@ public class ChunkBuilderMeshingTaskMixin {
             BlockEntity be = Minecraft.getInstance().level.getBlockEntity(new BlockPos(x, y, z));
             BlockEntityExt ext = (BlockEntityExt) be;
             if(ext != null && ext.isSupportedBlockEntity()) {
-                RenderModeManager.updateBlockEntity(ext, be);
-                if(ext.isSupportedBlockEntity() && !ext.hasSpecialRenderer() && ext.renderMode() != RenderMode.TERRAIN){
+                RenderModeManager.updateBlockEntityOnChunkRemesh(ext, be);
+                if(ext.isSupportedBlockEntity() && !ext.hasSpecialRenderer() && ext.renderMode() != RenderMode.TERRAIN && ext.renderMode() != RenderMode.INTERMEDIATE){
                     return RenderShape.INVISIBLE;
                 }
-                if(ext.isSupportedBlockEntity() && ext.renderMode() == RenderMode.TERRAIN){
+                if(ext.isSupportedBlockEntity() && (ext.renderMode() == RenderMode.TERRAIN || ext.renderMode() == RenderMode.INTERMEDIATE)){
                     return RenderShape.MODEL;
                 }
             }
@@ -56,11 +56,11 @@ public class ChunkBuilderMeshingTaskMixin {
             BlockEntity be = Minecraft.getInstance().level.getBlockEntity(new BlockPos(x, y, z));
             BlockEntityExt ext = (BlockEntityExt) be;
             if(ext != null && ext.isSupportedBlockEntity()) {
-                RenderModeManager.updateBlockEntity(ext, be);
-                if(ext.isSupportedBlockEntity() && !ext.hasSpecialRenderer() && ext.renderMode() != RenderMode.TERRAIN){
+                RenderModeManager.updateBlockEntityOnChunkRemesh(ext, be);
+                if(ext.isSupportedBlockEntity() && !ext.hasSpecialRenderer() && ext.renderMode() != RenderMode.TERRAIN && ext.renderMode() != RenderMode.INTERMEDIATE){
                     return RenderShape.INVISIBLE;
                 }
-                if(ext.isSupportedBlockEntity() && ext.renderMode() == RenderMode.TERRAIN){
+                if(ext.isSupportedBlockEntity() && (ext.renderMode() == RenderMode.TERRAIN || ext.renderMode() == RenderMode.INTERMEDIATE)){
                     return RenderShape.MODEL;
                 }
             }

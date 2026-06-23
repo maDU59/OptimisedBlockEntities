@@ -40,6 +40,9 @@ public class OptimisedBlockEntitiesConfigScreen extends Screen {
         super.init();
         this.list = new MyConfigListWidget(this.minecraft, this.width, this.height - 80, 40, 26);
 
+        list.category("obe.config.category.general").build();
+        list.button(SettingsManager.EMF_COMPAT).build();
+
         list.category("obe.config.category.chests").build();
         list.button(SettingsManager.OPTIMISED_CHESTS).build();
         list.button(SettingsManager.CHEST_AMBIENT_OCCLUSION).isEnabled(() -> SettingsManager.OPTIMISED_CHESTS.getValue()).build();

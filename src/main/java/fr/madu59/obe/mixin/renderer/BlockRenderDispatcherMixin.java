@@ -25,11 +25,11 @@ public class BlockRenderDispatcherMixin {
             BlockEntity be = Minecraft.getInstance().level.getBlockEntity(pos);
             BlockEntityExt ext = (BlockEntityExt) be;
             if(ext != null) {
-                RenderModeManager.updateBlockEntity(ext, be);
-                if(ext.isSupportedBlockEntity() && !ext.hasSpecialRenderer() && ext.renderMode() != RenderMode.TERRAIN){
+                RenderModeManager.updateBlockEntityOnChunkRemesh(ext, be);
+                if(ext.isSupportedBlockEntity() && !ext.hasSpecialRenderer() && ext.renderMode() != RenderMode.TERRAIN && ext.renderMode() != RenderMode.INTERMEDIATE){
                     return RenderShape.INVISIBLE;
                 }
-                if(ext.isSupportedBlockEntity() && ext.renderMode() == RenderMode.TERRAIN){
+                if(ext.isSupportedBlockEntity() && (ext.renderMode() == RenderMode.TERRAIN || ext.renderMode() == RenderMode.INTERMEDIATE)){
                     return RenderShape.MODEL;
                 }
             }
