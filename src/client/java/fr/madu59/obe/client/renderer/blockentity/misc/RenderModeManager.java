@@ -52,7 +52,7 @@ public class RenderModeManager {
     }
 
     public static <T extends BlockEntity> boolean shouldRenderEntity(BlockEntityExt ext, T be){
-        return ext == null || !be.hasLevel() || !ext.isSupportedBlockEntity() || ext.renderMode() == RenderMode.ENTITY || ext.renderModeDelayed() == RenderMode.ENTITY || ext.renderBoth();
+        return ext == null || !be.hasLevel() || !ext.isSupportedBlockEntity() || ext.renderMode() == RenderMode.ENTITY || ext.renderModeDelayed() == RenderMode.ENTITY || ext.renderBoth() || ext.renderMode() == RenderMode.INTERMEDIATE;
     }
 
     public static <T extends BlockEntity> void setRenderModeDelayed(T be, RenderMode mode, BlockPos pos){
@@ -74,7 +74,15 @@ public class RenderModeManager {
         Minecraft.getInstance().levelExtractor.blockChanged(pos, 8);
     }
 
-    public static void updateBlockEntity(BlockEntityExt ext, BlockEntity be){
+    public static void updateOnRender(BlockEntityRenderState state){
+        updateOnRender((BlockEntityExt)((BlockEntityRenderStateExt)state).blockEntity());
+    }
+
+    public static void updateOnRender(BlockEntityExt ext){
+        if(ext.renderMode() == RenderMode.INTERMEDIATE) ext.renderMode(RenderMode.TERRAIN);
+    }
+
+    public static void updateBlockEntityOnChunkRemesh(BlockEntityExt ext, BlockEntity be){
         if (Registry.isSupported("chest", be.getType())) {
             ext.isEnabled(SettingsManager.OPTIMISED_CHESTS.getValue());
         }
@@ -101,13 +109,15 @@ public class RenderModeManager {
                 ext.renderMode(RenderMode.TERRAIN);
             }
             if(ext.renderMode() != ext.renderModeDelayed()){
-                ext.renderMode(ext.renderModeDelayed());
+                if(ext.renderModeDelayed() == RenderMode.TERRAIN) ext.renderMode(RenderMode.INTERMEDIATE);
+                if(ext.renderModeDelayed() == RenderMode.ENTITY) ext.renderMode(ext.renderModeDelayed());
             }
         }
     }
 
     public static enum RenderMode {
         TERRAIN,
-        ENTITY
+        ENTITY,
+        INTERMEDIATE
     }
 }

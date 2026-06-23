@@ -35,11 +35,11 @@ public class ChunkBuilderMeshingTaskMixin {
             BlockEntity be = beRef.get();
             BlockEntityExt ext = (BlockEntityExt) be;
             if(ext != null && ext.isSupportedBlockEntity()) {
-                RenderModeManager.updateBlockEntity(ext, be);
-                if(ext.isSupportedBlockEntity() && !ext.hasSpecialRenderer() && ext.renderMode() != RenderMode.TERRAIN){
+                RenderModeManager.updateBlockEntityOnChunkRemesh(ext, be);
+                if(ext.isSupportedBlockEntity() && !ext.hasSpecialRenderer() && ext.renderMode() != RenderMode.TERRAIN && ext.renderMode() != RenderMode.INTERMEDIATE){
                     return RenderShape.INVISIBLE;
                 }
-                if(ext.isSupportedBlockEntity() && ext.renderMode() == RenderMode.TERRAIN){
+                if(ext.isSupportedBlockEntity() && (ext.renderMode() == RenderMode.TERRAIN || ext.renderMode() != RenderMode.INTERMEDIATE)){
                     return RenderShape.MODEL;
                 }
             }
