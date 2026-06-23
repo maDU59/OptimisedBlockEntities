@@ -1,5 +1,6 @@
 package fr.madu59.obe.client.compat;
 
+import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.platform.PlatformHelper;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.world.level.block.state.BlockState;
@@ -28,7 +29,7 @@ public class ModCompat {
     }
 
     public static ModelPart applyEMFRestPose(ModelPart root, BlockState state){
-        if(isEMFLoaded()) return EMFCompat.applyRestPose(root, state);
+        if(isEMFLoaded() && SettingsManager.EMF_COMPAT.getValue()) return EMFCompat.applyRestPose(root, state);
         else return root;
     }
 }

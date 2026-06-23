@@ -64,6 +64,7 @@ public abstract class BannerRendererMixin {
 
             obe$submitBanner(this.materials, poseStack, submitNodeCollector, state.lightCoords, OverlayTexture.NO_OVERLAY, state.angle, bannerModel, bannerFlagModel, state.phase, state.baseColor, state.patterns, state.breakProgress, 0);
         }
+        RenderModeManager.updateOnRender(state);
     }
 
     @Unique
