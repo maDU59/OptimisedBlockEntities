@@ -18,5 +18,6 @@ public abstract class ChestRendererMixin<T extends BlockEntity & LidBlockEntity>
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
     public void obe$cancelSubmit(CallbackInfo ci, @Local T be){
         if(!RenderModeManager.shouldRenderEntity(be) && SettingsManager.OPTIMISED_CHESTS.getValue()) ci.cancel();
+        RenderModeManager.updateOnRender(be);
     }
 }
