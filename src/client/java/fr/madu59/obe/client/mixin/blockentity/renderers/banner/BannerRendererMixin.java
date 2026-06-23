@@ -65,6 +65,7 @@ public abstract class BannerRendererMixin {
             float h = ((float)Math.floorMod((long)(blockPos.getX() * 7 + blockPos.getY() * 9 + blockPos.getZ() * 13) + l, 100L) + f) / 100.0F;
             obe$renderBanner(poseStack, multiBufferSource, i, j, g, bannerModel, bannerFlagModel, h, bannerBlockEntity.getBaseColor(), bannerBlockEntity.getPatterns());
         }
+        RenderModeManager.updateOnRender(bannerBlockEntity);
     }
 
     @Unique
