@@ -1,2 +1,2 @@
 # What's new:
-- Added a setting to disable EMF compatibility
+- Fixed split-second invisibility during the end of an animation
