@@ -45,7 +45,7 @@ authors="maDU59_"
 
 # The description text for the mod (multi line!) (#mandatory)
 description='''
-Adds a bunch of animations to blocks
+A client-side optimization mod to make block entities render faster
 '''
 
 # The [[mixins]] block allows you to declare your mixin config to FML so that it gets loaded.
