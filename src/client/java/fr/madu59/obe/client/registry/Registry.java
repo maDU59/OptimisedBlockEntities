@@ -19,7 +19,7 @@ public class Registry {
     private static Map<BlockEntityType<?>, String> beTypeGroupCache = new ConcurrentHashMap<>();
 
     private static final String noneGroupKey = "OBE_NONE";
-    private static final BlockEntityType<?> noneBlockEntityType = BlockEntityTypes.ENCHANTING_TABLE;
+    private static final BlockEntityType<?> noneBlockEntityType = BlockEntityType.ENCHANTING_TABLE;
 
     public static void init(){
         register("chest", BlockEntityType.CHEST, BlockEntityType.ENDER_CHEST, BlockEntityType.TRAPPED_CHEST);
