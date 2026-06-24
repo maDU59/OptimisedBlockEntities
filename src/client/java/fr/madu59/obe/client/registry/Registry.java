@@ -16,6 +16,11 @@ import net.minecraft.world.level.block.state.BlockState;
 public class Registry {
     private static Map<String, Set<BlockEntityType<?>>> supportedBeTypes = new ConcurrentHashMap<>();
     private static Map<Block, BlockEntityType<?>> beTypeCache = new ConcurrentHashMap<>();
+    private static Map<Block, String> blockGroupCache = new ConcurrentHashMap<>();
+    private static Map<BlockEntityType<?>, String> beTypeGroupCache = new ConcurrentHashMap<>();
+
+    private static final String noneGroupKey = "OBE_NONE";
+    private static final BlockEntityType<?> noneBlockEntityType = BlockEntityTypes.ENCHANTING_TABLE;
 
     public static void init(){
         register("chest", BlockEntityTypes.CHEST, BlockEntityTypes.ENDER_CHEST, BlockEntityTypes.TRAPPED_CHEST);
@@ -75,12 +80,7 @@ public class Registry {
             return false;
         }
         else{
-            for(BlockEntityType<?> type : supportedBeTypes.get(group)){
-                if(type.isValid(state)){
-                    return true;
-                }
-            }
-            return false;
+            return supportedBeTypes.get(group).contains(getBlockEntityType(state));
         }
     }
 
@@ -90,27 +90,34 @@ public class Registry {
 
     public static String getGroup(BlockState state){
         if(!state.hasBlockEntity()) return null;
-        BlockEntityType<?> beType = getBlockEntityType(state);
-        return getGroup(beType);
+        String group = blockGroupCache.computeIfAbsent(state.getBlock(), (key) -> {
+            BlockEntityType<?> beType = getBlockEntityType(state);
+            return getGroup(beType);
+        });
+        return group.equals(noneGroupKey)? null : group;
     }
 
     public static String getGroup(BlockEntityType<?> beType){
-        for(Entry<String,Set<BlockEntityType<?>>> entry : supportedBeTypes.entrySet()){
-            if(entry.getValue().contains(beType)) return entry.getKey();
-        }
-        return null;
+        String group = beTypeGroupCache.computeIfAbsent(beType, (key) -> {
+            for(Entry<String,Set<BlockEntityType<?>>> entry : supportedBeTypes.entrySet()){
+                if(entry.getValue().contains(beType)) return entry.getKey();
+            }
+            return noneGroupKey;
+        });
+        return group.equals(noneGroupKey)? null : group;
     }
 
     public static BlockEntityType<?> getBlockEntityType(BlockState state){
         if(!state.hasBlockEntity()) return null;
-        return beTypeCache.computeIfAbsent(state.getBlock(), (key) -> {
+        BlockEntityType<?> beType = beTypeCache.computeIfAbsent(state.getBlock(), (key) -> {
             for(Set<BlockEntityType<?>> set : supportedBeTypes.values())
                 for(BlockEntityType<?> type : set){
                     if(type.isValid(state)){
                         return type;
                     }
                 }
-            return null;
+            return noneBlockEntityType;
         });
+        return beType == noneBlockEntityType? null : beType;
     }
 }
