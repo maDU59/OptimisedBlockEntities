@@ -8,13 +8,14 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.Set;
 
 import fr.madu59.obe.OBE;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.BlockEntityTypes;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class Registry {
     private static Map<String, Set<BlockEntityType<?>>> supportedBeTypes = new ConcurrentHashMap<>();
-    private static Map<BlockState, BlockEntityType<?>> beTypeCache = new ConcurrentHashMap<>();
+    private static Map<Block, BlockEntityType<?>> beTypeCache = new ConcurrentHashMap<>();
 
     public static void init(){
         register("chest", BlockEntityTypes.CHEST, BlockEntityTypes.ENDER_CHEST, BlockEntityTypes.TRAPPED_CHEST);
@@ -102,7 +103,7 @@ public class Registry {
 
     public static BlockEntityType<?> getBlockEntityType(BlockState state){
         if(!state.hasBlockEntity()) return null;
-        return beTypeCache.computeIfAbsent(state, (key) -> {
+        return beTypeCache.computeIfAbsent(state.getBlock(), (key) -> {
             for(Set<BlockEntityType<?>> set : supportedBeTypes.values())
                 for(BlockEntityType<?> type : set){
                     if(type.isValid(state)){
