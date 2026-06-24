@@ -31,6 +31,7 @@
 		"renderer.compat.sodium.ChunkBuilderMeshingTaskMixin",
 		"renderer.compat.sodium.BlockRendererMixin",
 		"renderer.compat.sodium.SodiumWorldRendererMixin",
+		"renderer.compat.indigo.TerrainRenderContextMixin",
 		"core.ModelManagerMixin",
 		"BlockStateModelSetMixin"
 	],

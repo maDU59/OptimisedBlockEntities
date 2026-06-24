@@ -1,2 +1,2 @@
 # What's new:
-- Fixed compatibility with Punchy!
+- Fixed bells being invisible without Indigo
