@@ -1,2 +1,2 @@
 # What's new:
-- Fixed compatibility with Punchy!
+- Improved the speed of chunk meshing when their are block entities
