@@ -4,6 +4,7 @@ import java.util.function.BiFunction;
 
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.BellBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -11,6 +12,7 @@ import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.EnderChestBlock;
 import net.minecraft.world.level.block.ShulkerBoxBlock;
 import net.minecraft.world.level.block.TrappedChestBlock;
+import net.minecraft.world.level.block.entity.BedBlockEntity;
 import net.minecraft.world.level.block.entity.BellBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
@@ -35,6 +37,7 @@ public class EMFCompat {
         else if(blockState.getBlock() instanceof BellBlock) return applyBellRestPose(root, blockState);
         else if(blockState.getBlock() instanceof ShulkerBoxBlock) return applyShulkerRestPose(root, blockState);
         else if(blockState.getBlock() instanceof ChestBlock) return applyChestRestPose(root, blockState);
+        else if(blockState.getBlock() instanceof BedBlock) return applyBedRestPose(root, blockState);
 
         return root;
     }
@@ -57,6 +60,10 @@ public class EMFCompat {
 
     public static ModelPart applyShulkerRestPose(ModelPart root, BlockState blockState) {
         return applyRestPose(root, blockState, Blocks.SHULKER_BOX, ShulkerBoxBlockEntity::new);
+    }
+
+    public static ModelPart applyBedRestPose(ModelPart root, BlockState blockState) {
+        return applyRestPose(root, blockState, Blocks.RED_BED, BedBlockEntity::new);
     }
 
     public static <T extends BlockEntity> ModelPart applyRestPose(ModelPart root, BlockState blockState, Block block, BiFunction<BlockPos, BlockState, T> beConstructor) {
