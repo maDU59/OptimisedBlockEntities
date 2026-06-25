@@ -54,7 +54,7 @@ public class RenderModeManager {
     }
 
     public static <T extends BlockEntity> boolean shouldRenderEntity(BlockEntityExt ext, T be){
-        return ext == null || !be.hasLevel() || !ext.isSupportedBlockEntity() || ext.renderMode() == RenderMode.ENTITY || ext.renderModeDelayed() == RenderMode.ENTITY || ext.renderBoth() || ext.renderMode() == RenderMode.INTERMEDIATE || ModCompat.shouldRenderEntity(be);
+        return ext == null || !be.hasLevel() || ext.forceEntity() || !ext.isSupportedBlockEntity() || ext.renderMode() == RenderMode.ENTITY || ext.renderModeDelayed() == RenderMode.ENTITY || ext.renderBoth() || ext.renderMode() == RenderMode.INTERMEDIATE || ModCompat.shouldRenderEntity(be);
     }
 
     public static <T extends BlockEntity> void setRenderModeDelayed(T be, RenderMode mode, BlockPos pos){
@@ -68,7 +68,7 @@ public class RenderModeManager {
         }
     }
 
-    private static void setDirty(BlockPos pos){
+    public static void setDirty(BlockPos pos){
         if (!Minecraft.getInstance().isSameThread()) {
             Minecraft.getInstance().execute(() -> setDirty(pos));
             return;
