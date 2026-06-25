@@ -18,7 +18,7 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -99,7 +99,7 @@ public class OBEBlockRenderer {
 
         TransformationGetter.applyTransformation(state, poseStack, "bed");
 
-        Identifier material = MaterialGetter.getMaterial(state, "bed");
+        ResourceLocation material = MaterialGetter.getMaterial(state, "bed");
         if(material == null) return null;
 
         BlockStateModel model = ResourceUtil.getModel(layerLocation, material, state, poseStack, SettingsManager.BED_AMBIENT_OCCLUSION.getValue(), originalModel.particleIcon());
