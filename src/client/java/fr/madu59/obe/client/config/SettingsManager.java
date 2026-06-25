@@ -20,7 +20,7 @@ public class SettingsManager {
 
     public static Map<String, Option<?>> ALL_OPTIONS = new HashMap<>();
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    private static final Path CONFIG_PATH = PlatformHelper.getConfigDir().resolve("fwa.json");
+    private static final Path CONFIG_PATH = PlatformHelper.getConfigDir().resolve(OBE.MOD_ID + ".json");
     private static Map<String, String> loadedSettings = loadSettings();
 
     private static Runnable emptyAction = () -> {};
