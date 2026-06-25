@@ -14,8 +14,10 @@ import net.minecraft.world.level.block.state.properties.BedPart;
 
 public class BedUtil {
     public static Identifier getBedMaterial(BlockState state){
-        BedBlock block = (BedBlock) state.getBlock();
-        return  Sheets.getBedMaterial(block.getColor()).texture();
+        if(state.getBlock() instanceof BedBlock block){
+            return  Sheets.getBedMaterial(block.getColor()).texture();
+        }
+        return null;
     }
 
     public static ModelLayerLocation getBedModelLayerLocation(BlockState state){
