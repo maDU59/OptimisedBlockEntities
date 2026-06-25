@@ -32,7 +32,7 @@ public class SettingsManager {
 
     public static Option<Boolean> EMF_COMPAT = loadOptionWithDefaults("emf_compat",
         "obe.config.option.emf_compat",
-        false,
+        true,
         reloadResourcesAction
     );
 
