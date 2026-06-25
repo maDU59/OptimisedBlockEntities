@@ -35,12 +35,12 @@ public class SectionCompilerMixin {
         if(state.hasBlockEntity()){
             BlockEntity be = beRef.get();
             BlockEntityExt ext = (BlockEntityExt) be;
-            if(ext != null) {
+            if(ext != null && ext.isSupportedBlockEntity()) {
                 RenderModeManager.updateBlockEntityOnChunkRemesh(ext, be);
-                if(ext.isSupportedBlockEntity() && !ext.hasSpecialRenderer() && ext.renderMode() != RenderMode.TERRAIN && ext.renderMode() != RenderMode.INTERMEDIATE){
+                if(ext.isEnabled() && !ext.hasSpecialRenderer() && ext.renderMode() != RenderMode.TERRAIN && ext.renderMode() != RenderMode.INTERMEDIATE){
                     return RenderShape.INVISIBLE;
                 }
-                if(ext.isSupportedBlockEntity() && (ext.renderMode() == RenderMode.TERRAIN || ext.renderMode() == RenderMode.INTERMEDIATE)){
+                if(ext.isEnabled() && (ext.renderMode() == RenderMode.TERRAIN || ext.renderMode() == RenderMode.INTERMEDIATE)){
                     return RenderShape.MODEL;
                 }
             }
