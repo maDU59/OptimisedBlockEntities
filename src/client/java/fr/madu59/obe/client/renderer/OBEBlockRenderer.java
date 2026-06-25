@@ -27,6 +27,7 @@ import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTypes;
@@ -128,7 +129,11 @@ public class OBEBlockRenderer {
         if(layerLocation == null) return null;
 
         TransformationGetter.applyTransformation(state, poseStack, "shulker_box");
-        BlockStateModel model = ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "shulker_box"), state, poseStack, SettingsManager.SHULKER_BOX_AMBIENT_OCCLUSION.getValue(), originalModel.particleMaterial());
+
+        Identifier material = MaterialGetter.getMaterial(state, "shulker_box");
+        if(material == null) return null;
+
+        BlockStateModel model = ResourceUtil.getModel(layerLocation, material, state, poseStack, SettingsManager.SHULKER_BOX_AMBIENT_OCCLUSION.getValue(), originalModel.particleMaterial());
         model = new CompositeBlockStateModel(model, originalModel);
         ResourceUtil.cache(layerLocation, state, model);
         return model;
