@@ -8,6 +8,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.registry.Registry;
 import fr.madu59.obe.client.renderer.OBEBlockRenderer;
 
@@ -36,15 +37,15 @@ public class BlockStateModelSetMixin {
         RandomSource random = RandomSource.create(42);
         BlockStateModel model;
 
-        if(Registry.isSupported("skull", state)){
+        if(Registry.isSupported("skull", state) && SettingsManager.OPTIMISED_SKULLS.getValue()){
             model = obeBlockRenderer.getSkullBlockModel(state, random, obe$getOriginalModel(state));
             if(model != null) cir.setReturnValue(model);
         }
-        else if(Registry.isSupported("chest", state)){
+        else if(Registry.isSupported("chest", state) && SettingsManager.OPTIMISED_CHESTS.getValue()){
             model = obeBlockRenderer.getChestModel(state, random, obe$getOriginalModel(state));
             if(model != null) cir.setReturnValue(model);
         }
-        else if(Registry.isSupported("banner", state)){
+        else if(Registry.isSupported("banner", state) && SettingsManager.OPTIMISED_BANNERS.getValue()){
             model = obeBlockRenderer.getBannerModel(state, random, obe$getOriginalModel(state));
             if(model != null) cir.setReturnValue(model);
         }
@@ -54,15 +55,15 @@ public class BlockStateModelSetMixin {
         //     model = new CompositeBlockStateModel(obeBlockRenderer.getBellModel(state, random, obe$getOriginalModel(state)), (BlockStateModel)set.modelByState.getOrDefault(state, new BlockEntityStateModel());
         //     if(model != null) cir.setReturnValue(model);
         // }
-        else if(Registry.isSupported("copper_golem_statue", state)){
+        else if(Registry.isSupported("copper_golem_statue", state) && SettingsManager.OPTIMISED_COPPER_GOLEMS.getValue()){
             model = obeBlockRenderer.getCopperGolemStatueModel(state, random, obe$getOriginalModel(state));
             if(model != null) cir.setReturnValue(model);
         }
-        else if(Registry.isSupported("shulker_box", state)){
+        else if(Registry.isSupported("shulker_box", state) && SettingsManager.OPTIMISED_SHULKER_BOXES.getValue()){
             model = obeBlockRenderer.getShulkerBoxModel(state, random, obe$getOriginalModel(state));
             if(model != null) cir.setReturnValue(model);
         }
-        else if(Registry.isSupported("decorated_pot", state)){
+        else if(Registry.isSupported("decorated_pot", state) && SettingsManager.OPTIMISED_DECORATED_POTS.getValue()){
             model = obeBlockRenderer.getDecoratedPotModel(state, random, obe$getOriginalModel(state));
             if(model != null) cir.setReturnValue(model);
         }
