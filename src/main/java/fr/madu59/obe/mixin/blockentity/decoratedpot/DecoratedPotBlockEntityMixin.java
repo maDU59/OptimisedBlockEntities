@@ -1,21 +1,25 @@
 package fr.madu59.obe.mixin.blockentity.decoratedpot;
 
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import fr.madu59.obe.registry.Registry;
 import fr.madu59.obe.renderer.blockentity.ext.BlockEntityExt;
 import fr.madu59.obe.renderer.blockentity.misc.RenderModeManager;
-import fr.madu59.obe.renderer.blockentity.misc.RenderModeManager.RenderMode;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.DecoratedPotBlockEntity;
 import net.minecraft.world.level.block.entity.DecoratedPotBlockEntity.Decorations;
 
 @Mixin(DecoratedPotBlockEntity.class)
 public abstract class DecoratedPotBlockEntityMixin{
+
+    @Shadow
+    private Decorations decorations;
+
     @Inject(method = "<init>", at = @At("TAIL"))
     private void init(CallbackInfo ci) {
 
@@ -23,13 +27,30 @@ public abstract class DecoratedPotBlockEntityMixin{
         BlockEntityExt ext = (BlockEntityExt)be;
 
         ext.isSupportedBlockEntity(Registry.isSupported("decorated_pot", be.getType()));
-        if(((DecoratedPotBlockEntity)be).getDecorations() != Decorations.EMPTY) ext.renderMode(RenderMode.ENTITY);
+        obe$updatePot();
     }
 
-    @Inject(method = "getDecorations", at = @At("RETURN"))
-    public void obe$updateTimer(CallbackInfoReturnable<Decorations> cir) {
+    @Inject(method = "load", at = @At("RETURN"))
+    public void obe$load(CallbackInfo ci) {
+        obe$updatePot();
+    }
+
+    @Inject(method = "setFromItem", at = @At("RETURN"))
+    public void obe$fromItem(CallbackInfo ci) {
+        obe$updatePot();
+    }
+
+    @Unique
+    private void obe$updatePot(){
         DecoratedPotBlockEntity be = (DecoratedPotBlockEntity)(Object)this;
+        if(!be.hasLevel()) return;
         BlockEntityExt ext = (BlockEntityExt)be;
-        if(cir.getReturnValue() != Decorations.EMPTY) RenderModeManager.setRenderModeDelayed(ext, RenderMode.ENTITY, be.getBlockPos());
+        if(!decorations.equals(Decorations.EMPTY)){
+            if(!ext.forceEntity()) RenderModeManager.setDirty(be.getBlockPos());
+            ext.forceEntity(true);
+        }
+        else{
+            ext.forceEntity(false);
+        }
     }
 }

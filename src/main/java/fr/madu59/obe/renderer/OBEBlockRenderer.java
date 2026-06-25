@@ -18,6 +18,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
@@ -98,7 +99,13 @@ public class OBEBlockRenderer {
 
         TransformationGetter.applyTransformation(state, poseStack, "bed");
 
-        return ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "bed"), state, poseStack, SettingsManager.BED_AMBIENT_OCCLUSION.getValue(), originalModel.getParticleIcon());
+        ResourceLocation material = MaterialGetter.getMaterial(state, "bed");
+        if(material == null) return null;
+
+        BakedModel model = ResourceUtil.getModel(layerLocation, material, state, poseStack, SettingsManager.BED_AMBIENT_OCCLUSION.getValue(), originalModel.getParticleIcon());
+        model = new CompositeBlockStateModel(model, originalModel);
+        ResourceUtil.cache(layerLocation, state, model);
+        return model;
     }
 
     public BakedModel getChestModel(BlockState state, RandomSource random, BakedModel originalModel) {
@@ -150,7 +157,11 @@ public class OBEBlockRenderer {
         if(layerLocation == null) return null;
 
         TransformationGetter.applyTransformation(state, poseStack, "shulker_box");
-        BakedModel model = ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "shulker_box"), state, poseStack, SettingsManager.SHULKER_BOX_AMBIENT_OCCLUSION.getValue(), originalModel.getParticleIcon());
+
+        ResourceLocation material = MaterialGetter.getMaterial(state, "shulker_box");
+        if(material == null) return null;
+
+        BakedModel model = ResourceUtil.getModel(layerLocation, material, state, poseStack, SettingsManager.SHULKER_BOX_AMBIENT_OCCLUSION.getValue(), originalModel.getParticleIcon());
         model = new CompositeBlockStateModel(model, originalModel);
         ResourceUtil.cache(layerLocation, state, model);
         return model;
