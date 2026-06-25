@@ -26,4 +26,7 @@ public interface BlockEntityExt {
 
     boolean shouldSkipBeRendering();
     void shouldSkipBeRendering(boolean bl);
+
+    boolean forceEntity();
+    void forceEntity(boolean bl);
 }
