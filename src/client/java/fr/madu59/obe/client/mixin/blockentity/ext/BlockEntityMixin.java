@@ -19,6 +19,7 @@ public abstract class BlockEntityMixin implements BlockEntityExt {
     @Unique private boolean isEnabled = true;
     @Unique private boolean renderBoth = false;
     @Unique private boolean shouldSkipBeRendering = false;
+    @Unique private boolean forceEntity = false;
 
     @Override public boolean isSupportedBlockEntity() { return isSupportedBlockEntity; }
     @Override public void isSupportedBlockEntity(boolean bl) {this.isSupportedBlockEntity = bl; }
@@ -56,4 +57,7 @@ public abstract class BlockEntityMixin implements BlockEntityExt {
 
     @Override public boolean shouldSkipBeRendering() { return shouldSkipBeRendering; };
     @Override public void shouldSkipBeRendering(boolean bl) { shouldSkipBeRendering = bl; };
+
+    @Override public boolean forceEntity() { return forceEntity; };
+    @Override public void forceEntity(boolean bl) { forceEntity = bl; };
 }
