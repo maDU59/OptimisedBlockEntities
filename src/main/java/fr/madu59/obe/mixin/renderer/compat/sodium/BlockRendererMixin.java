@@ -32,7 +32,7 @@ public class BlockRendererMixin {
             BlockEntityExt ext = (BlockEntityExt) be;
             if(ext != null && ext.isSupportedBlockEntity()) {
                 RenderModeManager.updateBlockEntityOnChunkRemesh(ext, be);
-                if(ext.isSupportedBlockEntity() && !ext.hasSpecialRenderer() && ext.renderMode() != RenderMode.TERRAIN && ext.renderMode() != RenderMode.INTERMEDIATE){
+                if(ext.isEnabled() && !ext.hasSpecialRenderer() && ext.renderMode() != RenderMode.TERRAIN && ext.renderMode() != RenderMode.INTERMEDIATE){
                     ctx.update(ctx.pos(), origin, ctx.state(), new BlockEntityStateModel(), ctx.seed(), ctx.modelData(), ctx.renderLayer());
                     return ctx;
                 }
