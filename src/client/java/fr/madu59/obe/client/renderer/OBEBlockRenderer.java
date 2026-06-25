@@ -45,7 +45,7 @@ public class OBEBlockRenderer {
         if (be == null) return null;
 
         BlockEntityExt ext = (BlockEntityExt)be;
-        if (ext == null || !ext.isSupportedBlockEntity() || !ext.hasSpecialRenderer()) return null;
+        if (ext == null || !ext.isSupportedBlockEntity() || !ext.hasSpecialRenderer() || !ext.isEnabled()) return null;
 
         Block block = state.getBlock();
         RandomSource random = RandomSource.create(seed);
@@ -116,7 +116,10 @@ public class OBEBlockRenderer {
         if(layerLocation == null) return null;
 
         TransformationGetter.applyTransformation(state, poseStack, "chest");
-        return ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "chest"), state, poseStack, SettingsManager.CHEST_AMBIENT_OCCLUSION.getValue(), originalModel.getParticleIcon());
+        BakedModel model = ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "chest"), state, poseStack, SettingsManager.CHEST_AMBIENT_OCCLUSION.getValue(), originalModel.getParticleIcon());
+        model = new CompositeBlockStateModel(model, originalModel);
+        ResourceUtil.cache(layerLocation, state, model);
+        return model;
     }
 
     public BakedModel getBellModel(BlockState state, RandomSource random, BakedModel originalModel) {
@@ -154,8 +157,10 @@ public class OBEBlockRenderer {
         if(layerLocation == null) return null;
 
         TransformationGetter.applyTransformation(state, poseStack, "shulker_box");
-
-        return ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "shulker_box"), state, poseStack, SettingsManager.SHULKER_BOX_AMBIENT_OCCLUSION.getValue(), originalModel.getParticleIcon());
+        BakedModel model = ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "shulker_box"), state, poseStack, SettingsManager.SHULKER_BOX_AMBIENT_OCCLUSION.getValue(), originalModel.getParticleIcon());
+        model = new CompositeBlockStateModel(model, originalModel);
+        ResourceUtil.cache(layerLocation, state, model);
+        return model;
     }
 
     public BakedModel getDecoratedPotModel(BlockState state, RandomSource random, BakedModel originalModel) {
