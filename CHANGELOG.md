@@ -1,3 +1,3 @@
 # What's new:
-- Improved speed with Sodium
-- Fixed rare crashes with Sodium
+- Fixed decorated pots not disaplying their decorations
+- Improved compatibility with Enderscape

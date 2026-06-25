@@ -102,7 +102,10 @@ public class OBEBlockRenderer {
         Identifier material = MaterialGetter.getMaterial(state, "bed");
         if(material == null) return null;
 
-        return ResourceUtil.getModel(layerLocation, material, state, poseStack, SettingsManager.BED_AMBIENT_OCCLUSION.getValue(), originalModel.particleIcon());
+        BlockStateModel model = ResourceUtil.getModel(layerLocation, material, state, poseStack, SettingsManager.BED_AMBIENT_OCCLUSION.getValue(), originalModel.particleIcon());
+        model = new CompositeBlockStateModel(model, originalModel);
+        ResourceUtil.cache(layerLocation, state, model);
+        return model;
     }
 
     public BlockStateModel getChestModel(BlockState state, RandomSource random, BlockStateModel originalModel) {
