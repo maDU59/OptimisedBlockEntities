@@ -21,17 +21,20 @@ public class SkullBlockUtil {
     }
 
     public static ModelLayerLocation getSkullBlockModelLayerLocation(BlockState state){
-        SkullBlock.Type type = ((AbstractSkullBlock)state.getBlock()).getType();
-        if (type instanceof SkullBlock.Types vanillaType) {
-            return switch (vanillaType) {
-                case SKELETON -> ModelLayers.SKELETON_SKULL;
-                case WITHER_SKELETON -> ModelLayers.WITHER_SKELETON_SKULL;
-                case PLAYER -> ModelLayers.PLAYER_HEAD;
-                case ZOMBIE -> ModelLayers.ZOMBIE_HEAD;
-                case CREEPER -> ModelLayers.CREEPER_HEAD;
-                case DRAGON -> ModelLayers.DRAGON_SKULL;
-                case PIGLIN -> ModelLayers.PIGLIN_HEAD;
-            };
+        if(state.getBlock() instanceof AbstractSkullBlock block){
+            SkullBlock.Type type = block.getType();
+            if (type instanceof SkullBlock.Types vanillaType) {
+                return switch (vanillaType) {
+                    case SKELETON -> ModelLayers.SKELETON_SKULL;
+                    case WITHER_SKELETON -> ModelLayers.WITHER_SKELETON_SKULL;
+                    case PLAYER -> ModelLayers.PLAYER_HEAD;
+                    case ZOMBIE -> ModelLayers.ZOMBIE_HEAD;
+                    case CREEPER -> ModelLayers.CREEPER_HEAD;
+                    case DRAGON -> ModelLayers.DRAGON_SKULL;
+                    case PIGLIN -> ModelLayers.PIGLIN_HEAD;
+                };
+            }
+            else return null;
         }
         else return null;
     }
