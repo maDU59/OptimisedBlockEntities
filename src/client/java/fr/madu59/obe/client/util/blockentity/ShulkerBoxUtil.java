@@ -13,14 +13,15 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class ShulkerBoxUtil {
     public static ResourceLocation getShulkerBoxMaterial(BlockState state){
-        ShulkerBoxBlock block = (ShulkerBoxBlock) state.getBlock();
-        
-        DyeColor color = block.getColor();
-        if (color == null) {
-           return Sheets.DEFAULT_SHULKER_TEXTURE_LOCATION.texture();
-        } else {
-            return Sheets.getShulkerBoxMaterial(color).texture();
+        if(state.getBlock() instanceof ShulkerBoxBlock block){
+            DyeColor color = block.getColor();
+            if (color == null) {
+            return Sheets.DEFAULT_SHULKER_TEXTURE_LOCATION.texture();
+            } else {
+                return Sheets.getShulkerBoxMaterial(color).texture();
+            }
         }
+        else return null;
     }
 
     public static ModelLayerLocation getShulkerBoxModelLayerLocation(BlockState state){
