@@ -45,6 +45,9 @@ public class ChunkBuilderMeshingTaskMixin {
             BlockEntityExt ext = (BlockEntityExt) be;
             if(ext != null && ext.isSupportedBlockEntity()) {
                 RenderModeManager.updateBlockEntityOnChunkRemesh(ext, be);
+                if(ext.forceEntity()){
+                    return RenderShape.INVISIBLE;
+                }
                 if(ext.isEnabled() && !ext.hasSpecialRenderer() && ext.renderMode() != RenderMode.TERRAIN && ext.renderMode() != RenderMode.INTERMEDIATE){
                     return RenderShape.INVISIBLE;
                 }
