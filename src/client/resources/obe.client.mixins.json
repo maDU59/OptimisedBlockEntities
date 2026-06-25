@@ -33,7 +33,6 @@
 		"renderer.LevelRendererMixin",
 		"renderer.compat.indigo.AltModelBlockRendererImplMixin",
 		"renderer.compat.sodium.ChunkBuilderMeshingTaskMixin",
-		"renderer.compat.sodium.BlockRendererMixin",
 		"renderer.compat.sodium.SodiumWorldRendererMixin",
 		"core.ModelManagerMixin",
 		"BlockStateModelSetMixin"
