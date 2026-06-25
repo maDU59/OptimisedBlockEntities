@@ -30,11 +30,16 @@ public abstract class DecoratedPotBlockEntityMixin{
         BlockEntityExt ext = (BlockEntityExt)be;
 
         ext.isSupportedBlockEntity(Registry.isSupported("decorated_pot", be.getType()));
-        if(decorations != PotDecorations.EMPTY) ext.renderMode(RenderMode.ENTITY);
+        obe$updatePot();
     }
 
     @Inject(method = "loadAdditional", at = @At("RETURN"))
     public void obe$load(CallbackInfo ci) {
+        obe$updatePot();
+    }
+
+    @Inject(method = "applyImplicitComponents", at = @At("RETURN"))
+    public void obe$applyComponents(CallbackInfo ci) {
         obe$updatePot();
     }
 
