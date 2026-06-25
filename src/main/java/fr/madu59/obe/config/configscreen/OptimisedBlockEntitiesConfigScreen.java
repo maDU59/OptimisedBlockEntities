@@ -27,7 +27,7 @@ public class OptimisedBlockEntitiesConfigScreen extends Screen {
     @SubscribeEvent
     public static void onRegisterClientCommands(RegisterClientCommandsEvent event) {
         event.getDispatcher().register(
-            literal("fwaConfig")
+            literal("obeConfig")
                 .executes(context -> {
                     Minecraft.getInstance().execute(() -> Minecraft.getInstance().setScreen(new OptimisedBlockEntitiesConfigScreen(null)));
                         return 1;
