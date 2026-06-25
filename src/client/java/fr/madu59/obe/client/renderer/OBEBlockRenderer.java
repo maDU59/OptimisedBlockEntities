@@ -10,24 +10,15 @@ import fr.madu59.obe.client.registry.MaterialGetter;
 import fr.madu59.obe.client.registry.ModelLayerLocationGetter;
 import fr.madu59.obe.client.registry.TransformationGetter;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
-import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityRenderStateExt;
 import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager.RenderMode;
 import fr.madu59.obe.client.util.ResourceUtil;
-import fr.madu59.obe.client.util.blockentity.BannerUtil;
-import fr.madu59.obe.client.util.blockentity.BedUtil;
-import fr.madu59.obe.client.util.blockentity.BellUtil;
-import fr.madu59.obe.client.util.blockentity.ChestUtil;
-import fr.madu59.obe.client.util.blockentity.CopperGolemStatueUtil;
 import fr.madu59.obe.client.util.blockentity.DecoratedPotUtil;
-import fr.madu59.obe.client.util.blockentity.HangingSignUtil;
-import fr.madu59.obe.client.util.blockentity.ShulkerBoxUtil;
-import fr.madu59.obe.client.util.blockentity.SignUtil;
-import fr.madu59.obe.client.util.blockentity.SkullBlockUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -108,7 +99,13 @@ public class OBEBlockRenderer {
 
         TransformationGetter.applyTransformation(state, poseStack, "bed");
 
-        return ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "bed"), state, poseStack, SettingsManager.BED_AMBIENT_OCCLUSION.getValue(), originalModel.particleIcon());
+        Identifier material = MaterialGetter.getMaterial(state, "bed");
+        if(material == null) return null;
+
+        BlockStateModel model = ResourceUtil.getModel(layerLocation, material, state, poseStack, SettingsManager.BED_AMBIENT_OCCLUSION.getValue(), originalModel.particleIcon());
+        model = new CompositeBlockStateModel(model, originalModel);
+        ResourceUtil.cache(layerLocation, state, model);
+        return model;
     }
 
     public BlockStateModel getChestModel(BlockState state, RandomSource random, BlockStateModel originalModel) {
