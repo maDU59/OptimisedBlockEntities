@@ -15,8 +15,6 @@ import fr.madu59.obe.renderer.OBEBlockRenderer;
 import fr.madu59.obe.renderer.blockentity.ext.BlockEntityExt;
 import fr.madu59.obe.renderer.blockentity.misc.RenderModeManager;
 import fr.madu59.obe.renderer.blockentity.misc.RenderModeManager.RenderMode;
-import net.minecraft.client.renderer.block.BlockRenderDispatcher;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.chunk.RenderChunkRegion;
 import net.minecraft.client.renderer.chunk.SectionCompiler;
 import net.minecraft.core.BlockPos;
