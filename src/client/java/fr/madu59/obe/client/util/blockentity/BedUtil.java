@@ -21,8 +21,11 @@ public class BedUtil {
     }
 
     public static ModelLayerLocation getBedModelLayerLocation(BlockState state){
-        if(state.getValue(BedBlock.PART) == BedPart.FOOT) return ModelLayers.BED_FOOT;
-        else return ModelLayers.BED_HEAD;
+        if(state.hasProperty(BedBlock.PART)){
+            if(state.getValue(BedBlock.PART) == BedPart.FOOT) return ModelLayers.BED_FOOT;
+            else return ModelLayers.BED_HEAD;
+        }
+        else return null;
     }
 
     public static void transformBed(BlockState state, PoseStack poseStack){
