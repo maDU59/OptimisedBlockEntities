@@ -8,8 +8,9 @@
 		"maDU59_"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/maDU59/OptimisedBlockEntities"
+		"homepage": "https://github.com/maDU59/OptimisedBlockEntities",
+		"sources": "https://github.com/maDU59/OptimisedBlockEntities",
+		"issues": "https://github.com/maDU59/OptimisedBlockEntities/issues"
 	},
 	"license": "LGPL-3.0-or-later",
 	"icon": "assets/obe/icon.png",
@@ -23,7 +24,10 @@
 		],
 		"modmenu": [
 			"fr.madu59.obe.client.config.configscreen.ModMenuIntegration"
-		]
+		],
+		"sodium:config_api_user": [
+            "fr.madu59.obe.client.config.configscreen.SodiumIntegration"
+        ]
 	},
 	"mixins": [
 		{
@@ -37,5 +41,14 @@
 		"minecraft": "~1.21.2",
 		"java": ">=21",
 		"fabric-api": "*"
+	},
+	"custom": {
+		"modmenu": {
+			"links": {
+				"modmenu.curseforge": "https://www.curseforge.com/minecraft/mc-mods/obe",
+				"modmenu.modrinth": "https://modrinth.com/mod/obe",
+				"modmenu.discord": "https://discord.gg/ATTZQQeVw4"
+			}
+		}
 	}
 }

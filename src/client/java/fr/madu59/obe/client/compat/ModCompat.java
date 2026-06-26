@@ -2,7 +2,6 @@ package fr.madu59.obe.client.compat;
 
 import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.platform.PlatformHelper;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
