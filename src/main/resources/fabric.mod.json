@@ -23,7 +23,10 @@
 		],
 		"modmenu": [
 			"fr.madu59.obe.client.config.configscreen.ModMenuIntegration"
-		]
+		],
+		"sodium:config_api_user": [
+            "fr.madu59.obe.client.config.configscreen.SodiumIntegration"
+        ]
 	},
 	"mixins": [
 		{

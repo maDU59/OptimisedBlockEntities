@@ -35,6 +35,7 @@ public class BlockStateModelSetMixin {
     public void obe$getBlockStateModel(BlockState state, CallbackInfoReturnable<BlockStateModel> cir){
         if (!state.hasBlockEntity()) return;
 
+        if(!SettingsManager.MOD_TOGGLE.getValue()) return;
         RandomSource random = RandomSource.create(42);
 
         BlockStateModel model;

@@ -39,6 +39,7 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
 	modImplementation ("com.terraformersmc:modmenu:${project.modmenu_version}")
+	modImplementation "net.caffeinemc:sodium-fabric-api:0.8.3+mc1.21.11"
 	modImplementation "net.caffeinemc:sodium-fabric:0.8.3+mc1.21.11"
 
 	localRuntime 'org.anarres:jcpp:1.4.14'
