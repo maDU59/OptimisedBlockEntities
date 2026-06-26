@@ -9,13 +9,16 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import fr.madu59.obe.config.SettingsManager;
+import fr.madu59.obe.model.BlockEntityStateModel;
 import fr.madu59.obe.registry.Registry;
 import fr.madu59.obe.renderer.OBEBlockRenderer;
+import fr.madu59.obe.util.ResourceUtil;
 
 import org.spongepowered.asm.mixin.injection.At;
 
 import net.minecraft.client.renderer.block.BlockStateModelSet;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -23,6 +26,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class BlockStateModelSetMixin {
 
     @Unique private final OBEBlockRenderer obeBlockRenderer = new OBEBlockRenderer();
+    @Unique private final Identifier missingTexture = Identifier.tryParse("minecraft:missingno");
 
     @Shadow
     public Map<BlockState, BlockStateModel> modelByState;
@@ -34,6 +38,7 @@ public class BlockStateModelSetMixin {
     public void obe$getBlockStateModel(BlockState state, CallbackInfoReturnable<BlockStateModel> cir){
         if (!state.hasBlockEntity()) return;
 
+        if(!SettingsManager.MOD_TOGGLE.getValue()) return;
         RandomSource random = RandomSource.create(42);
 
         BlockStateModel model;
@@ -84,6 +89,7 @@ public class BlockStateModelSetMixin {
 
     @Unique
     public BlockStateModel obe$getOriginalModel(BlockState state){
-        return modelByState.getOrDefault(state, this.missingModel);
+        BlockStateModel model = modelByState.getOrDefault(state, this.missingModel);
+        return model == null? new BlockEntityStateModel(ResourceUtil.getSprite(missingTexture)) : model;
     }
 }

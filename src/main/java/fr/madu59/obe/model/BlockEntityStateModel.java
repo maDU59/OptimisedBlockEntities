@@ -51,6 +51,10 @@ public class BlockEntityStateModel implements BlockStateModel{
         particleMaterial = null;
     }
 
+    public BlockEntityStateModel(TextureAtlasSprite particleMaterial){
+        this.particleMaterial = new Material.Baked(particleMaterial, false);
+    }
+
     @Override
     public void collectParts(RandomSource randomSource, List<BlockStateModelPart> list) {
         if (models.isEmpty()) return;

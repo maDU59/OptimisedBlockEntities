@@ -5,6 +5,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import fr.madu59.obe.config.SettingsManager;
 import fr.madu59.obe.renderer.blockentity.ext.BlockEntityExt;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.level.block.LecternBlock;
@@ -23,7 +24,7 @@ public class BlockEntityMixin {
             
             boolean hasBook = newBlockState != null && newBlockState.getValueOrElse(LecternBlock.HAS_BOOK, true);
 
-            ext.shouldSkipBeRendering(!hasBook);
+            ext.shouldSkipBeRendering(!hasBook && SettingsManager.OPTIMISED_LECTERNS.getValue() &&  SettingsManager.MOD_TOGGLE.getValue());
         }
     }
 }
