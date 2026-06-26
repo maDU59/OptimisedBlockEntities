@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.llamalad7.mixinextras.sugar.Local;
 
+import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;
@@ -61,6 +62,7 @@ public abstract class CampfireBlockEntityMixin{
 
     @Unique
     private static boolean obe$isEmptyList(List<ItemStack> list){
+        if(!SettingsManager.OPTIMISED_CAMPFIRES.getValue() || !SettingsManager.MOD_TOGGLE.getValue()) return false;
         if(list == null) return true;
         for(ItemStack itemStack : list){
             if(itemStack != null && itemStack != ItemStack.EMPTY) return false;

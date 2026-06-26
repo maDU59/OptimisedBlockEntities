@@ -4,7 +4,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
@@ -41,8 +40,8 @@ public class ChunkBuilderMeshingTaskMixin {
         return original.call(slice, x, y, z);
     }
 
-    @Redirect(method = "execute", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getRenderShape()Lnet/minecraft/world/level/block/RenderShape;"))
-    private RenderShape obe$getRenderShape(BlockState state, @Share("be") LocalRef<BlockEntity> beRef){
+    @WrapOperation(method = "execute", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getRenderShape()Lnet/minecraft/world/level/block/RenderShape;"))
+    private RenderShape obe$getRenderShape(BlockState state, Operation<RenderShape> original, @Share("be") LocalRef<BlockEntity> beRef){
         if(RenderModeManager.hasBlockEntity(state)){
             BlockEntity be = beRef.get();
             BlockEntityExt ext = (BlockEntityExt) be;
@@ -59,7 +58,7 @@ public class ChunkBuilderMeshingTaskMixin {
                 }
             }
         }
-        return state.getRenderShape();
+        return original.call(state);
     }
 
     @WrapOperation(
