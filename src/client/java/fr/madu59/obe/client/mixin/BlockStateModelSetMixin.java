@@ -9,14 +9,17 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import fr.madu59.obe.client.config.SettingsManager;
+import fr.madu59.obe.client.model.BlockEntityStateModel;
 import fr.madu59.obe.client.registry.Registry;
 import fr.madu59.obe.client.renderer.OBEBlockRenderer;
+import fr.madu59.obe.client.util.ResourceUtil;
 
 import org.spongepowered.asm.mixin.injection.At;
 
 import net.minecraft.client.renderer.block.BlockModelShaper;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.resources.model.ModelManager;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -24,6 +27,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class BlockStateModelSetMixin {
 
     @Unique private final OBEBlockRenderer obeBlockRenderer = new OBEBlockRenderer();
+    @Unique private final Identifier missingTexture = Identifier.tryParse("minecraft:missingno");
 
     @Shadow
     public Map<BlockState, BlockStateModel> modelByStateCache;
@@ -89,6 +93,9 @@ public class BlockStateModelSetMixin {
         BlockStateModel blockStateModel = (BlockStateModel)this.modelByStateCache.get(state);
         if (blockStateModel == null) {
             blockStateModel = this.modelManager.getMissingBlockStateModel();
+        }
+        if (blockStateModel == null) {
+            blockStateModel = new BlockEntityStateModel(ResourceUtil.getSprite(missingTexture));
         }
 
         return blockStateModel;

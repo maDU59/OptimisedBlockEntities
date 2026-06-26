@@ -44,6 +44,8 @@ public class SodiumIntegration implements ConfigEntryPoint {
                     
                     .addOptionGroup(builder.createOptionGroup()
                             .setName(Component.translatable("obe.config.category.signs"))
+                            .addOption(createBooleanOption(builder, SettingsManager.OPTIMISED_SIGNS))
+                            .addOption(createBooleanOption(builder, SettingsManager.SIGN_AMBIENT_OCCLUSION))
                             .addOption(createBooleanOption(builder, SettingsManager.SIGN_TEXT_CULLING))
                     )
                     
@@ -57,6 +59,12 @@ public class SodiumIntegration implements ConfigEntryPoint {
                             .setName(Component.translatable("obe.config.category.skulls"))
                             .addOption(createBooleanOption(builder, SettingsManager.OPTIMISED_SKULLS))
                             .addOption(createBooleanOption(builder, SettingsManager.SKULL_AMBIENT_OCCLUSION))
+                    )
+
+                    .addOptionGroup(builder.createOptionGroup()
+                            .setName(Component.translatable("obe.config.category.beds"))
+                            .addOption(createBooleanOption(builder, SettingsManager.OPTIMISED_BEDS))
+                            .addOption(createBooleanOption(builder, SettingsManager.BED_AMBIENT_OCCLUSION))
                     )
                     
                     .addOptionGroup(builder.createOptionGroup()
