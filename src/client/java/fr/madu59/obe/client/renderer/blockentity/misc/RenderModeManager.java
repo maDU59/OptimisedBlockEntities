@@ -76,6 +76,7 @@ public class RenderModeManager {
     }
 
     public static void updateBlockEntityOnChunkRemesh(BlockEntityExt ext, BlockEntity be){
+        if(!SettingsManager.MOD_TOGGLE.getValue()) ext.isEnabled(false);
         if (Registry.isSupported("sign", be.getType())) {
             ext.isEnabled(SettingsManager.OPTIMISED_SIGNS.getValue());
         }
