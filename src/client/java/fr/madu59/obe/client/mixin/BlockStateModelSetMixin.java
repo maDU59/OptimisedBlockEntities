@@ -9,6 +9,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import fr.madu59.obe.client.config.SettingsManager;
+import fr.madu59.obe.client.model.BlockEntityStateModel;
 import fr.madu59.obe.client.registry.Registry;
 import fr.madu59.obe.client.renderer.OBEBlockRenderer;
 
@@ -72,6 +73,7 @@ public class BlockStateModelSetMixin {
 
     @Unique
     public BlockStateModel obe$getOriginalModel(BlockState state){
-        return modelByState.getOrDefault(state, this.missingModel);
+        BlockStateModel model = modelByState.getOrDefault(state, this.missingModel);
+        return model == null? new BlockEntityStateModel() : model;
     }
 }
