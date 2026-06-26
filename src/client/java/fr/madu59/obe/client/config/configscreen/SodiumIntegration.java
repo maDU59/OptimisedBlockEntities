@@ -10,6 +10,12 @@ import net.caffeinemc.mods.sodium.api.config.StorageEventHandler;
 import net.minecraft.resources.Identifier;
 
 public class SodiumIntegration implements ConfigEntryPoint {
+
+    private final StorageEventHandler handler =  new StorageEventHandler() {
+        public void afterSave(){
+            SettingsManager.saveSettings();
+        }
+    };
     
     @Override
     public void registerConfigLate(ConfigBuilder builder) {
@@ -92,17 +98,9 @@ public class SodiumIntegration implements ConfigEntryPoint {
         return builder.createBooleanOption(Identifier.parse("obe:"+option.getId()))
             .setName(Component.translatable(option.getName()))
             .setTooltip(Component.translatable(option.getDescription()))
-            .setStorageHandler(createHandler(option.getRunnable()))
+            .setStorageHandler(this.handler)
             .setBinding(option::setValue, option::getValue)
-            .setDefaultValue(option.getDefaultValue());
-    }
-
-    public StorageEventHandler createHandler(Runnable runnable){
-        return new StorageEventHandler() {
-            public void afterSave(){
-                runnable.run();
-                SettingsManager.saveSettings();
-            }
-        };
+            .setDefaultValue(option.getDefaultValue())
+            .setApplyHook(configState -> option.getRunnable());
     }
 }
