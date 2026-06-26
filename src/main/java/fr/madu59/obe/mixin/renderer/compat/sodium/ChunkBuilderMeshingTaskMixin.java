@@ -41,10 +41,10 @@ public class ChunkBuilderMeshingTaskMixin {
         return original.call(slice, x, y, z);
     }
 
-    @Redirect(method = "execute", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getRenderShape()Lnet/minecraft/world/level/block/RenderShape;"), require = 0)
-    private RenderShape obe$getRenderShape(BlockState state, @Local(ordinal = 8) int x, @Local(ordinal = 6) int y, @Local(ordinal = 7) int z){
+    @WrapOperation(method = "execute", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getRenderShape()Lnet/minecraft/world/level/block/RenderShape;"), require = 0)
+    private RenderShape obe$getRenderShape(BlockState state, Operation<RenderShape> original, @Share("be") LocalRef<BlockEntity> beRef){
         if(RenderModeManager.hasBlockEntity(state)){
-            BlockEntity be = Minecraft.getInstance().level.getBlockEntity(new BlockPos(x, y, z));
+            BlockEntity be = beRef.get();
             BlockEntityExt ext = (BlockEntityExt) be;
             if(ext != null && ext.isSupportedBlockEntity()) {
                 RenderModeManager.updateBlockEntityOnChunkRemesh(ext, be);
@@ -59,26 +59,28 @@ public class ChunkBuilderMeshingTaskMixin {
                 }
             }
         }
-        return state.getRenderShape();
+        return original.call(state);
     }
 
-    @Redirect(method = "execute", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;m_60799_()Lnet/minecraft/world/level/block/RenderShape;"), require = 0)
-    private RenderShape obe$getRenderShape2(BlockState state, @Local(ordinal = 8) int x, @Local(ordinal = 6) int y, @Local(ordinal = 7) int z, @Share("be") LocalRef<BlockEntity> beRef){
+    @WrapOperation(method = "execute", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;m_60799_()Lnet/minecraft/world/level/block/RenderShape;"), require = 0)
+    private RenderShape obe$getRenderShape2(BlockState state, Operation<RenderShape> original, @Share("be") LocalRef<BlockEntity> beRef){
         if(RenderModeManager.hasBlockEntity(state)){
-            BlockEntity be = Minecraft.getInstance().level.getBlockEntity(new BlockPos(x, y, z));
-            beRef.set(be);
+            BlockEntity be = beRef.get();
             BlockEntityExt ext = (BlockEntityExt) be;
             if(ext != null && ext.isSupportedBlockEntity()) {
                 RenderModeManager.updateBlockEntityOnChunkRemesh(ext, be);
-                if(ext.isSupportedBlockEntity() && !ext.hasSpecialRenderer() && ext.renderMode() != RenderMode.TERRAIN && ext.renderMode() != RenderMode.INTERMEDIATE){
+                if(ext.forceEntity()){
                     return RenderShape.INVISIBLE;
                 }
-                if(ext.isSupportedBlockEntity() && (ext.renderMode() == RenderMode.TERRAIN || ext.renderMode() == RenderMode.INTERMEDIATE)){
+                if(ext.isEnabled() && !ext.hasSpecialRenderer() && ext.renderMode() != RenderMode.TERRAIN && ext.renderMode() != RenderMode.INTERMEDIATE){
+                    return RenderShape.INVISIBLE;
+                }
+                if(ext.isEnabled() && (ext.renderMode() == RenderMode.TERRAIN || ext.renderMode() == RenderMode.INTERMEDIATE)){
                     return RenderShape.MODEL;
                 }
             }
         }
-        return state.getRenderShape();
+        return original.call(state);
     }
 
     @WrapOperation(
