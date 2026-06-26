@@ -19,6 +19,10 @@
     "obe.config.option.optimised_copper_golems": "Optimize Copper Golems",
     "obe.config.option.copper_golem_ao": "Copper Golem Ambient Occlusion",
     "obe.config.option.emf_compat": "EMF Compatibility",
+    "obe.config.option.mod_toggle": "Mod toggle",
+    "obe.config.option.optimised_shelves": "Optimize Shelves",
+    "obe.config.option.optimised_lecterns": "Optimize Lecterns",
+    "obe.config.option.optimised_campfires": "Optimize Campfires",
 
     "obe.config.category.chests": "Chests",
     "obe.config.category.banners": "Banners",
@@ -30,6 +34,9 @@
     "obe.config.category.decorated_pots": "Decorated Pots",
     "obe.config.category.copper_golems": "Copper Golems",
     "obe.config.category.general": "General",
+    "obe.config.category.shelves": "Shelves",
+    "obe.config.category.lecterns": "Lecterns",
+    "obe.config.category.campfires": "Campfires",
 
     "obe.config.value.true": "Enabled",
     "obe.config.value.false": "Disabled",

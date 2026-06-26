@@ -38,6 +38,7 @@ public class OptimisedBlockEntitiesConfigScreen extends Screen {
         this.list = new MyConfigListWidget(this.minecraft, this.width, this.height - 80, 40, 26);
 
         list.category("obe.config.category.general").build();
+        list.button(SettingsManager.MOD_TOGGLE).build();
         list.button(SettingsManager.EMF_COMPAT).build();
 
         list.category("obe.config.category.chests").build();
@@ -76,6 +77,15 @@ public class OptimisedBlockEntitiesConfigScreen extends Screen {
         list.category("obe.config.category.copper_golems").build();
         list.button(SettingsManager.OPTIMISED_COPPER_GOLEMS).build();
         list.button(SettingsManager.COPPER_GOLEM_AMBIENT_OCCLUSION).isEnabled(() -> SettingsManager.OPTIMISED_COPPER_GOLEMS.getValue()).build();
+
+        list.category("obe.config.category.shelves").build();
+        list.button(SettingsManager.OPTIMISED_SHELVES).build();
+
+        list.category("obe.config.category.lecterns").build();
+        list.button(SettingsManager.OPTIMISED_LECTERNS).build();
+
+        list.category("obe.config.category.campfires").build();
+        list.button(SettingsManager.OPTIMISED_CAMPFIRES).build();
 
         Button doneButton = Button.builder(Component.translatable("obe.config.done"), b -> {
             this.minecraft.setScreen(this.parent);
