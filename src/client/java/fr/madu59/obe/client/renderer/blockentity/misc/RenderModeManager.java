@@ -84,7 +84,8 @@ public class RenderModeManager {
     }
 
     public static void updateBlockEntityOnChunkRemesh(BlockEntityExt ext, BlockEntity be){
-        if (Registry.isSupported("chest", be.getType())) {
+        if(!SettingsManager.MOD_TOGGLE.getValue()) ext.isEnabled(false);
+        else if (Registry.isSupported("chest", be.getType())) {
             ext.isEnabled(SettingsManager.OPTIMISED_CHESTS.getValue());
         }
         else if (Registry.isSupported("banner", be.getType())) {

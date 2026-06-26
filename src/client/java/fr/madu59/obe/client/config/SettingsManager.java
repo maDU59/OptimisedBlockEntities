@@ -30,6 +30,12 @@ public class SettingsManager {
     };
     private static Runnable reloadChunksAction = () -> Minecraft.getInstance().levelExtractor.allChanged();
 
+    public static Option<Boolean> MOD_TOGGLE = loadOptionWithDefaults("mod_toggle",
+        "obe.config.option.mod_toggle",
+        true,
+        reloadResourcesAction
+    );
+    
     public static Option<Boolean> EMF_COMPAT = loadOptionWithDefaults("emf_compat",
         "obe.config.option.emf_compat",
         true,
@@ -148,6 +154,24 @@ public class SettingsManager {
         "obe.config.option.copper_golem_ao",
         ModCompat.isSodiumLoaded(),
         reloadResourcesAction
+    );
+
+    public static Option<Boolean> OPTIMISED_SHELVES = loadOptionWithDefaults("optimized_shelf",
+        "obe.config.option.optimised_shelves",
+        true,
+        reloadChunksAction
+    );
+
+    public static Option<Boolean> OPTIMISED_LECTERNS = loadOptionWithDefaults("optimized_lectern",
+        "obe.config.option.optimised_lecterns",
+        true,
+        reloadChunksAction
+    );
+
+    public static Option<Boolean> OPTIMISED_CAMPFIRES = loadOptionWithDefaults("optimized_campfire",
+        "obe.config.option.optimised_campfires",
+        true,
+        reloadChunksAction
     );
 
     public static void saveSettings() {
