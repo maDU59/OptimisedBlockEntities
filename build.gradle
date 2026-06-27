@@ -106,11 +106,14 @@ dependencies {
 
     implementation "org.sinytra.forgified-fabric-api:forgified-fabric-api:0.116.7+2.2.4+1.21.1"
 
+    implementation("net.caffeinemc:sodium-neoforge-api:0.8.12-alpha.4+mc1.21.1")
+
 	implementation 'org.anarres:jcpp:1.4.14'
     implementation 'io.github.douira:glsl-transformer:3.0.0-pre3'
-	implementation "maven.modrinth:iris:1.8.8+1.21.1-neoforge"
+	compileOnly "maven.modrinth:iris:1.8.8+1.21.1-neoforge"
 
-    implementation("maven.modrinth:sodium:mc1.21.1-0.6.13-neoforge")
+    compileOnly("net.caffeinemc:sodium-neoforge-mod:0.8.12-alpha.4+mc1.21.1")
+    runtimeOnly("net.caffeinemc:sodium-neoforge:0.8.12-alpha.4+mc1.21.1")
 
     implementation "maven.modrinth:entitytexturefeatures:7.1-neoforge-1.21"
 	implementation "maven.modrinth:entity-model-features:3.2.4-neoforge-1.21"
