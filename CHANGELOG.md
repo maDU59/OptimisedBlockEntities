@@ -4,3 +4,6 @@
 
 # Hotfix 1:
 - Fixed a crash on sodium beta 1.21.1
+
+# Hotfix 2:
+- Fixed block breaking overlay not rendering on versions older than 1.21.4
