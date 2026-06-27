@@ -1,6 +1,8 @@
 package fr.madu59.obe;
 
+import fr.madu59.obe.compat.ModCompat;
 import fr.madu59.obe.config.configscreen.OptimisedBlockEntitiesConfigScreen;
+import fr.madu59.obe.platform.PlatformHelper;
 import fr.madu59.obe.registry.Registry;
 
 import net.minecraftforge.fml.ModLoadingContext;
@@ -23,6 +25,11 @@ public class OBEClient {
 			)
 		);
 		Registry.init();
+
+		if(ModCompat.isSodiumLoaded() && !PlatformHelper.isModLoaded("fabric-api")){
+			OBE.LOGGER.warn("Mod incompatibility detected, this may cause crashes");
+			OBE.LOGGER.warn("Using OBE and Embeddium at the same time requires the Forgified Fabric API mod");
+		}
     }
 
 	public static void debug(String debugInfo) {
