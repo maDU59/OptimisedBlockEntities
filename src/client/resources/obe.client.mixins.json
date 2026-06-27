@@ -27,6 +27,7 @@
 		"renderer.SectionCompilerMixin",
 		"renderer.ModelBlockRendererMixin",
 		"renderer.LevelRendererMixin",
+		"renderer.BlockRenderDispatcherMixin",
 		"renderer.ItemBlockRenderTypesMixin",
 		"renderer.compat.sodium.ChunkBuilderMeshingTaskMixin",
 		"renderer.compat.sodium.SodiumWorldRendererMixin",
