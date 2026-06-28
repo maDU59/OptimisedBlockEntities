@@ -124,7 +124,7 @@ public class BlockEntityStateModel implements BlockStateModel{
                 bakedQuadsList.add(baked);
                 if(fixBfc){
                     // Same geometry but with inverted winding order so they are visible from the other side of the model
-                    baked = new BakedQuad(positions[0], positions[3], positions[2], positions[1], uvs[0], uvs[3], uvs[2], uvs[1], dir, matInfo );
+                    baked = new BakedQuad(positions[0], positions[3], positions[2], positions[1], uvs[0], uvs[3], uvs[2], uvs[1], dir.getOpposite(), matInfo );
                     bakedQuadsList.add(baked);
                 }
             }
