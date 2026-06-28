@@ -54,6 +54,10 @@ public class BlockEntityStateModel implements BlockStateModel{
         this.particleMaterial = new Material.Baked(particleMaterial, false);
     }
 
+    public BlockEntityStateModel(Material.Baked particleMaterial){
+        this.particleMaterial = particleMaterial;
+    }
+
     @Override
     public void collectParts(RandomSource randomSource, List<BlockStateModelPart> list) {
         if (models.isEmpty()) return;

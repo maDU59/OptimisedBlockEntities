@@ -72,7 +72,7 @@ public class ChunkBuilderMeshingTaskMixin {
             if(ext != null && ext.isSupportedBlockEntity()) {
                 RenderModeManager.updateBlockEntityOnChunkRemesh(ext, be);
                 if(ext.isEnabled() && !ext.hasSpecialRenderer() && ext.renderMode() != RenderMode.TERRAIN && ext.renderMode() != RenderMode.INTERMEDIATE){
-                    model =  new BlockEntityStateModel();
+                    model = new BlockEntityStateModel();
                 }
                 else model = obeBlockRenderer.getModel(state, pos, state.getSeed(pos), originalModel, be);
             }
