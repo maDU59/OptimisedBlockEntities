@@ -8,4 +8,4 @@
 # Hotfix 2:
 - Fixed block breaking overlay not rendering on versions older than 1.21.4
 
-## If Embeddium you're using Embeddium alongside OBE, you'll also need the [Forgified Fabric API](https://modrinth.com/mod/forgified-fabric-api)
+## If you're using Embeddium alongside OBE, you'll also need the [Forgified Fabric API](https://modrinth.com/mod/forgified-fabric-api)
