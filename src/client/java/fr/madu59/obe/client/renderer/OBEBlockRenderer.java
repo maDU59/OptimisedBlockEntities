@@ -10,19 +10,13 @@ import fr.madu59.obe.client.registry.MaterialGetter;
 import fr.madu59.obe.client.registry.ModelLayerLocationGetter;
 import fr.madu59.obe.client.registry.TransformationGetter;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
-import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityRenderStateExt;
 import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager.RenderMode;
 import fr.madu59.obe.client.util.ResourceUtil;
-import fr.madu59.obe.client.util.blockentity.BannerUtil;
-import fr.madu59.obe.client.util.blockentity.BellUtil;
-import fr.madu59.obe.client.util.blockentity.ChestUtil;
-import fr.madu59.obe.client.util.blockentity.CopperGolemStatueUtil;
 import fr.madu59.obe.client.util.blockentity.DecoratedPotUtil;
-import fr.madu59.obe.client.util.blockentity.ShulkerBoxUtil;
-import fr.madu59.obe.client.util.blockentity.SkullBlockUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -39,10 +33,14 @@ public class OBEBlockRenderer {
 
     public OBEBlockRenderer(){}
 
-    public @Nullable BlockStateModel getModel(BlockState state, BlockPos pos, long seed, BlockStateModel originalModel){
+    public @Nullable BlockStateModel getModel(BlockState state, BlockPos pos, long seed, BlockStateModel originalModel, BlockAndTintGetter level){
         if (!state.hasBlockEntity()) return null;
+        return getModel(state, pos, seed, originalModel, level.getBlockEntity(pos));
+    }
 
-        BlockEntity be = Minecraft.getInstance().level.getBlockEntity(pos);
+
+    public @Nullable BlockStateModel getModel(BlockState state, BlockPos pos, long seed, BlockStateModel originalModel, BlockEntity be){
+
         if (be == null) return null;
 
         BlockEntityExt ext = (BlockEntityExt)be;

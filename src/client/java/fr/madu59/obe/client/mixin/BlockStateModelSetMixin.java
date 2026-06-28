@@ -16,7 +16,6 @@ import fr.madu59.obe.client.util.ResourceUtil;
 
 import org.spongepowered.asm.mixin.injection.At;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.BlockStateModelSet;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.resources.Identifier;
