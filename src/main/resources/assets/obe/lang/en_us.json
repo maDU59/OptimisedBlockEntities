@@ -23,6 +23,7 @@
     "obe.config.option.optimised_shelves": "Optimize Shelves",
     "obe.config.option.optimised_lecterns": "Optimize Lecterns",
     "obe.config.option.optimised_campfires": "Optimize Campfires",
+    "obe.config.option.optimised_beacons": "Optimize Beacons",
 
     "obe.config.category.chests": "Chests",
     "obe.config.category.banners": "Banners",
@@ -37,6 +38,7 @@
     "obe.config.category.shelves": "Shelves",
     "obe.config.category.lecterns": "Lecterns",
     "obe.config.category.campfires": "Campfires",
+    "obe.config.category.beacons": "Beacons",
 
     "obe.config.value.true": "Enabled",
     "obe.config.value.false": "Disabled",

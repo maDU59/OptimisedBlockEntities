@@ -16,6 +16,18 @@
     { "type": "directory", "source": "entity/creeper", "prefix": "entity/creeper/" },
     { "type": "directory", "source": "entity/enderdragon", "prefix": "entity/enderdragon/" },
     { "type": "single", "resource": "minecraft:entity/banner_base" },
-    { "type": "directory", "source": "quark_variant_chests", "prefix": "quark_variant_chests/" }
+    { "type": "directory", "source": "quark_variant_chests", "prefix": "quark_variant_chests/" },
+    { "type": "single", "resource": "lootr:chest" },
+    { "type": "single", "resource": "lootr:chest_opened" },
+    { "type": "single", "resource": "lootr:chest_trapped" },
+    { "type": "single", "resource": "lootr:chest_trapped_opened" },
+    { "type": "single", "resource": "lootr:old_chest" },
+    { "type": "single", "resource": "lootr:old_chest_opened" },
+    { "type": "single", "resource": "lootr:old_chest_trapped" },
+    { "type": "single", "resource": "lootr:old_chest_trapped_opened" },
+    { "type": "single", "resource": "lootr:shulker" },
+    { "type": "single", "resource": "lootr:shulker_opened" },
+    { "type": "single", "resource": "lootr:old_shulker" },
+    { "type": "single", "resource": "lootr:old_shulker_opened" }
   ]
 }

@@ -1,10 +1,15 @@
 package fr.madu59.obe.client.api.registry;
 
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Function;
+
+import org.apache.commons.lang3.function.TriConsumer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
+import fr.madu59.obe.client.registry.SpecialModelGetter.SpecialModelProvider;
+import fr.madu59.obe.client.registry.SpecialModelGetter;
 import fr.madu59.obe.client.registry.MaterialGetter;
 import fr.madu59.obe.client.registry.ModelLayerLocationGetter;
 import fr.madu59.obe.client.registry.Registry;
@@ -78,7 +83,7 @@ public class RegistryApi {
     /*
      * Register a transformation provider for a block entity type
      * @param type The block entity type to which the transformation provider should be registered
-     * @param provider The transformation provider, it must be a function accepting a BlockState and returning an ModelLayerLocation
+     * @param provider The transformation provider, it must be a consumer accepting a BlockState and a PoseStack
      * @since 1.1.7
      */
     public static void registerTransformationProvider(BlockEntityType<?> type, BiConsumer<BlockState, PoseStack> provider){
@@ -87,8 +92,8 @@ public class RegistryApi {
 
     /*
      * Register a model layer location provider for a group
-     * @param id The group to which the transformation provider should be registered
-     * @param provider The transformation provider, it must be a function accepting a BlockState and returning an ModelLayerLocation
+     * @param id The group to which the model layer location provider should be registered
+     * @param provider The model layer location provider, it must be a function accepting a BlockState and returning a ModelLayerLocation
      * @since 1.1.7
      */
     public static void registerModelLayerLocationProvider(String id, Function<BlockState, ModelLayerLocation> provider){
@@ -98,10 +103,34 @@ public class RegistryApi {
     /*
      * Register a model layer location provider for a block entity type
      * @param type The block entity type to which the model layer location provider should be registered
-     * @param provider The model layer location provider, it must be a consumer accepting a BlockState and a PoseStack
+     * @param provider The model layer location provider, it must be a function accepting a BlockState and returning a ModelLayerLocation
      * @since 1.1.7
      */
     public static void registerModelLayerLocationProvider(BlockEntityType<?> type, Function<BlockState, ModelLayerLocation> provider){
         ModelLayerLocationGetter.register(type, provider);
+    }
+
+    /*
+     * Register a special model provider for a block entity type
+     * @param type The block entity type to which the model layer location provider should be registered
+     * @param modelLayerLocationProvider The model layer location provider, it must be a consumer accepting a BlockState and a PoseStack
+     * @param materialProvider The material provider, it must be a function accepting a BlockState and returning an Identifier
+     * @param transformationProvider The transformation provider, it must be a consumer accepting a BlockState and a PoseStack
+     * @since 1.1.21
+     */
+    public static void registerSpecialModelProvider(BlockEntityType<?> type, BiFunction<BlockState, BlockEntity, ModelLayerLocation> modelLayerLocationProvider, BiFunction<BlockState, BlockEntity, Identifier> materialProvider, TriConsumer<BlockState, BlockEntity, PoseStack> transformationProvider){
+        SpecialModelGetter.register(type, new SpecialModelProvider(modelLayerLocationProvider, materialProvider, transformationProvider));
+    }
+
+    /*
+     * Register a special model provider for a group
+     * @param type The block entity type to which the model layer location provider should be registered
+     * @param modelLayerLocationProvider The model layer location provider, it must be a consumer accepting a BlockState and a PoseStack
+     * @param materialProvider The material provider, it must be a function accepting a BlockState and returning an Identifier
+     * @param transformationProvider The transformation provider, it must be a consumer accepting a BlockState and a PoseStack
+     * @since 1.1.21
+     */
+    public static void registerSpecialModelProvider(String id, BiFunction<BlockState, BlockEntity, ModelLayerLocation> modelLayerLocationProvider, BiFunction<BlockState, BlockEntity, Identifier> materialProvider, TriConsumer<BlockState, BlockEntity, PoseStack> transformationProvider){
+        SpecialModelGetter.registerDefault(id, new SpecialModelProvider(modelLayerLocationProvider, materialProvider, transformationProvider));
     }
 }

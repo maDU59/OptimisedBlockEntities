@@ -174,6 +174,12 @@ public class SettingsManager {
         reloadChunksAction
     );
 
+    public static Option<Boolean> OPTIMISED_BEACONS = loadOptionWithDefaults("optimized_beacon",
+        "obe.config.option.optimised_beacons",
+        true,
+        reloadChunksAction
+    );
+
     public static void saveSettings() {
         Map<String, String> map = toMap(ALL_OPTIONS.values());
         Set<Runnable> actions = new HashSet<Runnable>();

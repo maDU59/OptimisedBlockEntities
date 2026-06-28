@@ -87,6 +87,9 @@ public class OptimisedBlockEntitiesConfigScreen extends Screen {
         list.category("obe.config.category.campfires").build();
         list.button(SettingsManager.OPTIMISED_CAMPFIRES).build();
 
+        list.category("obe.config.category.beacons").build();
+        list.button(SettingsManager.OPTIMISED_BEACONS).build();
+
         Button doneButton = Button.builder(Component.translatable("obe.config.done"), b -> {
             this.minecraft.setScreen(this.parent);
             SettingsManager.saveSettings();
