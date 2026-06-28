@@ -90,7 +90,7 @@ public class OBEBlockRenderer {
         TransformationGetter.applyTransformation(state, poseStack, "bell");
 
         BlockStateModel model = ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "bell"), state, poseStack, SettingsManager.BELL_AMBIENT_OCCLUSION.getValue(), originalModel.particleMaterial());
-        model = new CompositeBlockStateModel(model, Minecraft.getInstance().getModelManager().getBlockStateModelSet().get(state));
+        model = new CompositeBlockStateModel(model, originalModel);
         ResourceUtil.cache(layerLocation, state, model);
         return model;
     }
