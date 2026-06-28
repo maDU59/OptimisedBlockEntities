@@ -21,7 +21,7 @@ public class AltModelBlockRendererImplMixin {
 
     @ModifyVariable(method = "tesselateBlock", at = @At("HEAD"), argsOnly = true)
     private BlockStateModel obe$modifyModel(BlockStateModel model, QuadEmitter output, float x, float y, float z, BlockAndTintGetter level, BlockPos pos, BlockState blockState, BlockStateModel originalModel, long seed) {
-        model = obeBlockRenderer.getModel(blockState, pos, seed, model);
+        model = obeBlockRenderer.getModel(blockState, pos, seed, model, level);
         return model == null? originalModel : model;
     }
 }

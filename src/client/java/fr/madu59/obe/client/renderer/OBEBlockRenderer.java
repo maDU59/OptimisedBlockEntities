@@ -16,6 +16,7 @@ import fr.madu59.obe.client.util.blockentity.DecoratedPotUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.client.renderer.blockentity.BedRenderer;
 import net.minecraft.core.BlockPos;
@@ -32,10 +33,14 @@ public class OBEBlockRenderer {
 
     public OBEBlockRenderer(){}
 
-    public @Nullable BlockStateModel getModel(BlockState state, BlockPos pos, long seed, BlockStateModel originalModel){
+    public @Nullable BlockStateModel getModel(BlockState state, BlockPos pos, long seed, BlockStateModel originalModel, BlockAndTintGetter level){
         if (!state.hasBlockEntity()) return null;
+        return getModel(state, pos, seed, originalModel, level.getBlockEntity(pos));
+    }
 
-        BlockEntity be = Minecraft.getInstance().level.getBlockEntity(pos);
+
+    public @Nullable BlockStateModel getModel(BlockState state, BlockPos pos, long seed, BlockStateModel originalModel, BlockEntity be){
+
         if (be == null) return null;
 
         BlockEntityExt ext = (BlockEntityExt)be;
@@ -129,7 +134,7 @@ public class OBEBlockRenderer {
         TransformationGetter.applyTransformation(state, poseStack, "bell");
 
         BlockStateModel model = ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "bell"), state, poseStack, SettingsManager.BELL_AMBIENT_OCCLUSION.getValue(), originalModel.particleMaterial());
-        model = new CompositeBlockStateModel(model, Minecraft.getInstance().getModelManager().getBlockStateModelSet().get(state));
+        model = new CompositeBlockStateModel(model, originalModel);
         ResourceUtil.cache(layerLocation, state, model);
         return model;
     }

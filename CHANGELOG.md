@@ -1,3 +1,5 @@
 # What's new:
-- Fixed a crash with Photonics
-- Fixed a rare crash with MoreCulling on some versions
+- Improved performances
+- Fixed various compatibility issues that caused crashes
+- Added beacon optimization
+- Removed some useless logs that would pollute the log files for no reason
