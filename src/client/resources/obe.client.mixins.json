@@ -14,6 +14,7 @@
 		"blockentity.shelf.ShelfBlockEntityMixin",
 		"blockentity.campfire.CampfireBlockEntityMixin",
 		"blockentity.lectern.LecternBlockEntityMixin",
+		"blockentity.beacon.BeaconBlockEntityMixin",
 		"blockentity.BlockEntityMixin",
 		"blockentity.ext.BlockEntityMixin",
 		"blockentity.ext.BlockEntityRenderStateMixin",
