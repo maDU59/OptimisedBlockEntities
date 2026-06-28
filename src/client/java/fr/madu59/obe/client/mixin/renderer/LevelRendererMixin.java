@@ -29,8 +29,7 @@ public class LevelRendererMixin {
         if (original == null || original.isEmpty())  return original;
 
         original.removeIf(be -> {
-            BlockEntityExt ext = (BlockEntityExt) be;
-            return (ext != null && ext.isEnabled() && (!RenderModeManager.shouldRenderEntity(ext, be) || ext.shouldSkipBeRendering()));
+            return (be instanceof BlockEntityExt ext && ext.isEnabled() && (!RenderModeManager.shouldRenderEntityFast(ext) || ext.shouldSkipBeRendering()));
         });
 
         return original;

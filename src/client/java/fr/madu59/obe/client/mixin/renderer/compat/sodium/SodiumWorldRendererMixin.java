@@ -18,10 +18,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 public class SodiumWorldRendererMixin {
 
     @Inject(method = "extractBlockEntity", at = @At("HEAD"), cancellable = true)
-    public void obe$preventUselessExtraction(CallbackInfo ci, @Local BlockEntity be){
-
-        BlockEntityExt ext = (BlockEntityExt) be;
-        if (ext != null && ext.isEnabled() && (!RenderModeManager.shouldRenderEntity(ext, be) || ext.shouldSkipBeRendering())) {
+    public void obe$preventUselessExtraction(BlockEntity be, CallbackInfo ci, @Local BlockEntity be){
+        if (be instanceof BlockEntityExt ext && ext.isEnabled() && (!RenderModeManager.shouldRenderEntityFast(ext) || ext.shouldSkipBeRendering())) {
             ci.cancel();
         }
     }
