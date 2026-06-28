@@ -7,3 +7,6 @@
 
 # Hotfix 2:
 - Fixed block breaking overlay not rendering on versions older than 1.21.4
+
+# Hotfix 3:
+- Fixed a crash with Kilt and MoreCulling being used at the same time
