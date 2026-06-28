@@ -66,11 +66,11 @@ public class ResourceUtil{
         return transformedSpecialModelCache.containsKey(new SpecialModelCacheKey(state, be));
     }
 
-    public static void cache(ModelLayerLocation modelLayerLocation, BlockState blockState, BlockStateModel model){
+    public static void cache( BlockState blockState, BlockStateModel model){
         transformedModelCache.put(blockState, model);
     }
 
-    public static void cache(ModelLayerLocation modelLayerLocation, BlockState blockState, BlockEntity be, BlockStateModel model){
+    public static void cache(BlockState blockState, BlockEntity be, BlockStateModel model){
         transformedSpecialModelCache.put(new SpecialModelCacheKey(blockState, be), model);
     }
 
