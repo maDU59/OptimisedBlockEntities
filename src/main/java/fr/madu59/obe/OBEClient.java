@@ -26,7 +26,7 @@ public class OBEClient {
 		);
 		Registry.init();
 
-		if(ModCompat.isSodiumLoaded() && !PlatformHelper.isModLoaded("fabric-api")){
+		if(ModCompat.isSodiumLoaded() && !(PlatformHelper.isModLoaded("forgified-fabric-api") || PlatformHelper.isModLoaded("fabric-api"))){
 			OBE.LOGGER.warn("Mod incompatibility detected, this may cause crashes");
 			OBE.LOGGER.warn("Using OBE and Embeddium at the same time requires the Forgified Fabric API mod");
 		}
