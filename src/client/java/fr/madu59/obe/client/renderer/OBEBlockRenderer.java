@@ -69,7 +69,7 @@ public class OBEBlockRenderer {
 
                 BlockStateModel model = ResourceUtil.getModel(layerLocation, material, state, be, poseStack, getAmbientOcclusion(group), originalModel.particleMaterial());
                 if(customModelProvider.shouldKeepOriginalModel()) model = new CompositeBlockStateModel(model, originalModel);
-                ResourceUtil.cache(layerLocation, state, be, model);
+                ResourceUtil.cache(state, be, model);
                 return model;
             }
         }
@@ -145,7 +145,7 @@ public class OBEBlockRenderer {
         TransformationGetter.applyTransformation(state, poseStack, "chest");
         BlockStateModel model = ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "chest"), state, poseStack, getAmbientOcclusion("chest"), originalModel.particleMaterial());
         model = new CompositeBlockStateModel(model, originalModel);
-        ResourceUtil.cache(layerLocation, state, model);
+        ResourceUtil.cache(state, model);
         return model;
     }
 
@@ -187,7 +187,7 @@ public class OBEBlockRenderer {
 
         BlockStateModel model = ResourceUtil.getModel(layerLocation, material, state, poseStack, getAmbientOcclusion("shulker_box"), originalModel.particleMaterial());
         model = new CompositeBlockStateModel(model, originalModel);
-        ResourceUtil.cache(layerLocation, state, model);
+        ResourceUtil.cache(state, model);
         return model;
     }
 
@@ -208,7 +208,7 @@ public class OBEBlockRenderer {
         
         model = new CompositeBlockStateModel(model, sideModel);
 
-        ResourceUtil.cache(layerLocation, state, model);
+        ResourceUtil.cache(state, model);
 
         return model;
     }
