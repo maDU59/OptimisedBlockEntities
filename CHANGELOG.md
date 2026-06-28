@@ -1,5 +1,3 @@
 # What's new:
-- Improved performances
-- Fixed various compatibility issues that caused crashes
-- Added beacon optimization
-- Removed some useless logs that would pollute the log files for no reason
+- Improved lighting on hanging signs chains
+- Added a way to register special renderer through the API (allowing compatibility with mods like Lootr where the block entity is needed to determine the block's appearence)
