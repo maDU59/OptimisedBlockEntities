@@ -19,7 +19,6 @@ public abstract class DecoratedPotRendererMixin {
     @Inject(method = "submit", at = @At("HEAD"), cancellable = true)
     public void obe$cancelSubmit(CallbackInfo ci, @Local DecoratedPotRenderState state){
         if(!RenderModeManager.shouldRenderEntity(state) && SettingsManager.OPTIMISED_DECORATED_POTS.getValue()) ci.cancel();
-        RenderModeManager.updateOnRender(state);
     }
 
     @Inject(method = "extractRenderState", at = @At("HEAD"), cancellable = true)
