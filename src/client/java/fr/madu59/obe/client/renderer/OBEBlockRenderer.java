@@ -59,19 +59,20 @@ public class OBEBlockRenderer {
         if(ext.renderMode() == RenderMode.TERRAIN || ext.renderMode() == RenderMode.INTERMEDIATE){
             if(customModelProvider != null){
                 if(ResourceUtil.cacheContains(state, be)) return ResourceUtil.getModel(state, be);
+                Object cacheKey = customModelProvider.getCacheKeyProvider().apply(be);
                 PoseStack poseStack = new PoseStack();
                 
                 ModelLayerLocation layerLocation = customModelProvider.getModelLayerLocationProvider().apply(state, be);
                 if(layerLocation == null) return null;
 
-                TransformationGetter.applyTransformation(state, poseStack, "bell");
+                TransformationGetter.applyTransformation(state, poseStack, group);
 
                 Identifier material = customModelProvider.getMaterialProvider().apply(state, be);
                 if(material == null) return null;
 
-                BlockStateModel model = ResourceUtil.getModel(layerLocation, material, state, be, poseStack, getAmbientOcclusion(group), originalModel.particleIcon());
+                BlockStateModel model = ResourceUtil.getModel(layerLocation, material, state, cacheKey, poseStack, getAmbientOcclusion(group), originalModel.particleIcon());
                 if(customModelProvider.shouldKeepOriginalModel()) model = new CompositeBlockStateModel(model, originalModel);
-                ResourceUtil.cache(state, be, model);
+                ResourceUtil.cache(state, cacheKey, model);
                 return model;
             }
         }
