@@ -57,7 +57,6 @@ public class LootrCompat {
     }
 
     public static Object getChestCacheKey(BlockEntity be) {
-        System.out.println( be instanceof LootrChestBlockEntity lootrChestBe && Minecraft.getInstance().player != null && lootrChestBe.hasClientOpened(Minecraft.getInstance().player.getUUID()));
         return be instanceof LootrChestBlockEntity lootrChestBe && Minecraft.getInstance().player != null && lootrChestBe.hasClientOpened(Minecraft.getInstance().player.getUUID());
     }
 }
