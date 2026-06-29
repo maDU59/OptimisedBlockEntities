@@ -4,7 +4,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -77,9 +76,9 @@ public class ChunkBuilderMeshingTaskMixin {
             if(ext != null && ext.isSupportedBlockEntity()) {
                 RenderModeManager.updateBlockEntityOnChunkRemesh(ext, be);
                 if(ext.isEnabled() && !ext.hasSpecialRenderer() && ext.renderMode() != RenderMode.TERRAIN && ext.renderMode() != RenderMode.INTERMEDIATE){
-                    model =  new BlockEntityStateModel();
+                    model = new BlockEntityStateModel();
                 }
-                else model = obeBlockRenderer.getModel(ctx.state(), ctx.pos(), ctx.seed(), ctx.model());
+                else model = obeBlockRenderer.getModel(ctx.state(), ctx.pos(), ctx.seed(), ctx.model(), be);
             }
             if(model != null) ctx.update(ctx.pos(), origin, ctx.state(), model, ctx.seed());
         }
