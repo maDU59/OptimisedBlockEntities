@@ -86,7 +86,10 @@ public class RenderModeManager {
     }
 
     public static void updateOnRender(BlockEntityExt ext){
-        if(ext.renderMode() == RenderMode.INTERMEDIATE) ext.renderMode(RenderMode.TERRAIN);
+        if(ext.renderMode() == RenderMode.INTERMEDIATE){
+            if(ext.renderModSwitchTimer() <= 0) ext.renderMode(RenderMode.TERRAIN);
+            ext.tickRenderModeSwitchTimer();
+        }
     }
 
     public static void updateBlockEntityOnChunkRemesh(BlockEntityExt ext, BlockEntity be){

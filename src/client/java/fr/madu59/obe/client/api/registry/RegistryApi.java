@@ -113,24 +113,26 @@ public class RegistryApi {
     /*
      * Register a special model provider for a block entity type
      * @param type The block entity type to which the model layer location provider should be registered
-     * @param modelLayerLocationProvider The model layer location provider, it must be a consumer accepting a BlockState and a PoseStack
+     * @param modelLayerLocationProvider The model layer location provider, it must be a function accepting a BlockState and returning a ModelLayerLocation
      * @param materialProvider The material provider, it must be a function accepting a BlockState and returning an ResourceLocation
      * @param transformationProvider The transformation provider, it must be a consumer accepting a BlockState and a PoseStack
+     * @param cacheKeyProvider The cacheKeyProvider provider, it must be a function accepting a BlockEntity and returning an Object, it is used to differentiate different models having the same blockstate, choose something relevant
      * @since 1.1.21
      */
-    public static void registerSpecialModelProvider(BlockEntityType<?> type, BiFunction<BlockState, BlockEntity, ModelLayerLocation> modelLayerLocationProvider, BiFunction<BlockState, BlockEntity, ResourceLocation> materialProvider, TriConsumer<BlockState, BlockEntity, PoseStack> transformationProvider){
-        SpecialModelGetter.register(type, new SpecialModelProvider(modelLayerLocationProvider, materialProvider, transformationProvider));
+    public static void registerSpecialModelProvider(BlockEntityType<?> type, BiFunction<BlockState, BlockEntity, ModelLayerLocation> modelLayerLocationProvider, BiFunction<BlockState, BlockEntity, ResourceLocation> materialProvider, TriConsumer<BlockState, BlockEntity, PoseStack> transformationProvider, Function<BlockEntity, Object> cacheKeyProvider){
+        SpecialModelGetter.register(type, new SpecialModelProvider(modelLayerLocationProvider, materialProvider, transformationProvider, cacheKeyProvider));
     }
 
     /*
      * Register a special model provider for a group
      * @param type The block entity type to which the model layer location provider should be registered
-     * @param modelLayerLocationProvider The model layer location provider, it must be a consumer accepting a BlockState and a PoseStack
+     * @param modelLayerLocationProvider The model layer location provider, it must be a function accepting a BlockState and returning a ModelLayerLocation
      * @param materialProvider The material provider, it must be a function accepting a BlockState and returning an ResourceLocation
      * @param transformationProvider The transformation provider, it must be a consumer accepting a BlockState and a PoseStack
+     * @param cacheKeyProvider The cacheKeyProvider provider, it must be a function accepting a BlockEntity and returning an Object, it is used to differentiate different models having the same blockstate, choose something relevant
      * @since 1.1.21
      */
-    public static void registerSpecialModelProvider(String id, BiFunction<BlockState, BlockEntity, ModelLayerLocation> modelLayerLocationProvider, BiFunction<BlockState, BlockEntity, ResourceLocation> materialProvider, TriConsumer<BlockState, BlockEntity, PoseStack> transformationProvider){
-        SpecialModelGetter.registerDefault(id, new SpecialModelProvider(modelLayerLocationProvider, materialProvider, transformationProvider));
+    public static void registerSpecialModelProvider(String id, BiFunction<BlockState, BlockEntity, ModelLayerLocation> modelLayerLocationProvider, BiFunction<BlockState, BlockEntity, ResourceLocation> materialProvider, TriConsumer<BlockState, BlockEntity, PoseStack> transformationProvider, Function<BlockEntity, Object> cacheKeyProvider){
+        SpecialModelGetter.registerDefault(id, new SpecialModelProvider(modelLayerLocationProvider, materialProvider, transformationProvider, cacheKeyProvider));
     }
 }

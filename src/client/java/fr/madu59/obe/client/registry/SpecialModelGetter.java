@@ -3,6 +3,7 @@ package fr.madu59.obe.client.registry;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 
 import org.apache.logging.log4j.util.TriConsumer;
 
@@ -22,7 +23,7 @@ public class SpecialModelGetter {
     private static Map<String, SpecialModelProvider> defaultspecialModelGetterProvider = new ConcurrentHashMap<>();
 
     public static void init(){
-        registerDefault("bell", new SpecialModelProvider(BellUtil::getBellModelLayerLocation, BellUtil::getBellMaterial, BellUtil::transformBell).keepOriginalModel().showOriginalWhenHidden());
+        registerDefault("bell", new SpecialModelProvider(BellUtil::getBellModelLayerLocation, BellUtil::getBellMaterial, BellUtil::transformBell, SpecialModelProvider::getDummyCacheKey).keepOriginalModel().showOriginalWhenHidden());
     }
 
     public static void registerDefault(String group, SpecialModelProvider getter){
@@ -59,13 +60,15 @@ public class SpecialModelGetter {
         private final BiFunction<BlockState, BlockEntity, ModelLayerLocation> modelLayerLocationProvider;
         private final BiFunction<BlockState, BlockEntity, ResourceLocation> materialProvider;
         private final TriConsumer<BlockState, BlockEntity, PoseStack> transformationProvider;
+        private final Function<BlockEntity, Object> cacheKeyProvider;
         private boolean keepOriginalModel = false;
         private boolean showOriginalWhenHidden = false;
 
-        public SpecialModelProvider(BiFunction<BlockState, BlockEntity, ModelLayerLocation> modelLayerLocationProvider, BiFunction<BlockState, BlockEntity, ResourceLocation> materialProvider, TriConsumer<BlockState, BlockEntity, PoseStack> transformationProvider){
+        public SpecialModelProvider(BiFunction<BlockState, BlockEntity, ModelLayerLocation> modelLayerLocationProvider, BiFunction<BlockState, BlockEntity, ResourceLocation> materialProvider, TriConsumer<BlockState, BlockEntity, PoseStack> transformationProvider, Function<BlockEntity, Object> cacheKeyProvider){
             this.modelLayerLocationProvider = modelLayerLocationProvider;
             this.materialProvider = materialProvider;
             this.transformationProvider = transformationProvider;
+            this.cacheKeyProvider = cacheKeyProvider;
         }
 
         public SpecialModelProvider keepOriginalModel(){
@@ -90,12 +93,20 @@ public class SpecialModelGetter {
             return transformationProvider;
         }
 
+        public Function<BlockEntity, Object> getCacheKeyProvider(){
+            return cacheKeyProvider;
+        }
+
         public boolean shouldKeepOriginalModel(){
             return keepOriginalModel;
         }
 
         public boolean shouldShowOriginalWhenHidden(){
             return showOriginalWhenHidden;
+        }
+
+        public static boolean getDummyCacheKey(BlockEntity be){
+            return true;
         }
     }
 }
