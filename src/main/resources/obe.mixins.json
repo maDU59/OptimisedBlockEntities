@@ -1,6 +1,6 @@
 {
 	"required": true,
-	"package": "fr.madu59.obe.mixin",
+	"package": "fr.madu59.obe.client.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"client": [
 		"blockentity.banner.BannerBlockEntityMixin",
