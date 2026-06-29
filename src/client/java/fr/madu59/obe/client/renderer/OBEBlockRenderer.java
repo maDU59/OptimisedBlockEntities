@@ -131,7 +131,7 @@ public class OBEBlockRenderer {
 
         BlockStateModel model = ResourceUtil.getModel(layerLocation, material, state, poseStack, SettingsManager.BED_AMBIENT_OCCLUSION.getValue(), originalModel.particleMaterial());
         model = new CompositeBlockStateModel(model, originalModel);
-        ResourceUtil.cache(layerLocation, state, model);
+        ResourceUtil.cache(state, model);
         return model;
     }
 
