@@ -17,6 +17,5 @@ public abstract class SkullBlockRendererMixin {
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
     public void obe$cancelSubmit(CallbackInfo ci, @Local SkullBlockEntity be){
         if(!RenderModeManager.shouldRenderEntity(be) && SettingsManager.OPTIMISED_SKULLS.getValue()) ci.cancel();
-        RenderModeManager.updateOnRender(be);
     }
 }
