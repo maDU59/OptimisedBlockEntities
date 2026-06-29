@@ -22,7 +22,7 @@ public class ModelBlockRendererMixin {
 
     @ModifyVariable(method = "tesselateBlock", at = @At("HEAD"), argsOnly = true)
     private BakedModel obe$modifyModel(BakedModel model, BlockAndTintGetter blockAndTintGetter, BakedModel originalModel, BlockState blockState, BlockPos blockPos, PoseStack poseStack, VertexConsumer vertexConsumer, boolean bl, RandomSource randomSource, long l, int i) {
-        model = obeBlockRenderer.getModel(blockState, blockPos, blockState.getSeed(blockPos), model);
+        model = obeBlockRenderer.getModel(blockState, blockPos, blockState.getSeed(blockPos), model, blockAndTintGetter);
         return model == null? originalModel : model;
     }
 }

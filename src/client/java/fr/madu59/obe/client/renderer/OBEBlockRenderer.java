@@ -5,10 +5,14 @@ import org.jetbrains.annotations.Nullable;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import fr.madu59.obe.client.config.SettingsManager;
+import fr.madu59.obe.client.model.BlockEntityStateModel;
 import fr.madu59.obe.client.model.CompositeBlockStateModel;
+import fr.madu59.obe.client.registry.SpecialModelGetter;
 import fr.madu59.obe.client.registry.MaterialGetter;
 import fr.madu59.obe.client.registry.ModelLayerLocationGetter;
+import fr.madu59.obe.client.registry.Registry;
 import fr.madu59.obe.client.registry.TransformationGetter;
+import fr.madu59.obe.client.registry.SpecialModelGetter.SpecialModelProvider;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager;
 import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager.RenderMode;
@@ -20,9 +24,9 @@ import net.minecraft.client.renderer.Sheets;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.DecoratedPotPatterns;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.resources.model.BakedModel;
@@ -31,10 +35,14 @@ public class OBEBlockRenderer {
 
     public OBEBlockRenderer(){}
 
-    public @Nullable BakedModel getModel(BlockState state, BlockPos pos, long seed, BakedModel originalModel){
+    public @Nullable BakedModel getModel(BlockState state, BlockPos pos, long seed, BakedModel originalModel, BlockAndTintGetter level){
         if (!RenderModeManager.hasBlockEntity(state)) return null;
+        return getModel(state, pos, seed, originalModel, level.getBlockEntity(pos));
+    }
 
-        BlockEntity be = Minecraft.getInstance().level.getBlockEntity(pos);
+
+    public @Nullable BakedModel getModel(BlockState state, BlockPos pos, long seed, BakedModel originalModel, BlockEntity be){
+
         if (be == null) return null;
 
         BlockEntityExt ext = (BlockEntityExt)be;
@@ -47,8 +55,29 @@ public class OBEBlockRenderer {
             originalModel = Minecraft.getInstance().getModelManager().getBlockModelShaper().getBlockModel(state);
         }
 
-        if(be.getType() == BlockEntityType.BELL && (ext.renderMode() == RenderMode.TERRAIN || ext.renderMode() == RenderMode.INTERMEDIATE)){
-            return getBellModel(state, random, originalModel);
+        String group = Registry.getGroup(state);
+        SpecialModelProvider customModelProvider = SpecialModelGetter.getSpecialModelProvider(state, group);
+        if(ext.renderMode() == RenderMode.TERRAIN || ext.renderMode() == RenderMode.INTERMEDIATE){
+            if(customModelProvider != null){
+                if(ResourceUtil.cacheContains(state, be)) return ResourceUtil.getModel(state, be);
+                PoseStack poseStack = new PoseStack();
+                
+                ModelLayerLocation layerLocation = customModelProvider.getModelLayerLocationProvider().apply(state, be);
+                if(layerLocation == null) return null;
+
+                TransformationGetter.applyTransformation(state, poseStack, "bell");
+
+                ResourceLocation material = customModelProvider.getMaterialProvider().apply(state, be);
+                if(material == null) return null;
+
+                BakedModel model = ResourceUtil.getModel(layerLocation, material, state, be, poseStack, getAmbientOcclusion(group), originalModel.getParticleIcon());
+                if(customModelProvider.shouldKeepOriginalModel()) model = new CompositeBlockStateModel(model, originalModel);
+                ResourceUtil.cache(state, be, model);
+                return model;
+            }
+        }
+        else if(!customModelProvider.shouldShowOriginalWhenHidden()){
+            return new BlockEntityStateModel(originalModel.getParticleIcon());
         }
 
         return null;
@@ -86,7 +115,7 @@ public class OBEBlockRenderer {
         if(layerLocation == null) return null;
 
         TransformationGetter.applyTransformation(state, poseStack, "skull");
-        return ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "skull"), state, poseStack, SettingsManager.SKULL_AMBIENT_OCCLUSION.getValue(), originalModel.getParticleIcon());
+        return ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "skull"), state, poseStack, getAmbientOcclusion("skull"), originalModel.getParticleIcon());
     }
 
     public BakedModel getBedModel(BlockState state, RandomSource random, BakedModel originalModel) {
@@ -103,7 +132,7 @@ public class OBEBlockRenderer {
 
         BakedModel model = ResourceUtil.getModel(layerLocation, material, state, poseStack, SettingsManager.BED_AMBIENT_OCCLUSION.getValue(), originalModel.getParticleIcon());
         model = new CompositeBlockStateModel(model, originalModel);
-        ResourceUtil.cache(layerLocation, state, model);
+        ResourceUtil.cache(state, model);
         return model;
     }
 
@@ -115,24 +144,9 @@ public class OBEBlockRenderer {
         if(layerLocation == null) return null;
 
         TransformationGetter.applyTransformation(state, poseStack, "chest");
-        BakedModel model = ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "chest"), state, poseStack, SettingsManager.CHEST_AMBIENT_OCCLUSION.getValue(), originalModel.getParticleIcon());
+        BakedModel model = ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "chest"), state, poseStack, getAmbientOcclusion("chest"), originalModel.getParticleIcon());
         model = new CompositeBlockStateModel(model, originalModel);
-        ResourceUtil.cache(layerLocation, state, model);
-        return model;
-    }
-
-    public BakedModel getBellModel(BlockState state, RandomSource random, BakedModel originalModel) {
-        if(ResourceUtil.cacheContains(state)) return ResourceUtil.getModel(state);
-        PoseStack poseStack = new PoseStack();
-        
-        ModelLayerLocation layerLocation = ModelLayerLocationGetter.getModelLayerLocation(state, "bell");
-        if(layerLocation == null) return null;
-
-        TransformationGetter.applyTransformation(state, poseStack, "bell");
-
-        BakedModel model = ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "bell"), state, poseStack, SettingsManager.BELL_AMBIENT_OCCLUSION.getValue(), originalModel.getParticleIcon());
-        model = new CompositeBlockStateModel(model, Minecraft.getInstance().getModelManager().getBlockModelShaper().getBlockModel(state));
-        ResourceUtil.cache(layerLocation, state, model);
+        ResourceUtil.cache(state, model);
         return model;
     }
 
@@ -145,7 +159,7 @@ public class OBEBlockRenderer {
         
         TransformationGetter.applyTransformation(state, poseStack, "banner");
 
-        return ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "banner"), state, poseStack, SettingsManager.BANNER_AMBIENT_OCCLUSION.getValue(), originalModel.getParticleIcon());
+        return ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "banner"), state, poseStack, getAmbientOcclusion("banner"), originalModel.getParticleIcon());
     }
 
     public BakedModel getShulkerBoxModel(BlockState state, RandomSource random, BakedModel originalModel) {
@@ -160,9 +174,9 @@ public class OBEBlockRenderer {
         ResourceLocation material = MaterialGetter.getMaterial(state, "shulker_box");
         if(material == null) return null;
 
-        BakedModel model = ResourceUtil.getModel(layerLocation, material, state, poseStack, SettingsManager.SHULKER_BOX_AMBIENT_OCCLUSION.getValue(), originalModel.getParticleIcon());
+        BakedModel model = ResourceUtil.getModel(layerLocation, material, state, poseStack, getAmbientOcclusion("shulker_box"), originalModel.getParticleIcon());
         model = new CompositeBlockStateModel(model, originalModel);
-        ResourceUtil.cache(layerLocation, state, model);
+        ResourceUtil.cache(state, model);
         return model;
     }
 
@@ -175,7 +189,7 @@ public class OBEBlockRenderer {
 
         TransformationGetter.applyTransformation(state, poseStack, "decorated_pot");
 
-        BakedModel model = ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "decorated_pot"), state, poseStack, SettingsManager.DECORATED_POT_AMBIENT_OCCLUSION.getValue(), originalModel.getParticleIcon());
+        BakedModel model = ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "decorated_pot"), state, poseStack, getAmbientOcclusion("decorated_pot"), originalModel.getParticleIcon());
 
         layerLocation = DecoratedPotUtil.getDecoratedPotSideModelLayerLocation(state);
 
@@ -183,8 +197,22 @@ public class OBEBlockRenderer {
         
         model = new CompositeBlockStateModel(model, sideModel);
 
-        ResourceUtil.cache(layerLocation, state, model);
+        ResourceUtil.cache(state, model);
 
         return model;
+    }
+
+    public boolean getAmbientOcclusion(String group){
+        if (group == null) return false;
+        return switch (group) {
+            case "chest" -> SettingsManager.CHEST_AMBIENT_OCCLUSION.getValue();
+            case "banner" -> SettingsManager.BANNER_AMBIENT_OCCLUSION.getValue();
+            case "skull" -> SettingsManager.SKULL_AMBIENT_OCCLUSION.getValue();
+            case "bell" -> SettingsManager.BELL_AMBIENT_OCCLUSION.getValue();
+            case "decorated_pot" -> SettingsManager.DECORATED_POT_AMBIENT_OCCLUSION.getValue();
+            case "copper_golem_statue" -> SettingsManager.COPPER_GOLEM_AMBIENT_OCCLUSION.getValue();
+            case "shulker_box" -> SettingsManager.SHULKER_BOX_AMBIENT_OCCLUSION.getValue();
+            default -> false;
+        };
     }
 }
