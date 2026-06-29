@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class ModelBlockRendererMixin {
     @Unique private final OBEBlockRenderer obeBlockRenderer = new OBEBlockRenderer();
 
-    @ModifyVariable(method = "tesselateBlock", at = @At("HEAD"), argsOnly = true)
+    @ModifyVariable(method = "Lnet/minecraft/client/renderer/block/ModelBlockRenderer;tesselateBlock(Lnet/minecraft/world/level/BlockAndTintGetter;Lnet/minecraft/client/resources/model/BakedModel;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;ZLnet/minecraft/util/RandomSource;JILnet/minecraftforge/client/model/data/ModelData;Lnet/minecraft/client/renderer/RenderType;)V", at = @At("HEAD"), argsOnly = true)
     private BakedModel obe$modifyModel(BakedModel model, BlockAndTintGetter blockAndTintGetter, BakedModel originalModel, BlockState blockState, BlockPos blockPos, PoseStack poseStack, VertexConsumer vertexConsumer, boolean bl, RandomSource randomSource, long l, int i) {
         model = obeBlockRenderer.getModel(blockState, blockPos, blockState.getSeed(blockPos), model);
         return model == null? originalModel : model;
