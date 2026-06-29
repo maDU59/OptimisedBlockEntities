@@ -26,7 +26,7 @@ public class ModelBlockRendererMixin {
 
     @ModifyVariable(method = "tesselateBlock", at = @At("HEAD"), argsOnly = true)
     private List<BlockModelPart> obe$modifyModel(List<BlockModelPart> list, BlockAndTintGetter blockAndTintGetter, List<BlockModelPart> originalList, BlockState blockState, BlockPos blockPos, PoseStack poseStack, VertexConsumer vertexConsumer, boolean bl, int i) {
-        BlockStateModel model = obeBlockRenderer.getModel(blockState, blockPos, blockState.getSeed(blockPos), new BlockEntityStateModel(list.get(0).particleIcon()));
+        BlockStateModel model = obeBlockRenderer.getModel(blockState, blockPos, blockState.getSeed(blockPos), new BlockEntityStateModel(originalList), blockAndTintGetter);
         if(model != null){
             list = model.collectParts(RandomSource.create(blockState.getSeed(blockPos)));
         }
