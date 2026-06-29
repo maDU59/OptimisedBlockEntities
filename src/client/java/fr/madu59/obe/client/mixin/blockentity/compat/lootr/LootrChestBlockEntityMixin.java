@@ -1,6 +1,7 @@
 package fr.madu59.obe.client.mixin.blockentity.compat.lootr;
 
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -17,6 +18,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import noobanidus.mods.lootr.common.block.entity.LootrChestBlockEntity;
 
+@Pseudo
 @Mixin(value = LootrChestBlockEntity.class, remap = false)
 public class LootrChestBlockEntityMixin {
     @Inject(method = "<init>", at = @At("TAIL"))
