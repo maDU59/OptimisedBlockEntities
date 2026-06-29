@@ -48,6 +48,9 @@ dependencies {
 	
 	modImplementation "maven.modrinth:entitytexturefeatures:7.1-fabric-1.21.3"
 	modImplementation "maven.modrinth:entity-model-features:3.2.4-fabric-1.21.3"
+
+	modImplementation "maven.modrinth:lootr:JG1WQ9lU"
+	modImplementation "maven.modrinth:cloth-config:FgXq8Sfo"
 }
 
 processResources {
