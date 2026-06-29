@@ -19,7 +19,6 @@ public abstract class BellRendererMixin {
     @Inject(method = "submit", at = @At("HEAD"), cancellable = true)
     public void obe$cancelSubmit(CallbackInfo ci, @Local BellRenderState state){
         if(!RenderModeManager.shouldRenderEntity(state) && SettingsManager.OPTIMISED_BELLS.getValue()) ci.cancel();
-        RenderModeManager.updateOnRender(state);
     }
 
     @Inject(method = "extractRenderState", at = @At("HEAD"), cancellable = true)

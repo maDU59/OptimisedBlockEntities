@@ -74,7 +74,6 @@ public abstract class AbstractSignRendererMixin<S extends SignRenderState> {
             this.submitSignText(signRenderState, poseStack, submitNodeCollector, false);
             poseStack.popPose();
         }
-        RenderModeManager.updateOnRender(signRenderState);
     }
 
     @Unique

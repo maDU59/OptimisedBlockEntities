@@ -33,8 +33,8 @@ public class ResourceUtil{
         return transformedModelCache.computeIfAbsent(blockState, layer -> new BlockEntityStateModel(modelLayerLocation, texture, poseStack, useAo, blockState, particleMaterial));
     }
 
-    public static BlockStateModel getModel(ModelLayerLocation modelLayerLocation, ResourceLocation texture, BlockState blockState, BlockEntity be, PoseStack poseStack, boolean useAo, TextureAtlasSprite particleMaterial){
-        return transformedSpecialModelCache.computeIfAbsent(new SpecialModelCacheKey(blockState, be), layer -> new BlockEntityStateModel(modelLayerLocation, texture, poseStack, useAo, blockState, particleMaterial));
+    public static BlockStateModel getModel(ModelLayerLocation modelLayerLocation, ResourceLocation texture, BlockState blockState, Object cacheKey, PoseStack poseStack, boolean useAo, TextureAtlasSprite particleMaterial){
+        return transformedSpecialModelCache.computeIfAbsent(new SpecialModelCacheKey(blockState, cacheKey), layer -> new BlockEntityStateModel(modelLayerLocation, texture, poseStack, useAo, blockState, particleMaterial));
     }
 
     public static BlockStateModel getSubModel(ModelLayerLocation modelLayerLocation, ResourceLocation texture, BlockState blockState, PoseStack poseStack, boolean useAo, TextureAtlasSprite particleMaterial){
@@ -57,12 +57,12 @@ public class ResourceUtil{
         return transformedSpecialModelCache.containsKey(new SpecialModelCacheKey(state, be));
     }
 
-    public static void cache( BlockState blockState, BlockStateModel model){
+    public static void cache(BlockState blockState, BlockStateModel model){
         transformedModelCache.put(blockState, model);
     }
 
-    public static void cache(BlockState blockState, BlockEntity be, BlockStateModel model){
-        transformedSpecialModelCache.put(new SpecialModelCacheKey(blockState, be), model);
+    public static void cache(BlockState blockState, Object cacheKey, BlockStateModel model){
+        transformedSpecialModelCache.put(new SpecialModelCacheKey(blockState, cacheKey), model);
     }
 
     public static void clearCache(){
@@ -76,5 +76,5 @@ public class ResourceUtil{
     }
 
     public record ModelCacheKey(ModelLayerLocation modelLayerLocation, BlockState blockState) {}
-    public record SpecialModelCacheKey(BlockState blockState, BlockEntity be) {}
+    public record SpecialModelCacheKey(BlockState blockState, Object cacheKey) {}
 }
