@@ -40,47 +40,52 @@ public class BlockStateModelSetMixin {
         if (!state.hasBlockEntity()) return;
 
         if(!SettingsManager.MOD_TOGGLE.getValue()) return;
-        RandomSource random = RandomSource.create(42);
+        try{ // In case of another mod trying to access the block states before the entity model set is populated
+            RandomSource random = RandomSource.create(42);
 
-        BakedModel model;
+            BakedModel model;
 
-        if(Registry.isSupported("sign", state) && SettingsManager.OPTIMISED_SIGNS.getValue()){
-            model = obeBlockRenderer.getStandingSignModel(state, random, obe$getOriginalModel(state));
-            if(model != null) cir.setReturnValue(model);
+            if(Registry.isSupported("sign", state) && SettingsManager.OPTIMISED_SIGNS.getValue()){
+                model = obeBlockRenderer.getStandingSignModel(state, random, obe$getOriginalModel(state));
+                if(model != null) cir.setReturnValue(model);
+            }
+            else if(Registry.isSupported("hanging_sign", state) && SettingsManager.OPTIMISED_SIGNS.getValue()){
+                model = obeBlockRenderer.getHangingSignModel(state, random, obe$getOriginalModel(state));
+                if(model != null) cir.setReturnValue(model);
+            }
+            else if(Registry.isSupported("bed", state) && SettingsManager.OPTIMISED_BEDS.getValue()){
+                model = obeBlockRenderer.getBedModel(state, random, obe$getOriginalModel(state));
+                if(model != null) cir.setReturnValue(model);
+            }
+            else if(Registry.isSupported("skull", state) && SettingsManager.OPTIMISED_SKULLS.getValue()){
+                model = obeBlockRenderer.getSkullBlockModel(state, random, obe$getOriginalModel(state));
+                if(model != null) cir.setReturnValue(model);
+            }
+            else if(Registry.isSupported("chest", state) && SettingsManager.OPTIMISED_CHESTS.getValue()){
+                model = obeBlockRenderer.getChestModel(state, random, obe$getOriginalModel(state));
+                if(model != null) cir.setReturnValue(model);
+            }
+            else if(Registry.isSupported("banner", state) && SettingsManager.OPTIMISED_BANNERS.getValue()){
+                model = obeBlockRenderer.getBannerModel(state, random, obe$getOriginalModel(state));
+                if(model != null) cir.setReturnValue(model);
+            }
+            // else if(Registry.isSupported("bell", state)){
+            //     BlockStateModelSet set = ((BlockStateModelSet)(Object)this);
+            //     OBEBlockRenderer.originalBellModel = (BlockStateModel)set.modelByState.getOrDefault(state, new BlockEntityStateModel());
+            //     model = new CompositeBlockStateModel(obeBlockRenderer.getBellModel(state, random, obe$getOriginalModel(state)), (BlockStateModel)set.modelByState.getOrDefault(state, new BlockEntityStateModel());
+            //     if(model != null) cir.setReturnValue(model);
+            // }
+            else if(Registry.isSupported("shulker_box", state) && SettingsManager.OPTIMISED_SHULKER_BOXES.getValue()){
+                model = obeBlockRenderer.getShulkerBoxModel(state, random, obe$getOriginalModel(state));
+                if(model != null) cir.setReturnValue(model);
+            }
+            else if(Registry.isSupported("decorated_pot", state) && SettingsManager.OPTIMISED_DECORATED_POTS.getValue()){
+                model = obeBlockRenderer.getDecoratedPotModel(state, random, obe$getOriginalModel(state));
+                if(model != null) cir.setReturnValue(model);
+            }
         }
-        else if(Registry.isSupported("hanging_sign", state) && SettingsManager.OPTIMISED_SIGNS.getValue()){
-            model = obeBlockRenderer.getHangingSignModel(state, random, obe$getOriginalModel(state));
-            if(model != null) cir.setReturnValue(model);
-        }
-        else if(Registry.isSupported("bed", state) && SettingsManager.OPTIMISED_BEDS.getValue()){
-            model = obeBlockRenderer.getBedModel(state, random, obe$getOriginalModel(state));
-            if(model != null) cir.setReturnValue(model);
-        }
-        else if(Registry.isSupported("skull", state) && SettingsManager.OPTIMISED_SKULLS.getValue()){
-            model = obeBlockRenderer.getSkullBlockModel(state, random, obe$getOriginalModel(state));
-            if(model != null) cir.setReturnValue(model);
-        }
-        else if(Registry.isSupported("chest", state) && SettingsManager.OPTIMISED_CHESTS.getValue()){
-            model = obeBlockRenderer.getChestModel(state, random, obe$getOriginalModel(state));
-            if(model != null) cir.setReturnValue(model);
-        }
-        else if(Registry.isSupported("banner", state) && SettingsManager.OPTIMISED_BANNERS.getValue()){
-            model = obeBlockRenderer.getBannerModel(state, random, obe$getOriginalModel(state));
-            if(model != null) cir.setReturnValue(model);
-        }
-        // else if(Registry.isSupported("bell", state)){
-        //     BlockStateModelSet set = ((BlockStateModelSet)(Object)this);
-        //     OBEBlockRenderer.originalBellModel = (BlockStateModel)set.modelByState.getOrDefault(state, new BlockEntityStateModel());
-        //     model = new CompositeBlockStateModel(obeBlockRenderer.getBellModel(state, random, obe$getOriginalModel(state)), (BlockStateModel)set.modelByState.getOrDefault(state, new BlockEntityStateModel());
-        //     if(model != null) cir.setReturnValue(model);
-        // }
-        else if(Registry.isSupported("shulker_box", state) && SettingsManager.OPTIMISED_SHULKER_BOXES.getValue()){
-            model = obeBlockRenderer.getShulkerBoxModel(state, random, obe$getOriginalModel(state));
-            if(model != null) cir.setReturnValue(model);
-        }
-        else if(Registry.isSupported("decorated_pot", state) && SettingsManager.OPTIMISED_DECORATED_POTS.getValue()){
-            model = obeBlockRenderer.getDecoratedPotModel(state, random, obe$getOriginalModel(state));
-            if(model != null) cir.setReturnValue(model);
+        catch(Exception e){
+
         }
     }
 

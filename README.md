@@ -34,7 +34,7 @@ This mod renders supported block entities just like any other block, this means 
 ## Why 
 
 Mods like this already exists like:
-- [BBE](https://modrinth.com/better-block-entities), but it requires Sodium to run, isn't available on Neoforge (at least not at the time of OBE development) and heavily modifies Minecraft's rendering pipeling
+- [BBE](https://modrinth.com/mod/better-block-entities), but it requires Sodium to run, isn't available on Neoforge (at least not at the time of OBE development) and heavily modifies Minecraft's rendering pipeling
 - [EBE](https://modrinth.com/mod/ebe), but it is sadly not updated anymore and isn't available on Neoforge
 
 Both are awesome, the developers did great work but I wanted to make one that was:

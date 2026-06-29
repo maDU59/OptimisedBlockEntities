@@ -17,4 +17,8 @@ public class PlatformHelper {
     public static Path getConfigDir(){
         return FabricLoader.getInstance().getConfigDir();
     }
+
+    public static String getModName(String modId){
+        return FabricLoader.getInstance().getModContainer(modId).get().getMetadata().getName();
+    }
 }
