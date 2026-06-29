@@ -20,6 +20,7 @@ public abstract class BlockEntityMixin implements BlockEntityExt {
     @Unique private boolean renderBoth = false;
     @Unique private boolean shouldSkipBeRendering = false;
     @Unique private boolean forceEntity = false;
+    @Unique private int countdown = 0;
 
     @Override public boolean isSupportedBlockEntity() { return isSupportedBlockEntity; }
     @Override public void isSupportedBlockEntity(boolean bl) {this.isSupportedBlockEntity = bl; }
@@ -27,6 +28,7 @@ public abstract class BlockEntityMixin implements BlockEntityExt {
     @Override public RenderMode renderMode() { return renderMode; }
     @Override public void renderMode(RenderMode mode) {
         if(isEnabled) renderMode = mode;
+        if(mode == RenderMode.INTERMEDIATE) countdown = 3;
         renderModeDelayed = mode;
     }
 
@@ -55,9 +57,12 @@ public abstract class BlockEntityMixin implements BlockEntityExt {
         timerDuration = duration;
     }
 
-    @Override public boolean shouldSkipBeRendering() { return shouldSkipBeRendering; };
-    @Override public void shouldSkipBeRendering(boolean bl) { shouldSkipBeRendering = bl; };
+    @Override public boolean shouldSkipBeRendering() { return shouldSkipBeRendering; }
+    @Override public void shouldSkipBeRendering(boolean bl) { shouldSkipBeRendering = bl; }
 
-    @Override public boolean forceEntity() { return forceEntity; };
-    @Override public void forceEntity(boolean bl) { forceEntity = bl; };
+    @Override public boolean forceEntity() { return forceEntity; }
+    @Override public void forceEntity(boolean bl) { forceEntity = bl; }
+
+    @Override public int renderModSwitchTimer() { return countdown; }
+    @Override public void tickRenderModeSwitchTimer() { countdown -= 1; }
 }
