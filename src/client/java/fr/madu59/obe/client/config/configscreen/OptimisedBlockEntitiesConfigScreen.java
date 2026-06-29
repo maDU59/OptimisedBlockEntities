@@ -2,12 +2,15 @@ package fr.madu59.obe.client.config.configscreen;
 
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.*;
 
+import fr.madu59.obe.client.compat.ModCompat;
 import fr.madu59.obe.client.config.SettingsManager;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 
 public class OptimisedBlockEntitiesConfigScreen extends Screen {
@@ -36,6 +39,8 @@ public class OptimisedBlockEntitiesConfigScreen extends Screen {
     protected void init() {
         super.init();
         this.list = new MyConfigListWidget(this.minecraft, this.width, this.height - 80, 40, 26);
+
+        if(ModCompat.isIncompatibilityDetected()) list.category(ModCompat.getIncompatibleMod() + I18n.get("obe.config.warning.incompatibility")).style(ChatFormatting.UNDERLINE, ChatFormatting.YELLOW).build();
 
         list.category("obe.config.category.general").build();
         list.button(SettingsManager.MOD_TOGGLE).build();
