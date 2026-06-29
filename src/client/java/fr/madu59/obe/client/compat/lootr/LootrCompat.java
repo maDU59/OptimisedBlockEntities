@@ -27,6 +27,7 @@ public class LootrCompat {
 
     public static void init(){
         Registry.addBlockEntityTypeInGroup("chest", LootrRegistry.getChestBlockEntity());
+        Registry.addBlockEntityTypeInGroup("chest", LootrRegistry.getTrappedChestBlockEntity());
         SpecialModelGetter.register(LootrRegistry.getChestBlockEntity(), new SpecialModelProvider(ChestUtil::getChestModelLayerLocation, LootrCompat::getChestMaterial, LootrCompat::transformChest, LootrCompat::getChestCacheKey));
     }
 
