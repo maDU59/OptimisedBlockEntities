@@ -19,7 +19,6 @@ public abstract class CopperGolemStatueBlockRendererMixin {
     @Inject(method = "submit", at = @At("HEAD"), cancellable = true)
     public void obe$cancelSubmit(CallbackInfo ci, @Local CopperGolemStatueRenderState state){
         if(!RenderModeManager.shouldRenderEntity(!SettingsManager.OPTIMISED_COPPER_GOLEMS.getValue(), state)) ci.cancel();
-        RenderModeManager.updateOnRender(state);
     }
 
     @Inject(method = "extractRenderState", at = @At("HEAD"), cancellable = true)

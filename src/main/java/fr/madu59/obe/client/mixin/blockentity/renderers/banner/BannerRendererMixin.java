@@ -51,7 +51,6 @@ public abstract class BannerRendererMixin {
             obe$submitBanner(this.sprites, poseStack, submitNodeCollector, state.lightCoords, OverlayTexture.NO_OVERLAY, bannerModel(state.attachmentType), flagModel(state.attachmentType), state.phase, state.baseColor, state.patterns, state.breakProgress, 0);
             poseStack.popPose();
         }
-        RenderModeManager.updateOnRender(state);
     }
 
     @Unique

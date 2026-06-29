@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.CopperChestBlock;
 import net.minecraft.world.level.block.EnderChestBlock;
 import net.minecraft.world.level.block.TrappedChestBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
 
@@ -45,8 +46,16 @@ public class ChestUtil {
         return ChestRenderer.LAYERS.select(state.getValueOrElse(ChestBlock.TYPE, ChestType.SINGLE));
     }
 
+    public static ModelLayerLocation getChestModelLayerLocation(BlockState state, BlockEntity be){
+        return getChestModelLayerLocation(state);
+    }
+
     public static void transformChest(BlockState state, PoseStack poseStack){
         Direction facing = state.getValue(ChestBlock.FACING);
         poseStack.mulPose(ChestRenderer.modelTransformation(facing));
+    }
+
+    public static void transformChest(BlockState state, BlockEntity be, PoseStack poseStack){
+        transformChest(state, poseStack);
     }
 }

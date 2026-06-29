@@ -19,7 +19,6 @@ public abstract class BedRendererMixin {
     @Inject(method = "submit", at = @At("HEAD"), cancellable = true)
     public void obe$cancelSubmit(CallbackInfo ci, @Local BedRenderState state){
         if(!RenderModeManager.shouldRenderEntity(!SettingsManager.OPTIMISED_BEDS.getValue(), state)) ci.cancel();
-        RenderModeManager.updateOnRender(state);
     }
 
     @Inject(method = "extractRenderState", at = @At("HEAD"), cancellable = true)
