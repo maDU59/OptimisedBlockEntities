@@ -29,4 +29,7 @@ public interface BlockEntityExt {
 
     boolean forceEntity();
     void forceEntity(boolean bl);
+
+    void tickRenderModeSwitchTimer();
+    int renderModSwitchTimer();
 }

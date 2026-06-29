@@ -15,6 +15,7 @@
 		"blockentity.campfire.CampfireBlockEntityMixin",
 		"blockentity.lectern.LecternBlockEntityMixin",
 		"blockentity.beacon.BeaconBlockEntityMixin",
+		"blockentity.compat.lootr.LootrChestBlockEntityMixin",
 		"blockentity.BlockEntityMixin",
 		"blockentity.ext.BlockEntityMixin",
 		"blockentity.renderers.chest.ChestRendererMixin",
