@@ -34,6 +34,7 @@ public class Registry {
         MaterialGetter.init();
         TransformationGetter.init();
         ModelLayerLocationGetter.init();
+        SpecialModelGetter.init();
     }
 
     private static void register(String group, BlockEntityType<?> ... types){

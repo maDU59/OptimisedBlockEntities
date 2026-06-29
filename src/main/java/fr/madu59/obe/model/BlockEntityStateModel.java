@@ -161,7 +161,7 @@ public class BlockEntityStateModel implements BakedModel{
                     baked = new BakedQuad(
                         invertedVertices,
                     0,
-                    dir,
+                    dir.getOpposite(),
                     sprite,
                     true
                     );
