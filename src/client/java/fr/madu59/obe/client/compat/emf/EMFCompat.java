@@ -1,4 +1,4 @@
-package fr.madu59.obe.client.compat;
+package fr.madu59.obe.client.compat.emf;
 
 import java.util.function.BiFunction;
 
