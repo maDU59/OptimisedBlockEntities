@@ -50,6 +50,13 @@ public class BlockEntityStateModel implements BlockStateModel{
         this.particleMaterial = particleMaterial;
     }
 
+    public BlockEntityStateModel(List<BlockModelPart> list){
+        this.particleMaterial = list.get(0).particleIcon();
+        for(BlockModelPart part: list){
+            addModelPart(String.valueOf(part.hashCode()), new SingleVariant(part));
+        }
+    }
+
     @Override
     public void collectParts(RandomSource randomSource, List<BlockModelPart> list) {
         if (models.isEmpty()) return;
@@ -142,7 +149,7 @@ public class BlockEntityStateModel implements BlockStateModel{
                     baked = new BakedQuad(
                         invertedVertices,
                     0,
-                    dir,
+                    dir.getOpposite(),
                     sprite,
                     true,
                     0

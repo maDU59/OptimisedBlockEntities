@@ -16,7 +16,15 @@ In case of extending a vanilla block entity (e.g. iron chests that have bigger s
 
 4. **OPTIONAL** In case the model used is not the correct one, register a model layer location provider for the block entity's type using RegistryApi#registerModelLayerLocationProvider.
 
-### Case 2: Adding a completly new block entity
+### Case 2: Extending a vanilla block entity but the block entity is needed to determine the material/model/transformation
+
+1. Register your block entity's type in one of the existing groups using RegistryApi#registerBlockEntityType (e.g. for the iron chests, you should do: RegistryApi.registerBlockEntityType(blockEntityType, "chest")).
+
+2. Register a special model provider using RegistryApi#registerSpecialModelProvider
+
+3. Inside of your main block entity constructor, you will need to add a special renderer to it by doing BlockEntityApi#addSpecialRenderer.
+
+### Case 3: Adding a completly new block entity
 
 This is not fully possible using only the API yet, some functions are there to help, but you'll also need to look at the mod's code and mixin at some places (mainly BlockStateModelSetMixin)
 
@@ -24,7 +32,7 @@ This is not fully possible using only the API yet, some functions are there to h
 
 2. Register your block entity's type inside of that group using RegistryApi#registerBlockEntityType
 
-3. Inside the intializer(s) of your block entity, use RegistryApi#registerSupportedBlockEntity
+3. Inside the main constructor of your block entity, use RegistryApi#registerSupportedBlockEntity
 
 4. Mixin inside of BlockStateModelSetMixin and add your own group to the list
 

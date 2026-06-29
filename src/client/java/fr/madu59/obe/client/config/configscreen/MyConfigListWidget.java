@@ -90,11 +90,13 @@ public class MyConfigListWidget extends ContainerObjectSelectionList<MyConfigLis
 
     public static class CategoryEntry extends MyConfigListWidget.Entry {
         private final String name;
+        private final ChatFormatting[] style;
 
-        public CategoryEntry(MyConfigListWidget parent, String name, BooleanSupplier isEnabledSupplier) {
+        public CategoryEntry(MyConfigListWidget parent, String name, BooleanSupplier isEnabledSupplier, ChatFormatting ... style) {
             this.isEnabledSupplier = isEnabledSupplier;
             this.parent = parent;
             this.name = name;
+            this.style = style;
         }
 
         @Override
@@ -103,7 +105,7 @@ public class MyConfigListWidget extends ContainerObjectSelectionList<MyConfigLis
             Font textRenderer = Minecraft.getInstance().font;
             int textX = getContentX() + getContentWidth() / 2;
             int textY = getContentY() + (getContentHeight() - textRenderer.lineHeight) / 2;
-            context.drawCenteredString(textRenderer, Component.translatable(this.name).withStyle(ChatFormatting.UNDERLINE), textX, textY, 0xFFFFFFFF);
+            context.drawCenteredString(textRenderer, Component.translatable(this.name).withStyle(style), textX, textY, 0xFFFFFFFF);
         }  
 
         @Override
