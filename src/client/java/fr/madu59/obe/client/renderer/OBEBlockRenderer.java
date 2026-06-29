@@ -60,7 +60,7 @@ public class OBEBlockRenderer {
                 ModelLayerLocation layerLocation = customModelProvider.getModelLayerLocationProvider().apply(state, be);
                 if(layerLocation == null) return null;
 
-                TransformationGetter.applyTransformation(state, poseStack, "bell");
+                TransformationGetter.applyTransformation(state, poseStack, group);
 
                 Identifier material = customModelProvider.getMaterialProvider().apply(state, be);
                 if(material == null) return null;
