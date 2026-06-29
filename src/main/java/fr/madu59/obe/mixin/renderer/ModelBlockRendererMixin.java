@@ -19,7 +19,7 @@ public class ModelBlockRendererMixin {
 
     @ModifyVariable(method = "tesselateBlock", at = @At("HEAD"), argsOnly = true)
     private BlockStateModel obe$modifyModel(BlockStateModel model, BlockQuadOutput quadOutput, float x, float y, float z, BlockAndTintGetter region, BlockPos pos, BlockState blockState, BlockStateModel originalModel, long seed) {
-        model = obeBlockRenderer.getModel(blockState, pos, seed, model);
+        model = obeBlockRenderer.getModel(blockState, pos, seed, model, region);
         return model == null? originalModel : model;
     }
 }
