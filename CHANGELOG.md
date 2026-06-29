@@ -1,11 +1,2 @@
 # What's new:
-- Fixed a crash with Photonics
-- Fixed a rare crash with MoreCulling on some versions
-
-# Hotfix 1:
-- Fixed a crash on sodium beta 1.21.1
-
-# Hotfix 2:
-- Fixed block breaking overlay not rendering on versions older than 1.21.4
-
-## If you're using Embeddium alongside OBE, you'll also need the [Forgified Fabric API](https://modrinth.com/mod/forgified-fabric-api)
+- Added partially-incompatible mods detection, in case one is detected, the incompatible settings are turned off and a disclaimer is shown in the config screen

@@ -18,4 +18,8 @@ public class PlatformHelper {
     public static Path getConfigDir(){
         return FMLPaths.CONFIGDIR.get();
     }
+
+    public static String getModName(String modId){
+        return FMLLoader.getLoadingModList().getModFileById(modId).getMods().get(0).getDisplayName();
+    }
 }

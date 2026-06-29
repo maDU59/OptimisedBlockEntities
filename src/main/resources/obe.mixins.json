@@ -16,6 +16,7 @@
 		"blockentity.shulkerbox.ShulkerBoxBlockEntityMixin",
 		"blockentity.campfire.CampfireBlockEntityMixin",
 		"blockentity.lectern.LecternBlockEntityMixin",
+		"blockentity.beacon.BeaconBlockEntityMixin",
 		"blockentity.BlockEntityMixin",
 		"blockentity.ext.BlockEntityMixin",
 		"blockentity.renderers.chest.ChestRendererMixin",

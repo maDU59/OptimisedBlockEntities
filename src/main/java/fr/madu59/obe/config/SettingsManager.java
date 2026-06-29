@@ -30,6 +30,8 @@ public class SettingsManager {
     };
     private static Runnable reloadChunksAction = () -> Minecraft.getInstance().levelRenderer.allChanged();
 
+    private static final boolean isIncompatible = ModCompat.isIncompatibilityDetected();
+
     public static Option<Boolean> MOD_TOGGLE = loadOptionWithDefaults("mod_toggle",
         "obe.config.option.mod_toggle",
         true,
@@ -44,7 +46,7 @@ public class SettingsManager {
 
     public static Option<Boolean> OPTIMISED_CHESTS = loadOptionWithDefaults("optimized_chest",
         "obe.config.option.optimised_chests",
-        true,
+        !isIncompatible,
         reloadChunksAction
     );
 
@@ -86,7 +88,7 @@ public class SettingsManager {
 
     public static Option<Boolean> OPTIMISED_SHULKER_BOXES = loadOptionWithDefaults("optimized_shulker_box",
         "obe.config.option.optimised_shulker_boxes",
-        true,
+        !isIncompatible,
         reloadChunksAction
     );
 
@@ -122,7 +124,7 @@ public class SettingsManager {
 
     public static Option<Boolean> OPTIMISED_BELLS = loadOptionWithDefaults("optimized_bell",
         "obe.config.option.optimised_bells",
-        false,
+        !isIncompatible,
        reloadChunksAction
     );
 
@@ -134,7 +136,7 @@ public class SettingsManager {
 
     public static Option<Boolean> OPTIMISED_DECORATED_POTS = loadOptionWithDefaults("optimized_decorated_pot",
         "obe.config.option.optimised_decorated_pots",
-        true,
+        !isIncompatible,
         reloadChunksAction
     );
 
@@ -170,6 +172,12 @@ public class SettingsManager {
 
     public static Option<Boolean> OPTIMISED_CAMPFIRES = loadOptionWithDefaults("optimized_campfire",
         "obe.config.option.optimised_campfires",
+        true,
+        reloadChunksAction
+    );
+
+    public static Option<Boolean> OPTIMISED_BEACONS = loadOptionWithDefaults("optimized_beacon",
+        "obe.config.option.optimised_beacons",
         true,
         reloadChunksAction
     );

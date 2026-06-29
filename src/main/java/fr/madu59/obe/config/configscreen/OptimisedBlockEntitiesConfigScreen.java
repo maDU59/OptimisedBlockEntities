@@ -2,11 +2,14 @@ package fr.madu59.obe.config.configscreen;
 
 import static net.minecraft.commands.Commands.literal;
 
+import fr.madu59.obe.compat.ModCompat;
 import fr.madu59.obe.config.SettingsManager;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.client.event.RegisterClientCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -39,6 +42,8 @@ public class OptimisedBlockEntitiesConfigScreen extends Screen {
     protected void init() {
         super.init();
         this.list = new MyConfigListWidget(this.minecraft, this.width, this.height - 80, 40, 26);
+
+        if(ModCompat.isIncompatibilityDetected()) list.category(ModCompat.getIncompatibleMod() + I18n.get("obe.config.warning.incompatibility")).style(ChatFormatting.UNDERLINE, ChatFormatting.YELLOW).build();
 
         list.category("obe.config.category.general").build();
         list.button(SettingsManager.MOD_TOGGLE).build();
@@ -82,6 +87,9 @@ public class OptimisedBlockEntitiesConfigScreen extends Screen {
 
         list.category("obe.config.category.campfires").build();
         list.button(SettingsManager.OPTIMISED_CAMPFIRES).build();
+
+        list.category("obe.config.category.beacons").build();
+        list.button(SettingsManager.OPTIMISED_BEACONS).build();
 
         Button doneButton = Button.builder(Component.translatable("obe.config.done"), b -> {
             this.minecraft.setScreen(this.parent);

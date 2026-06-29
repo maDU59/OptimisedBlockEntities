@@ -21,7 +21,5 @@ public class OBE {
 		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
             new OBEClient(modEventBus);
         });
-
-		LOGGER.info("[OBE] Optimised Block Entities initialized!");
 	}
 }
