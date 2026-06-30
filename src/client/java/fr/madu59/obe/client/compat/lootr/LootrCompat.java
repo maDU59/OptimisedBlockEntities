@@ -26,8 +26,7 @@ public class LootrCompat {
     public static final Identifier MATERIAL4 = LootrAPI.rl("entity/chest/trapped_opened");
 
     public static void init(){
-        Registry.addBlockEntityTypeInGroup("chest", LootrRegistry.getChestBlockEntity());
-        Registry.addBlockEntityTypeInGroup("chest", LootrRegistry.getTrappedChestBlockEntity());
+        Registry.addBlockEntityTypeInGroup("chest", LootrRegistry.getChestBlockEntity(), LootrRegistry.getTrappedChestBlockEntity());
         SpecialModelGetter.register(LootrRegistry.getChestBlockEntity(), new SpecialModelProvider(ChestUtil::getChestModelLayerLocation, LootrCompat::getChestMaterial, LootrCompat::transformChest, LootrCompat::getChestCacheKey));
     }
 
