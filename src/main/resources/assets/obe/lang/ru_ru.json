@@ -5,7 +5,7 @@
     "obe.config.option.banner_ao": "Глобальное затенение флагов",
     "obe.config.option.optimised_signs": "Оптимизация табличек",
     "obe.config.option.sign_ao": "Глобальное затенение табличек",
-    "obe.config.option.sign_text_culling": "Окклюзия текста табличек",
+    "obe.config.option.sign_text_culling": "Отсечение невидимого текста табличек",
     "obe.config.option.optimised_shulker_boxes": "Оптимизация шалкеровых ящиков",
     "obe.config.option.shulker_box_ao": "Глобальное затенение шалкеровых ящиков",
     "obe.config.option.optimised_skulls": "Оптимизация голов",
