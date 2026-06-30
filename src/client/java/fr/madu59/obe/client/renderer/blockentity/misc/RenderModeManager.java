@@ -2,6 +2,7 @@ package fr.madu59.obe.client.renderer.blockentity.misc;
 
 import fr.madu59.obe.client.compat.ModCompat;
 import fr.madu59.obe.client.config.SettingsManager;
+import fr.madu59.obe.client.config.Option;
 import fr.madu59.obe.client.registry.Registry;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityRenderStateExt;
@@ -96,27 +97,8 @@ public class RenderModeManager {
         else{
             String group = Registry.getGroup(be.getType());
             if(group == null) return;
-            if (group.equals("chest")) {
-                ext.isEnabled(SettingsManager.OPTIMISED_CHESTS.getValue());
-            }
-            else if (group.equals("banner")) {
-                ext.isEnabled(SettingsManager.OPTIMISED_BANNERS.getValue());
-            }
-            else if (group.equals("shulker_box")) {
-                ext.isEnabled(SettingsManager.OPTIMISED_SHULKER_BOXES.getValue());
-            }
-            else if (group.equals("skull")) {
-                ext.isEnabled(SettingsManager.OPTIMISED_SKULLS.getValue());
-            }
-            else if (group.equals("bell")) {
-                ext.isEnabled(SettingsManager.OPTIMISED_BELLS.getValue());
-            }
-            else if (group.equals("decorated_pot")) {
-                ext.isEnabled(SettingsManager.OPTIMISED_DECORATED_POTS.getValue());
-            }
-            else if (group.equals("copper_golem_statue")) {
-                ext.isEnabled(SettingsManager.OPTIMISED_COPPER_GOLEMS.getValue());
-            }
+            Option<Boolean> option = SettingsManager.GROUP_TOGGLE_SETTINGS.get(group);
+            if(option != null) ext.isEnabled(option.getValue());
             if(ext.isEnabled()){
                 if(ext.isTimerFinished()){
                     ext.renderMode(RenderMode.TERRAIN);

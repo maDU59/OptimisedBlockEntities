@@ -43,33 +43,36 @@ public class BlockStateModelSetMixin {
             RandomSource random = RandomSource.create(42);
             BlockStateModel model;
 
-            if(Registry.isSupported("skull", state) && SettingsManager.OPTIMISED_SKULLS.getValue()){
+            String group = Registry.getGroup(state);
+            if(group == null) return;
+
+            if(group.equals("skull") && SettingsManager.OPTIMISED_SKULLS.getValue()){
                 model = obeBlockRenderer.getSkullBlockModel(state, random, obe$getOriginalModel(state));
                 if(model != null) cir.setReturnValue(model);
             }
-            else if(Registry.isSupported("chest", state) && SettingsManager.OPTIMISED_CHESTS.getValue()){
+            else if(group.equals("chest") && SettingsManager.OPTIMISED_CHESTS.getValue()){
                 model = obeBlockRenderer.getChestModel(state, random, obe$getOriginalModel(state));
                 if(model != null) cir.setReturnValue(model);
             }
-            else if(Registry.isSupported("banner", state) && SettingsManager.OPTIMISED_BANNERS.getValue()){
+            else if(group.equals("banner") && SettingsManager.OPTIMISED_BANNERS.getValue()){
                 model = obeBlockRenderer.getBannerModel(state, random, obe$getOriginalModel(state));
                 if(model != null) cir.setReturnValue(model);
             }
-            // else if(Registry.isSupported("bell", state)){
+            // else if(group.equals("bell")){
             //     BlockStateModelSet set = ((BlockStateModelSet)(Object)this);
             //     OBEBlockRenderer.originalBellModel = (BlockStateModel)set.modelByState.getOrDefault(state, new BlockEntityStateModel());
             //     model = new CompositeBlockStateModel(obeBlockRenderer.getBellModel(state, random, obe$getOriginalModel(state)), (BlockStateModel)set.modelByState.getOrDefault(state, new BlockEntityStateModel());
             //     if(model != null) cir.setReturnValue(model);
             // }
-            else if(Registry.isSupported("copper_golem_statue", state) && SettingsManager.OPTIMISED_COPPER_GOLEMS.getValue()){
+            else if(group.equals("copper_golem_statue") && SettingsManager.OPTIMISED_COPPER_GOLEMS.getValue()){
                 model = obeBlockRenderer.getCopperGolemStatueModel(state, random, obe$getOriginalModel(state));
                 if(model != null) cir.setReturnValue(model);
             }
-            else if(Registry.isSupported("shulker_box", state) && SettingsManager.OPTIMISED_SHULKER_BOXES.getValue()){
+            else if(group.equals("shulker_box") && SettingsManager.OPTIMISED_SHULKER_BOXES.getValue()){
                 model = obeBlockRenderer.getShulkerBoxModel(state, random, obe$getOriginalModel(state));
                 if(model != null) cir.setReturnValue(model);
             }
-            else if(Registry.isSupported("decorated_pot", state) && SettingsManager.OPTIMISED_DECORATED_POTS.getValue()){
+            else if(group.equals("decorated_pot") && SettingsManager.OPTIMISED_DECORATED_POTS.getValue()){
                 model = obeBlockRenderer.getDecoratedPotModel(state, random, obe$getOriginalModel(state));
                 if(model != null) cir.setReturnValue(model);
             }
