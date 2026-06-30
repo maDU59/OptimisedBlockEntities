@@ -91,35 +91,40 @@ public class RenderModeManager {
     }
 
     public static void updateBlockEntityOnChunkRemesh(BlockEntityExt ext, BlockEntity be){
-        if(!SettingsManager.MOD_TOGGLE.getValue()) ext.isEnabled(false);
-        else if (Registry.isSupported("chest", be.getType())) {
-            ext.isEnabled(SettingsManager.OPTIMISED_CHESTS.getValue());
-        }
-        else if (Registry.isSupported("banner", be.getType())) {
-            ext.isEnabled(SettingsManager.OPTIMISED_BANNERS.getValue());
-        }
-        else if (Registry.isSupported("shulker_box", be.getType())) {
-            ext.isEnabled(SettingsManager.OPTIMISED_SHULKER_BOXES.getValue());
-        }
-        else if (Registry.isSupported("skull", be.getType())) {
-            ext.isEnabled(SettingsManager.OPTIMISED_SKULLS.getValue());
-        }
-        else if (Registry.isSupported("bell", be.getType())) {
-            ext.isEnabled(SettingsManager.OPTIMISED_BELLS.getValue());
-        }
-        else if (Registry.isSupported("decorated_pot", be.getType())) {
-            ext.isEnabled(SettingsManager.OPTIMISED_DECORATED_POTS.getValue());
-        }
-        else if (Registry.isSupported("copper_golem_statue", be.getType())) {
-            ext.isEnabled(SettingsManager.OPTIMISED_COPPER_GOLEMS.getValue());
-        }
-        if(ext.isEnabled()){
-            if(ext.isTimerFinished()){
-                ext.renderMode(RenderMode.TERRAIN);
+        if(!ext.isSupportedBlockEntity()) return;
+        else if(!SettingsManager.MOD_TOGGLE.getValue()) ext.isEnabled(false);
+        else{
+            String group = Registry.getGroup(be.getType());
+            if(group == null) return;
+            if (group.equals("chest")) {
+                ext.isEnabled(SettingsManager.OPTIMISED_CHESTS.getValue());
             }
-            if(ext.renderMode() != ext.renderModeDelayed()){
-                if(ext.renderModeDelayed() == RenderMode.TERRAIN) ext.renderMode(RenderMode.INTERMEDIATE);
-                if(ext.renderModeDelayed() == RenderMode.ENTITY) ext.renderMode(ext.renderModeDelayed());
+            else if (group.equals("banner")) {
+                ext.isEnabled(SettingsManager.OPTIMISED_BANNERS.getValue());
+            }
+            else if (group.equals("shulker_box")) {
+                ext.isEnabled(SettingsManager.OPTIMISED_SHULKER_BOXES.getValue());
+            }
+            else if (group.equals("skull")) {
+                ext.isEnabled(SettingsManager.OPTIMISED_SKULLS.getValue());
+            }
+            else if (group.equals("bell")) {
+                ext.isEnabled(SettingsManager.OPTIMISED_BELLS.getValue());
+            }
+            else if (group.equals("decorated_pot")) {
+                ext.isEnabled(SettingsManager.OPTIMISED_DECORATED_POTS.getValue());
+            }
+            else if (group.equals("copper_golem_statue")) {
+                ext.isEnabled(SettingsManager.OPTIMISED_COPPER_GOLEMS.getValue());
+            }
+            if(ext.isEnabled()){
+                if(ext.isTimerFinished()){
+                    ext.renderMode(RenderMode.TERRAIN);
+                }
+                if(ext.renderMode() != ext.renderModeDelayed()){
+                    if(ext.renderModeDelayed() == RenderMode.TERRAIN) ext.renderMode(RenderMode.INTERMEDIATE);
+                    if(ext.renderModeDelayed() == RenderMode.ENTITY) ext.renderMode(ext.renderModeDelayed());
+                }
             }
         }
     }
