@@ -40,7 +40,7 @@ public class OptimisedBlockEntitiesConfigScreen extends Screen {
         super.init();
         this.list = new MyConfigListWidget(this.minecraft, this.width, this.height - 80, 40, 26);
 
-        if(ModCompat.isIncompatibilityDetected()) list.category(ModCompat.getIncompatibleMod() + I18n.get("obe.config.warning.incompatibility")).style(ChatFormatting.UNDERLINE, ChatFormatting.YELLOW).build();
+        if(ModCompat.isIncompatibilityDetected()) list.category(I18n.get("obe.config.warning.incompatibility", ModCompat.getIncompatibleMod())).style(ChatFormatting.UNDERLINE, ChatFormatting.YELLOW).build();
 
         list.category("obe.config.category.general").build();
         list.button(SettingsManager.MOD_TOGGLE).build();

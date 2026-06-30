@@ -25,7 +25,7 @@
     "obe.config.option.optimised_campfires": "Optimize Campfires",
     "obe.config.option.optimised_beacons": "Optimize Beacons",
 
-    "obe.config.warning.incompatibility": " has been detected, changing the settings may cause issues!",
+    "obe.config.warning.incompatibility": "%s has been detected, changing the settings may cause issues!",
 
     "obe.config.category.chests": "Chests",
     "obe.config.category.banners": "Banners",
