@@ -25,7 +25,7 @@
     "obe.config.option.optimised_campfires": "Оптимизация костров",
     "obe.config.option.optimised_beacons": "Оптимизация маяков",
 
-    "obe.config.warning.incompatibility": " был обнаружен, изменение настроек может вызвать проблемы!",
+    "obe.config.warning.incompatibility": "Обнаружен %s, изменение настроек может вызвать проблемы!",
 
     "obe.config.category.chests": "Сундуки",
     "obe.config.category.banners": "Флаги",
