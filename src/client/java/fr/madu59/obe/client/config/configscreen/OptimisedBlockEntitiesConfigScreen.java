@@ -64,6 +64,7 @@ public class OptimisedBlockEntitiesConfigScreen extends Screen {
         list.category("obe.config.category.skulls").build();
         list.button(SettingsManager.OPTIMISED_SKULLS).build();
         list.button(SettingsManager.SKULL_AMBIENT_OCCLUSION).isEnabled(() -> SettingsManager.OPTIMISED_SKULLS.getValue()).build();
+        list.button(SettingsManager.CUSTOM_SKULLS).isEnabled(() -> SettingsManager.OPTIMISED_SKULLS.getValue()).build();
 
         list.category("obe.config.category.bells").build();
         list.button(SettingsManager.OPTIMISED_BELLS).build();

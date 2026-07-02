@@ -110,6 +110,12 @@ public class SettingsManager {
         reloadResourcesAction
     );
 
+    public static Option<Boolean> CUSTOM_SKULLS = loadOptionWithDefaults("built_in_custom_skull",
+        "obe.config.option.custom_skulls",
+        true,
+        reloadResourcesAction
+    );
+
     public static Option<Boolean> OPTIMISED_BEDS = loadOptionWithDefaults("optimized_bed",
         "obe.config.option.optimised_beds",
         true,

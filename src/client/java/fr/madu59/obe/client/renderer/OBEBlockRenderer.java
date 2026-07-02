@@ -57,6 +57,8 @@ public class OBEBlockRenderer {
                 if(ResourceUtil.cacheContains(state, be)) return ResourceUtil.getModel(state, be);
                 Object cacheKey = customModelProvider.getCacheKeyProvider().apply(be);
                 PoseStack poseStack = new PoseStack();
+
+                System.out.println(group + " " + state.getBlock().getName().getString() + " " + be.getType().toString() + " " + cacheKey);
                 
                 ModelLayerLocation layerLocation = customModelProvider.getModelLayerLocationProvider().apply(state, be);
                 if(layerLocation == null) return null;
