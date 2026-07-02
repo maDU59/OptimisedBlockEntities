@@ -10,6 +10,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.ShulkerBoxBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class ShulkerBoxUtil {
@@ -32,5 +33,13 @@ public class ShulkerBoxUtil {
     public static void transformShulkerBox(BlockState state, PoseStack poseStack){
         Direction facing = state.getValue(ShulkerBoxBlock.FACING);
         poseStack.mulPose(ShulkerBoxRenderer.modelTransform(facing));
+    }
+
+    public static ModelLayerLocation getShulkerBoxModelLayerLocation(BlockState state, BlockEntity be){
+        return getShulkerBoxModelLayerLocation(state);
+    }
+
+    public static void transformShulkerBox(BlockState state, BlockEntity be, PoseStack poseStack){
+        transformShulkerBox(state, poseStack);
     }
 }

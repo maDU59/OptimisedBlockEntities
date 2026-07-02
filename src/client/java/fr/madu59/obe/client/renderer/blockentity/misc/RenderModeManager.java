@@ -2,6 +2,7 @@ package fr.madu59.obe.client.renderer.blockentity.misc;
 
 import fr.madu59.obe.client.compat.ModCompat;
 import fr.madu59.obe.client.config.SettingsManager;
+import fr.madu59.obe.client.config.Option;
 import fr.madu59.obe.client.registry.Registry;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityRenderStateExt;
@@ -93,44 +94,21 @@ public class RenderModeManager {
     }
 
     public static void updateBlockEntityOnChunkRemesh(BlockEntityExt ext, BlockEntity be){
-        if(!SettingsManager.MOD_TOGGLE.getValue()) ext.isEnabled(false);
-        if (Registry.isSupported("sign", be.getType())) {
-            ext.isEnabled(SettingsManager.OPTIMISED_SIGNS.getValue());
-        }
-        else if (Registry.isSupported("hanging_sign", be.getType())) {
-            ext.isEnabled(SettingsManager.OPTIMISED_SIGNS.getValue());
-        }
-        else if (Registry.isSupported("bed", be.getType())) {
-            ext.isEnabled(SettingsManager.OPTIMISED_BEDS.getValue());
-        }
-        else if (Registry.isSupported("chest", be.getType())) {
-            ext.isEnabled(SettingsManager.OPTIMISED_CHESTS.getValue());
-        }
-        else if (Registry.isSupported("banner", be.getType())) {
-            ext.isEnabled(SettingsManager.OPTIMISED_BANNERS.getValue());
-        }
-        else if (Registry.isSupported("shulker_box", be.getType())) {
-            ext.isEnabled(SettingsManager.OPTIMISED_SHULKER_BOXES.getValue());
-        }
-        else if (Registry.isSupported("skull", be.getType())) {
-            ext.isEnabled(SettingsManager.OPTIMISED_SKULLS.getValue());
-        }
-        else if (Registry.isSupported("bell", be.getType())) {
-            ext.isEnabled(SettingsManager.OPTIMISED_BELLS.getValue());
-        }
-        else if (Registry.isSupported("decorated_pot", be.getType())) {
-            ext.isEnabled(SettingsManager.OPTIMISED_DECORATED_POTS.getValue());
-        }
-        else if (Registry.isSupported("copper_golem_statue", be.getType())) {
-            ext.isEnabled(SettingsManager.OPTIMISED_COPPER_GOLEMS.getValue());
-        }
-        if(ext.isEnabled()){
-            if(ext.isTimerFinished()){
-                ext.renderMode(RenderMode.TERRAIN);
-            }
-            if(ext.renderMode() != ext.renderModeDelayed()){
-                if(ext.renderModeDelayed() == RenderMode.TERRAIN) ext.renderMode(RenderMode.INTERMEDIATE);
-                if(ext.renderModeDelayed() == RenderMode.ENTITY) ext.renderMode(ext.renderModeDelayed());
+        if(!ext.isSupportedBlockEntity()) return;
+        else if(!SettingsManager.MOD_TOGGLE.getValue()) ext.isEnabled(false);
+        else{
+            String group = Registry.getGroup(be.getType());
+            if(group == null) return;
+            Option<Boolean> option = SettingsManager.GROUP_TOGGLE_SETTINGS.get(group);
+            if(option != null) ext.isEnabled(option.getValue());
+            if(ext.isEnabled()){
+                if(ext.isTimerFinished()){
+                    ext.renderMode(RenderMode.TERRAIN);
+                }
+                if(ext.renderMode() != ext.renderModeDelayed()){
+                    if(ext.renderModeDelayed() == RenderMode.TERRAIN) ext.renderMode(RenderMode.INTERMEDIATE);
+                    if(ext.renderModeDelayed() == RenderMode.ENTITY) ext.renderMode(ext.renderModeDelayed());
+                }
             }
         }
     }

@@ -28,10 +28,6 @@ public class LevelRendererMixin {
 
         if (original == null || original.isEmpty())  return original;
 
-        original.removeIf(be -> {
-            return (be instanceof BlockEntityExt ext && ext.isEnabled() && (!RenderModeManager.shouldRenderEntityFast(ext) || ext.shouldSkipBeRendering()));
-        });
-
         for (int i = original.size() - 1; i >= 0; i--) {
             if (original.get(i) instanceof BlockEntityExt ext){
                 if(ext.isEnabled() && (!RenderModeManager.shouldRenderEntityFast(ext) || ext.shouldSkipBeRendering())) {
