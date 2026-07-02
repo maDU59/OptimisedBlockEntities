@@ -59,6 +59,7 @@ public class SodiumIntegration implements ConfigEntryPoint {
                 .setName(Component.translatable("obe.config.category.skulls"))
                 .addOption(createBooleanOption(builder, SettingsManager.OPTIMISED_SKULLS))
                 .addOption(createBooleanOption(builder, SettingsManager.SKULL_AMBIENT_OCCLUSION))
+                .addOption(createBooleanOption(builder, SettingsManager.CUSTOM_SKULLS))
             )
 
             .addOptionGroup(builder.createOptionGroup()
