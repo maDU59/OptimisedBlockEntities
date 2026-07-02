@@ -45,7 +45,6 @@ public class OBEBlockRenderer {
         if (be == null) return null;
 
         BlockEntityExt ext = (BlockEntityExt)be;
-        System.out.println(be);
         if (ext == null || !ext.isSupportedBlockEntity() || !ext.hasSpecialRenderer() || !ext.isEnabled()) return null;
 
         Block block = state.getBlock();
@@ -56,7 +55,6 @@ public class OBEBlockRenderer {
         }
 
         String group = Registry.getGroup(state);
-        System.out.println(group);
         SpecialModelProvider customModelProvider = SpecialModelGetter.getSpecialModelProvider(state, group);
         if(ext.renderMode() == RenderMode.TERRAIN || ext.renderMode() == RenderMode.INTERMEDIATE){
             if(customModelProvider != null){
@@ -64,8 +62,6 @@ public class OBEBlockRenderer {
                 Object cacheKey = customModelProvider.getCacheKeyProvider().apply(be);
                 PoseStack poseStack = new PoseStack();
 
-                System.out.println(group + " " + state.getBlock().getName().getString() + " " + be.getType().toString() + " " + cacheKey);
-                
                 ModelLayerLocation layerLocation = customModelProvider.getModelLayerLocationProvider().apply(state, be);
                 if(layerLocation == null) return null;
 
