@@ -46,11 +46,13 @@ public class OBEBlockRenderer {
         if (be == null) return null;
 
         BlockEntityExt ext = (BlockEntityExt)be;
+        System.out.println(be);
         if (ext == null || !ext.isSupportedBlockEntity() || !ext.hasSpecialRenderer() || !ext.isEnabled()) return null;
 
         RandomSource random = RandomSource.create(seed);
 
         String group = Registry.getGroup(state);
+        System.out.println(group);
         SpecialModelProvider customModelProvider = SpecialModelGetter.getSpecialModelProvider(state, group);
         if(ext.renderMode() == RenderMode.TERRAIN || ext.renderMode() == RenderMode.INTERMEDIATE){
             if(customModelProvider != null){

@@ -16,6 +16,7 @@
 		"blockentity.lectern.LecternBlockEntityMixin",
 		"blockentity.beacon.BeaconBlockEntityMixin",
 		"blockentity.compat.lootr.LootrChestBlockEntityMixin",
+		"blockentity.compat.lootr.LootrShulkerBoxBlockEntityMixin",
 		"blockentity.BlockEntityMixin",
 		"blockentity.ext.BlockEntityMixin",
 		"blockentity.ext.BlockEntityRenderStateMixin",
