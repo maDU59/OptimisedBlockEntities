@@ -4,8 +4,10 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
+import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager;
 import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager.RenderMode;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 @Mixin(BlockEntity.class)
@@ -57,6 +59,13 @@ public abstract class BlockEntityMixin implements BlockEntityExt {
 
     @Override public boolean shouldSkipBeRendering() { return shouldSkipBeRendering; }
     @Override public void shouldSkipBeRendering(boolean bl) { shouldSkipBeRendering = bl; }
+    @Override public void shouldSkipBeRenderingAndUpdate(boolean bl) {
+        if(bl != shouldSkipBeRendering) {
+            shouldSkipBeRendering = bl;
+            BlockPos pos = ((BlockEntity)(Object)this).getBlockPos();
+            if(Minecraft.getInstance().level != null && Minecraft.getInstance().level.getChunkSource() != null) RenderModeManager.setDirty(pos);
+        }
+    }
 
     @Override public boolean forceEntity() { return forceEntity; }
     @Override public void forceEntity(boolean bl) { forceEntity = bl; }

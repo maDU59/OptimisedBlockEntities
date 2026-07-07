@@ -28,7 +28,7 @@ public abstract class ShelfBlockEntityMixin{
         BlockEntity be = (BlockEntity)(Object)this;
         BlockEntityExt ext = (BlockEntityExt)be;
         
-        ext.shouldSkipBeRendering(obe$isEmptyList(items));
+        ext.shouldSkipBeRenderingAndUpdate(obe$isEmptyList(items));
     }
 
     @Inject(method = "loadAdditional", at = @At("TAIL"))
@@ -37,7 +37,7 @@ public abstract class ShelfBlockEntityMixin{
         BlockEntity be = (BlockEntity)(Object)this;
         BlockEntityExt ext = (BlockEntityExt)be;
         
-        ext.shouldSkipBeRendering(obe$isEmptyList(items));
+        ext.shouldSkipBeRenderingAndUpdate(obe$isEmptyList(items));
     }
 
     @Inject(method = "applyImplicitComponents", at = @At("TAIL"))
@@ -46,7 +46,7 @@ public abstract class ShelfBlockEntityMixin{
         BlockEntity be = (BlockEntity)(Object)this;
         BlockEntityExt ext = (BlockEntityExt)be;
         
-        ext.shouldSkipBeRendering(obe$isEmptyList(items));
+        ext.shouldSkipBeRenderingAndUpdate(obe$isEmptyList(items));
     }
 
     @Unique
