@@ -20,8 +20,11 @@ import net.caffeinemc.mods.sodium.client.render.chunk.compile.tasks.ChunkBuilder
 import net.caffeinemc.mods.sodium.client.world.LevelSlice;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.SectionPos;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 @Pseudo
@@ -29,6 +32,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class ChunkBuilderMeshingTaskMixin {
 
     @Unique private final OBEBlockRenderer obeBlockRenderer = new OBEBlockRenderer();
+    @Unique private final SectionPos sectionPos = ((ChunkBuilderMeshingTask)(Object) this).getRenderSection().getPosition();
 
     @WrapOperation(method = "execute", at = @At(value = "INVOKE", target = "Lnet/caffeinemc/mods/sodium/client/world/LevelSlice;getBlockState(III)Lnet/minecraft/world/level/block/state/BlockState;"))
     private BlockState obe$getBlockState(LevelSlice slice, int x, int y, int z, Operation<BlockState> original, @Share("be") LocalRef<BlockEntity> beRef){
@@ -42,14 +46,11 @@ public class ChunkBuilderMeshingTaskMixin {
             BlockEntity be = beRef.get();
             BlockEntityExt ext = (BlockEntityExt) be;
             if(ext != null && ext.isSupportedBlockEntity()) {
-                RenderModeManager.updateBlockEntityOnChunkRemesh(ext, be);
+                RenderModeManager.updateBlockEntityOnChunkRemesh(ext, sectionPos);
                 if(ext.forceEntity()){
                     return RenderShape.INVISIBLE;
                 }
-                if(ext.isEnabled() && !ext.hasSpecialRenderer() && ext.renderMode() != RenderMode.TERRAIN && ext.renderMode() != RenderMode.INTERMEDIATE){
-                    return RenderShape.INVISIBLE;
-                }
-                if(ext.isEnabled() && (ext.renderMode() == RenderMode.TERRAIN || ext.renderMode() == RenderMode.INTERMEDIATE)){
+                if(ext.isEnabled() && ext.renderModeDelayed() == RenderMode.TERRAIN){
                     return RenderShape.MODEL;
                 }
             }
@@ -70,8 +71,7 @@ public class ChunkBuilderMeshingTaskMixin {
             BlockEntity be = beRef.get();
             BlockEntityExt ext = (BlockEntityExt) be;
             if(ext != null && ext.isSupportedBlockEntity()) {
-                RenderModeManager.updateBlockEntityOnChunkRemesh(ext, be);
-                if(ext.isEnabled() && !ext.hasSpecialRenderer() && ext.renderMode() != RenderMode.TERRAIN && ext.renderMode() != RenderMode.INTERMEDIATE){
+                if(ext.isEnabled() && !ext.hasSpecialRenderer() && ext.renderModeDelayed() != RenderMode.TERRAIN){
                     model = new BlockEntityStateModel();
                 }
                 else model = obeBlockRenderer.getModel(state, pos, state.getSeed(pos), originalModel, be);
@@ -79,5 +79,22 @@ public class ChunkBuilderMeshingTaskMixin {
         }
         model = model == null? originalModel : model;
         original.call(instance, model, state, pos, origin);
+    }
+
+    @WrapOperation(
+        method = "execute",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/caffeinemc/mods/sodium/client/render/chunk/ExtendedBlockEntityType;shouldRender(Lnet/minecraft/world/level/block/entity/BlockEntityType;Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/entity/BlockEntity;)Z"
+        )
+    )
+    private boolean obe$wrapShouldRender(BlockEntityType<?> type, BlockGetter slice, BlockPos pos, BlockEntity be, Operation<Boolean> original) {
+        BlockEntityExt ext = (BlockEntityExt) be;
+        if(ext != null && ext.isSupportedBlockEntity()) {
+            if(ext.isEnabled() && (!RenderModeManager.shouldRenderEntityFast(ext) || ext.shouldSkipBeRendering())) {
+                return false;
+            }
+        }
+        return original.call(type, slice, pos, be);
     }
 }

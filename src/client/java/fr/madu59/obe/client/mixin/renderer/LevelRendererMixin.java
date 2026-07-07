@@ -33,9 +33,6 @@ public class LevelRendererMixin {
                 if(ext.isEnabled() && (!RenderModeManager.shouldRenderEntityFast(ext) || ext.shouldSkipBeRendering())) {
                     original.remove(i);
                 }
-                else{
-                    RenderModeManager.updateOnRender(ext);
-                }
             }
         }
 
