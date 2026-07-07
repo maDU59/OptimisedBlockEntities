@@ -28,7 +28,6 @@ public abstract class BlockEntityMixin implements BlockEntityExt {
     @Override public RenderMode renderMode() { return renderMode; }
     @Override public void renderMode(RenderMode mode) {
         if(isEnabled) renderMode = mode;
-        if(mode == RenderMode.INTERMEDIATE) countdown = 3;
         renderModeDelayed = mode;
     }
 

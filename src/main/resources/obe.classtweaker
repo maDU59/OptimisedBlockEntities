@@ -6,6 +6,9 @@ accessible field net/minecraft/client/model/geom/ModelPart children Ljava/util/M
 # Model block state set accessing
 accessible field net/minecraft/client/renderer/block/BlockStateModelSet modelByState Ljava/util/Map;
 
+# Accessing CompileTask
+accessible class net/minecraft/client/renderer/chunk/SectionRenderDispatcher$RenderSection$CompileTask
+
 # Skull block rendering
 accessible field net/minecraft/client/renderer/blockentity/SkullBlockRenderer SKIN_BY_TYPE Ljava/util/Map;
 accessible field net/minecraft/world/level/block/entity/SkullBlockEntity isAnimating Z

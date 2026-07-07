@@ -31,9 +31,11 @@
 		"renderer.SectionCompilerMixin",
 		"renderer.ModelBlockRendererMixin",
 		"renderer.LevelRendererMixin",
+		"renderer.SectionRenderDispatcherMixin",
 		"renderer.compat.indigo.AltModelBlockRendererImplMixin",
 		"renderer.compat.sodium.ChunkBuilderMeshingTaskMixin",
 		"renderer.compat.sodium.SodiumWorldRendererMixin",
+		"renderer.compat.sodium.RenderSectionManagerMixin",
 		"core.ModelManagerMixin",
 		"BlockStateModelSetMixin"
 	],

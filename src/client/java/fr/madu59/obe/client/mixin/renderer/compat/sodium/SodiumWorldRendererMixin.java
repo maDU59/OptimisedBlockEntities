@@ -23,9 +23,6 @@ public class SodiumWorldRendererMixin {
             if(ext.isEnabled() && (!RenderModeManager.shouldRenderEntityFast(ext) || ext.shouldSkipBeRendering())){
                 ci.cancel();
             }
-            else{
-                RenderModeManager.updateOnRender(ext);
-            }
         }
     }
 }
