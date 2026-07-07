@@ -95,10 +95,8 @@ public class ChunkBuilderMeshingTaskMixin {
     )
     private boolean obe$wrapShouldRender(BlockEntityType<?> type, BlockGetter slice, BlockPos pos, BlockEntity be, Operation<Boolean> original) {
         BlockEntityExt ext = (BlockEntityExt) be;
-        if(ext != null && ext.isSupportedBlockEntity()) {
-            if(ext.isEnabled() && (!RenderModeManager.shouldRenderEntityFast(ext) || ext.shouldSkipBeRendering())) {
-                return false;
-            }
+        if(ext != null && ext.isEnabled() && (!RenderModeManager.shouldRenderEntityFast(ext) || ext.shouldSkipBeRendering())) {
+            return false;
         }
         return original.call(type, slice, pos, be);
     }

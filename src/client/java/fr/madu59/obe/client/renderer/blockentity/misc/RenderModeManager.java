@@ -67,7 +67,7 @@ public class RenderModeManager {
         }
     }
 
-    private static void setDirty(BlockPos pos){
+    public static void setDirty(BlockPos pos){
         if (!Minecraft.getInstance().isSameThread()) {
             Minecraft.getInstance().execute(() -> setDirty(pos));
             return;

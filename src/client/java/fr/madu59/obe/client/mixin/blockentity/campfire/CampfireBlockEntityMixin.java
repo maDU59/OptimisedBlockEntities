@@ -31,7 +31,7 @@ public abstract class CampfireBlockEntityMixin{
         BlockEntity be = (BlockEntity)(Object)this;
         BlockEntityExt ext = (BlockEntityExt)be;
         
-        ext.shouldSkipBeRendering(obe$isEmptyList(items));
+        ext.shouldSkipBeRenderingAndUpdate(obe$isEmptyList(items));
     }
 
     @Inject(method = "cookTick", at = @At("TAIL"))
@@ -39,7 +39,7 @@ public abstract class CampfireBlockEntityMixin{
         
         BlockEntityExt ext = (BlockEntityExt)be;
         
-        ext.shouldSkipBeRendering(obe$isEmptyList(be.items));
+        ext.shouldSkipBeRenderingAndUpdate(obe$isEmptyList(be.items));
     }
 
     @Inject(method = "loadAdditional", at = @At("TAIL"))
@@ -48,7 +48,7 @@ public abstract class CampfireBlockEntityMixin{
         BlockEntity be = (BlockEntity)(Object)this;
         BlockEntityExt ext = (BlockEntityExt)be;
         
-        ext.shouldSkipBeRendering(obe$isEmptyList(items));
+        ext.shouldSkipBeRenderingAndUpdate(obe$isEmptyList(items));
     }
 
     @Inject(method = "placeFood", at = @At("TAIL"))
@@ -57,7 +57,7 @@ public abstract class CampfireBlockEntityMixin{
         BlockEntity be = (BlockEntity)(Object)this;
         BlockEntityExt ext = (BlockEntityExt)be;
         
-        ext.shouldSkipBeRendering(obe$isEmptyList(items));
+        ext.shouldSkipBeRenderingAndUpdate(obe$isEmptyList(items));
     }
 
     @Inject(method = "applyImplicitComponents", at = @At("TAIL"))
@@ -66,7 +66,7 @@ public abstract class CampfireBlockEntityMixin{
         BlockEntity be = (BlockEntity)(Object)this;
         BlockEntityExt ext = (BlockEntityExt)be;
         
-        ext.shouldSkipBeRendering(obe$isEmptyList(items));
+        ext.shouldSkipBeRenderingAndUpdate(obe$isEmptyList(items));
     }
 
     @Unique

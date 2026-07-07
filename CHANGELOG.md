@@ -1,3 +1,2 @@
 # What's new:
-- Improved updates system to prevent split-second invisibility / duplicates when switching between the terrain and the entity renderer
-- Improved performances with Sodium
+- Fixed beacons, shelves, lecterns, beacons and campfires not being optimized since last update
