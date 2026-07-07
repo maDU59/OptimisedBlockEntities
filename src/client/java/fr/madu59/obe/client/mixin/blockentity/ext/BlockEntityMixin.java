@@ -20,7 +20,6 @@ public abstract class BlockEntityMixin implements BlockEntityExt {
     @Unique private boolean renderBoth = false;
     @Unique private boolean shouldSkipBeRendering = false;
     @Unique private boolean forceEntity = false;
-    @Unique private int countdown = 0;
 
     @Override public boolean isSupportedBlockEntity() { return isSupportedBlockEntity; }
     @Override public void isSupportedBlockEntity(boolean bl) {this.isSupportedBlockEntity = bl; }
@@ -61,7 +60,4 @@ public abstract class BlockEntityMixin implements BlockEntityExt {
 
     @Override public boolean forceEntity() { return forceEntity; }
     @Override public void forceEntity(boolean bl) { forceEntity = bl; }
-
-    @Override public int renderModSwitchTimer() { return countdown; }
-    @Override public void tickRenderModeSwitchTimer() { countdown -= 1; }
 }
