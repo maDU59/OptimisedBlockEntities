@@ -21,8 +21,10 @@ import net.caffeinemc.mods.sodium.client.world.LevelSlice;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 @Pseudo
@@ -77,5 +79,22 @@ public class ChunkBuilderMeshingTaskMixin {
         }
         model = model == null? originalModel : model;
         original.call(instance, model, state, pos, origin);
+    }
+
+    @WrapOperation(
+        method = "execute",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/caffeinemc/mods/sodium/client/render/chunk/ExtendedBlockEntityType;shouldRender(Lnet/minecraft/world/level/block/entity/BlockEntityType;Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/entity/BlockEntity;)Z"
+        )
+    )
+    private boolean obe$wrapShouldRender(BlockEntityType<?> type, BlockGetter slice, BlockPos pos, BlockEntity be, Operation<Boolean> original) {
+        BlockEntityExt ext = (BlockEntityExt) be;
+        if(ext != null && ext.isSupportedBlockEntity()) {
+            if(ext.isEnabled() && (!RenderModeManager.shouldRenderEntityFast(ext) || ext.shouldSkipBeRendering())) {
+                return false;
+            }
+        }
+        return original.call(type, slice, pos, be);
     }
 }
