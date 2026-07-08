@@ -1,7 +1,5 @@
 package fr.madu59.obe.client.renderer.blockentity;
 
-import java.util.List;
-
 import fr.madu59.obe.client.config.SettingsManager;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
@@ -15,7 +13,7 @@ public class SpecialRenderingManager {
     public static boolean shouldSkipRendering(BlockEntity be) {
         if(!SettingsManager.MOD_TOGGLE.getValue()) return false;
         else if(be instanceof SignBlockEntity signBe && SettingsManager.OPTIMISED_SIGNS.getValue()){
-            return !hastext(signBe);
+            return isEmpty(signBe);
         }
         else if(be instanceof BeaconBlockEntity beaconBe && SettingsManager.OPTIMISED_BEACONS.getValue()){
             return beaconBe.getBeamSections().isEmpty();
@@ -35,14 +33,14 @@ public class SpecialRenderingManager {
         return false;
     }
 
-    private static boolean hastext(SignBlockEntity be){
+    private static boolean isEmpty(SignBlockEntity be){
         if(be.getText(true) == null || be.getText(false) == null) return false;
         Component[] frontMessages = be.getText(true).getMessages(false);
         Component[] backMessages = be.getText(false).getMessages(false);
         for(int i = 0; i < 4; i++){
-            if(!frontMessages[i].getString().isEmpty()) return true;
-            if(!backMessages[i].getString().isEmpty()) return true;
+            if(!frontMessages[i].getString().isEmpty()) return false;
+            if(!backMessages[i].getString().isEmpty()) return false;
         }
-        return false;
+        return true;
     }
 }
