@@ -39,6 +39,7 @@ public class SpecialRenderingManager {
     }
 
     private static boolean hastext(SignBlockEntity be){
+        if(be.getText(true) == null || be.getText(false) == null) return false;
         for(int i = 0; i < 4; i++){
             if(!be.getText(true).getMessages(false)[i].getString().isEmpty()) return true;
             if(!be.getText(false).getMessages(false)[i].getString().isEmpty()) return true;
