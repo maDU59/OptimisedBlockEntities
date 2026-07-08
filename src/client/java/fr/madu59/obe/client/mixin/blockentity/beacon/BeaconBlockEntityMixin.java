@@ -30,7 +30,7 @@ public abstract class BeaconBlockEntityMixin{
         BlockEntity be = (BlockEntity)(Object)this;
         BlockEntityExt ext = (BlockEntityExt)be;
         
-        ext.shouldSkipBeRendering(obe$isEmptyList(this.beamSections));
+        ext.shouldSkipBeRenderingAndUpdate(obe$isEmptyList(this.beamSections));
     }
 
     @Inject(method = "tick", at = @At("TAIL"))
@@ -38,7 +38,7 @@ public abstract class BeaconBlockEntityMixin{
         
         BlockEntityExt ext = (BlockEntityExt)be;
         
-        ext.shouldSkipBeRendering(obe$isEmptyList(be.getBeamSections()));
+        ext.shouldSkipBeRenderingAndUpdate(obe$isEmptyList(be.getBeamSections()));
     }
 
     @Unique
