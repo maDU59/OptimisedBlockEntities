@@ -1,25 +1,20 @@
 package fr.madu59.obe.client.renderer.blockentity.misc;
 
+import fr.madu59.obe.client.chunk.ChunkTaskHolder;
 import fr.madu59.obe.client.compat.ModCompat;
 import fr.madu59.obe.client.config.SettingsManager;
+import fr.madu59.obe.client.config.Option;
 import fr.madu59.obe.client.registry.Registry;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityRenderStateExt;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.SectionPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class RenderModeManager {
-
-    public static  <T extends BlockEntity> boolean isSupportBlockEntity(T entity){
-        return isSupportBlockEntity((BlockEntityExt)entity);
-    }
-
-    public static boolean isSupportBlockEntity(BlockEntityExt ext){
-        return ext != null && ext.isSupportedBlockEntity();
-    }
 
     public static void setRenderMode(BlockEntity be, RenderMode mode, BlockPos pos){
         setRenderMode((BlockEntityExt)be, mode, pos);
@@ -54,11 +49,11 @@ public class RenderModeManager {
     }
 
     public static <T extends BlockEntity> boolean shouldRenderEntity(BlockEntityExt ext, T be){
-        return ext == null || !be.hasLevel() || ext.forceEntity() || !ext.isSupportedBlockEntity() || ext.renderMode() == RenderMode.ENTITY || ext.renderModeDelayed() == RenderMode.ENTITY || ext.renderBoth() || ext.renderMode() == RenderMode.INTERMEDIATE || ModCompat.shouldRenderEntity(be);
+        return ext == null || !be.hasLevel() || ext.forceEntity() || !ext.isSupportedBlockEntity() || ext.renderMode() == RenderMode.ENTITY || ext.renderModeDelayed() == RenderMode.ENTITY || ext.renderBoth() || ModCompat.shouldRenderEntity(be);
     }
 
     public static <T extends BlockEntity> boolean shouldRenderEntityFast(BlockEntityExt ext){
-        return ext.forceEntity() || !ext.isSupportedBlockEntity() || ext.renderMode() == RenderMode.ENTITY || ext.renderModeDelayed() == RenderMode.ENTITY || ext.renderBoth() || ext.renderMode() == RenderMode.INTERMEDIATE;
+        return ext.forceEntity() || !ext.isSupportedBlockEntity() || ext.renderMode() == RenderMode.ENTITY || ext.renderModeDelayed() == RenderMode.ENTITY || ext.renderBoth();
     }
 
     public static <T extends BlockEntity> void setRenderModeDelayed(T be, RenderMode mode, BlockPos pos){
@@ -72,7 +67,7 @@ public class RenderModeManager {
         }
     }
 
-    private static void setDirty(BlockPos pos){
+    public static void setDirty(BlockPos pos){
         if (!Minecraft.getInstance().isSameThread()) {
             Minecraft.getInstance().execute(() -> setDirty(pos));
             return;
@@ -81,63 +76,27 @@ public class RenderModeManager {
         Minecraft.getInstance().levelRenderer.blockChanged(Minecraft.getInstance().level, pos, state, state, 8);
     }
 
-    public static void updateOnRender(BlockEntityRenderState state){
-        updateOnRender((BlockEntityExt)((BlockEntityRenderStateExt)state).blockEntity());
-    }
-
-    public static void updateOnRender(BlockEntityExt ext){
-        if(ext.renderMode() == RenderMode.INTERMEDIATE){
-            if(ext.renderModSwitchTimer() <= 0) ext.renderMode(RenderMode.TERRAIN);
-            ext.tickRenderModeSwitchTimer();
-        }
-    }
-
-    public static void updateBlockEntityOnChunkRemesh(BlockEntityExt ext, BlockEntity be){
-        if(!SettingsManager.MOD_TOGGLE.getValue()) ext.isEnabled(false);
-        if (Registry.isSupported("sign", be.getType())) {
-            ext.isEnabled(SettingsManager.OPTIMISED_SIGNS.getValue());
-        }
-        else if (Registry.isSupported("hanging_sign", be.getType())) {
-            ext.isEnabled(SettingsManager.OPTIMISED_SIGNS.getValue());
-        }
-        else if (Registry.isSupported("bed", be.getType())) {
-            ext.isEnabled(SettingsManager.OPTIMISED_BEDS.getValue());
-        }
-        else if (Registry.isSupported("chest", be.getType())) {
-            ext.isEnabled(SettingsManager.OPTIMISED_CHESTS.getValue());
-        }
-        else if (Registry.isSupported("banner", be.getType())) {
-            ext.isEnabled(SettingsManager.OPTIMISED_BANNERS.getValue());
-        }
-        else if (Registry.isSupported("shulker_box", be.getType())) {
-            ext.isEnabled(SettingsManager.OPTIMISED_SHULKER_BOXES.getValue());
-        }
-        else if (Registry.isSupported("skull", be.getType())) {
-            ext.isEnabled(SettingsManager.OPTIMISED_SKULLS.getValue());
-        }
-        else if (Registry.isSupported("bell", be.getType())) {
-            ext.isEnabled(SettingsManager.OPTIMISED_BELLS.getValue());
-        }
-        else if (Registry.isSupported("decorated_pot", be.getType())) {
-            ext.isEnabled(SettingsManager.OPTIMISED_DECORATED_POTS.getValue());
-        }
-        else if (Registry.isSupported("copper_golem_statue", be.getType())) {
-            ext.isEnabled(SettingsManager.OPTIMISED_COPPER_GOLEMS.getValue());
-        }
-        if(ext.isEnabled()){
-            if(ext.isTimerFinished()){
-                ext.renderMode(RenderMode.TERRAIN);
-            }
-            if(ext.renderMode() != ext.renderModeDelayed()){
-                if(ext.renderModeDelayed() == RenderMode.TERRAIN) ext.renderMode(RenderMode.INTERMEDIATE);
-                if(ext.renderModeDelayed() == RenderMode.ENTITY) ext.renderMode(ext.renderModeDelayed());
+    public static void updateBlockEntityOnChunkRemesh(BlockEntityExt ext, SectionPos pos){
+        if(!ext.isSupportedBlockEntity()) return;
+        else if(!SettingsManager.MOD_TOGGLE.getValue()) ext.isEnabled(false);
+        else{
+            String group = Registry.getGroup(((BlockEntity)ext).getType());
+            if(group == null) return;
+            Option<Boolean> option = SettingsManager.GROUP_TOGGLE_SETTINGS.get(group);
+            if(option != null) ext.isEnabled(option.getValue());
+            if(ext.isEnabled()){
+                if(ext.isTimerFinished()){
+                    ChunkTaskHolder.addTask(pos, () -> ext.renderMode(RenderMode.TERRAIN));
+                }
+                if(ext.renderMode() != ext.renderModeDelayed()){
+                    ChunkTaskHolder.addTask(pos, () -> ext.renderMode(ext.renderModeDelayed()));
+                }
             }
         }
     }
 
     public static enum RenderMode {
         TERRAIN,
-        ENTITY,
-        INTERMEDIATE
+        ENTITY
     }
 }
