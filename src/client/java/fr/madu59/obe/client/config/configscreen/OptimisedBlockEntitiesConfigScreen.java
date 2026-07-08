@@ -57,7 +57,7 @@ public class OptimisedBlockEntitiesConfigScreen extends Screen {
         list.category("obe.config.category.signs").build();
         list.button(SettingsManager.OPTIMISED_SIGNS).build();
         list.button(SettingsManager.SIGN_AMBIENT_OCCLUSION).isEnabled(() -> SettingsManager.OPTIMISED_SIGNS.getValue()).build();
-        list.button(SettingsManager.SIGN_TEXT_CULLING).isEnabled(() -> SettingsManager.OPTIMISED_SIGNS.getValue()).build();
+        list.button(SettingsManager.SIGN_TEXT_CULLING).build();
 
         list.category("obe.config.category.shulker_boxes").build();
         list.button(SettingsManager.OPTIMISED_SHULKER_BOXES).build();
