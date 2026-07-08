@@ -26,8 +26,8 @@
 			"fr.madu59.obe.client.config.configscreen.ModMenuIntegration"
 		],
 		"sodium:config_api_user": [
-            "fr.madu59.obe.client.config.configscreen.SodiumIntegration"
-        ]
+			"fr.madu59.obe.client.config.configscreen.SodiumIntegration"
+		]
 	},
 	"mixins": [
 		{
@@ -37,7 +37,7 @@
 	],
 	"accessWidener": "obe.classtweaker",
 	"depends": {
-		"fabricloader": ">=0.19",
+		"fabricloader": ">=0.18.4",
 		"minecraft": "~1.21.6",
 		"java": ">=21",
 		"fabric-api": "*"
@@ -47,7 +47,8 @@
 			"links": {
 				"modmenu.curseforge": "https://www.curseforge.com/minecraft/mc-mods/obe",
 				"modmenu.modrinth": "https://modrinth.com/mod/obe",
-				"modmenu.discord": "https://discord.gg/ATTZQQeVw4"
+				"modmenu.discord": "https://discord.gg/ATTZQQeVw4",
+				"modmenu.donate": "https://ko-fi.com/madu59_"
 			}
 		}
 	}
