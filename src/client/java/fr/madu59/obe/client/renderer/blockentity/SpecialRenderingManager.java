@@ -3,6 +3,7 @@ package fr.madu59.obe.client.renderer.blockentity;
 import java.util.List;
 
 import fr.madu59.obe.client.config.SettingsManager;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BeaconBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -20,17 +21,13 @@ public class SpecialRenderingManager {
             return beaconBe.getBeamSections().isEmpty();
         }
         else if(be instanceof CampfireBlockEntity campfireBe && SettingsManager.OPTIMISED_CAMPFIRES.getValue()){
-            List<ItemStack> list = campfireBe.getItems();
-            if(list == null) return true;
-            for(ItemStack itemStack : list){
+            for(ItemStack itemStack : campfireBe.getItems()){
                 if(itemStack != null && itemStack != ItemStack.EMPTY) return false;
             }
             return true;
         }
         else if(be instanceof ShelfBlockEntity shelfBe && SettingsManager.OPTIMISED_SHELVES.getValue()){
-            List<ItemStack> list = shelfBe.getItems();
-            if(list == null) return true;
-            for(ItemStack itemStack : list){
+            for(ItemStack itemStack : shelfBe.getItems()){
                 if(itemStack != null && itemStack != ItemStack.EMPTY) return false;
             }
             return true;
@@ -40,9 +37,11 @@ public class SpecialRenderingManager {
 
     private static boolean hastext(SignBlockEntity be){
         if(be.getText(true) == null || be.getText(false) == null) return false;
+        Component[] frontMessages = be.getText(true).getMessages(false);
+        Component[] backMessages = be.getText(false).getMessages(false);
         for(int i = 0; i < 4; i++){
-            if(!be.getText(true).getMessages(false)[i].getString().isEmpty()) return true;
-            if(!be.getText(false).getMessages(false)[i].getString().isEmpty()) return true;
+            if(!frontMessages[i].getString().isEmpty()) return true;
+            if(!backMessages[i].getString().isEmpty()) return true;
         }
         return false;
     }
