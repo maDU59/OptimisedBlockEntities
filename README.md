@@ -26,7 +26,7 @@ This mod renders supported block entities just like any other block, this means 
   <td><img alt = "Sodium only: 30FPS" src = "https://cdn.modrinth.com/data/cached_images/1ccae3753f9912e1fecbdf26d9990bd986c19000.png"></td></tr>
 </table>
 
-<sub>*Performance tests ran on Minecraft 26.1.2 with OBE 1.1.27 and BBE 1.3.5 with Sodium 0.9.0 in HD*</sub>
+<sub>*Performance tests ran on Minecraft 26.1.2 with OBE 1.1.27 and BBE 1.3.5 with Sodium 0.9.0 in FHD*</sub>
 
 ## Compatibility:
 
