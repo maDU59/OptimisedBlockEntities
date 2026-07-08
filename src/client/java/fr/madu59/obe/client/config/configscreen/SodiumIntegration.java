@@ -44,6 +44,7 @@ public class SodiumIntegration implements ConfigEntryPoint {
             
             .addOptionGroup(builder.createOptionGroup()
                 .setName(Component.translatable("obe.config.category.signs"))
+                .addOption(createBooleanOption(builder, SettingsManager.OPTIMISED_SIGNS))
                 .addOption(createBooleanOption(builder, SettingsManager.SIGN_TEXT_CULLING))
             )
             
