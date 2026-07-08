@@ -39,12 +39,12 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
 	modImplementation ("com.terraformersmc:modmenu:${project.modmenu_version}")
-	modImplementation "net.caffeinemc:sodium-fabric-api:0.8.3+mc1.21.11"
-	modImplementation "net.caffeinemc:sodium-fabric:0.8.3+mc1.21.11"
+	modImplementation "net.caffeinemc:sodium-fabric-api:0.8.12+mc1.21.11"
+	modImplementation "net.caffeinemc:sodium-fabric:0.8.12+mc1.21.11"
 
 	localRuntime 'org.anarres:jcpp:1.4.14'
     localRuntime 'io.github.douira:glsl-transformer:3.0.0-pre3'
-	modImplementation "maven.modrinth:iris:1.10.5+1.21.11-fabric"
+	modImplementation "maven.modrinth:iris:1.10.7+1.21.11-fabric"
 	
 	modImplementation "maven.modrinth:entitytexturefeatures:7.1-fabric-1.21.11"
 	modImplementation "maven.modrinth:entity-model-features:3.2.4-fabric-1.21.11"
