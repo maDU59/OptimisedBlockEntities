@@ -44,7 +44,7 @@ dependencies {
 
 	implementation "maven.modrinth:entitytexturefeatures:7.1.1-fabric-26.2"
 	implementation "maven.modrinth:entity-model-features:3.2.6-fabric-26.2"
-    implementation "maven.modrinth:lootr:zjXUPmV6"
+    implementation "maven.modrinth:lootr:6aAxKwLC"
 
     runtimeOnly "maven.modrinth:spark:iYFOl6lQ"
 	
