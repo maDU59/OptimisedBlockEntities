@@ -10,6 +10,7 @@
     "obe.config.option.shulker_box_ao": "Shulker Box Ambient Occlusion",
     "obe.config.option.optimised_skulls": "Optimize Skulls",
     "obe.config.option.skull_ao": "Skull Ambient Occlusion",
+    "obe.config.option.custom_skulls": "Optimize some custom skulls",
     "obe.config.option.optimised_beds": "Optimize Beds",
     "obe.config.option.bed_ao": "Bed Ambient Occlusion",
     "obe.config.option.optimised_bells": "Optimize Bells",
@@ -25,7 +26,7 @@
     "obe.config.option.optimised_campfires": "Optimize Campfires",
     "obe.config.option.optimised_beacons": "Optimize Beacons",
 
-    "obe.config.warning.incompatibility": " has been detected, changing the settings may cause issues!",
+    "obe.config.warning.incompatibility": "%s has been detected, changing the settings may cause issues!",
 
     "obe.config.category.chests": "Chests",
     "obe.config.category.banners": "Banners",

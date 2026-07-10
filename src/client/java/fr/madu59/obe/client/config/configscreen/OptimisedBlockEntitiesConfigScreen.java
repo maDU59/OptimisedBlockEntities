@@ -40,7 +40,7 @@ public class OptimisedBlockEntitiesConfigScreen extends Screen {
         super.init();
         this.list = new MyConfigListWidget(this.minecraft, this.width, this.height - 80, 40, 26);
 
-        if(ModCompat.isIncompatibilityDetected()) list.category(ModCompat.getIncompatibleMod() + I18n.get("obe.config.warning.incompatibility")).style(ChatFormatting.UNDERLINE, ChatFormatting.YELLOW).build();
+        if(ModCompat.isIncompatibilityDetected()) list.category(I18n.get("obe.config.warning.incompatibility", ModCompat.getIncompatibleMod())).style(ChatFormatting.UNDERLINE, ChatFormatting.YELLOW).build();
 
         list.category("obe.config.category.general").build();
         list.button(SettingsManager.MOD_TOGGLE).build();
@@ -57,7 +57,7 @@ public class OptimisedBlockEntitiesConfigScreen extends Screen {
         list.category("obe.config.category.signs").build();
         list.button(SettingsManager.OPTIMISED_SIGNS).build();
         list.button(SettingsManager.SIGN_AMBIENT_OCCLUSION).isEnabled(() -> SettingsManager.OPTIMISED_SIGNS.getValue()).build();
-        list.button(SettingsManager.SIGN_TEXT_CULLING).isEnabled(() -> SettingsManager.OPTIMISED_SIGNS.getValue()).build();
+        list.button(SettingsManager.SIGN_TEXT_CULLING).build();
 
         list.category("obe.config.category.shulker_boxes").build();
         list.button(SettingsManager.OPTIMISED_SHULKER_BOXES).build();
@@ -66,6 +66,7 @@ public class OptimisedBlockEntitiesConfigScreen extends Screen {
         list.category("obe.config.category.skulls").build();
         list.button(SettingsManager.OPTIMISED_SKULLS).build();
         list.button(SettingsManager.SKULL_AMBIENT_OCCLUSION).isEnabled(() -> SettingsManager.OPTIMISED_SKULLS.getValue()).build();
+        list.button(SettingsManager.CUSTOM_SKULLS).isEnabled(() -> SettingsManager.OPTIMISED_SKULLS.getValue()).build();
 
         list.category("obe.config.category.beds").build();
         list.button(SettingsManager.OPTIMISED_BEDS).build();

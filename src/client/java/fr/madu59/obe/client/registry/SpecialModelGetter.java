@@ -11,6 +11,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import fr.madu59.obe.OBE;
 import fr.madu59.obe.client.util.blockentity.BellUtil;
+import fr.madu59.obe.client.util.blockentity.SkullBlockUtil;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -24,6 +25,7 @@ public class SpecialModelGetter {
 
     public static void init(){
         registerDefault("bell", new SpecialModelProvider(BellUtil::getBellModelLayerLocation, BellUtil::getBellMaterial, BellUtil::transformBell, SpecialModelProvider::getDummyCacheKey).keepOriginalModel().showOriginalWhenHidden());
+        registerDefault("skull", new SpecialModelProvider(SkullBlockUtil::getSkullBlockModelLayerLocation, SkullBlockUtil::getSkullBlockMaterial, SkullBlockUtil::transformSkullBlock, SkullBlockUtil::getBuiltInTexture));
     }
 
     public static void registerDefault(String group, SpecialModelProvider getter){
