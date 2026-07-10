@@ -20,7 +20,7 @@ public class ItemBlockRenderTypesMixin {
 
     @Inject(method = "getChunkRenderType", at = @At("RETURN"), cancellable = true)
     private static void onGetChunkRenderType(BlockState blockState, CallbackInfoReturnable<RenderType> cir) {
-        if(RenderModeManager.hasBlockEntity(blockState)){
+        if(blockState.hasBlockEntity()){
             if(cir.getReturnValue() == RenderType.solid()){
                 Block block = blockState.getBlock();
                 if(block instanceof ShulkerBoxBlock || block instanceof AbstractSkullBlock || block instanceof CeilingHangingSignBlock || block instanceof WallHangingSignBlock){

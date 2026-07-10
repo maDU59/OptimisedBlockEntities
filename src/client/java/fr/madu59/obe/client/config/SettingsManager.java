@@ -110,6 +110,12 @@ public class SettingsManager {
         reloadResourcesAction
     );
 
+    public static Option<Boolean> CUSTOM_SKULLS = loadOptionWithDefaults("built_in_custom_skull",
+        "obe.config.option.custom_skulls",
+        true,
+        reloadResourcesAction
+    );
+
     public static Option<Boolean> OPTIMISED_BEDS = loadOptionWithDefaults("optimized_bed",
         "obe.config.option.optimised_beds",
         true,
@@ -180,6 +186,18 @@ public class SettingsManager {
         "obe.config.option.optimised_beacons",
         true,
         reloadChunksAction
+    );
+
+    public static final Map<String, Option<Boolean>> GROUP_TOGGLE_SETTINGS = Map.of(
+        "chest", SettingsManager.OPTIMISED_CHESTS,
+        "banner", SettingsManager.OPTIMISED_BANNERS,
+        "shulker_box", SettingsManager.OPTIMISED_SHULKER_BOXES,
+        "skull", SettingsManager.OPTIMISED_SKULLS,
+        "bell", SettingsManager.OPTIMISED_BELLS,
+        "decorated_pot", SettingsManager.OPTIMISED_DECORATED_POTS,
+        "copper_golem_statue", SettingsManager.OPTIMISED_COPPER_GOLEMS,
+        "sign", SettingsManager.OPTIMISED_SKULLS,
+        "bed", SettingsManager.OPTIMISED_BEDS
     );
 
     public static void saveSettings() {
