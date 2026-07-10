@@ -62,12 +62,12 @@ public class OBEBlockRenderer {
 
         String group = Registry.getGroup(state);
         SpecialModelProvider customModelProvider = SpecialModelGetter.getSpecialModelProvider(state, group);
-        if(ext.renderMode() == RenderMode.TERRAIN || ext.renderMode() == RenderMode.INTERMEDIATE){
+        if(ext.renderModeDelayed() == RenderMode.TERRAIN){
             if(customModelProvider != null){
                 if(ResourceUtil.cacheContains(state, be)) return ResourceUtil.getModel(state, be);
                 Object cacheKey = customModelProvider.getCacheKeyProvider().apply(be);
                 PoseStack poseStack = new PoseStack();
-                
+
                 ModelLayerLocation layerLocation = customModelProvider.getModelLayerLocationProvider().apply(state, be);
                 if(layerLocation == null) return null;
 
