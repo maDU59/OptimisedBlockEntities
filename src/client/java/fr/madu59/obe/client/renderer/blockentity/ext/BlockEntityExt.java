@@ -26,10 +26,8 @@ public interface BlockEntityExt {
 
     boolean shouldSkipBeRendering();
     void shouldSkipBeRendering(boolean bl);
+    void shouldSkipBeRenderingAndUpdate(boolean bl);
 
     boolean forceEntity();
     void forceEntity(boolean bl);
-
-    void tickRenderModeSwitchTimer();
-    int renderModSwitchTimer();
 }

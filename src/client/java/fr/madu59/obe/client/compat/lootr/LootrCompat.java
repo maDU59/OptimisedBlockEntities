@@ -9,6 +9,7 @@ import fr.madu59.obe.client.registry.Registry;
 import fr.madu59.obe.client.registry.SpecialModelGetter;
 import fr.madu59.obe.client.registry.SpecialModelGetter.SpecialModelProvider;
 import fr.madu59.obe.client.util.blockentity.ChestUtil;
+import fr.madu59.obe.client.util.blockentity.ShulkerBoxUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.texture.TextureAtlas;
@@ -21,7 +22,9 @@ import net.zestyblaze.lootr.LootrTags;
 import net.zestyblaze.lootr.api.LootrAPI;
 import net.zestyblaze.lootr.api.blockentity.ILootBlockEntity;
 import net.zestyblaze.lootr.block.entities.LootrChestBlockEntity;
+import net.zestyblaze.lootr.block.entities.LootrShulkerBlockEntity;
 import net.zestyblaze.lootr.client.block.LootrChestBlockRenderer;
+import net.zestyblaze.lootr.client.block.LootrShulkerBlockRenderer;
 import net.zestyblaze.lootr.config.ConfigManager;
 import net.zestyblaze.lootr.init.ModBlockEntities;
 
@@ -34,11 +37,18 @@ public class LootrCompat {
     public static final ResourceLocation OLD_MATERIAL = LootrChestBlockRenderer.OLD_MATERIAL.texture();
     public static final ResourceLocation OLD_MATERIAL2 = LootrChestBlockRenderer.OLD_MATERIAL2.texture();
 
+    public static final ResourceLocation SHULKER_BOX_MATERIAL = LootrShulkerBlockRenderer.MATERIAL.texture();
+    public static final ResourceLocation SHULKER_BOX_MATERIAL2 = LootrShulkerBlockRenderer.MATERIAL2.texture();
+
     private static UUID playerId = null;
 
     public static void init(){
-        Registry.addBlockEntityTypeInGroup("chest", ModBlockEntities.SPECIAL_LOOT_CHEST);
+        Registry.addBlockEntityTypeInGroup("chest", ModBlockEntities.SPECIAL_LOOT_CHEST, ModBlockEntities.SPECIAL_TRAPPED_LOOT_CHEST);
         SpecialModelGetter.register(ModBlockEntities.SPECIAL_LOOT_CHEST, new SpecialModelProvider(ChestUtil::getChestModelLayerLocation, LootrCompat::getChestMaterial, LootrCompat::transformChest, LootrCompat::getChestCacheKey));
+        SpecialModelGetter.register(ModBlockEntities.SPECIAL_TRAPPED_LOOT_CHEST, new SpecialModelProvider(ChestUtil::getChestModelLayerLocation, LootrCompat::getChestMaterial, LootrCompat::transformChest, LootrCompat::getChestCacheKey));
+
+        Registry.addBlockEntityTypeInGroup("shulker_box", ModBlockEntities.SPECIAL_LOOT_SHULKER);
+        SpecialModelGetter.register(ModBlockEntities.SPECIAL_LOOT_SHULKER, new SpecialModelProvider(ShulkerBoxUtil::getShulkerBoxModelLayerLocation, LootrCompat::getShulkerBoxMaterial, ShulkerBoxUtil::transformShulkerBox, LootrCompat::getShulkerBoxCacheKey));
     }
 
     public static <T extends LootrChestBlockEntity & ILootBlockEntity> ResourceLocation getChestMaterial(BlockState state, BlockEntity be) {
@@ -88,6 +98,37 @@ public class LootrCompat {
         }
    }
 
+    public static ResourceLocation getShulkerBoxMaterial(BlockState state, BlockEntity be) {
+        if(be instanceof LootrShulkerBlockEntity lootrShulkerBe){
+            if (ConfigManager.get().client.vanilla_textures) {
+                return Sheets.DEFAULT_SHULKER_TEXTURE_LOCATION.texture();
+            } else if (ConfigManager.get().client.old_textures) {
+                if (playerId == null) {
+                    Minecraft mc = Minecraft.getInstance();
+                    if (mc.player == null) {
+                        return OLD_MATERIAL;
+                    }
+
+                    playerId = mc.player.getUUID();
+                }
+
+                return lootrShulkerBe.getOpeners().contains(playerId) ? OLD_MATERIAL2 : OLD_MATERIAL;
+            } else {
+                if (playerId == null) {
+                    Minecraft mc = Minecraft.getInstance();
+                    if (mc.player == null) {
+                        return MATERIAL;
+                    }
+
+                    playerId = mc.player.getUUID();
+                }
+
+                return lootrShulkerBe.getOpeners().contains(playerId) ? MATERIAL2 : MATERIAL;
+            }
+        }
+        else return ShulkerBoxUtil.getShulkerBoxMaterial(state);
+   }
+
     public static void transformChest(BlockState state, BlockEntity be, PoseStack poseStack) {
         poseStack.pushPose();
         ChestUtil.transformChest(state, poseStack);
@@ -97,5 +138,9 @@ public class LootrCompat {
 
     public static Object getChestCacheKey(BlockEntity be) {
         return be instanceof LootrChestBlockEntity lootrChestBe && Minecraft.getInstance().player != null && lootrChestBe.getOpeners().contains(Minecraft.getInstance().player.getUUID());
+    }
+
+    public static Object getShulkerBoxCacheKey(BlockEntity be) {
+        return be instanceof LootrShulkerBlockEntity lootrShulkerBoxBe && Minecraft.getInstance().player != null && lootrShulkerBoxBe.getOpeners().contains(Minecraft.getInstance().player.getUUID());
     }
 }

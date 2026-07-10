@@ -15,6 +15,7 @@ import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager.RenderMo
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.SectionPos;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -24,11 +25,11 @@ public class BlockRenderDispatcherMixin {
 
     @Redirect(method = "renderBatched", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getRenderShape()Lnet/minecraft/world/level/block/RenderShape;"))
     private RenderShape obe$getRenderShape(BlockState state, @Local BlockPos pos){
-        if(RenderModeManager.hasBlockEntity(state)){
+        if(state.hasBlockEntity()){
             BlockEntity be = Minecraft.getInstance().level.getBlockEntity(pos);
             BlockEntityExt ext = (BlockEntityExt) be;
             if(ext != null) {
-                RenderModeManager.updateBlockEntityOnChunkRemesh(ext, be);
+                RenderModeManager.updateBlockEntityOnChunkRemesh(ext, SectionPos.of(pos));
                 if(ext.isSupportedBlockEntity() && !ext.hasSpecialRenderer() && ext.renderMode() != RenderMode.TERRAIN){
                     return RenderShape.INVISIBLE;
                 }
@@ -42,18 +43,18 @@ public class BlockRenderDispatcherMixin {
 
     @WrapOperation(method = "renderBreakingTexture", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getRenderShape()Lnet/minecraft/world/level/block/RenderShape;"))
     private RenderShape obe$getRenderShape(BlockState state, Operation<RenderShape> original, @Local BlockPos pos){
-        if(RenderModeManager.hasBlockEntity(state)){
+        if(state.hasBlockEntity()){
             BlockEntity be = Minecraft.getInstance().level.getBlockEntity(pos);
             BlockEntityExt ext = (BlockEntityExt) be;
             if(ext != null && ext.isSupportedBlockEntity()) {
-                RenderModeManager.updateBlockEntityOnChunkRemesh(ext, be);
+                RenderModeManager.updateBlockEntityOnChunkRemesh(ext, SectionPos.of(pos));
                 if(ext.forceEntity()){
                     return RenderShape.INVISIBLE;
                 }
-                if(ext.isEnabled() && !ext.hasSpecialRenderer() && ext.renderMode() != RenderMode.TERRAIN && ext.renderMode() != RenderMode.INTERMEDIATE){
+                if(ext.isEnabled() && !ext.hasSpecialRenderer() && ext.renderModeDelayed() != RenderMode.TERRAIN){
                     return RenderShape.INVISIBLE;
                 }
-                if(ext.isEnabled() && (ext.renderMode() == RenderMode.TERRAIN || ext.renderMode() == RenderMode.INTERMEDIATE)){
+                if(ext.isEnabled() && ext.renderModeDelayed() == RenderMode.TERRAIN){
                     return RenderShape.MODEL;
                 }
             }
