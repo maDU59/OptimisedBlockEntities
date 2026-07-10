@@ -25,7 +25,7 @@
     "obe.config.option.optimised_campfires": "Ottimizza i Fuochi da Campo",
     "obe.config.option.optimised_beacons": "Ottimizza i Fari",
 
-    "obe.config.warning.incompatibility": " è stato rilevato, modificare le impostazioni potrebbe causare problemi!",
+    "obe.config.warning.incompatibility": "%s è stato rilevato, modificare le impostazioni potrebbe causare problemi!",
 
     "obe.config.category.chests": "Bauli",
     "obe.config.category.banners": "Stendardi",
