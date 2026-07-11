@@ -28,13 +28,13 @@ This mod renders supported block entities just like any other block, this means 
 
 <sub>*Performance tests ran on Minecraft 26.1.2 with OBE 1.1.27 and BBE 1.3.5 with Sodium 0.9.0 in FHD*</sub>
 
-## Compatibility:
+## Compatibility
 
 - Compatible with EMF/ETF and any resource packs made for those (like FA: Objects) *Since OBE 1.1.4*
 - Compatible with Quark's chests *Since OBE 1.1.3 and Quark 4.1-481*
 - Compatible with Lootr *Since OBE 1.1.23*
 
-## Why 
+## Why
 
 Mods like this already exists like:
 - [BBE](https://modrinth.com/mod/better-block-entities), but it requires Sodium to run, isn't available on Neoforge (at least not at the time of OBE development) and heavily modifies Minecraft's rendering pipeling
@@ -48,7 +48,31 @@ Both are awesome, the developers did great work but I wanted to make one that wa
 
 and I even managed to make it faster somehow even though they are both really well done and optimized
 
-## Trouble shooting:
+## List of all optimized block entities
+
+<details>
+<summary>Optimized block entities</summary>
+<ul>
+<li>Chests</li>
+<li>Shulker boxes</li>
+<li>Signs</li>
+<li>Decorated pots (with no pattern)</li>
+<li>Skulls (with no custom texture¹)</li>
+<li>Beds</li>
+<li>Copper golems</li>
+<li>Bells</li>
+<li>Banners (only the wooden post, not the flag as that would prevent the animation)</li>
+<li>Beacons</li>
+<li>Lecterns</li>
+<li>Campfires</li>
+<li>Shelves</li>
+</ul>
+
+<sub>¹: Some skulls with custom textures from Hypixel's Skyblock are also optimized</sub>
+
+</details>
+
+## Trouble shooting
 
 Invisible block entities:
 
