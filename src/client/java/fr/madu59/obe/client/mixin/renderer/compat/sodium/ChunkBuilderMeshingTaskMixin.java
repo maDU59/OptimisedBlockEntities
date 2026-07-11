@@ -66,19 +66,20 @@ public class ChunkBuilderMeshingTaskMixin {
         )
     )
     public void obe$wrapRenderModel(BlockRenderer instance, BlockStateModel originalModel, BlockState state, BlockPos pos, BlockPos origin, Operation<Void> original, @Share("be") LocalRef<BlockEntity> beRef) {
-        BlockStateModel model = null;
         if(state.hasBlockEntity()){
+            BlockStateModel model = null;
             BlockEntity be = beRef.get();
             BlockEntityExt ext = (BlockEntityExt) be;
             if(ext != null && ext.isSupportedBlockEntity()) {
                 if(ext.isEnabled() && !ext.hasSpecialRenderer() && ext.renderModeDelayed() != RenderMode.TERRAIN){
                     model = new BlockEntityStateModel();
                 }
-                else model = obeBlockRenderer.getModel(state, pos, state.getSeed(pos), originalModel, be);
+                else if(ext.hasSpecialRenderer()) model = obeBlockRenderer.getModel(state, pos, state.getSeed(pos), originalModel, be);
             }
+            model = model == null? originalModel : model;
+            original.call(instance, model, state, pos, origin);
         }
-        model = model == null? originalModel : model;
-        original.call(instance, model, state, pos, origin);
+        else original.call(instance, originalModel, state, pos, origin);
     }
 
     @WrapOperation(
