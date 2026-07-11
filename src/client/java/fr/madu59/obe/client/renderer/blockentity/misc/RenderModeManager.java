@@ -1,7 +1,6 @@
 package fr.madu59.obe.client.renderer.blockentity.misc;
 
 import fr.madu59.obe.client.chunk.ChunkTaskHolder;
-import fr.madu59.obe.client.compat.ModCompat;
 import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.config.Option;
 import fr.madu59.obe.client.registry.Registry;
@@ -33,7 +32,7 @@ public class RenderModeManager {
     }
 
     public static <T extends BlockEntity> boolean shouldRenderEntity(boolean setting, BlockEntityExt ext, BlockEntity be){
-        return ext == null || !be.hasLevel() || !ext.isSupportedBlockEntity() || setting;
+        return ext == null || !be.hasLevel() || !ext.isSupportedBlockEntity() || setting || !SettingsManager.MOD_TOGGLE.getValue();
     }
 
     public static <T extends BlockEntity> boolean shouldRenderEntity(T be){
@@ -41,7 +40,7 @@ public class RenderModeManager {
     }
 
     public static <T extends BlockEntity> boolean shouldRenderEntity(BlockEntityExt ext, T be){
-        return ext == null || !be.hasLevel() || ext.forceEntity() || !ext.isSupportedBlockEntity() || ext.renderMode() == RenderMode.ENTITY || ext.renderModeDelayed() == RenderMode.ENTITY || ext.renderBoth() || ModCompat.shouldRenderEntity(be);
+        return ext == null || !be.hasLevel() || ext.forceEntity() || !ext.isSupportedBlockEntity() || ext.renderMode() == RenderMode.ENTITY || ext.renderModeDelayed() == RenderMode.ENTITY || ext.renderBoth();
     }
 
     public static <T extends BlockEntity> boolean shouldRenderEntityFast(BlockEntityExt ext){
