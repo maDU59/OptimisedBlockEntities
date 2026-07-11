@@ -15,7 +15,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 
 @Pseudo
-@Mixin(AltModelBlockRendererImpl.class)
+@Mixin(value = AltModelBlockRendererImpl.class, remap = false)
 public class AltModelBlockRendererImplMixin {
     @Unique private final OBEBlockRenderer obeBlockRenderer = new OBEBlockRenderer();
 
