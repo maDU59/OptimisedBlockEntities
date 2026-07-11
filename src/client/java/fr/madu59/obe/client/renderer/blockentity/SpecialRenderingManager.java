@@ -1,6 +1,7 @@
 package fr.madu59.obe.client.renderer.blockentity;
 
 import fr.madu59.obe.client.config.SettingsManager;
+import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BeaconBlockEntity;
@@ -12,7 +13,7 @@ import net.minecraft.world.level.block.entity.SignBlockEntity;
 public class SpecialRenderingManager {
     public static boolean shouldSkipRendering(BlockEntity be) {
         if(!SettingsManager.MOD_TOGGLE.getValue()) return false;
-        else if(be instanceof SignBlockEntity signBe && SettingsManager.OPTIMISED_SIGNS.getValue()){
+        else if(be instanceof SignBlockEntity signBe && SettingsManager.OPTIMISED_SIGNS.getValue() && ((BlockEntityExt)be).isSupportedBlockEntity()){
             return isEmpty(signBe);
         }
         else if(be instanceof BeaconBlockEntity beaconBe && SettingsManager.OPTIMISED_BEACONS.getValue()){
