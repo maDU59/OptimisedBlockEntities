@@ -1,7 +1,6 @@
 package fr.madu59.obe.client.renderer.blockentity;
 
 import fr.madu59.obe.client.config.SettingsManager;
-import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BeaconBlockEntity;

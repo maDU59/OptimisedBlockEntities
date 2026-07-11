@@ -45,8 +45,6 @@ public class OBEBlockRenderer {
         BlockEntityExt ext = (BlockEntityExt)be;
         if (ext == null || !ext.isSupportedBlockEntity() || !ext.hasSpecialRenderer() || !ext.isEnabled()) return null;
 
-        RandomSource random = RandomSource.create(seed);
-
         String group = Registry.getGroup(state);
         SpecialModelProvider customModelProvider = SpecialModelGetter.getSpecialModelProvider(state, group);
         if(ext.renderModeDelayed() == RenderMode.TERRAIN){
