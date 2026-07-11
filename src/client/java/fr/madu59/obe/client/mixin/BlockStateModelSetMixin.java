@@ -16,7 +16,6 @@ import fr.madu59.obe.client.util.ResourceUtil;
 
 import org.spongepowered.asm.mixin.injection.At;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.BlockModelShaper;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelManager;
