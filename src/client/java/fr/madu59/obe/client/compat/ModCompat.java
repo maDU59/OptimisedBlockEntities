@@ -52,7 +52,6 @@ public class ModCompat {
     }
 
     public static boolean shouldRenderEntity(BlockEntity be){
-        if(isPunchyLoaded()) return be.getBlockPos() == BlockPos.ZERO;
         return false;
     }
 
