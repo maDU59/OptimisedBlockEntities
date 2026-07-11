@@ -51,10 +51,6 @@ public class ModCompat {
         else return root;
     }
 
-    public static boolean shouldRenderEntity(BlockEntity be){
-        return false;
-    }
-
     public static boolean isIncompatibilityDetected(){
         for(String mod : incompatibleMods){
             if(PlatformHelper.isModLoaded(mod)) return true;
