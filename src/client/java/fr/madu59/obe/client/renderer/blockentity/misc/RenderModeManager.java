@@ -39,7 +39,7 @@ public class RenderModeManager {
     }
 
     public static <T extends BlockEntity> boolean shouldRenderEntity(boolean setting, BlockEntityExt ext, BlockEntity be){
-        return ext == null || !be.hasLevel() || !ext.isSupportedBlockEntity() || setting;
+        return ext == null || !be.hasLevel() || !ext.isSupportedBlockEntity() || setting || !SettingsManager.MOD_TOGGLE.getValue();
     }
 
     public static <T extends BlockEntity> boolean shouldRenderEntity(T be){
