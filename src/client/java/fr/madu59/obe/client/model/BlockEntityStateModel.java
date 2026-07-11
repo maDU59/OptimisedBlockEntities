@@ -117,7 +117,7 @@ public class BlockEntityStateModel implements BlockStateModel{
                 }
 
                 Material.Baked bakedMat = new Material.Baked(sprite, false);
-                MaterialInfo matInfo = MaterialInfo.of(bakedMat, Transparency.TRANSPARENT, -1, true, 0);
+                MaterialInfo matInfo = MaterialInfo.of(bakedMat, Transparency.TRANSPARENT, -1, null, 0);
 
                 BakedQuad baked = new BakedQuad(
                         positions[0], positions[1], positions[2], positions[3],

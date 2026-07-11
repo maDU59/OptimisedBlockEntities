@@ -33,20 +33,20 @@ dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	
 	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
-	implementation("com.terraformersmc:modmenu:${project.modmenu_version}")
+	compileOnly("com.terraformersmc:modmenu:${project.modmenu_version}")
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
-	implementation "net.caffeinemc:sodium-fabric-api:0.9.0+mc26.2"
-	implementation "net.caffeinemc:sodium-fabric:0.9.0+mc26.2"
-	implementation "maven.modrinth:iris:1.11.0+26.2-fabric"
+	compileOnly "net.caffeinemc:sodium-fabric-api:0.9.0+mc26.2"
+	compileOnly "net.caffeinemc:sodium-fabric:0.9.0+mc26.2"
+	compileOnly "maven.modrinth:iris:1.11.0+26.2-fabric"
 
-	implementation "maven.modrinth:entitytexturefeatures:7.1.1-fabric-26.2"
-	implementation "maven.modrinth:entity-model-features:3.2.6-fabric-26.2"
-    implementation "maven.modrinth:lootr:6aAxKwLC"
+	compileOnly "maven.modrinth:entitytexturefeatures:7.1.1-fabric-26.2"
+	compileOnly "maven.modrinth:entity-model-features:3.2.6-fabric-26.2"
+    compileOnly "maven.modrinth:lootr:6aAxKwLC"
 
-    runtimeOnly "maven.modrinth:spark:iYFOl6lQ"
+    // runtimeOnly "maven.modrinth:spark:iYFOl6lQ"
 	
 }
 

@@ -1,5 +1,7 @@
 package fr.madu59.obe.client.renderer;
 
+import java.util.Optional;
+
 import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -23,9 +25,12 @@ import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.ItemInstance;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.DecoratedPotPattern;
 import net.minecraft.world.level.block.entity.DecoratedPotPatterns;
@@ -157,9 +162,7 @@ public class OBEBlockRenderer {
 
         layerLocation = DecoratedPotUtil.getDecoratedPotSideModelLayerLocation(state);
 
-        Holder.Reference<DecoratedPotPattern> pattern = BuiltInRegistries.DECORATED_POT_PATTERN.getOrThrow(DecoratedPotPatterns.BLANK);
-
-        BlockStateModel sideModel = ResourceUtil.getSubModel(layerLocation,  Sheets.DECORATED_POT_MAPPER.apply((pattern.value()).assetId()).texture(), state, poseStack, getAmbientOcclusion("decorated_pot"), originalModel.particleMaterial());
+        BlockStateModel sideModel = ResourceUtil.getSubModel(layerLocation, Sheets.DECORATED_POT_SIDE.texture(), state, poseStack, getAmbientOcclusion("decorated_pot"), originalModel.particleMaterial());
         
         model = new CompositeBlockStateModel(model, sideModel);
 
