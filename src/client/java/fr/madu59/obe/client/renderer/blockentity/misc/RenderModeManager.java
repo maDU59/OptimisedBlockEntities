@@ -1,7 +1,6 @@
 package fr.madu59.obe.client.renderer.blockentity.misc;
 
 import fr.madu59.obe.client.chunk.ChunkTaskHolder;
-import fr.madu59.obe.client.compat.ModCompat;
 import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.config.Option;
 import fr.madu59.obe.client.registry.Registry;

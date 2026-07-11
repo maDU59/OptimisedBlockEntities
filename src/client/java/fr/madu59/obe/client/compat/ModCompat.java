@@ -9,8 +9,6 @@ import fr.madu59.obe.client.compat.lootr.LootrCompat;
 import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.platform.PlatformHelper;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class ModCompat {
