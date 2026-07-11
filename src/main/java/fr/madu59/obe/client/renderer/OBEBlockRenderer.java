@@ -4,7 +4,6 @@ import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import fr.madu59.obe.OBE;
 import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.model.BlockEntityStateModel;
 import fr.madu59.obe.client.model.CompositeBlockStateModel;
@@ -15,7 +14,6 @@ import fr.madu59.obe.client.registry.SpecialModelGetter;
 import fr.madu59.obe.client.registry.TransformationGetter;
 import fr.madu59.obe.client.registry.SpecialModelGetter.SpecialModelProvider;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
-import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager;
 import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager.RenderMode;
 import fr.madu59.obe.client.util.ResourceUtil;
 import fr.madu59.obe.client.util.blockentity.DecoratedPotUtil;
@@ -37,7 +35,7 @@ public class OBEBlockRenderer {
     public OBEBlockRenderer(){}
 
     public @Nullable BakedModel getModel(BlockState state, BlockPos pos, long seed, BakedModel originalModel, BlockAndTintGetter level){
-        if (!RenderModeManager.hasBlockEntity(state)) return null;
+        if (!state.hasBlockEntity()) return null;
         return getModel(state, pos, seed, originalModel, level.getBlockEntity(pos));
     }
 
@@ -58,12 +56,12 @@ public class OBEBlockRenderer {
 
         String group = Registry.getGroup(state);
         SpecialModelProvider customModelProvider = SpecialModelGetter.getSpecialModelProvider(state, group);
-        if(ext.renderMode() == RenderMode.TERRAIN || ext.renderMode() == RenderMode.INTERMEDIATE){
+        if(ext.renderModeDelayed() == RenderMode.TERRAIN){
             if(customModelProvider != null){
                 if(ResourceUtil.cacheContains(state, be)) return ResourceUtil.getModel(state, be);
                 Object cacheKey = customModelProvider.getCacheKeyProvider().apply(be);
                 PoseStack poseStack = new PoseStack();
-                
+
                 ModelLayerLocation layerLocation = customModelProvider.getModelLayerLocationProvider().apply(state, be);
                 if(layerLocation == null) return null;
 
