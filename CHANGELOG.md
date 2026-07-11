@@ -1,3 +1,2 @@
 # What's new:
-- Updated to support Lootr latest version
-- Fixed minor visual issue with some modded block entities
+- Fixed disabling the mod causing banner posts and signs becoming invisible

@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 
 @Mixin(BlockEntity.class)
 public abstract class BlockEntityMixin implements BlockEntityExt {
-    @Unique private RenderMode renderMode = RenderMode.TERRAIN;
+    @Unique private RenderMode renderMode = RenderMode.ENTITY;
     @Unique private RenderMode renderModeDelayed = RenderMode.TERRAIN;
     @Unique private boolean isSupportedBlockEntity = false;
     @Unique private boolean hasSpecialRenderer = false;
