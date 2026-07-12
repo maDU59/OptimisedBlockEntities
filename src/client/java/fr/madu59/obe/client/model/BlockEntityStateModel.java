@@ -99,11 +99,9 @@ public class BlockEntityStateModel implements BlockStateModel{
         long[] uvs = new long[4];
         Vector3f normal = new Vector3f();
 
-        part.visit(poseStack, (pose, name, idx, cube) -> {
+        part.visit(poseStack, (pose, partPath, cubeIndex, cube) -> {
             for(ModelPart.Polygon polygon : cube.polygons){
-                if (polygon.vertices().length != 4) {
-                    continue;
-                }
+                if (polygon.vertices().length != 4) continue;
 
                 polygon.normal().mul(pose.normal(), normal);
                 
@@ -111,6 +109,7 @@ public class BlockEntityStateModel implements BlockStateModel{
 
                 for (int i = 0; i < 4; i++) {
                     ModelPart.Vertex vertex = polygon.vertices()[i];
+                    // From ModelPart#getExtentsForGui
                     positions[i] = pose.pose().transformPosition(vertex.worldX(), vertex.worldY(), vertex.worldZ(), new Vector3f());
 
                     float u = sprite.getU(vertex.u());

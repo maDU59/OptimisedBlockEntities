@@ -127,6 +127,7 @@ public class BlockEntityModelsManager {
             case "copper_golem_statue" -> SettingsManager.COPPER_GOLEM_AMBIENT_OCCLUSION.getValue();
             case "shulker_box" -> SettingsManager.SHULKER_BOX_AMBIENT_OCCLUSION.getValue();
             case "sign" -> SettingsManager.SIGN_AMBIENT_OCCLUSION.getValue();
+            case "hanging_sign" -> SettingsManager.SIGN_AMBIENT_OCCLUSION.getValue();
             case "bed" -> SettingsManager.BED_AMBIENT_OCCLUSION.getValue();
             default -> false;
         };
