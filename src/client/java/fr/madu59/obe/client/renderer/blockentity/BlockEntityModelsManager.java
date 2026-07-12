@@ -1,4 +1,4 @@
-package fr.madu59.obe.client.renderer;
+package fr.madu59.obe.client.renderer.blockentity;
 
 import java.util.Optional;
 
@@ -24,21 +24,14 @@ import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.item.ItemInstance;
-import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.DecoratedPotPattern;
-import net.minecraft.world.level.block.entity.DecoratedPotPatterns;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class OBEBlockRenderer {
+public class BlockEntityModelsManager {
 
-    public OBEBlockRenderer(){}
+    public BlockEntityModelsManager(){}
 
     public @Nullable BlockStateModel getModel(BlockState state, BlockPos pos, long seed, BlockStateModel originalModel, BlockAndTintGetter level){
         if (!state.hasBlockEntity()) return null;
@@ -82,68 +75,20 @@ public class OBEBlockRenderer {
         return null;
     }
 
-    public BlockStateModel getSkullBlockModel(BlockState state, RandomSource random, BlockStateModel originalModel) {
+    public BlockStateModel getBlockModel(BlockState state, RandomSource random, BlockStateModel originalModel, String group) {
         if(ResourceUtil.cacheContains(state)) return ResourceUtil.getModel(state);
         PoseStack poseStack = new PoseStack();
         
-        ModelLayerLocation layerLocation = ModelLayerLocationGetter.getModelLayerLocation(state, "skull");
+        ModelLayerLocation layerLocation = ModelLayerLocationGetter.getModelLayerLocation(state, group);
         if(layerLocation == null) return null;
 
-        TransformationGetter.applyTransformation(state, poseStack, "skull");
-        return ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "skull"), state, poseStack, getAmbientOcclusion("skull"), originalModel.particleMaterial());
-    }
-
-    public BlockStateModel getChestModel(BlockState state, RandomSource random, BlockStateModel originalModel) {
-        if(ResourceUtil.cacheContains(state)) return ResourceUtil.getModel(state);
-        PoseStack poseStack = new PoseStack();
-        
-        ModelLayerLocation layerLocation = ModelLayerLocationGetter.getModelLayerLocation(state, "chest");
-        if(layerLocation == null) return null;
-
-        TransformationGetter.applyTransformation(state, poseStack, "chest");
-        BlockStateModel model = ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "chest"), state, poseStack, getAmbientOcclusion("chest"), originalModel.particleMaterial());
-        model = new CompositeBlockStateModel(model, originalModel);
-        ResourceUtil.cache(state, model);
-        return model;
-    }
-
-    public BlockStateModel getBannerModel(BlockState state, RandomSource random, BlockStateModel originalModel) {
-        if(ResourceUtil.cacheContains(state)) return ResourceUtil.getModel(state);
-        PoseStack poseStack = new PoseStack();
-        
-        ModelLayerLocation layerLocation = ModelLayerLocationGetter.getModelLayerLocation(state, "banner");
-        if(layerLocation == null) return null;
-        
-        TransformationGetter.applyTransformation(state, poseStack, "banner");
-
-        return ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "banner"), state, poseStack, getAmbientOcclusion("banner"), originalModel.particleMaterial());
-    }
-
-    public BlockStateModel getCopperGolemStatueModel(BlockState state, RandomSource random, BlockStateModel originalModel) {
-        if(ResourceUtil.cacheContains(state)) return ResourceUtil.getModel(state);
-        PoseStack poseStack = new PoseStack();
-        
-        ModelLayerLocation layerLocation = ModelLayerLocationGetter.getModelLayerLocation(state, "copper_golem_statue");
-        if(layerLocation == null) return null;
-
-        TransformationGetter.applyTransformation(state, poseStack, "copper_golem_statue");
-
-        return ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "copper_golem_statue"), state, poseStack, getAmbientOcclusion("copper_golem_statue"), originalModel.particleMaterial());
-    }
-
-    public BlockStateModel getShulkerBoxModel(BlockState state, RandomSource random, BlockStateModel originalModel) {
-        if(ResourceUtil.cacheContains(state)) return ResourceUtil.getModel(state);
-        PoseStack poseStack = new PoseStack();
-        
-        ModelLayerLocation layerLocation = ModelLayerLocationGetter.getModelLayerLocation(state, "shulker_box");
-        if(layerLocation == null) return null;
-
-        TransformationGetter.applyTransformation(state, poseStack, "shulker_box");
-
-        Identifier material = MaterialGetter.getMaterial(state, "shulker_box");
+        Identifier material = MaterialGetter.getMaterial(state, group);
         if(material == null) return null;
 
-        BlockStateModel model = ResourceUtil.getModel(layerLocation, material, state, poseStack, getAmbientOcclusion("shulker_box"), originalModel.particleMaterial());
+        TransformationGetter.applyTransformation(state, poseStack, group);
+
+        BlockStateModel model = new BlockEntityStateModel(layerLocation, material, poseStack, getAmbientOcclusion(group), state, originalModel.particleMaterial());
+
         model = new CompositeBlockStateModel(model, originalModel);
         ResourceUtil.cache(state, model);
         return model;
