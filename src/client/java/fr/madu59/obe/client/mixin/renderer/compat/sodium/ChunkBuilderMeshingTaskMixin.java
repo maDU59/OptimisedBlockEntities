@@ -11,7 +11,7 @@ import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 
 import fr.madu59.obe.client.model.BlockEntityStateModel;
-import fr.madu59.obe.client.renderer.OBEBlockRenderer;
+import fr.madu59.obe.client.renderer.blockentity.BlockEntityModelsManager;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager;
 import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager.RenderMode;
@@ -31,7 +31,7 @@ import net.minecraft.world.level.block.state.BlockState;
 @Mixin(value = ChunkBuilderMeshingTask.class, remap = false)
 public class ChunkBuilderMeshingTaskMixin {
 
-    @Unique private final OBEBlockRenderer obeBlockRenderer = new OBEBlockRenderer();
+    @Unique private final BlockEntityModelsManager blockEntityModelsManager = new BlockEntityModelsManager();
     @Unique private final SectionPos sectionPos = ((ChunkBuilderMeshingTask)(Object) this).getRenderSection().getPosition();
 
     @WrapOperation(method = "execute", at = @At(value = "INVOKE", target = "Lnet/caffeinemc/mods/sodium/client/world/LevelSlice;getBlockState(III)Lnet/minecraft/world/level/block/state/BlockState;"))
@@ -74,7 +74,7 @@ public class ChunkBuilderMeshingTaskMixin {
                 if(ext.isEnabled() && !ext.hasSpecialRenderer() && ext.renderModeDelayed() != RenderMode.TERRAIN){
                     model = new BlockEntityStateModel();
                 }
-                else if(ext.hasSpecialRenderer()) model = obeBlockRenderer.getModel(state, pos, state.getSeed(pos), originalModel, be);
+                else if(ext.hasSpecialRenderer()) model = blockEntityModelsManager.getModel(state, pos, state.getSeed(pos), originalModel, be);
             }
             model = model == null? originalModel : model;
             original.call(instance, model, state, pos, origin);

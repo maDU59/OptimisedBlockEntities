@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.model.BlockEntityStateModel;
 import fr.madu59.obe.client.registry.Registry;
-import fr.madu59.obe.client.renderer.OBEBlockRenderer;
+import fr.madu59.obe.client.renderer.blockentity.BlockEntityModelsManager;
 import fr.madu59.obe.client.util.ResourceUtil;
 
 import org.spongepowered.asm.mixin.injection.At;
@@ -25,7 +25,7 @@ import net.minecraft.world.level.block.state.BlockState;
 @Mixin(BlockStateModelSet.class)
 public class BlockStateModelSetMixin {
 
-    @Unique private final OBEBlockRenderer obeBlockRenderer = new OBEBlockRenderer();
+    @Unique private final BlockEntityModelsManager blockEntityModelsManager = new BlockEntityModelsManager();
     @Unique private final Identifier missingTexture = Identifier.tryParse("minecraft:missingno");
 
     @Shadow
@@ -47,33 +47,33 @@ public class BlockStateModelSetMixin {
             if(group == null) return;
 
             if(group.equals("skull") && SettingsManager.OPTIMISED_SKULLS.getValue()){
-                model = obeBlockRenderer.getSkullBlockModel(state, random, obe$getOriginalModel(state));
+                model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
                 if(model != null) cir.setReturnValue(model);
             }
             else if(group.equals("chest") && SettingsManager.OPTIMISED_CHESTS.getValue()){
-                model = obeBlockRenderer.getChestModel(state, random, obe$getOriginalModel(state));
+                model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
                 if(model != null) cir.setReturnValue(model);
             }
             else if(group.equals("banner") && SettingsManager.OPTIMISED_BANNERS.getValue()){
-                model = obeBlockRenderer.getBannerModel(state, random, obe$getOriginalModel(state));
+                model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
                 if(model != null) cir.setReturnValue(model);
             }
             // else if(group.equals("bell")){
             //     BlockStateModelSet set = ((BlockStateModelSet)(Object)this);
-            //     OBEBlockRenderer.originalBellModel = (BlockStateModel)set.modelByState.getOrDefault(state, new BlockEntityStateModel());
-            //     model = new CompositeBlockStateModel(obeBlockRenderer.getBellModel(state, random, obe$getOriginalModel(state)), (BlockStateModel)set.modelByState.getOrDefault(state, new BlockEntityStateModel());
+            //     blockEntityModelsManager.originalBellModel = (BlockStateModel)set.modelByState.getOrDefault(state, new BlockEntityStateModel());
+            //     model = new CompositeBlockStateModel(blockEntityModelsManager.getBellModel(state, random, obe$getOriginalModel(state)), (BlockStateModel)set.modelByState.getOrDefault(state, new BlockEntityStateModel());
             //     if(model != null) cir.setReturnValue(model);
             // }
             else if(group.equals("copper_golem_statue") && SettingsManager.OPTIMISED_COPPER_GOLEMS.getValue()){
-                model = obeBlockRenderer.getCopperGolemStatueModel(state, random, obe$getOriginalModel(state));
+                model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
                 if(model != null) cir.setReturnValue(model);
             }
             else if(group.equals("shulker_box") && SettingsManager.OPTIMISED_SHULKER_BOXES.getValue()){
-                model = obeBlockRenderer.getShulkerBoxModel(state, random, obe$getOriginalModel(state));
+                model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
                 if(model != null) cir.setReturnValue(model);
             }
             else if(group.equals("decorated_pot") && SettingsManager.OPTIMISED_DECORATED_POTS.getValue()){
-                model = obeBlockRenderer.getDecoratedPotModel(state, random, obe$getOriginalModel(state));
+                model = blockEntityModelsManager.getDecoratedPotModel(state, random, obe$getOriginalModel(state));
                 if(model != null) cir.setReturnValue(model);
             }
         }
