@@ -91,33 +91,32 @@ public class BlockEntityStateModel implements BlockStateModel{
 
     private List<BakedQuad> getBakedQuads(ModelPart part, PoseStack poseStack, TextureAtlasSprite sprite, boolean fixBfc){
         List<BakedQuad> bakedQuadsList = new ArrayList<>();
+
+        Material.Baked bakedMat = new Material.Baked(sprite, false);
+        MaterialInfo matInfo = MaterialInfo.of(bakedMat, Transparency.TRANSPARENT, -1, true, 0);
+
+        Vector3f[] positions = new Vector3f[4];
+        long[] uvs = new long[4];
+        Vector3f normal = new Vector3f();
+
         part.visit(poseStack, (pose, name, idx, cube) -> {
             for(ModelPart.Polygon polygon : cube.polygons){
                 if (polygon.vertices().length != 4) {
                     continue;
                 }
 
-                Vector3f normal = new Vector3f();
-
                 polygon.normal().mul(pose.normal(), normal);
                 
                 Direction dir = getDirection(normal);
 
-                Vector3f[] positions = new Vector3f[4];
-                long[] uvs = new long[4];
-
                 for (int i = 0; i < 4; i++) {
                     ModelPart.Vertex vertex = polygon.vertices()[i];
-                    Vector3f vec = pose.pose().transformPosition(vertex.worldX(), vertex.worldY(), vertex.worldZ(), new Vector3f());
-                    positions[i] = vec;
+                    positions[i] = pose.pose().transformPosition(vertex.worldX(), vertex.worldY(), vertex.worldZ(), new Vector3f());
 
                     float u = sprite.getU(vertex.u());
                     float v = sprite.getV(vertex.v());
                     uvs[i] = UVPair.pack(u, v);
                 }
-
-                Material.Baked bakedMat = new Material.Baked(sprite, false);
-                MaterialInfo matInfo = MaterialInfo.of(bakedMat, Transparency.TRANSPARENT, -1, true, 0);
 
                 BakedQuad baked = new BakedQuad(
                         positions[0], positions[1], positions[2], positions[3],

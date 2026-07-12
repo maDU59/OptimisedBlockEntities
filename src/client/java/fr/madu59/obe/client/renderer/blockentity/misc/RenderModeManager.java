@@ -67,12 +67,14 @@ public class RenderModeManager {
     }
 
     public static void setDirty(BlockPos pos){
-        if (!Minecraft.getInstance().isSameThread()) {
-            Minecraft.getInstance().execute(() -> setDirty(pos));
+        Minecraft client = Minecraft.getInstance();
+        if(client.level == null) return;
+        if (!client.isSameThread()) {
+            client.execute(() -> setDirty(pos));
             return;
         }
-        BlockState state = Minecraft.getInstance().level.getBlockState(pos);
-        Minecraft.getInstance().levelRenderer.blockChanged(Minecraft.getInstance().level, pos, state, state, 8);
+        BlockState state = client.level.getBlockState(pos);
+        client.levelRenderer.blockChanged(Minecraft.getInstance().level, pos, state, state, 8);
     }
 
     public static void updateBlockEntityOnChunkRemesh(BlockEntityExt ext, SectionPos pos){
