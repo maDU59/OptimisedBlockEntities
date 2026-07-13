@@ -44,6 +44,12 @@ public class SettingsManager {
         reloadResourcesAction
     );
 
+    public static Option<Boolean> MODEL_OPTIMIZATION = loadOptionWithDefaults("optimized_models",
+        "obe.config.option.optimised_models",
+        true,
+        reloadResourcesAction
+    );
+
     public static Option<Boolean> OPTIMISED_CHESTS = loadOptionWithDefaults("optimized_chest",
         "obe.config.option.optimised_chests",
         !isIncompatible,

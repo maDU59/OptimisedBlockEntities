@@ -26,7 +26,7 @@ This mod renders supported block entities just like any other block, this means 
   <td><img alt = "Sodium only: 30FPS" src = "https://cdn.modrinth.com/data/cached_images/1ccae3753f9912e1fecbdf26d9990bd986c19000.png"></td></tr>
 </table>
 
-<sub>*Performance tests ran on Minecraft 26.1.2 with OBE 1.1.27 and BBE 1.3.5 with Sodium 0.9.0 in FHD*</sub>
+<sub>*Performance tests ran on Minecraft 26.1.2 with OBE 1.1.27 and BBE 1.3.5 with Sodium 0.9.0 in FHD on a RTX 5060 laptop, an AMD Ryzen 7 260 w and 16Go of DDR5 RAM*</sub>
 
 ## Compatibility
 
@@ -40,11 +40,11 @@ Mods like this already exists like:
 - [BBE](https://modrinth.com/mod/better-block-entities), but it requires Sodium to run, isn't available on Neoforge (at least not at the time of OBE development) and heavily modifies Minecraft's rendering pipeling
 - [EBE](https://modrinth.com/mod/ebe), but it is sadly not updated anymore and isn't available on Neoforge
 
-Both are awesome, the developers did great work but I wanted to make one that was:
-- Updated
-- Less intrusive, which means better compatibility with other mods
-- Available on Neoforge as well as Fabric
-- Include a way to support modded block entities
+Both are awesome, the developers did great work but I wanted to make one that:
+- Is updated and available on most modern Minecraft versions
+- Is less intrusive, which means better compatibility with other mods
+- Is available on Neoforge as well as Fabric
+- Includes a way to support modded block entities
 
 and I even managed to make it faster somehow even though they are both really well done and optimized
 

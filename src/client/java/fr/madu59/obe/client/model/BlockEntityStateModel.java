@@ -1,7 +1,6 @@
 package fr.madu59.obe.client.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,14 +11,15 @@ import com.mojang.blaze3d.platform.Transparency;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import fr.madu59.obe.client.compat.ModCompat;
+import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.util.ResourceUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.ModelPart.Polygon;
 import net.minecraft.client.model.geom.builders.UVPair;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
-import net.minecraft.client.renderer.block.dispatch.SingleVariant;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.SimpleModelWrapper;
 import net.minecraft.client.resources.model.geometry.BakedQuad;
@@ -29,11 +29,13 @@ import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.block.ChestBlock;
+import net.minecraft.world.level.block.EnderChestBlock;
+import net.minecraft.world.level.block.ShulkerBoxBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class BlockEntityStateModel implements BlockStateModel{
-    private final List<SingleVariant> models = new ArrayList<>();
-    private final Map<String, BlockStateModel> partsMap = new HashMap<>();
+    private SimpleModelWrapper modelPart;
     private final Material.Baked particleMaterial;
 
     public BlockEntityStateModel(ModelLayerLocation modelLayerLocation, Identifier texture, boolean useAo, BlockState state, Material.Baked particleMaterial){
@@ -59,38 +61,32 @@ public class BlockEntityStateModel implements BlockStateModel{
     }
 
     @Override
-    public void collectParts(RandomSource randomSource, List<BlockStateModelPart> list) {
-        if (models.isEmpty()) return;
+    public void collectParts(RandomSource randomSource, List<BlockStateModelPart> output) {
+        if (modelPart == null) return;
 
         long seed = randomSource.nextLong();
 
-        for (BlockStateModel model : this.models) {
-            randomSource.setSeed(seed);
-            model.collectParts(randomSource, list);
-        }
-    }
-
-    public BlockStateModel getPart(String name){
-        return partsMap.get(name);
+        randomSource.setSeed(seed);
+        output.add(modelPart);
     }
 
     private void generateModel(ModelLayerLocation modelLayerLocation, TextureAtlasSprite sprite, PoseStack poseStack, boolean useAo, BlockState state){
         ModelPart root = Minecraft.getInstance().getEntityModels().bakeLayer(modelLayerLocation);
         ModCompat.applyEMFRestPose(root, state);
+
         Map<String, ModelPart> children = root.children;
+        List<BakedQuad> bakedQuadsList = new ArrayList<>();
         children.forEach((key, part) -> {
-
-            List<BakedQuad> bakedQuadsList = getBakedQuads(part, poseStack, sprite, shouldFixBFC(key));
-            QuadCollection collection = createQuadCollection(bakedQuadsList);
-            SimpleModelWrapper wrapper = new SimpleModelWrapper(collection, useAo, particleMaterial);
-            SingleVariant singleVariant = new SingleVariant(wrapper);
-
-            addModelPart(key, singleVariant);
+            getBakedQuads(bakedQuadsList, part, poseStack, sprite, key, state);
         });
+
+        QuadCollection collection = createQuadCollection(bakedQuadsList);
+        modelPart = new SimpleModelWrapper(collection, useAo, particleMaterial);
     }
 
-    private List<BakedQuad> getBakedQuads(ModelPart part, PoseStack poseStack, TextureAtlasSprite sprite, boolean fixBfc){
-        List<BakedQuad> bakedQuadsList = new ArrayList<>();
+    private void getBakedQuads(List<BakedQuad> output, ModelPart part, PoseStack poseStack, TextureAtlasSprite sprite, String partName, BlockState state){
+
+        boolean fixBfc = shouldFixBFC(partName);
 
         Material.Baked bakedMat = new Material.Baked(sprite, false);
         MaterialInfo matInfo = MaterialInfo.of(bakedMat, Transparency.TRANSPARENT, -1, true, 0);
@@ -99,11 +95,9 @@ public class BlockEntityStateModel implements BlockStateModel{
         long[] uvs = new long[4];
         Vector3f normal = new Vector3f();
 
-        part.visit(poseStack, (pose, name, idx, cube) -> {
+        part.visit(poseStack, (pose, partPath, cubeIndex, cube) -> {
             for(ModelPart.Polygon polygon : cube.polygons){
-                if (polygon.vertices().length != 4) {
-                    continue;
-                }
+                if (polygon.vertices().length != 4) continue;
 
                 polygon.normal().mul(pose.normal(), normal);
                 
@@ -111,6 +105,7 @@ public class BlockEntityStateModel implements BlockStateModel{
 
                 for (int i = 0; i < 4; i++) {
                     ModelPart.Vertex vertex = polygon.vertices()[i];
+                    // From ModelPart#getExtentsForGui
                     positions[i] = pose.pose().transformPosition(vertex.worldX(), vertex.worldY(), vertex.worldZ(), new Vector3f());
 
                     float u = sprite.getU(vertex.u());
@@ -118,21 +113,22 @@ public class BlockEntityStateModel implements BlockStateModel{
                     uvs[i] = UVPair.pack(u, v);
                 }
 
+                if (shouldSkipQuad(polygon, positions, state, partName)) continue;
+
                 BakedQuad baked = new BakedQuad(
                         positions[0], positions[1], positions[2], positions[3],
                         uvs[0], uvs[1], uvs[2], uvs[3],
                         dir,
                         matInfo
                 );
-                bakedQuadsList.add(baked);
+                output.add(baked);
                 if(fixBfc){
                     // Same geometry but with inverted winding order so they are visible from the other side of the model
                     baked = new BakedQuad(positions[0], positions[3], positions[2], positions[1], uvs[0], uvs[3], uvs[2], uvs[1], dir.getOpposite(), matInfo );
-                    bakedQuadsList.add(baked);
+                    output.add(baked);
                 }
             }
         });
-        return bakedQuadsList;
     }
 
     private Direction getDirection(Vector3fc vec){
@@ -143,10 +139,40 @@ public class BlockEntityStateModel implements BlockStateModel{
         return key.equals("vChains") || key.equals("normalChains");
     }
 
-    private void addModelPart(String key, SingleVariant singleVariant){
-        models.add(singleVariant);
-        partsMap.put(key, singleVariant);
+    private boolean shouldSkipQuad(Polygon polygon, Vector3f[] positions, BlockState state, String partName){
+        if(!SettingsManager.MODEL_OPTIMIZATION.getValue()) return false;
+        if(state.getBlock() instanceof ChestBlock || state.getBlock() instanceof EnderChestBlock){
+            if(partName.equals("lid") || partName.equals("bottom")) {
+                boolean isHorizontal = positions[0].y() == positions[1].y() && positions[1].y() == positions[2].y() && positions[2].y() == positions[3].y();
+
+                if (isHorizontal) {
+                    float yPos = positions[0].y();
+                    return yPos <= (10.1f / 16f) && yPos >= (8.9f / 16f);
+                }
+            }
+        }
+        else if(state.getBlock() instanceof ShulkerBoxBlock){
+            if (partName.equals("lid") || partName.equals("base")) {
+                float threshold = 1f/32f;
+                boolean touchesCorner = false;
+
+                for (Vector3f pos : positions) {
+                    boolean touchX = pos.x() <= threshold || pos.x() >= (1.0f - threshold);
+                    boolean touchY = pos.y() <= threshold || pos.y() >= (1.0f - threshold);
+                    boolean touchZ = pos.z() <= threshold || pos.z() >= (1.0f - threshold);
+
+                    if (touchX && touchY && touchZ) {
+                        touchesCorner = true;
+                        break;
+                    }
+                }
+
+                return !touchesCorner;
+            }
+        }
+        return false;
     }
+
 
     private QuadCollection createQuadCollection(List<BakedQuad> quads) {
         QuadCollection.Builder builder = new QuadCollection.Builder();
