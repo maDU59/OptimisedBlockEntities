@@ -20,7 +20,6 @@ import net.minecraft.client.model.geom.ModelPart.Polygon;
 import net.minecraft.client.model.geom.builders.UVPair;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
-import net.minecraft.client.renderer.block.dispatch.SingleVariant;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.SimpleModelWrapper;
 import net.minecraft.client.resources.model.geometry.BakedQuad;
@@ -31,10 +30,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.ChestBlock;
-import net.minecraft.world.level.block.CopperChestBlock;
 import net.minecraft.world.level.block.EnderChestBlock;
 import net.minecraft.world.level.block.ShulkerBoxBlock;
-import net.minecraft.world.level.block.TrappedChestBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class BlockEntityStateModel implements BlockStateModel{
@@ -155,7 +152,7 @@ public class BlockEntityStateModel implements BlockStateModel{
             }
         }
         else if(state.getBlock() instanceof ShulkerBoxBlock){
-            if ("lid".equals(partName) || "base".equals(partName)) {
+            if (partName.equals("lid") || partName.equals("base")) {
                 float threshold = 1f/32f;
                 boolean touchesCorner = false;
 
