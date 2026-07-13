@@ -145,12 +145,33 @@ public class BlockEntityStateModel implements BlockStateModel{
     private boolean shouldSkipQuad(Polygon polygon, Vector3f[] positions, BlockState state, String partName){
         if(!SettingsManager.MODEL_OPTIMIZATION.getValue()) return false;
         if(state.getBlock() instanceof ChestBlock || state.getBlock() instanceof EnderChestBlock){
-            if(partName == "lid" || partName == "bottom") {
-                return positions[0].y() == positions[1].y() && positions[1].y() == positions[2].y() && positions[2].y() == positions[3].y() && positions[0].y() <= 10f/16f && positions[0].y() >= 9f/16f;
+            if(partName.equals("lid") || partName.equals("bottom")) {
+                boolean isHorizontal = positions[0].y() == positions[1].y() && positions[1].y() == positions[2].y() && positions[2].y() == positions[3].y();
+
+                if (isHorizontal) {
+                    float yPos = positions[0].y();
+                    return yPos <= (10.1f / 16f) && yPos >= (8.9f / 16f);
+                }
             }
         }
         else if(state.getBlock() instanceof ShulkerBoxBlock){
-            if(partName == "lid" || partName == "base") return positions[0].y() == positions[1].y() && positions[1].y() == positions[2].y() && positions[2].y() == positions[3].y() && positions[0].y() <= 9f/16f && positions[0].y() >= 3f/16f;
+            if ("lid".equals(partName) || "base".equals(partName)) {
+                float threshold = 1f/32f;
+                boolean touchesCorner = false;
+
+                for (Vector3f pos : positions) {
+                    boolean touchX = pos.x() <= threshold || pos.x() >= (1.0f - threshold);
+                    boolean touchY = pos.y() <= threshold || pos.y() >= (1.0f - threshold);
+                    boolean touchZ = pos.z() <= threshold || pos.z() >= (1.0f - threshold);
+
+                    if (touchX && touchY && touchZ) {
+                        touchesCorner = true;
+                        break;
+                    }
+                }
+
+                return !touchesCorner;
+            }
         }
         return false;
     }
