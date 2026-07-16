@@ -1,6 +1,5 @@
-package fr.madu59.obe.client.util;
+package fr.madu59.obe.client.resources;
 
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -10,12 +9,10 @@ import fr.madu59.obe.client.model.BlockEntityStateModel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
-import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.data.AtlasIds;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -27,14 +24,6 @@ public class ResourceUtil{
 
     public static TextureAtlasSprite getSprite(Identifier id) {
         return Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(AtlasIds.BLOCKS).getSprite(id);
-    }
-
-    public static Material.Baked getBakedMaterial(TextureAtlasSprite sprite) {
-        return new Material.Baked(sprite, false);
-    }
-
-    public static void collectParts(List<BlockStateModelPart> partsList, BlockStateModel model, RandomSource random){
-        model.collectParts(random, partsList);
     }
 
     public static BlockStateModel getModel(ModelLayerLocation modelLayerLocation, Identifier texture, BlockState blockState, PoseStack poseStack, boolean useAo, Material.Baked particleMaterial){

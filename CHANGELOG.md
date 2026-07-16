@@ -1,3 +1,3 @@
 # What's new:
-- Added a new setting: Model optimization. Instead of just using the block entity model and meshing it into the terrain, it removes some unnecessary parts of it, it can be disabled incase of conflict with another mod.
-- Improved model generation
+- Removed custom skulls from the mod's file, they can be added back with [this](https://modrinth.com/resourcepack/obe-x-hypixel-skyblock) resource pack
+- Added custom skulls textures loading from resource packs

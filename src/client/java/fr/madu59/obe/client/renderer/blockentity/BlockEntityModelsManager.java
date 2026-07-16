@@ -1,7 +1,5 @@
 package fr.madu59.obe.client.renderer.blockentity;
 
-import java.util.Optional;
-
 import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -17,7 +15,7 @@ import fr.madu59.obe.client.registry.TransformationGetter;
 import fr.madu59.obe.client.registry.SpecialModelGetter.SpecialModelProvider;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager.RenderMode;
-import fr.madu59.obe.client.util.ResourceUtil;
+import fr.madu59.obe.client.resources.ResourceUtil;
 import fr.madu59.obe.client.util.blockentity.DecoratedPotUtil;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.Sheets;
@@ -55,12 +53,12 @@ public class BlockEntityModelsManager {
                 PoseStack poseStack = new PoseStack();
 
                 ModelLayerLocation layerLocation = customModelProvider.getModelLayerLocationProvider().apply(state, be);
-                if(layerLocation == null) return null;
+                if(layerLocation == null) return fail(be);
 
                 TransformationGetter.applyTransformation(state, poseStack, group);
 
                 Identifier material = customModelProvider.getMaterialProvider().apply(state, be);
-                if(material == null) return null;
+                if(material == null) return fail(be);
 
                 BlockStateModel model = ResourceUtil.getModel(layerLocation, material, state, cacheKey, poseStack, getAmbientOcclusion(group), originalModel.particleMaterial());
                 if(customModelProvider.shouldKeepOriginalModel()) model = new CompositeBlockStateModel(model, originalModel);
@@ -72,7 +70,7 @@ public class BlockEntityModelsManager {
             return new BlockEntityStateModel(originalModel.particleMaterial());
         }
 
-        return null;
+        return fail(be);
     }
 
     public BlockStateModel getBlockModel(BlockState state, RandomSource random, BlockStateModel originalModel, String group) {
@@ -131,5 +129,11 @@ public class BlockEntityModelsManager {
             case "bed" -> SettingsManager.BED_AMBIENT_OCCLUSION.getValue();
             default -> false;
         };
+    }
+
+    public @Nullable BlockStateModel fail(BlockEntity be){
+        ((BlockEntityExt) be).hasSpecialRenderer(false);
+        ((BlockEntityExt) be).renderModeDelayed(RenderMode.ENTITY);
+        return null;
     }
 }

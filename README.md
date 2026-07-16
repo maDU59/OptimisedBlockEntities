@@ -68,7 +68,7 @@ and I even managed to make it faster somehow even though they are both really we
 <li>Shelves</li>
 </ul>
 
-<sub>¹: Some skulls with custom textures from Hypixel's Skyblock are also optimized</sub>
+<sub>¹: Some skulls with custom textures from Hypixel's Skyblock can also be optimized by using [this resource pack](https://modrinth.com/resourcepack/obe-x-hypixel-skyblock)</sub>
 
 </details>
 
