@@ -1,13 +1,16 @@
 package fr.madu59.obe.client.util.blockentity;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.mojang.authlib.properties.Property;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import fr.madu59.obe.client.config.SettingsManager;
-import fr.madu59.obe.client.util.ResourceUtil;
+import fr.madu59.obe.client.resources.ResourceUtil;
+import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
+import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager.RenderMode;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.blockentity.SkullBlockRenderer;
@@ -22,18 +25,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class SkullBlockUtil {
 
-    public static Map<String, Identifier> BUILT_IN_TEXTURES = Map.ofEntries(
-        Map.entry("eyJ0aW1lc3RhbXAiOjE1ODY2NjcxNjgzNzksInByb2ZpbGVJZCI6ImJlY2RkYjI4YTJjODQ5YjRhOWIwOTIyYTU4MDUxNDIwIiwicHJvZmlsZU5hbWUiOiJTdFR2Iiwic2lnbmF0dXJlUmVxdWlyZWQiOnRydWUsInRleHR1cmVzIjp7IlNLSU4iOnsidXJsIjoiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS8yOTllYTEyMGJkODNkMGM4MWEzYzQ2MjdmNWJjZTFiMTJmYjAzYmNiNTc3NzljNjNkY2M3N2UzZjRhZThhNzkzIn19fQ==", Identifier.tryParse("obe:block/skull/fairy_soul")),
-        Map.entry("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjAyMjZkNGMxZDMwZmJlYmVjYWU5MzlkYTkwMDYwM2U0Y2QwZmVkODU5MmExYmIzZTExZjlhYzkyMzkxYTQ1YSJ9fX0=", Identifier.tryParse("obe:block/skull/multicolored_potion")),
-        Map.entry("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjhkMDlkYmIyZWVhNTAyZjE4YTg0OTY0OTFiM2ZjYzA3Y2Q3N2I1OWUzNmY0OGZiYTMyYWEzNzMzNTNjZDA1MiJ9fX0=", Identifier.tryParse("obe:block/skull/skeleton")),
-        Map.entry("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM3UxZTFlODJiZjQzNzhhN2IxMzkyMjliNTYxYzhmMDExOWJmNTY1NTEyODAxNGQzYzU0MzlkODk4MzAzZjFiMCJ9fX0=", Identifier.tryParse("obe:block/skull/skeleton_2")),
-        Map.entry("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzBlMGFiZDJlNDQ2YzI1MWI0YzA0YTQwMjU2ZDBkOGIzNjdiZGQ3NTdiZDcyZjI1MGI2YmI3YjkwOTg3NjQzIn19fQ==", Identifier.tryParse("obe:block/skull/skeleton_3")),
-        Map.entry("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmE2ZGY2Y2E5YTQ1NGYxODNjMzUxM2RjODUxNTkwMTYzY2M5YTZkODc3MzY5MzE1M2VmZjgxODlhZjYyMDRmIn19fQ==", Identifier.tryParse("obe:block/skull/empty_potion")),
-        Map.entry("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTgzYjMwZTlkMTM1YjA1MTkwZWVhMmMzYWM2MWUyYWI1NWEyZDgxZTFhNThkYmIyNjk4M2ExNDA4MjY2NCJ9fX0=", Identifier.tryParse("obe:block/skull/spider_egg")),
-        Map.entry("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWE2MzE0ZWFjMzQ0MTZjZTEwYWIyMmMyZTFjNGRjYjQ3MmEzZmViOThkNGUwNGQzZmJiYjg1YTlhNDcxYjE4In19fQ==", Identifier.tryParse("obe:block/skull/rotten_skeleton")),
-        Map.entry("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWFlMzg1NWY5NTJjZDRhMDNjMTQ4YTk0NmUzZjgxMmE1OTU1YWQzNWNiY2I1MjYyN2VhNGFjZDQ3ZDMwODEifX19", Identifier.tryParse("obe:block/skull/skeleton_4")),
-        Map.entry("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2JjYmJmOTRkNjAzNzQzYTFlNzE0NzAyNmUxYzEyNDBiZDk4ZmU4N2NjNGVmMDRkY2FiNTFhMzFjMzA5MTRmZCJ9fX0=", Identifier.tryParse("obe:block/skull/skeleton_dark"))
-    );
+    public static Map<String, Identifier> BUILT_IN_TEXTURES = new HashMap<>();
 
     public static Identifier getSkullBlockMaterial(BlockState state) {
         SkullBlock.Type type = ((AbstractSkullBlock)state.getBlock()).getType();
@@ -69,12 +61,9 @@ public class SkullBlockUtil {
         }
     }
 
-    public static Identifier getSkullBlockMaterial(BlockState state, BlockEntity blockEntity) {
-        if (blockEntity instanceof SkullBlockEntity skullBe) {
-            Identifier builtInTexture = getBuiltInTexture(skullBe);
-            if (builtInTexture != null) {
-                return builtInTexture;
-            }
+    public static Identifier getSkullBlockMaterial(BlockState state, BlockEntity be) {
+        if (be instanceof SkullBlockEntity skullBe) {
+            return getBuiltInTexture(skullBe);
         }
         return getSkullBlockMaterial(state);
     }
@@ -88,9 +77,12 @@ public class SkullBlockUtil {
     }
 
     public static boolean hasBuiltInTexture(BlockEntity be) {
-        if(SettingsManager.CUSTOM_SKULLS.getValue() == false) return false;
+        if(!SettingsManager.CUSTOM_SKULLS.getValue()) return false;
         String textureValue = getBuiltInTextureValue(be);
-        if(textureValue == null) return false;
+        if(textureValue == null) {
+            ((BlockEntityExt) be).hasSpecialRenderer(false);
+            return false;
+        }
         return SkullBlockUtil.BUILT_IN_TEXTURES.containsKey(textureValue);
     }
 
@@ -100,7 +92,7 @@ public class SkullBlockUtil {
 
     public static String getBuiltInTextureValue(BlockEntity be) {
         if(be instanceof SkullBlockEntity skullBe) {
-            if(skullBe.getOwnerProfile() == null) return null;
+            if(skullBe.getOwnerProfile() == null || !SettingsManager.CUSTOM_SKULLS.getValue()) return null;
             Collection<Property> properties = skullBe.getOwnerProfile().partialProfile().properties().get("textures");
             String textureValue = properties.stream()
             .map(Property::value)

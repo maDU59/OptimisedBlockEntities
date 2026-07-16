@@ -8,7 +8,7 @@ import fr.madu59.obe.OBE;
 import fr.madu59.obe.client.compat.ModCompat;
 import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.platform.PlatformHelper;
-import fr.madu59.obe.client.util.ResourceUtil;
+import fr.madu59.obe.client.resources.ResourceUtil;
 import net.minecraft.client.Minecraft;
 
 import java.io.*;

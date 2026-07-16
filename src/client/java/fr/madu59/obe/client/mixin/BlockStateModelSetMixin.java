@@ -12,7 +12,7 @@ import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.model.BlockEntityStateModel;
 import fr.madu59.obe.client.registry.Registry;
 import fr.madu59.obe.client.renderer.blockentity.BlockEntityModelsManager;
-import fr.madu59.obe.client.util.ResourceUtil;
+import fr.madu59.obe.client.resources.ResourceUtil;
 
 import org.spongepowered.asm.mixin.injection.At;
 
