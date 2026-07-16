@@ -3,7 +3,7 @@ package fr.madu59.obe.client.util.blockentity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
-import fr.madu59.obe.client.util.ResourceUtil;
+import fr.madu59.obe.client.resources.ResourceUtil;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.blockentity.CopperGolemStatueBlockRenderer;
