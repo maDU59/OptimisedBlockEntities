@@ -28,7 +28,7 @@ public abstract class DecoratedPotBlockEntityMixin{
         BlockEntity be = (BlockEntity)(Object)this;
         BlockEntityExt ext = (BlockEntityExt)be;
 
-        ext.isSupportedBlockEntity(Registry.isSupported("decorated_pot", be.getType()));
+        ext.isSupported(Registry.isSupported("decorated_pot", be.getType()));
         obe$updatePot();
     }
 

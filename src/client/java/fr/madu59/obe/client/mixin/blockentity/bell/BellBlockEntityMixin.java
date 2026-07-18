@@ -25,7 +25,7 @@ public class BellBlockEntityMixin {
         BlockEntity be = (BlockEntity)(Object)this;
         BlockEntityExt ext = (BlockEntityExt)be;
 
-        ext.isSupportedBlockEntity(Registry.isSupported("bell", be.getType()));
+        ext.isSupported(Registry.isSupported("bell", be.getType()));
         ext.hasSpecialRenderer(true);
     }
 

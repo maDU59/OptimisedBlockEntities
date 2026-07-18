@@ -39,7 +39,7 @@ public class RenderModeManager {
     }
 
     public static <T extends BlockEntity> boolean shouldRenderEntity(boolean setting, BlockEntityExt ext, BlockEntity be){
-        return ext == null || !be.hasLevel() || !ext.isSupportedBlockEntity() || setting || !SettingsManager.MOD_TOGGLE.getValue();
+        return ext == null || !be.hasLevel() || !ext.isSupported() || setting || !SettingsManager.MOD_TOGGLE.getValue();
     }
 
     public static <T extends BlockEntity> boolean shouldRenderEntity(T be){
@@ -47,11 +47,11 @@ public class RenderModeManager {
     }
 
     public static <T extends BlockEntity> boolean shouldRenderEntity(BlockEntityExt ext, T be){
-        return ext == null || !be.hasLevel() || ext.forceEntity() || !ext.isSupportedBlockEntity() || ext.renderMode() == RenderMode.ENTITY || ext.renderModeDelayed() == RenderMode.ENTITY || ext.renderBoth();
+        return ext == null || !be.hasLevel() || ext.forceEntity() || !ext.isSupported() || ext.renderMode() == RenderMode.ENTITY || ext.renderModeDelayed() == RenderMode.ENTITY || ext.renderBoth();
     }
 
     public static <T extends BlockEntity> boolean shouldRenderEntityFast(BlockEntityExt ext){
-        return ext.forceEntity() || !ext.isSupportedBlockEntity() || ext.renderMode() == RenderMode.ENTITY || ext.renderModeDelayed() == RenderMode.ENTITY || ext.renderBoth();
+        return ext.forceEntity() || !ext.isSupported() || ext.renderMode() == RenderMode.ENTITY || ext.renderModeDelayed() == RenderMode.ENTITY || ext.renderBoth();
     }
 
     public static <T extends BlockEntity> void setRenderModeDelayed(T be, RenderMode mode, BlockPos pos){
@@ -76,7 +76,7 @@ public class RenderModeManager {
     }
 
     public static void updateBlockEntityOnChunkRemesh(BlockEntityExt ext, SectionPos pos){
-        if(!ext.isSupportedBlockEntity()) return;
+        if(!ext.isSupported()) return;
         else if(!SettingsManager.MOD_TOGGLE.getValue()) ext.isEnabled(false);
         else{
             String group = Registry.getGroup(((BlockEntity)ext).getType());

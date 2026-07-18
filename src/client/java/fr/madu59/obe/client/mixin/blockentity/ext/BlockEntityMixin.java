@@ -23,8 +23,8 @@ public abstract class BlockEntityMixin implements BlockEntityExt {
     @Unique private boolean shouldSkipBeRendering = false;
     @Unique private boolean forceEntity = false;
 
-    @Override public boolean isSupportedBlockEntity() { return isSupportedBlockEntity; }
-    @Override public void isSupportedBlockEntity(boolean bl) {this.isSupportedBlockEntity = bl; }
+    @Override public boolean isSupported() { return isSupportedBlockEntity; }
+    @Override public void isSupported(boolean bl) {this.isSupportedBlockEntity = bl; }
 
     @Override public RenderMode renderMode() { return renderMode; }
     @Override public void renderMode(RenderMode mode) {
@@ -57,9 +57,9 @@ public abstract class BlockEntityMixin implements BlockEntityExt {
         timerDuration = duration;
     }
 
-    @Override public boolean shouldSkipBeRendering() { return shouldSkipBeRendering; }
-    @Override public void shouldSkipBeRendering(boolean bl) { shouldSkipBeRendering = bl; }
-    @Override public void shouldSkipBeRenderingAndUpdate(boolean bl) {
+    @Override public boolean shouldSkipRendering() { return shouldSkipBeRendering; }
+    @Override public void shouldSkipRendering(boolean bl) { shouldSkipBeRendering = bl; }
+    @Override public void shouldSkipRenderingAndUpdate(boolean bl) {
         if(bl != shouldSkipBeRendering) {
             shouldSkipBeRendering = bl;
             BlockPos pos = ((BlockEntity)(Object)this).getBlockPos();

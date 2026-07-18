@@ -42,7 +42,7 @@ public class BlockEntityModelsManager {
         if (be == null) return null;
 
         BlockEntityExt ext = (BlockEntityExt)be;
-        if (ext == null || !ext.isSupportedBlockEntity() || !ext.hasSpecialRenderer() || !ext.isEnabled()) return null;
+        if (ext == null || !ext.isSupported() || !ext.hasSpecialRenderer() || !ext.isEnabled()) return null;
 
         String group = Registry.getGroup(state);
         SpecialModelProvider customModelProvider = SpecialModelGetter.getSpecialModelProvider(state, group);

@@ -45,7 +45,7 @@ public class ChunkBuilderMeshingTaskMixin {
         if(state.hasBlockEntity()){
             BlockEntity be = beRef.get();
             BlockEntityExt ext = (BlockEntityExt) be;
-            if(ext != null && ext.isSupportedBlockEntity()) {
+            if(ext != null && ext.isSupported()) {
                 RenderModeManager.updateBlockEntityOnChunkRemesh(ext, sectionPos);
                 if(ext.forceEntity()){
                     return RenderShape.INVISIBLE;
@@ -70,7 +70,7 @@ public class ChunkBuilderMeshingTaskMixin {
             BlockStateModel model = null;
             BlockEntity be = beRef.get();
             BlockEntityExt ext = (BlockEntityExt) be;
-            if(ext != null && ext.isSupportedBlockEntity()) {
+            if(ext != null && ext.isSupported()) {
                 if(ext.isEnabled() && !ext.hasSpecialRenderer() && ext.renderModeDelayed() != RenderMode.TERRAIN){
                     model = new BlockEntityStateModel();
                 }
@@ -91,7 +91,7 @@ public class ChunkBuilderMeshingTaskMixin {
     )
     private boolean obe$wrapShouldRender(BlockEntityType<?> type, BlockGetter slice, BlockPos pos, BlockEntity be, Operation<Boolean> original) {
         BlockEntityExt ext = (BlockEntityExt) be;
-        if(ext != null && ext.isEnabled() && (!(ext.forceEntity() || !ext.isSupportedBlockEntity() || ext.renderModeDelayed() == RenderMode.ENTITY || ext.renderBoth()) || ext.shouldSkipBeRendering())) {
+        if(ext != null && ext.isEnabled() && (!(ext.forceEntity() || !ext.isSupported() || ext.renderModeDelayed() == RenderMode.ENTITY || ext.renderBoth()) || ext.shouldSkipRendering())) {
             return false;
         }
         return original.call(type, slice, pos, be);

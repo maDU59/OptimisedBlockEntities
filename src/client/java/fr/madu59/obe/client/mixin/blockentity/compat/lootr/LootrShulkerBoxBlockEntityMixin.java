@@ -26,7 +26,7 @@ public class LootrShulkerBoxBlockEntityMixin {
         BlockEntity be = (BlockEntity)(Object)this;
         BlockEntityExt ext = (BlockEntityExt)be;
         
-        ext.isSupportedBlockEntity(Registry.isSupported("shulker_box", be.getType()));
+        ext.isSupported(Registry.isSupported("shulker_box", be.getType()));
         ext.hasSpecialRenderer(true);
     }
 

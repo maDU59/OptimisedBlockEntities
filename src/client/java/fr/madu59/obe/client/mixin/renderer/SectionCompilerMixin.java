@@ -34,7 +34,7 @@ public class SectionCompilerMixin {
         if(state.hasBlockEntity()){
             BlockEntity be = beRef.get();
             BlockEntityExt ext = (BlockEntityExt) be;
-            if(ext != null && ext.isSupportedBlockEntity()) {
+            if(ext != null && ext.isSupported()) {
                 RenderModeManager.updateBlockEntityOnChunkRemesh(ext, sectionPos);
                 if(ext.forceEntity()){
                     return RenderShape.INVISIBLE;
