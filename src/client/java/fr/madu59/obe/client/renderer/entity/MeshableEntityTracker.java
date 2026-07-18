@@ -2,14 +2,12 @@ package fr.madu59.obe.client.renderer.entity;
 
 import java.util.Collection;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import fr.madu59.obe.client.chunk.ChunkTaskHolder;
 import fr.madu59.obe.client.renderer.entity.ext.EntityExt;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager.RenderMode;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.world.entity.Entity;

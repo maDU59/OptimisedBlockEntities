@@ -7,7 +7,6 @@ import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import com.mojang.serialization.Codec;
 
-import fr.madu59.obe.OBE;
 import fr.madu59.obe.client.util.blockentity.SkullBlockUtil;
 
 import java.util.Map;

@@ -12,17 +12,17 @@ import net.minecraft.world.level.block.BannerBlock;
 import net.minecraft.world.level.block.WallBannerBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class BannerUtil {
-    public static Identifier getBannerMaterial(BlockState state){
+public class BannerUtil extends AbstractUtil{
+    public static Identifier getMaterial(BlockState state){
         return Sheets.BANNER_BASE.texture();
     }
 
-    public static ModelLayerLocation getBannerModelLayerLocation(BlockState state){
+    public static ModelLayerLocation getModelLayerLocation(BlockState state){
         if(state.getBlock() instanceof WallBannerBlock)  return ModelLayers.WALL_BANNER;
         else return  ModelLayers.STANDING_BANNER;
     }
 
-    public static void transformBanner(BlockState state, PoseStack poseStack){
+    public static void transform(BlockState state, PoseStack poseStack){
         if (state.getBlock() instanceof WallBannerBlock) {
             Direction facing = state.getValue(WallBannerBlock.FACING);
             poseStack.mulPose(BannerRenderer.TRANSFORMATIONS.wallTransformation(facing));

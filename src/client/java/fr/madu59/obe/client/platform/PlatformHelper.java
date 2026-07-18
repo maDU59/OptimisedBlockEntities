@@ -5,7 +5,6 @@ import java.nio.file.Path;
 import fr.madu59.obe.client.renderer.entity.MeshableEntityTracker;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.world.entity.decoration.Cushion;
 
 public class PlatformHelper {
 

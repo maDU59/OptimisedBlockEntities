@@ -103,7 +103,7 @@ public class BlockEntityModelsManager {
 
         BlockStateModel model = ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "decorated_pot"), state, poseStack, getAmbientOcclusion("decorated_pot"), originalModel.particleMaterial());
 
-        layerLocation = DecoratedPotUtil.getDecoratedPotSideModelLayerLocation(state);
+        layerLocation = DecoratedPotUtil.getSideModelLayerLocation(state);
 
         BlockStateModel sideModel = ResourceUtil.getSubModel(layerLocation, Sheets.DECORATED_POT_SIDE.texture(), state, poseStack, getAmbientOcclusion("decorated_pot"), originalModel.particleMaterial());
         

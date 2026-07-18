@@ -14,8 +14,8 @@ import net.minecraft.world.level.block.CopperGolemStatueBlock;
 import net.minecraft.world.level.block.WeatheringCopper.WeatherState;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class CopperGolemStatueUtil {
-    public static Identifier getCopperGolemStatueMaterial(BlockState state) {
+public class CopperGolemStatueUtil extends AbstractUtil{
+    public static Identifier getMaterial(BlockState state) {
         WeatherState oxydationLevel;
         if (state.getBlock() instanceof CopperGolemStatueBlock copperGolemStatueBlock) {
             oxydationLevel = copperGolemStatueBlock.getWeatheringState();
@@ -25,7 +25,7 @@ public class CopperGolemStatueUtil {
         return ResourceUtil.entityTextureFormatter(CopperGolemOxidationLevels.getOxidationLevel(oxydationLevel).texture());
     }
 
-    public static ModelLayerLocation getCopperGolemStatueModelLayerLocation(BlockState state){
+    public static ModelLayerLocation getModelLayerLocation(BlockState state){
         return switch(state.getValue(CopperGolemStatueBlock.POSE)) {
             case CopperGolemStatueBlock.Pose.STANDING-> ModelLayers.COPPER_GOLEM;
             case CopperGolemStatueBlock.Pose.RUNNING-> ModelLayers.COPPER_GOLEM_RUNNING;
@@ -34,7 +34,7 @@ public class CopperGolemStatueUtil {
         };
     }
 
-    public static void transformCopperGolemStatue(BlockState state, PoseStack poseStack){
+    public static void transform(BlockState state, PoseStack poseStack){
         Direction facing = state.getValue(CopperGolemStatueBlock.FACING);
         poseStack.mulPose(CopperGolemStatueBlockRenderer.modelTransformation(facing));
 
