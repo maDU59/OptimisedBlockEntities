@@ -70,7 +70,7 @@ public class BlockEntityModelsManager {
             return new BlockEntityStateModel(originalModel.particleMaterial());
         }
 
-        return fail(be);
+        return originalModel;
     }
 
     public BlockStateModel getBlockModel(BlockState state, RandomSource random, BlockStateModel originalModel, String group) {
