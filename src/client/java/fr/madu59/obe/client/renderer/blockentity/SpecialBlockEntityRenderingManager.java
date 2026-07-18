@@ -1,5 +1,7 @@
 package fr.madu59.obe.client.renderer.blockentity;
 
+import java.util.List;
+
 import fr.madu59.obe.client.config.SettingsManager;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
@@ -8,6 +10,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.CampfireBlockEntity;
 import net.minecraft.world.level.block.entity.ShelfBlockEntity;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
+import net.minecraft.world.level.block.entity.SignTextSlot;
 
 public class SpecialBlockEntityRenderingManager {
     public static boolean shouldSkipRendering(BlockEntity be) {
@@ -34,12 +37,14 @@ public class SpecialBlockEntityRenderingManager {
     }
 
     private static boolean isEmpty(SignBlockEntity be){
-        if(be.getText(true) == null || be.getText(false) == null) return false;
-        Component[] frontMessages = be.getText(true).getMessages(false);
-        Component[] backMessages = be.getText(false).getMessages(false);
-        for(int i = 0; i < 4; i++){
-            if(!frontMessages[i].getString().isEmpty()) return false;
-            if(!backMessages[i].getString().isEmpty()) return false;
+        if(be.getText(SignTextSlot.FRONT) == null || be.getText(SignTextSlot.BACK) == null) return false;
+        List<Component> frontMessages = be.getText(SignTextSlot.FRONT).getMessages(false);
+        List<Component> backMessages = be.getText(SignTextSlot.BACK).getMessages(false);
+        for(Component text: frontMessages){
+            if(!text.getString().isEmpty()) return false;
+        }
+        for(Component text: backMessages){
+            if(!text.getString().isEmpty()) return false;
         }
         return true;
     }
