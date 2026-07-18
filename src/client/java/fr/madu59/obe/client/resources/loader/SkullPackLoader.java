@@ -26,8 +26,6 @@ public class SkullPackLoader extends SimpleJsonResourceReloadListener<Map<String
         for (Map.Entry<Identifier, Map<String, Identifier>> entry : prepared.entrySet()) {
             Identifier fileIdentifier = entry.getKey();
 
-            OBE.LOGGER.info(fileIdentifier.getPath());
-
             if (!fileIdentifier.getPath().equals("config")) {
                 continue;
             }

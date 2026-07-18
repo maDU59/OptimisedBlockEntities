@@ -10,7 +10,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.resources.ResourceUtil;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
-import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager.RenderMode;
+import fr.madu59.obe.client.renderer.misc.RenderModeManager.RenderMode;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.blockentity.SkullBlockRenderer;

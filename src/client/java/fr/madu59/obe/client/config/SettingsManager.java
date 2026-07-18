@@ -194,6 +194,18 @@ public class SettingsManager {
         reloadChunksAction
     );
 
+    public static Option<Boolean> OPTIMISED_CUSHIONS = loadOptionWithDefaults("optimized_cushion",
+        "obe.config.option.optimised_cushions",
+        true,
+        reloadChunksAction
+    );
+
+    public static Option<Boolean> CUSHION_AMBIENT_OCCLUSION = loadOptionWithDefaults("cushion_ambient_occlusion",
+        "obe.config.option.cushion_ao",
+        false,
+        reloadResourcesAction
+    );
+
     public static final Map<String, Option<Boolean>> GROUP_TOGGLE_SETTINGS = Map.of(
         "chest", SettingsManager.OPTIMISED_CHESTS,
         "banner", SettingsManager.OPTIMISED_BANNERS,

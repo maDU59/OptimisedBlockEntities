@@ -1,19 +1,41 @@
 package fr.madu59.obe.client.mixin.renderer;
 
+import java.util.Collection;
+import java.util.Map;
+
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.VertexSorting;
 
+import fr.madu59.obe.client.chunk.ChunkTaskHolder;
+import fr.madu59.obe.client.config.SettingsManager;
+import fr.madu59.obe.client.model.BlockEntityStateModel;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
-import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager;
-import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager.RenderMode;
+import fr.madu59.obe.client.renderer.entity.MeshableEntityTracker;
+import fr.madu59.obe.client.renderer.entity.MeshableEntityTracker.CushionSnapshot;
+import fr.madu59.obe.client.renderer.entity.MeshableEntityTracker.MeshableEntityData;
+import fr.madu59.obe.client.renderer.entity.ext.EntityExt;
+import fr.madu59.obe.client.renderer.misc.RenderModeManager;
+import fr.madu59.obe.client.renderer.misc.RenderModeManager.RenderMode;
+import fr.madu59.obe.client.util.entity.CushionUtil;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.SectionBufferBuilderPack;
+import net.minecraft.client.renderer.block.BlockQuadOutput;
+import net.minecraft.client.renderer.block.ModelBlockRenderer;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.client.renderer.chunk.RenderSectionRegion;
 import net.minecraft.client.renderer.chunk.SectionCompiler;
+import net.minecraft.client.renderer.chunk.SectionCompiler.Results;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.world.level.block.RenderShape;
@@ -21,7 +43,10 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 @Mixin(SectionCompiler.class)
-public class SectionCompilerMixin {
+public abstract class SectionCompilerMixin {
+
+    @Shadow
+    protected abstract BufferBuilder getOrBeginLayer(Map<ChunkSectionLayer,BufferBuilder> map, SectionBufferBuilderPack buffer, ChunkSectionLayer layer);
 
     @WrapOperation(method = "compile", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/chunk/RenderSectionRegion;getBlockState(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;"))
     private BlockState obe$getBlockState(RenderSectionRegion region, BlockPos pos, Operation<BlockState> original, @Share("be") LocalRef<BlockEntity> beRef){
@@ -48,5 +73,50 @@ public class SectionCompilerMixin {
             }
         }
         return original.call(state);
+    }
+
+    @Inject(
+        method = "compile",
+        at = @At(
+            value = "INVOKE",
+            target = "Ljava/util/Map;entrySet()Ljava/util/Set;", 
+            ordinal = 0
+        )
+    )
+    private void obe$appendCustomDataToCutout(
+        SectionPos sectionPos, 
+        RenderSectionRegion region, 
+        VertexSorting vertexSorting, 
+        SectionBufferBuilderPack builders, 
+        CallbackInfoReturnable<Results> cir,
+        @Local(ordinal = 0) Map<ChunkSectionLayer, BufferBuilder> startedLayers,
+        @Local(ordinal = 0) ModelBlockRenderer blockRenderer
+    ) {
+        if(!SettingsManager.MOD_TOGGLE.getValue()) return;
+
+        Collection<MeshableEntityData> entitiesData = MeshableEntityTracker.getMeshableEntities(sectionPos);
+        if(entitiesData == null) return;
+
+        BufferBuilder cutoutBuilder = getOrBeginLayer(startedLayers, builders, ChunkSectionLayer.CUTOUT);
+
+        BlockQuadOutput quadOutput = (x, y, z, quad, instance) -> {
+            cutoutBuilder.putBlockBakedQuad(x, y, z, quad, instance);
+        };
+
+        for(MeshableEntityData data : entitiesData){
+            if(data instanceof CushionSnapshot snapshot){
+                if(snapshot.level() != Minecraft.getInstance().level){
+                    MeshableEntityTracker.deleteInvalidMeshableEntity(snapshot.id(), snapshot.blockPos());
+                    continue;
+                }
+                BlockEntityStateModel model = CushionUtil.getModel(snapshot);
+                ChunkTaskHolder.addTask(sectionPos, () -> {
+                    EntityExt ext = ((EntityExt)Minecraft.getInstance().level.getEntity(snapshot.id()));
+                    if(ext != null) ext.renderMode(RenderMode.TERRAIN);
+                });
+                BlockPos pos  = snapshot.blockPos();
+                blockRenderer.tesselateBlock(quadOutput, SectionPos.sectionRelative(pos.getX()), SectionPos.sectionRelative(pos.getY()), SectionPos.sectionRelative(pos.getZ()), region, pos, region.getBlockState(snapshot.blockPos()), model, 42);
+            }
+        }
     }
 }

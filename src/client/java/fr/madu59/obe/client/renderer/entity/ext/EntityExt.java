@@ -1,6 +1,6 @@
 package fr.madu59.obe.client.renderer.entity.ext;
 
-import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager.RenderMode;
+import fr.madu59.obe.client.renderer.misc.RenderModeManager.RenderMode;
 
 public interface EntityExt {
     boolean isSupported();
@@ -20,9 +20,6 @@ public interface EntityExt {
 
     boolean isEnabled();
     void isEnabled(boolean bl);
-    
-    boolean renderBoth();
-    void renderBoth(boolean bl);
 
     boolean shouldSkipRendering();
     void shouldSkipRendering(boolean bl);

@@ -8,8 +8,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import fr.madu59.obe.client.registry.Registry;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
-import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager;
-import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager.RenderMode;
+import fr.madu59.obe.client.renderer.misc.RenderModeManager;
+import fr.madu59.obe.client.renderer.misc.RenderModeManager.RenderMode;
 import fr.madu59.obe.client.util.blockentity.SkullBlockUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
