@@ -1,2 +1,3 @@
 # What's new:
-- Fixed a bug with bells
+- Added optimization for cushions
+- Fixed a rendering bug with bells
