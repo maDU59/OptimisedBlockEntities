@@ -46,9 +46,17 @@ public class ChestUtil extends AbstractUtil{
         return ChestRenderer.LAYERS.select(state.getValueOrElse(ChestBlock.TYPE, ChestType.SINGLE));
     }
 
+    public static ModelLayerLocation getModelLayerLocation(BlockState state, BlockEntity entity){
+        return getModelLayerLocation(state);
+    }
+
     public static void transform(BlockState state, PoseStack poseStack){
         Direction facing = state.getValue(ChestBlock.FACING);
         poseStack.mulPose(ChestRenderer.modelTransformation(facing));
+    }
+
+    public static void transform(BlockState state, PoseStack poseStack, BlockEntity entity){
+        transform(state, poseStack);
     }
 
     // Legacy methods, kept here to not break Quark's compatibility
@@ -75,11 +83,11 @@ public class ChestUtil extends AbstractUtil{
 
     @Deprecated
     public static ModelLayerLocation getChestModelLayerLocation(BlockState state, BlockEntity be){
-        return getChestModelLayerLocation(state);
+        return getChestModelLayerLocation(state, be);
     }
 
     @Deprecated
     public static void transformChest(BlockState state, PoseStack poseStack, BlockEntity be){
-        transform(state, poseStack);
+        transform(state, poseStack, be);
     }
 }
