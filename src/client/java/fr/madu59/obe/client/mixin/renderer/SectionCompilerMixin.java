@@ -22,12 +22,10 @@ import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.model.BlockEntityStateModel;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import fr.madu59.obe.client.renderer.entity.MeshableEntityTracker;
-import fr.madu59.obe.client.renderer.entity.MeshableEntityTracker.CushionSnapshot;
 import fr.madu59.obe.client.renderer.entity.MeshableEntityTracker.MeshableEntityData;
 import fr.madu59.obe.client.renderer.entity.ext.EntityExt;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager.RenderMode;
-import fr.madu59.obe.client.util.entity.CushionUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.SectionBufferBuilderPack;
 import net.minecraft.client.renderer.block.BlockQuadOutput;
@@ -104,19 +102,18 @@ public abstract class SectionCompilerMixin {
         };
 
         for(MeshableEntityData data : entitiesData){
-            if(data instanceof CushionSnapshot snapshot){
-                if(snapshot.level() != Minecraft.getInstance().level){
-                    MeshableEntityTracker.deleteInvalidMeshableEntity(snapshot.id(), snapshot.blockPos());
-                    continue;
-                }
-                BlockEntityStateModel model = CushionUtil.getModel(snapshot);
-                ChunkTaskHolder.addTask(sectionPos, () -> {
-                    EntityExt ext = ((EntityExt)Minecraft.getInstance().level.getEntity(snapshot.id()));
-                    if(ext != null) ext.renderMode(RenderMode.TERRAIN);
-                });
-                BlockPos pos  = snapshot.blockPos();
-                blockRenderer.tesselateBlock(quadOutput, SectionPos.sectionRelative(pos.getX()), SectionPos.sectionRelative(pos.getY()), SectionPos.sectionRelative(pos.getZ()), region, pos, region.getBlockState(snapshot.blockPos()), model, 42);
+            if(!data.isEnabled()) continue;
+            if(data.level() != Minecraft.getInstance().level){
+                MeshableEntityTracker.deleteInvalidMeshableEntity(data.id(), data.blockPos());
+                continue;
             }
+            BlockEntityStateModel model = data.getModel();
+            ChunkTaskHolder.addTask(sectionPos, () -> {
+                EntityExt ext = ((EntityExt)Minecraft.getInstance().level.getEntity(data.id()));
+                if(ext != null) ext.renderMode(RenderMode.TERRAIN);
+            });
+            BlockPos pos  = data.blockPos();
+            blockRenderer.tesselateBlock(quadOutput, SectionPos.sectionRelative(pos.getX()), SectionPos.sectionRelative(pos.getY()), SectionPos.sectionRelative(pos.getZ()), region, pos, region.getBlockState(data.blockPos()), model, 42);
         }
     }
 }

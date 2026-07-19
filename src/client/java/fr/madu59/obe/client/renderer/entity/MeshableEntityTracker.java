@@ -5,9 +5,12 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import fr.madu59.obe.client.chunk.ChunkTaskHolder;
+import fr.madu59.obe.client.config.SettingsManager;
+import fr.madu59.obe.client.model.BlockEntityStateModel;
 import fr.madu59.obe.client.renderer.entity.ext.EntityExt;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager.RenderMode;
+import fr.madu59.obe.client.util.entity.CushionUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.world.entity.Entity;
@@ -95,9 +98,29 @@ public class MeshableEntityTracker {
         Vec3 pos();
         SectionPos sectionPos();
         Level level();
+
+        public BlockEntityStateModel getModel();
+
+        public boolean isEnabled();
     }
 
-    public record CushionSnapshot(Level level, int id, SectionPos sectionPos, BlockPos blockPos, Vec3 pos, Vec2 rotation, DyeColor color) implements MeshableEntityData {}
+    public record CushionSnapshot(Level level, int id, SectionPos sectionPos, BlockPos blockPos, Vec3 pos, Vec2 rotation, DyeColor color) implements MeshableEntityData {
+        public BlockEntityStateModel getModel(){
+            return CushionUtil.getModel(this);
+        };
 
-    public record ItemFrameSnapshot(Level level,int id, SectionPos sectionPos, BlockPos blockPos, Vec3 pos, Vec2 rotation) implements MeshableEntityData {}
+        public boolean isEnabled(){
+            return SettingsManager.OPTIMISED_CUSHIONS.getValue();
+        };
+    }
+
+    public record ItemFrameSnapshot(Level level,int id, SectionPos sectionPos, BlockPos blockPos, Vec3 pos, Vec2 rotation) implements MeshableEntityData {
+        public BlockEntityStateModel getModel(){
+            return null;
+        };
+
+        public boolean isEnabled(){
+            return false;
+        };
+    }
 }
