@@ -7,7 +7,6 @@ import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import com.mojang.serialization.Codec;
 
-import fr.madu59.obe.OBE;
 import fr.madu59.obe.client.util.blockentity.SkullBlockUtil;
 
 import java.util.Map;
@@ -25,8 +24,6 @@ public class SkullPackLoader extends SimpleJsonResourceReloadListener<Map<String
 
         for (Map.Entry<Identifier, Map<String, Identifier>> entry : prepared.entrySet()) {
             Identifier fileIdentifier = entry.getKey();
-
-            OBE.LOGGER.info(fileIdentifier.getPath());
 
             if (!fileIdentifier.getPath().equals("config")) {
                 continue;

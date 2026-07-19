@@ -14,8 +14,8 @@ import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import fr.madu59.obe.client.model.BlockEntityStateModel;
 import fr.madu59.obe.client.renderer.blockentity.BlockEntityModelsManager;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
-import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager;
-import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager.RenderMode;
+import fr.madu59.obe.client.renderer.misc.RenderModeManager;
+import fr.madu59.obe.client.renderer.misc.RenderModeManager.RenderMode;
 import net.caffeinemc.mods.sodium.client.render.chunk.compile.pipeline.BlockRenderer;
 import net.caffeinemc.mods.sodium.client.render.chunk.compile.tasks.ChunkBuilderMeshingTask;
 import net.caffeinemc.mods.sodium.client.world.LevelSlice;
@@ -47,7 +47,7 @@ public class ChunkBuilderMeshingTaskMixin {
         if(state.hasBlockEntity()){
             BlockEntity be = beRef.get();
             BlockEntityExt ext = (BlockEntityExt) be;
-            if(ext != null && ext.isSupportedBlockEntity()) {
+            if(ext != null && ext.isSupported()) {
                 if(sectionPos == null){
                     sectionPos = SectionPos.of(pos);
                 }
@@ -75,7 +75,7 @@ public class ChunkBuilderMeshingTaskMixin {
             BlockStateModel model = null;
             BlockEntity be = beRef.get();
             BlockEntityExt ext = (BlockEntityExt) be;
-            if(ext != null && ext.isSupportedBlockEntity()) {
+            if(ext != null && ext.isSupported()) {
                 if(ext.isEnabled() && !ext.hasSpecialRenderer() && ext.renderModeDelayed() != RenderMode.TERRAIN){
                     model = new BlockEntityStateModel();
                 }
@@ -96,7 +96,7 @@ public class ChunkBuilderMeshingTaskMixin {
     )
     private boolean obe$wrapShouldRender(BlockEntityType<?> type, BlockGetter slice, BlockPos pos, BlockEntity be, Operation<Boolean> original) {
         BlockEntityExt ext = (BlockEntityExt) be;
-        if(ext != null && ext.isEnabled() && (!(ext.forceEntity() || !ext.isSupportedBlockEntity() || ext.renderModeDelayed() == RenderMode.ENTITY || ext.renderBoth()) || ext.shouldSkipBeRendering())) {
+        if(ext != null && ext.isEnabled() && (!(ext.forceEntity() || !ext.isSupported() || ext.renderModeDelayed() == RenderMode.ENTITY || ext.renderBoth()) || ext.shouldSkipRendering())) {
             return false;
         }
         return original.call(type, slice, pos, be);

@@ -8,8 +8,8 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 
 import fr.madu59.obe.client.renderer.blockentity.SpecialBlockEntityRenderingManager;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
-import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager;
 import net.minecraft.client.renderer.LevelRenderer;
+import fr.madu59.obe.client.renderer.misc.RenderModeManager;
 import net.minecraft.client.renderer.chunk.SectionMesh;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import java.util.List;
@@ -31,7 +31,7 @@ public class LevelRendererMixin {
 
         for (int i = original.size() - 1; i >= 0; i--) {
             if (original.get(i) instanceof BlockEntityExt ext){
-                if(ext.isEnabled() && (!RenderModeManager.shouldRenderEntityFast(ext) || ext.shouldSkipBeRendering() || SpecialBlockEntityRenderingManager.shouldSkipRendering((BlockEntity)ext))){
+                if(ext.isEnabled() && (!RenderModeManager.shouldRenderEntityFast(ext) || ext.shouldSkipRendering() || SpecialBlockEntityRenderingManager.shouldSkipRendering((BlockEntity)ext))){
                     original.remove(i);
                 }
             }

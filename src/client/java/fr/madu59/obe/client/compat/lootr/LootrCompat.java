@@ -31,11 +31,11 @@ public class LootrCompat {
 
     public static void init(){
         Registry.addBlockEntityTypeInGroup("chest", LootrRegistry.getChestBlockEntity(), LootrRegistry.getTrappedChestBlockEntity());
-        SpecialModelGetter.register(LootrRegistry.getChestBlockEntity(), new SpecialModelProvider(ChestUtil::getChestModelLayerLocation, LootrCompat::getChestMaterial, LootrCompat::transformChest, LootrCompat::getChestCacheKey));
-        SpecialModelGetter.register(LootrRegistry.getTrappedChestBlockEntity(), new SpecialModelProvider(ChestUtil::getChestModelLayerLocation, LootrCompat::getChestMaterial, LootrCompat::transformChest, LootrCompat::getChestCacheKey));
+        SpecialModelGetter.register(LootrRegistry.getChestBlockEntity(), new SpecialModelProvider(ChestUtil::getModelLayerLocation, LootrCompat::getChestMaterial, LootrCompat::transformChest, LootrCompat::getChestCacheKey));
+        SpecialModelGetter.register(LootrRegistry.getTrappedChestBlockEntity(), new SpecialModelProvider(ChestUtil::getModelLayerLocation, LootrCompat::getChestMaterial, LootrCompat::transformChest, LootrCompat::getChestCacheKey));
     
         Registry.addBlockEntityTypeInGroup("shulker_box", LootrRegistry.getShulkerBoxBlockEntity());
-        SpecialModelGetter.register(LootrRegistry.getShulkerBoxBlockEntity(), new SpecialModelProvider(ShulkerBoxUtil::getShulkerBoxModelLayerLocation, LootrCompat::getShulkerBoxMaterial, ShulkerBoxUtil::transformShulkerBox, LootrCompat::getShulkerBoxCacheKey));
+        SpecialModelGetter.register(LootrRegistry.getShulkerBoxBlockEntity(), new SpecialModelProvider(ShulkerBoxUtil::getModelLayerLocation, LootrCompat::getShulkerBoxMaterial, ShulkerBoxUtil::transform, LootrCompat::getShulkerBoxCacheKey));
     }
 
     public static Identifier getChestMaterial(BlockState state, BlockEntity be) {
@@ -82,7 +82,7 @@ public class LootrCompat {
                 return id;
             }
         }
-        return ChestUtil.getChestMaterial(state);
+        return ChestUtil.getMaterial(state);
    }
 
     public static Identifier getShulkerBoxMaterial(BlockState state, BlockEntity be) {
@@ -93,7 +93,7 @@ public class LootrCompat {
                 return Minecraft.getInstance().player != null && lootrShulkerBoxBe.hasClientOpened(Minecraft.getInstance().player.getUUID()) ? SHULKER_BOX_MATERIAL2 : SHULKER_BOX_MATERIAL;
             }
         }
-        return ShulkerBoxUtil.getShulkerBoxMaterial(state);
+        return ShulkerBoxUtil.getMaterial(state);
    }
 
     public static void transformChest(BlockState state, BlockEntity be, PoseStack poseStack) {

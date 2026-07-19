@@ -1,17 +1,17 @@
-package fr.madu59.obe.client.mixin.blockentity.ext;
+package fr.madu59.obe.client.mixin.entity.ext;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
-import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
+import fr.madu59.obe.client.renderer.entity.ext.EntityExt;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager.RenderMode;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.entity.Entity;
 
-@Mixin(BlockEntity.class)
-public abstract class BlockEntityMixin implements BlockEntityExt {
+@Mixin(Entity.class)
+public abstract class EntityMixin implements EntityExt {
     @Unique private RenderMode renderMode = RenderMode.ENTITY;
     @Unique private RenderMode renderModeDelayed = RenderMode.TERRAIN;
     @Unique private boolean isSupported = false;
@@ -19,7 +19,6 @@ public abstract class BlockEntityMixin implements BlockEntityExt {
     @Unique private long timerStart = 0;
     @Unique private int timerDuration = 0;
     @Unique private boolean isEnabled = true;
-    @Unique private boolean renderBoth = false;
     @Unique private boolean shouldSkipRendering = false;
     @Unique private boolean forceEntity = false;
 
@@ -44,9 +43,6 @@ public abstract class BlockEntityMixin implements BlockEntityExt {
         if(!isEnabled) renderMode = RenderMode.ENTITY;
     }
 
-    @Override public boolean renderBoth() { return renderBoth; }
-    @Override public void renderBoth(boolean bl) { renderBoth = bl;}
-
     @Override public boolean isTimerFinished(){
         if(timerStart == 0) return false;
         else return Minecraft.getInstance().level.getGameTime() - timerStart > timerDuration;
@@ -62,7 +58,7 @@ public abstract class BlockEntityMixin implements BlockEntityExt {
     @Override public void shouldSkipRenderingAndUpdate(boolean bl) {
         if(bl != shouldSkipRendering) {
             shouldSkipRendering = bl;
-            BlockPos pos = ((BlockEntity)(Object)this).getBlockPos();
+            BlockPos pos = ((Entity)(Object)this).blockPosition();
             if(Minecraft.getInstance().level != null && Minecraft.getInstance().level.getChunkSource() != null) RenderModeManager.setDirty(pos);
         }
     }

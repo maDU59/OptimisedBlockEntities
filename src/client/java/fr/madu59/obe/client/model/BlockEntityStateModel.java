@@ -140,7 +140,7 @@ public class BlockEntityStateModel implements BlockStateModel{
     }
 
     private boolean shouldSkipQuad(Polygon polygon, Vector3f[] positions, BlockState state, String partName){
-        if(!SettingsManager.MODEL_OPTIMIZATION.getValue()) return false;
+        if(!SettingsManager.MODEL_OPTIMIZATION.getValue() || state == null) return false;
         if(state.getBlock() instanceof ChestBlock || state.getBlock() instanceof EnderChestBlock){
             if(partName.equals("lid") || partName.equals("bottom")) {
                 boolean isHorizontal = positions[0].y() == positions[1].y() && positions[1].y() == positions[2].y() && positions[2].y() == positions[3].y();
