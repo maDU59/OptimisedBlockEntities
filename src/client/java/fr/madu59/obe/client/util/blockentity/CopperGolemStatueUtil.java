@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.CopperGolemStatueBlock;
 import net.minecraft.world.level.block.WeatheringCopper.WeatherState;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class CopperGolemStatueUtil extends AbstractUtil{
+public class CopperGolemStatueUtil {
     public static Identifier getMaterial(BlockState state) {
         WeatherState oxydationLevel;
         if (state.getBlock() instanceof CopperGolemStatueBlock copperGolemStatueBlock) {

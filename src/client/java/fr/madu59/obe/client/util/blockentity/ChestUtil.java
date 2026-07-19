@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
 
-public class ChestUtil extends AbstractUtil{
+public class ChestUtil {
     private static final boolean xmasTexture = ChestRenderer.xmasTextures();
 
     public static Identifier getMaterial(BlockState state) {

@@ -10,9 +10,10 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.ShulkerBoxBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class ShulkerBoxUtil extends AbstractUtil{
+public class ShulkerBoxUtil {
     public static Identifier getMaterial(BlockState state){
         if(state.getBlock() instanceof ShulkerBoxBlock block){
             DyeColor color = block.getColor();
@@ -32,5 +33,13 @@ public class ShulkerBoxUtil extends AbstractUtil{
     public static void transform(BlockState state, PoseStack poseStack){
         Direction facing = state.getValue(ShulkerBoxBlock.FACING);
         poseStack.mulPose(ShulkerBoxRenderer.modelTransform(facing));
+    }
+
+    public static ModelLayerLocation getModelLayerLocation(BlockState state, BlockEntity be){
+        return getModelLayerLocation(state);
+    }
+
+    public static void transform(BlockState state, BlockEntity be, PoseStack poseStack){
+        transform(state, poseStack);
     }
 }
