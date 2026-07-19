@@ -11,7 +11,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.DecoratedPotBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class DecoratedPotUtil extends AbstractUtil{
+public class DecoratedPotUtil {
     public static Identifier getMaterial(BlockState state){
         return Sheets.DECORATED_POT_BASE.texture();
     }

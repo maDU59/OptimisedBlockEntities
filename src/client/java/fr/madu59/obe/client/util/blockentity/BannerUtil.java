@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.BannerBlock;
 import net.minecraft.world.level.block.WallBannerBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class BannerUtil extends AbstractUtil{
+public class BannerUtil {
     public static Identifier getMaterial(BlockState state){
         return Sheets.BANNER_BASE.texture();
     }

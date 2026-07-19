@@ -22,7 +22,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class SkullBlockUtil extends AbstractUtil{
+public class SkullBlockUtil {
 
     public static Map<String, Identifier> BUILT_IN_TEXTURES = new HashMap<>();
 
@@ -58,6 +58,10 @@ public class SkullBlockUtil extends AbstractUtil{
         } else {
             poseStack.mulPose(SkullBlockRenderer.TRANSFORMATIONS.freeTransformations(state.getValue(SkullBlock.ROTATION)));
         }
+    }
+
+    public static void transform(BlockState state, BlockEntity be, PoseStack poseStack){
+        transform(state, poseStack);
     }
 
     public static ModelLayerLocation getModelLayerLocation(BlockState state, BlockEntity be){
