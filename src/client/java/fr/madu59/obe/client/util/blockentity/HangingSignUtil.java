@@ -15,17 +15,17 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.WoodType;
 
-public class HangingSignUtil {
-    public static Identifier getHangingSignMaterial(BlockState state){
+public class HangingSignUtil extends AbstractUtil{
+    public static Identifier getMaterial(BlockState state){
         WoodType woodType = SignBlock.getWoodType(state.getBlock());
         return Sheets.getHangingSignSprite(woodType).texture();
     }
 
-    public static ModelLayerLocation getHangingSignModelLayerLocation(BlockState state){
+    public static ModelLayerLocation getModelLayerLocation(BlockState state){
         return ModelLayers.createHangingSignModelName(SignBlock.getWoodType(state.getBlock()), HangingSignBlock.getAttachmentPoint(state));
     }
 
-    public static void transformHangingSign(BlockState state, PoseStack poseStack){
+    public static void transform(BlockState state, PoseStack poseStack){
         if (state.hasProperty(CeilingHangingSignBlock.ATTACHED)) {
             int rotationSegment = state.getValue(BlockStateProperties.ROTATION_16);
             poseStack.mulPose(HangingSignRenderer.TRANSFORMATIONS.freeTransformations(rotationSegment).body());

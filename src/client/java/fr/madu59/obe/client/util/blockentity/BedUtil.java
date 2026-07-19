@@ -12,15 +12,15 @@ import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BedPart;
 
-public class BedUtil {
-    public static Identifier getBedMaterial(BlockState state){
+public class BedUtil extends AbstractUtil{
+    public static Identifier getMaterial(BlockState state){
         if(state.getBlock() instanceof BedBlock block){
             return  Sheets.getBedSprite(block.getColor()).texture();
         }
         return null;
     }
 
-    public static ModelLayerLocation getBedModelLayerLocation(BlockState state){
+    public static ModelLayerLocation getModelLayerLocation(BlockState state){
         if(state.hasProperty(BedBlock.PART)){
             if(state.getValue(BedBlock.PART) == BedPart.FOOT) return ModelLayers.BED_FOOT;
             else return ModelLayers.BED_HEAD;
@@ -28,7 +28,7 @@ public class BedUtil {
         else return null;
     }
 
-    public static void transformBed(BlockState state, PoseStack poseStack){
+    public static void transform(BlockState state, PoseStack poseStack){
         Direction facing = state.getValue(BedBlock.FACING);
         poseStack.mulPose(BedRenderer.modelTransform(facing));
     }
