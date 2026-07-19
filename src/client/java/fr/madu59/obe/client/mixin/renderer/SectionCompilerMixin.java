@@ -35,6 +35,7 @@ import net.minecraft.client.renderer.chunk.RenderSectionRegion;
 import net.minecraft.client.renderer.chunk.SectionCompiler;
 import net.minecraft.client.renderer.chunk.SectionCompiler.Results;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -101,6 +102,8 @@ public abstract class SectionCompilerMixin {
             cutoutBuilder.putBlockBakedQuad(x, y, z, quad, instance);
         };
 
+        MutableBlockPos pos = new MutableBlockPos();
+
         for(MeshableEntityData data : entitiesData){
             if(!data.isEnabled()) continue;
             if(data.level() != Minecraft.getInstance().level){
@@ -112,7 +115,7 @@ public abstract class SectionCompilerMixin {
                 EntityExt ext = ((EntityExt)Minecraft.getInstance().level.getEntity(data.id()));
                 if(ext != null) ext.renderMode(RenderMode.TERRAIN);
             });
-            BlockPos pos  = data.blockPos();
+            pos.set(data.blockPos());
             blockRenderer.tesselateBlock(quadOutput, SectionPos.sectionRelative(pos.getX()), SectionPos.sectionRelative(pos.getY()), SectionPos.sectionRelative(pos.getZ()), region, pos, region.getBlockState(data.blockPos()), model, 42);
         }
     }
