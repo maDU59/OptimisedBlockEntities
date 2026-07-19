@@ -14,7 +14,7 @@ import fr.madu59.obe.client.registry.Registry;
 import fr.madu59.obe.client.registry.TransformationGetter;
 import fr.madu59.obe.client.registry.SpecialModelGetter.SpecialModelProvider;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
-import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager.RenderMode;
+import fr.madu59.obe.client.renderer.misc.RenderModeManager.RenderMode;
 import fr.madu59.obe.client.resources.ResourceUtil;
 import fr.madu59.obe.client.util.blockentity.DecoratedPotUtil;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -46,7 +46,7 @@ public class BlockEntityModelsManager {
         if (be == null) return null;
 
         BlockEntityExt ext = (BlockEntityExt)be;
-        if (ext == null || !ext.isSupportedBlockEntity() || !ext.hasSpecialRenderer() || !ext.isEnabled()) return null;
+        if (ext == null || !ext.isSupported() || !ext.hasSpecialRenderer() || !ext.isEnabled()) return null;
 
         String group = Registry.getGroup(state);
         SpecialModelProvider customModelProvider = SpecialModelGetter.getSpecialModelProvider(state, group);
@@ -74,7 +74,7 @@ public class BlockEntityModelsManager {
             return new BlockEntityStateModel(originalModel.particleMaterial());
         }
 
-        return fail(be);
+        return originalModel;
     }
 
     public BlockStateModel getBlockModel(BlockState state, RandomSource random, BlockStateModel originalModel, String group) {
@@ -107,7 +107,7 @@ public class BlockEntityModelsManager {
 
         BlockStateModel model = ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "decorated_pot"), state, poseStack, getAmbientOcclusion("decorated_pot"), originalModel.particleMaterial());
 
-        layerLocation = DecoratedPotUtil.getDecoratedPotSideModelLayerLocation(state);
+        layerLocation = DecoratedPotUtil.getSideModelLayerLocation(state);
 
         Holder.Reference<DecoratedPotPattern> pattern = BuiltInRegistries.DECORATED_POT_PATTERN.getOrThrow(DecoratedPotPatterns.BLANK);
 

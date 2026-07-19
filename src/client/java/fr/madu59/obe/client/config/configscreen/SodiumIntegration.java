@@ -99,6 +99,12 @@ public class SodiumIntegration implements ConfigEntryPoint {
                 .setName(Component.translatable("obe.config.category.beacons"))
                 .addOption(createBooleanOption(builder, SettingsManager.OPTIMISED_BEACONS))
             )
+
+            .addOptionGroup(builder.createOptionGroup()
+                .setName(Component.translatable("obe.config.category.cushions"))
+                .addOption(createBooleanOption(builder, SettingsManager.OPTIMISED_CUSHIONS))
+                .addOption(createBooleanOption(builder, SettingsManager.CUSHION_AMBIENT_OCCLUSION))
+            )
         );
     }
 

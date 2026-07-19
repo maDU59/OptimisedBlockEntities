@@ -15,6 +15,7 @@
     { "type": "directory", "source": "entity/piglin", "prefix": "entity/piglin/" },
     { "type": "directory", "source": "entity/creeper", "prefix": "entity/creeper/" },
     { "type": "directory", "source": "entity/enderdragon", "prefix": "entity/enderdragon/" },
+    { "type": "directory", "source": "entity/cushion", "prefix": "entity/cushion/" },
     { "type": "directory", "source": "quark_variant_chests", "prefix": "quark_variant_chests/" },
     { "type": "directory", "source": "entity/shulker_box", "prefix": "entity/shulker_box/" },
     { "type": "single", "resource": "lootr:chest" },

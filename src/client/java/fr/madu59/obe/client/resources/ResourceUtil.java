@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import fr.madu59.obe.client.model.BlockEntityStateModel;
+import fr.madu59.obe.client.util.entity.CushionUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
@@ -66,6 +67,7 @@ public class ResourceUtil{
         transformedSpecialModelCache.clear();
         transformedModelCache.clear();
         transformedSubModelCache.clear();
+        CushionUtil.clearCache();
     }
 
     public static Identifier entityTextureFormatter(Identifier identifier){

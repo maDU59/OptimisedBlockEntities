@@ -26,6 +26,8 @@
     "obe.config.option.optimised_campfires": "Optimize Campfires",
     "obe.config.option.optimised_beacons": "Optimize Beacons",
     "obe.config.option.optimised_models": "Optimize models",
+    "obe.config.option.optimised_cushions": "Optimize cushions",
+    "obe.config.option.cushion_ao": "Cushion Ambient Occlusion",
 
     "obe.config.warning.incompatibility": "%s has been detected, changing the settings may cause issues!",
 
@@ -43,6 +45,7 @@
     "obe.config.category.lecterns": "Lecterns",
     "obe.config.category.campfires": "Campfires",
     "obe.config.category.beacons": "Beacons",
+    "obe.config.category.cushions": "Cushions",
 
     "obe.config.value.true": "Enabled",
     "obe.config.value.false": "Disabled",
