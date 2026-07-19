@@ -60,6 +60,10 @@ public class SkullBlockUtil extends AbstractUtil{
         }
     }
 
+    public static ModelLayerLocation getModelLayerLocation(BlockState state, BlockEntity be){
+        return getModelLayerLocation(state);
+    }
+
     public static Identifier getMaterial(BlockState state, BlockEntity be) {
         if (be instanceof SkullBlockEntity skullBe) {
             return getBuiltInTexture(skullBe);

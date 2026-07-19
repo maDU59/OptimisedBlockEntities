@@ -13,7 +13,7 @@ public abstract class AbstractUtil {
     }
 
     public static Identifier getMaterial(BlockState state, BlockEntity be){
-        return getMaterial(state);
+        throw new AbstractMethodError("getMaterial(BlockState, BlockEntity) was not implemented by " + AbstractUtil.class.getSimpleName());
     }
 
     public static ModelLayerLocation getModelLayerLocation(BlockState state){
@@ -21,7 +21,7 @@ public abstract class AbstractUtil {
     }
 
     public static ModelLayerLocation getModelLayerLocation(BlockState state, BlockEntity be){
-        return getModelLayerLocation(state);
+        throw new AbstractMethodError("getModelLayerLocation(BlockState, BlockEntity) was not implemented by " + AbstractUtil.class.getSimpleName());
     }
 
     public static void transform(BlockState state, PoseStack poseStack){
@@ -29,6 +29,6 @@ public abstract class AbstractUtil {
     }
 
     public static void transform(BlockState state, BlockEntity be, PoseStack poseStack){
-        transform(state, poseStack);
+        throw new AbstractMethodError("transform(BlockState, BlockEntity, PoseStack) was not implemented by " + AbstractUtil.class.getSimpleName());
     }
 }
