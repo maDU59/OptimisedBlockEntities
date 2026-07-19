@@ -1,39 +1,26 @@
 package fr.madu59.obe.client.mixin.renderer.compat.sodium;
 
-import java.util.Collection;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 
-import fr.madu59.obe.client.chunk.ChunkTaskHolder;
-import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.model.BlockEntityStateModel;
 import fr.madu59.obe.client.renderer.blockentity.BlockEntityModelsManager;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
-import fr.madu59.obe.client.renderer.entity.MeshableEntityTracker;
-import fr.madu59.obe.client.renderer.entity.MeshableEntityTracker.MeshableEntityData;
-import fr.madu59.obe.client.renderer.entity.ext.EntityExt;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager.RenderMode;
 import net.caffeinemc.mods.sodium.client.render.chunk.compile.pipeline.BlockRenderer;
 import net.caffeinemc.mods.sodium.client.render.chunk.compile.tasks.ChunkBuilderMeshingTask;
 import net.caffeinemc.mods.sodium.client.world.LevelSlice;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
-import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -109,37 +96,4 @@ public class ChunkBuilderMeshingTaskMixin {
         }
         return original.call(type, slice, pos, be);
     }
-
-    @Inject(method = "execute", at = @At(value = "INVOKE", target = "Lnet/caffeinemc/mods/sodium/client/render/chunk/compile/pipeline/BlockRenderer;release()V"))
-    private void obe$appendMeshData(CallbackInfo ci, @Local BlockRenderer blockRenderer, @Local LevelSlice slice){
-        if(!SettingsManager.MOD_TOGGLE.getValue()) return;
-
-        Collection<MeshableEntityData> entitiesData = MeshableEntityTracker.getMeshableEntities(sectionPos);
-        if(entitiesData == null) return;
-
-        MutableBlockPos pos = new MutableBlockPos();
-        MutableBlockPos modelOffset = new MutableBlockPos();
-
-        for(MeshableEntityData data : entitiesData){
-            if(!data.isEnabled()) continue;
-            if(data.level() != Minecraft.getInstance().level){
-                MeshableEntityTracker.deleteInvalidMeshableEntity(data.id(), data.blockPos());
-                continue;
-            }
-            BlockEntityStateModel model = data.getModel();
-            ChunkTaskHolder.addTask(sectionPos, () -> {
-                EntityExt ext = ((EntityExt)Minecraft.getInstance().level.getEntity(data.id()));
-                if(ext != null) ext.renderMode(RenderMode.TERRAIN);
-            });
-            pos.set(data.blockPos());
-
-            int localX = pos.getX() & 15;
-            int localY = pos.getY() & 15;
-            int localZ = pos.getZ() & 15;
-            modelOffset.set(localX, localY, localZ);
-
-            blockRenderer.renderModel(model, slice.getBlockState(pos), pos, modelOffset);
-        }
-    }
-
 }

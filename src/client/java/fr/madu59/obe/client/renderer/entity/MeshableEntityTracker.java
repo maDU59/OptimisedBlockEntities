@@ -5,47 +5,37 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import fr.madu59.obe.client.chunk.ChunkTaskHolder;
-import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.model.BlockEntityStateModel;
 import fr.madu59.obe.client.renderer.entity.ext.EntityExt;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager.RenderMode;
-import fr.madu59.obe.client.util.entity.CushionUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityTypes;
-import net.minecraft.world.entity.decoration.Cushion;
-import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 
 public class MeshableEntityTracker {
     private static final Map<SectionPos, Map<Integer, MeshableEntityData>> meshableEntities = new ConcurrentHashMap<>();
 
     public static void registerMeshableEntity(Entity entity, BlockPos pos) {
-        if(!entity.level().isClientSide() || !((EntityExt)entity).isSupported()) return;
+        // if(!entity.level().isClientSide() || !((EntityExt)entity).isSupported()) return;
 
-        int id = 0;
-        try{
-            id = entity.getId();
-        }
-        catch(Exception e){
-            return;
-        }
+        // int id = 0;
+        // try{
+        //     id = entity.getId();
+        // }
+        // catch(Exception e){
+        //     return;
+        // }
 
-        MeshableEntityData data = null;
-        SectionPos sectionPos = SectionPos.of(pos);
+        // MeshableEntityData data = null;
+        // SectionPos sectionPos = SectionPos.of(pos);
 
-        if(entity.getType() == EntityTypes.CUSHION && entity instanceof Cushion cushion){
-            data = new CushionSnapshot(entity.level(), id, sectionPos, cushion.getPos(), cushion.position(), cushion.getRotationVector(), cushion.getColor());
-        }
-
-        if(data == null) return;
-        getSectionMap(sectionPos).put(id, data);
-        ((EntityExt)entity).renderModeDelayed(RenderMode.TERRAIN);
-        RenderModeManager.setDirty(pos);
+        // if(data == null) return;
+        // getSectionMap(sectionPos).put(id, data);
+        // ((EntityExt)entity).renderModeDelayed(RenderMode.TERRAIN);
+        // RenderModeManager.setDirty(pos);
     }
 
     public static void deregisterMeshableEntity(Entity entity, BlockPos pos) {
@@ -98,15 +88,5 @@ public class MeshableEntityTracker {
         public BlockEntityStateModel getModel();
 
         public boolean isEnabled();
-    }
-
-    public record CushionSnapshot(Level level, int id, SectionPos sectionPos, BlockPos blockPos, Vec3 pos, Vec2 rotation, DyeColor color) implements MeshableEntityData {
-        public BlockEntityStateModel getModel(){
-            return CushionUtil.getModel(this);
-        };
-
-        public boolean isEnabled(){
-            return SettingsManager.OPTIMISED_CUSHIONS.getValue();
-        };
     }
 }
