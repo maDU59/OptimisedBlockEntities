@@ -16,7 +16,6 @@ import net.minecraft.core.SectionPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.decoration.Cushion;
-import net.minecraft.world.entity.decoration.ItemFrame;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec2;
@@ -41,9 +40,6 @@ public class MeshableEntityTracker {
 
         if(entity.getType() == EntityTypes.CUSHION && entity instanceof Cushion cushion){
             data = new CushionSnapshot(entity.level(), id, sectionPos, cushion.getPos(), cushion.position(), cushion.getRotationVector(), cushion.getColor());
-        }
-        else if(entity.getType() == EntityTypes.ITEM_FRAME && entity instanceof ItemFrame itemFrame){
-            data = new ItemFrameSnapshot(entity.level(), id, sectionPos, itemFrame.getPos(), itemFrame.position(), itemFrame.getRotationVector());
         }
 
         if(data == null) return;
@@ -111,16 +107,6 @@ public class MeshableEntityTracker {
 
         public boolean isEnabled(){
             return SettingsManager.OPTIMISED_CUSHIONS.getValue();
-        };
-    }
-
-    public record ItemFrameSnapshot(Level level,int id, SectionPos sectionPos, BlockPos blockPos, Vec3 pos, Vec2 rotation) implements MeshableEntityData {
-        public BlockEntityStateModel getModel(){
-            return null;
-        };
-
-        public boolean isEnabled(){
-            return false;
         };
     }
 }

@@ -196,7 +196,7 @@ public class SettingsManager {
 
     public static Option<Boolean> OPTIMISED_CUSHIONS = loadOptionWithDefaults("optimized_cushion",
         "obe.config.option.optimised_cushions",
-        true,
+        !isIncompatible,
         reloadChunksAction
     );
 
