@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.WoodType;
 
-public class HangingSignUtil extends AbstractUtil{
+public class HangingSignUtil {
     public static Identifier getMaterial(BlockState state){
         WoodType woodType = SignBlock.getWoodType(state.getBlock());
         return Sheets.getHangingSignSprite(woodType).texture();

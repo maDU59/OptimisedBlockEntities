@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.entity.SignBlockEntity;
 public class SpecialBlockEntityRenderingManager {
     public static boolean shouldSkipRendering(BlockEntity be) {
         if(!SettingsManager.MOD_TOGGLE.getValue()) return false;
-        else if(be instanceof SignBlockEntity signBe && SettingsManager.OPTIMISED_SIGNS.getValue() && ((BlockEntityExt)be).isSupportedBlockEntity()){
+        else if(be instanceof SignBlockEntity signBe && SettingsManager.OPTIMISED_SIGNS.getValue() && ((BlockEntityExt)be).isSupported()){
             return isEmpty(signBe);
         }
         else if(be instanceof BeaconBlockEntity beaconBe && SettingsManager.OPTIMISED_BEACONS.getValue()){

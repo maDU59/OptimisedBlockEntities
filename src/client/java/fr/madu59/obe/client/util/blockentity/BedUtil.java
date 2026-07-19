@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BedPart;
 
-public class BedUtil extends AbstractUtil{
+public class BedUtil {
     public static Identifier getMaterial(BlockState state){
         if(state.getBlock() instanceof BedBlock block){
             return  Sheets.getBedSprite(block.getColor()).texture();

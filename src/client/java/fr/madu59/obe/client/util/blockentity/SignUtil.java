@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.WoodType;
 
-public class SignUtil extends AbstractUtil{
+public class SignUtil {
     public static Identifier getMaterial(BlockState state){
         WoodType woodType = SignBlock.getWoodType(state.getBlock());
         return Sheets.getSignSprite(woodType).texture();
