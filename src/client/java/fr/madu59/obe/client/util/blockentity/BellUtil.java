@@ -10,27 +10,27 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class BellUtil {
-    public static ResourceLocation getBellMaterial(BlockState state){
+    public static ResourceLocation getMaterial(BlockState state){
         return BellRenderer.BELL_RESOURCE_LOCATION.texture();
     }
 
-    public static ResourceLocation getBellMaterial(BlockState state, BlockEntity be){
-        return getBellMaterial(state);
-    }
-
-    public static ModelLayerLocation getBellModelLayerLocation(BlockState state){
+    public static ModelLayerLocation getModelLayerLocation(BlockState state){
         return ModelLayers.BELL;
     }
 
-    public static ModelLayerLocation getBellModelLayerLocation(BlockState state, BlockEntity be){
-        return getBellModelLayerLocation(state);
-    }
-
-    public static void transformBell(BlockState state, PoseStack poseStack){
+    public static void transform(BlockState state, PoseStack poseStack){
         
     }
 
-    public static void transformBell(BlockState state, BlockEntity be, PoseStack poseStack){
-        
+    public static ResourceLocation getMaterial(BlockState state, BlockEntity entity){
+        return getMaterial(state);
+    }
+
+    public static ModelLayerLocation getModelLayerLocation(BlockState state, BlockEntity entity){
+        return ModelLayers.BELL;
+    }
+
+    public static void transform(BlockState state, BlockEntity entity, PoseStack poseStack){
+        transform(state, poseStack);
     }
 }
