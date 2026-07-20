@@ -42,7 +42,7 @@ dependencies {
 
 	modImplementation ("maven.modrinth:modmenu:${project.modmenu_version}")
 	modCompileOnly "net.caffeinemc:sodium-fabric:0.8.12+mc1.21.1"
-	modRuntimeOnly "maven.modrinth:AANobbMI:KIRFiWG4"
+	modRuntimeOnly "maven.modrinth:AANobbMI:KIRFiWG4" // Sodium, but it breaks when using their maven for some reason
 
     modImplementation("org.antlr:antlr4-runtime:4.13.1")
     modImplementation("io.github.douira:glsl-transformer:2.0.1")
