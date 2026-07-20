@@ -25,8 +25,6 @@
 		"blockentity.renderers.coppergolemstatue.CopperGolemStatueBlockRendererMixin",
 		"blockentity.renderers.decoratedpot.DecoratedPotRendererMixin",
 		"blockentity.renderers.sign.AbstractSignRendererMixin",
-		"entity.ext.EntityMixin",
-		"entity.ext.EntityRenderStateMixin",
 		"renderer.SectionCompilerMixin",
 		"renderer.ModelBlockRendererMixin",
 		"renderer.LevelRendererMixin",
