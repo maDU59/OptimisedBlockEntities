@@ -22,7 +22,7 @@ public class ModCompat {
 
     public static void init(){
         if(PlatformHelper.isModLoaded("lootr")) LootrCompat.init();
-        if(PlatformHelper.isModLoaded("woodwork")) WoodWorkCompat.init();
+        if(PlatformHelper.isModLoaded("woodworks")) WoodWorkCompat.init();
     }
 
     public static boolean isIrisLoaded(){

@@ -124,6 +124,9 @@ dependencies {
     implementation "maven.modrinth:woodworks:aJd8UVN0"
     implementation "maven.modrinth:blueprint:LMGtMapI"
 
+    implementation "maven.modrinth:quark:yvp3Jbmk"
+    implementation "maven.modrinth:zeta:9GjNW2Gf"
+
     // Example optional mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
     // compileOnly "mezz.jei:jei-${mc_version}-common-api:${jei_version}"
