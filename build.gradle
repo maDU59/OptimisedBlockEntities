@@ -38,7 +38,7 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
-	modImplementation ("com.terraformersmc:modmenu:${project.modmenu_version}")
+	modImplementation ("maven.modrinth:modmenu:${project.modmenu_version}")
 	modImplementation "maven.modrinth:sodium:QuV9hMgB"
 
 	modImplementation("org.antlr:antlr4-runtime:4.13.1")

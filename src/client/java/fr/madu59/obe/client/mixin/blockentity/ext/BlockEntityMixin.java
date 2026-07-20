@@ -4,8 +4,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
-import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager;
-import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager.RenderMode;
+import fr.madu59.obe.client.renderer.misc.RenderModeManager;
+import fr.madu59.obe.client.renderer.misc.RenderModeManager.RenderMode;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -14,17 +14,17 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 public abstract class BlockEntityMixin implements BlockEntityExt {
     @Unique private RenderMode renderMode = RenderMode.ENTITY;
     @Unique private RenderMode renderModeDelayed = RenderMode.TERRAIN;
-    @Unique private boolean isSupportedBlockEntity = false;
+    @Unique private boolean isSupported = false;
     @Unique private boolean hasSpecialRenderer = false;
     @Unique private long timerStart = 0;
     @Unique private int timerDuration = 0;
     @Unique private boolean isEnabled = true;
     @Unique private boolean renderBoth = false;
-    @Unique private boolean shouldSkipBeRendering = false;
+    @Unique private boolean shouldSkipRendering = false;
     @Unique private boolean forceEntity = false;
 
-    @Override public boolean isSupportedBlockEntity() { return isSupportedBlockEntity; }
-    @Override public void isSupportedBlockEntity(boolean bl) {this.isSupportedBlockEntity = bl; }
+    @Override public boolean isSupported() { return isSupported; }
+    @Override public void isSupported(boolean bl) {this.isSupported = bl; }
 
     @Override public RenderMode renderMode() { return renderMode; }
     @Override public void renderMode(RenderMode mode) {
@@ -57,11 +57,11 @@ public abstract class BlockEntityMixin implements BlockEntityExt {
         timerDuration = duration;
     }
 
-    @Override public boolean shouldSkipBeRendering() { return shouldSkipBeRendering; }
-    @Override public void shouldSkipBeRendering(boolean bl) { shouldSkipBeRendering = bl; }
-    @Override public void shouldSkipBeRenderingAndUpdate(boolean bl) {
-        if(bl != shouldSkipBeRendering) {
-            shouldSkipBeRendering = bl;
+    @Override public boolean shouldSkipRendering() { return shouldSkipRendering; }
+    @Override public void shouldSkipRendering(boolean bl) { shouldSkipRendering = bl; }
+    @Override public void shouldSkipRenderingAndUpdate(boolean bl) {
+        if(bl != shouldSkipRendering) {
+            shouldSkipRendering = bl;
             BlockPos pos = ((BlockEntity)(Object)this).getBlockPos();
             if(Minecraft.getInstance().level != null && Minecraft.getInstance().level.getChunkSource() != null) RenderModeManager.setDirty(pos);
         }
