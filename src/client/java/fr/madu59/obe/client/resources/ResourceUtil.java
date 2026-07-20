@@ -1,4 +1,4 @@
-package fr.madu59.obe.client.util;
+package fr.madu59.obe.client.resources;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -23,10 +23,6 @@ public class ResourceUtil{
 
     public static TextureAtlasSprite getSprite(ResourceLocation id) {
         return Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(AtlasIds.BLOCKS).getSprite(id);
-    }
-
-    public static TextureAtlasSprite getBakedMaterial(TextureAtlasSprite sprite) {
-        return sprite;
     }
 
     public static BlockStateModel getModel(ModelLayerLocation modelLayerLocation, ResourceLocation texture, BlockState blockState, PoseStack poseStack, boolean useAo, TextureAtlasSprite particleMaterial){

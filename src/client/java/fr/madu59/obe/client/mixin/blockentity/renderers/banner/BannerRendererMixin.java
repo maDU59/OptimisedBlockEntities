@@ -14,7 +14,7 @@ import com.mojang.math.Axis;
 
 import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityRenderStateExt;
-import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager;
+import fr.madu59.obe.client.renderer.misc.RenderModeManager;
 import net.minecraft.client.model.BannerFlagModel;
 import net.minecraft.client.model.BannerModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;

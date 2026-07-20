@@ -86,6 +86,10 @@ public class MyConfigListWidget extends ContainerObjectSelectionList<MyConfigLis
             if(this.isEnabledSupplier != null && !this.isEnabledSupplier.getAsBoolean()) return 0;
             return super.getContentHeight();
         }
+
+        public boolean isEnabled(){
+            return this.isEnabledSupplier == null || this.isEnabledSupplier.getAsBoolean();
+        }
     }
 
     public static class CategoryEntry extends MyConfigListWidget.Entry {
@@ -101,7 +105,7 @@ public class MyConfigListWidget extends ContainerObjectSelectionList<MyConfigLis
 
         @Override
         public void renderContent(GuiGraphics context, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-            if(this.isEnabledSupplier != null && !this.isEnabledSupplier.getAsBoolean()) return;
+            if(!isEnabled()) return;
             Font textRenderer = Minecraft.getInstance().font;
             int textX = getContentX() + getContentWidth() / 2;
             int textY = getContentY() + (getContentHeight() - textRenderer.lineHeight) / 2;
@@ -136,7 +140,7 @@ public class MyConfigListWidget extends ContainerObjectSelectionList<MyConfigLis
 
         @Override
         public void renderContent(GuiGraphics context, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-            if(this.isEnabledSupplier != null && !this.isEnabledSupplier.getAsBoolean()) return;
+            if(!isEnabled()) return;
             this.button.setY(this.getContentY() + (this.getContentHeight() - this.button.getHeight()) / 2);
             this.button.setX(this.getContentWidth() - this.button.getWidth() - 10);
             this.button.render(context, mouseX, mouseY, tickDelta);
@@ -189,7 +193,7 @@ public class MyConfigListWidget extends ContainerObjectSelectionList<MyConfigLis
 
         @Override
         public void renderContent(GuiGraphics context, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-            if(this.isEnabledSupplier != null && !this.isEnabledSupplier.getAsBoolean()) return;
+            if(!isEnabled()) return;
             this.slider.setY(this.getContentY() + (this.getContentHeight() - this.slider.getHeight()) / 2);
             this.slider.setX(this.getContentWidth() - this.slider.getWidth() - 10);
             this.slider.render(context, mouseX, mouseY, tickDelta);

@@ -24,16 +24,16 @@ public class ModelLayerLocationGetter {
     private static Map<String, Function<BlockState, ModelLayerLocation>> defaultModelLayerLocationsGetterProvider = new ConcurrentHashMap<>();
 
     public static void init(){
-        registerDefault("chest", ChestUtil::getChestModelLayerLocation);
-        registerDefault("skull", SkullBlockUtil::getSkullBlockModelLayerLocation);
-        registerDefault("bell", BellUtil::getBellModelLayerLocation);
-        registerDefault("banner", BannerUtil::getBannerModelLayerLocation);
-        registerDefault("shulker_box", ShulkerBoxUtil::getShulkerBoxModelLayerLocation);
-        registerDefault("decorated_pot", DecoratedPotUtil::getDecoratedPotModelLayerLocation);
-        registerDefault("copper_golem_statue", CopperGolemStatueUtil::getCopperGolemStatueModelLayerLocation);
-        registerDefault("sign", SignUtil::getSignModelLayerLocation);
-        registerDefault("hanging_sign", HangingSignUtil::getHangingSignModelLayerLocation);
-        registerDefault("bed", BedUtil::getBedModelLayerLocation);
+        registerDefault("chest", ChestUtil::getModelLayerLocation);
+        registerDefault("skull", SkullBlockUtil::getModelLayerLocation);
+        registerDefault("bell", BellUtil::getModelLayerLocation);
+        registerDefault("banner", BannerUtil::getModelLayerLocation);
+        registerDefault("shulker_box", ShulkerBoxUtil::getModelLayerLocation);
+        registerDefault("decorated_pot", DecoratedPotUtil::getModelLayerLocation);
+        registerDefault("copper_golem_statue", CopperGolemStatueUtil::getModelLayerLocation);
+        registerDefault("sign", SignUtil::getModelLayerLocation);
+        registerDefault("hanging_sign", HangingSignUtil::getModelLayerLocation);
+        registerDefault("bed", BedUtil::getModelLayerLocation);
     }
 
     public static void registerDefault(String group, Function<BlockState, ModelLayerLocation> getter){

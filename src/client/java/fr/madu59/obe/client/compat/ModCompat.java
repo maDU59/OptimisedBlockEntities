@@ -45,7 +45,7 @@ public class ModCompat {
     }
 
     public static ModelPart applyEMFRestPose(ModelPart root, BlockState state){
-        if(isEMFLoaded() && SettingsManager.EMF_COMPAT.getValue()) return EMFCompat.applyRestPose(root, state);
+        if(isEMFLoaded() && SettingsManager.EMF_COMPAT.getValue() && state != null) return EMFCompat.applyRestPose(root, state);
         else return root;
     }
 

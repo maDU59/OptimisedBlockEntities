@@ -25,16 +25,16 @@ public class TransformationGetter {
     private static Map<String, BiConsumer<BlockState, PoseStack>> defaultTransformationsGetterProvider = new ConcurrentHashMap<>();
 
     public static void init(){
-        registerDefault("chest", ChestUtil::transformChest);
-        registerDefault("skull", SkullBlockUtil::transformSkullBlock);
-        registerDefault("bell", BellUtil::transformBell);
-        registerDefault("banner", BannerUtil::transformBanner);
-        registerDefault("shulker_box", ShulkerBoxUtil::transformShulkerBox);
-        registerDefault("decorated_pot", DecoratedPotUtil::transformDecoratedPot);
-        registerDefault("copper_golem_statue", CopperGolemStatueUtil::transformCopperGolemStatue);
-        registerDefault("sign", SignUtil::transformSign);
-        registerDefault("hanging_sign", HangingSignUtil::transformHangingSign);
-        registerDefault("bed", BedUtil::transformBed);
+        registerDefault("chest", ChestUtil::transform);
+        registerDefault("skull", SkullBlockUtil::transform);
+        registerDefault("bell", BellUtil::transform);
+        registerDefault("banner", BannerUtil::transform);
+        registerDefault("shulker_box", ShulkerBoxUtil::transform);
+        registerDefault("decorated_pot", DecoratedPotUtil::transform);
+        registerDefault("copper_golem_statue", CopperGolemStatueUtil::transform);
+        registerDefault("sign", SignUtil::transform);
+        registerDefault("hanging_sign", HangingSignUtil::transform);
+        registerDefault("bed", BedUtil::transform);
     }
 
     public static void registerDefault(String group, BiConsumer<BlockState, PoseStack> getter){
