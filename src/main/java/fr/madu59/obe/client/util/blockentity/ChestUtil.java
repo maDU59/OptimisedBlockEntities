@@ -21,14 +21,14 @@ import net.minecraft.world.level.block.state.properties.ChestType;
 
 public class ChestUtil {
     private static final Calendar calendar = Calendar.getInstance();
-    private static final boolean xmasTexture = calendar.get(2) + 1 == 12 && calendar.get(5) >= 24 && calendar.get(5) <= 26;
+    public static final boolean isXmas = calendar.get(2) + 1 == 12 && calendar.get(5) >= 24 && calendar.get(5) <= 26;
 
     public static ResourceLocation getMaterial(BlockState state) {
         Block block = state.getBlock();
         ChestType chestType = BackportUtil.getValueOrElse(state, ChestBlock.TYPE, ChestType.SINGLE);
         if (block instanceof EnderChestBlock) {
             return Sheets.ENDER_CHEST_LOCATION.texture();
-        } else if (xmasTexture) {
+        } else if (isXmas) {
             return chooseMaterial(chestType, Sheets.CHEST_XMAS_LOCATION, Sheets.CHEST_XMAS_LOCATION_LEFT, Sheets.CHEST_XMAS_LOCATION_RIGHT);
         } else {
             return block instanceof TrappedChestBlock ? chooseMaterial(chestType, Sheets.CHEST_TRAP_LOCATION, Sheets.CHEST_TRAP_LOCATION_LEFT, Sheets.CHEST_TRAP_LOCATION_RIGHT) : chooseMaterial(chestType, Sheets.CHEST_LOCATION, Sheets.CHEST_LOCATION_LEFT, Sheets.CHEST_LOCATION_RIGHT);
