@@ -33,6 +33,7 @@ This mod renders supported block entities just like any other block, this means 
 - Compatible with EMF/ETF and any resource packs made for those (like FA: Objects) *Since OBE 1.1.4*
 - Compatible with Quark's chests *Since OBE 1.1.3 and Quark 4.1-481*
 - Compatible with Lootr *Since OBE 1.1.23*
+- Compatible with Woodworks *Since OBE 1.1.35*
 
 ## Why
 
