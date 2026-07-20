@@ -24,6 +24,3 @@ accessible field net/minecraft/client/renderer/blockentity/BannerRenderer wallMo
 
 # Campfire
 accessible field net/minecraft/world/level/block/entity/CampfireBlockEntity items Lnet/minecraft/core/NonNullList;
-
-# Cushion rendering
-accessible field net/minecraft/client/renderer/entity/CushionRenderer TEXTURES_BY_COLOR Ljava/util/EnumMap;
