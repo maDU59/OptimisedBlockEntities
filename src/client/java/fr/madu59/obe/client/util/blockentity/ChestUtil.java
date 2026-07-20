@@ -55,7 +55,7 @@ public class ChestUtil {
         poseStack.mulPose(ChestRenderer.modelTransformation(facing));
     }
 
-    public static void transform(BlockState state, PoseStack poseStack, BlockEntity entity){
+    public static void transform(BlockState state, BlockEntity entity, PoseStack poseStack){
         transform(state, poseStack);
     }
 
