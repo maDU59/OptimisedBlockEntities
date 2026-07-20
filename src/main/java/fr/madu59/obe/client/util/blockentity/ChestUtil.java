@@ -64,7 +64,7 @@ public class ChestUtil {
         poseStack.translate(-0.5F, -0.5F, -0.5F);
     }
 
-    public static void transform(BlockState state, PoseStack poseStack, BlockEntity entity){
+    public static void transform(BlockState state, BlockEntity entity, PoseStack poseStack){
         transform(state, poseStack);
     }
 
