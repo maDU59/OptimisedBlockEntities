@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
 
 public class ChestUtil {
-    private static final boolean xmasTexture = ChestRenderer.xmasTextures();
+    public static final boolean isXmas = ChestRenderer.xmasTextures();
 
     public static Identifier getMaterial(BlockState state) {
         ChestMaterialType materialType;
@@ -33,7 +33,7 @@ public class ChestUtil {
             }
         } else if (block instanceof EnderChestBlock) {
             materialType = ChestMaterialType.ENDER_CHEST;
-        } else if (xmasTexture) {
+        } else if (isXmas) {
             materialType = ChestMaterialType.CHRISTMAS;
         } else {
             materialType = block instanceof TrappedChestBlock ? ChestMaterialType.TRAPPED : ChestMaterialType.REGULAR;
