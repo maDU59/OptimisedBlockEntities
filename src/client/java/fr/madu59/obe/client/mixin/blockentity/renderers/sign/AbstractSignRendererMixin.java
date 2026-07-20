@@ -13,7 +13,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import fr.madu59.obe.client.compat.ModCompat;
 import fr.madu59.obe.client.config.SettingsManager;
-import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager;
+import fr.madu59.obe.client.renderer.misc.RenderModeManager;
 
 import org.spongepowered.asm.mixin.injection.At;
 

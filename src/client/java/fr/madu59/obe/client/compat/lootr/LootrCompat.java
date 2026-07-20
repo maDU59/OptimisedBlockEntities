@@ -41,11 +41,11 @@ public class LootrCompat {
 
     public static void init(){
         Registry.addBlockEntityTypeInGroup("chest", ModBlockEntities.SPECIAL_LOOT_CHEST, ModBlockEntities.SPECIAL_TRAPPED_LOOT_CHEST);
-        SpecialModelGetter.register(ModBlockEntities.SPECIAL_LOOT_CHEST, new SpecialModelProvider(ChestUtil::getChestModelLayerLocation, LootrCompat::getChestMaterial, LootrCompat::transformChest, LootrCompat::getChestCacheKey));
-        SpecialModelGetter.register(ModBlockEntities.SPECIAL_TRAPPED_LOOT_CHEST, new SpecialModelProvider(ChestUtil::getChestModelLayerLocation, LootrCompat::getChestMaterial, LootrCompat::transformChest, LootrCompat::getChestCacheKey));
+        SpecialModelGetter.register(ModBlockEntities.SPECIAL_LOOT_CHEST, new SpecialModelProvider(ChestUtil::getModelLayerLocation, LootrCompat::getChestMaterial, LootrCompat::transformChest, LootrCompat::getChestCacheKey));
+        SpecialModelGetter.register(ModBlockEntities.SPECIAL_TRAPPED_LOOT_CHEST, new SpecialModelProvider(ChestUtil::getModelLayerLocation, LootrCompat::getChestMaterial, LootrCompat::transformChest, LootrCompat::getChestCacheKey));
 
         Registry.addBlockEntityTypeInGroup("shulker_box", ModBlockEntities.SPECIAL_LOOT_SHULKER);
-        SpecialModelGetter.register(ModBlockEntities.SPECIAL_LOOT_SHULKER, new SpecialModelProvider(ShulkerBoxUtil::getShulkerBoxModelLayerLocation, LootrCompat::getShulkerBoxMaterial, ShulkerBoxUtil::transformShulkerBox, LootrCompat::getShulkerBoxCacheKey));
+        SpecialModelGetter.register(ModBlockEntities.SPECIAL_LOOT_SHULKER, new SpecialModelProvider(ShulkerBoxUtil::getModelLayerLocation, LootrCompat::getShulkerBoxMaterial, ShulkerBoxUtil::transform, LootrCompat::getShulkerBoxCacheKey));
     }
 
     public static <T extends LootrChestBlockEntity & ILootBlockEntity> ResourceLocation getChestMaterial(BlockState state, BlockEntity be) {
@@ -91,7 +91,7 @@ public class LootrCompat {
             }
         }
         else{
-            return ChestUtil.getChestMaterial(state);
+            return ChestUtil.getMaterial(state);
         }
    }
 
@@ -123,12 +123,12 @@ public class LootrCompat {
                 return lootrShulkerBe.getOpeners().contains(playerId) ? MATERIAL2 : MATERIAL;
             }
         }
-        else return ShulkerBoxUtil.getShulkerBoxMaterial(state);
+        else return ShulkerBoxUtil.getMaterial(state);
    }
 
     public static void transformChest(BlockState state, BlockEntity be, PoseStack poseStack) {
         poseStack.pushPose();
-        ChestUtil.transformChest(state, poseStack);
+        ChestUtil.transform(state, poseStack);
         poseStack.mulPose(Axis.XP.rotationDegrees(90.0F));
         poseStack.popPose();
     }

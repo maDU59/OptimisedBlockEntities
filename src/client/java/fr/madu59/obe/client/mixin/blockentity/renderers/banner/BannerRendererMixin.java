@@ -10,7 +10,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
 import fr.madu59.obe.client.config.SettingsManager;
-import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager;
+import fr.madu59.obe.client.renderer.misc.RenderModeManager;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BannerRenderer;

@@ -12,10 +12,10 @@ import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 
 import fr.madu59.obe.client.model.BlockEntityStateModel;
-import fr.madu59.obe.client.renderer.OBEBlockRenderer;
+import fr.madu59.obe.client.renderer.blockentity.BlockEntityModelsManager;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
-import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager;
-import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager.RenderMode;
+import fr.madu59.obe.client.renderer.misc.RenderModeManager;
+import fr.madu59.obe.client.renderer.misc.RenderModeManager.RenderMode;
 import me.jellysquid.mods.sodium.client.render.chunk.compile.ChunkBuildBuffers;
 import me.jellysquid.mods.sodium.client.render.chunk.compile.pipeline.BlockRenderContext;
 import me.jellysquid.mods.sodium.client.render.chunk.compile.tasks.ChunkBuilderMeshingTask;
@@ -35,7 +35,7 @@ import net.minecraft.world.level.block.state.BlockState;
 @Mixin(value = ChunkBuilderMeshingTask.class, remap = false)
 public class ChunkBuilderMeshingTaskMixin {
 
-    @Unique private final OBEBlockRenderer obeBlockRenderer = new OBEBlockRenderer();
+    @Unique private final BlockEntityModelsManager blockEntityModelsManager = new BlockEntityModelsManager();
     @Unique private SectionPos sectionPos;
 
     @WrapOperation(method = "execute", at = @At(value = "INVOKE", target = "Lme/jellysquid/mods/sodium/client/world/WorldSlice;getBlockState(III)Lnet/minecraft/world/level/block/state/BlockState;"))
@@ -49,7 +49,7 @@ public class ChunkBuilderMeshingTaskMixin {
         if(state.hasBlockEntity()){
             BlockEntity be = beRef.get();
             BlockEntityExt ext = (BlockEntityExt) be;
-            if(ext != null && ext.isSupportedBlockEntity()) {
+            if(ext != null && ext.isSupported()) {
                 if(sectionPos == null){
                     sectionPos = SectionPos.of(pos);
                 }
@@ -73,16 +73,16 @@ public class ChunkBuilderMeshingTaskMixin {
         )
     )
     public void obe$wrapRenderModel(BlockRenderer instance, BlockRenderContext ctx, ChunkBuildBuffers buffers, Operation<Void> original, @Share("be") LocalRef<BlockEntity> beRef) {
-        BakedModel model = null;
         if(ctx.state().hasBlockEntity()){
+            BakedModel model = null;
             BlockPos origin = new BlockPos((int)ctx.origin().x(), (int)ctx.origin().y(), (int)ctx.origin().z());
             BlockEntity be = beRef.get();
             BlockEntityExt ext = (BlockEntityExt) be;
-            if(ext != null && ext.isSupportedBlockEntity()) {
+            if(ext != null && ext.isSupported()) {
                 if(ext.isEnabled() && !ext.hasSpecialRenderer() && ext.renderModeDelayed() != RenderMode.TERRAIN){
                     model = new BlockEntityStateModel();
                 }
-                else model = obeBlockRenderer.getModel(ctx.state(), ctx.pos(), ctx.seed(), ctx.model(), be);
+                else if(ext.hasSpecialRenderer()) model = blockEntityModelsManager.getModel(ctx.state(), ctx.pos(), ctx.seed(), ctx.model(), be);
             }
             if(model != null) ctx.update(ctx.pos(), origin, ctx.state(), model, ctx.seed());
         }
@@ -98,7 +98,7 @@ public class ChunkBuilderMeshingTaskMixin {
     )
     private BlockEntityRenderer<?> obe$wrapShouldRender(BlockEntityRenderDispatcher instance, BlockEntity be, Operation<BlockEntityRenderer<?>> original) {
         BlockEntityExt ext = (BlockEntityExt) be;
-        if(ext != null && ext.isEnabled() && (!(ext.forceEntity() || !ext.isSupportedBlockEntity() || ext.renderModeDelayed() == RenderMode.ENTITY || ext.renderBoth()) || ext.shouldSkipBeRendering())) {
+        if(ext != null && ext.isEnabled() && (!(ext.forceEntity() || !ext.isSupported() || ext.renderModeDelayed() == RenderMode.ENTITY || ext.renderBoth()) || ext.shouldSkipRendering())) {
             return null;
         }
         return original.call(instance, be);

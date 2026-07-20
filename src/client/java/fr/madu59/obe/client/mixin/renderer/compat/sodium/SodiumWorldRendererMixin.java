@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.llamalad7.mixinextras.sugar.Local;
 
-import fr.madu59.obe.client.renderer.blockentity.SpecialRenderingManager;
+import fr.madu59.obe.client.renderer.blockentity.SpecialBlockEntityRenderingManager;
 import me.jellysquid.mods.sodium.client.render.SodiumWorldRenderer;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
@@ -18,7 +18,7 @@ public class SodiumWorldRendererMixin {
 
     @Inject(method = "renderBlockEntity", at = @At("HEAD"), cancellable = true)
     private static void obe$preventUselessExtraction(CallbackInfo ci, @Local BlockEntity be){
-        if(SpecialRenderingManager.shouldSkipRendering(be)){
+        if(SpecialBlockEntityRenderingManager.shouldSkipRendering(be)){
             ci.cancel();
         }
     }

@@ -10,8 +10,8 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
-import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager;
-import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager.RenderMode;
+import fr.madu59.obe.client.renderer.misc.RenderModeManager;
+import fr.madu59.obe.client.renderer.misc.RenderModeManager.RenderMode;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.core.BlockPos;
@@ -30,10 +30,10 @@ public class BlockRenderDispatcherMixin {
             BlockEntityExt ext = (BlockEntityExt) be;
             if(ext != null) {
                 RenderModeManager.updateBlockEntityOnChunkRemesh(ext, SectionPos.of(pos));
-                if(ext.isSupportedBlockEntity() && !ext.hasSpecialRenderer() && ext.renderMode() != RenderMode.TERRAIN){
+                if(ext.isSupported() && !ext.hasSpecialRenderer() && ext.renderMode() != RenderMode.TERRAIN){
                     return RenderShape.INVISIBLE;
                 }
-                if(ext.isSupportedBlockEntity() && ext.renderMode() == RenderMode.TERRAIN){
+                if(ext.isSupported() && ext.renderMode() == RenderMode.TERRAIN){
                     return RenderShape.MODEL;
                 }
             }
@@ -46,7 +46,7 @@ public class BlockRenderDispatcherMixin {
         if(state.hasBlockEntity()){
             BlockEntity be = Minecraft.getInstance().level.getBlockEntity(pos);
             BlockEntityExt ext = (BlockEntityExt) be;
-            if(ext != null && ext.isSupportedBlockEntity()) {
+            if(ext != null && ext.isSupported()) {
                 RenderModeManager.updateBlockEntityOnChunkRemesh(ext, SectionPos.of(pos));
                 if(ext.forceEntity()){
                     return RenderShape.INVISIBLE;
