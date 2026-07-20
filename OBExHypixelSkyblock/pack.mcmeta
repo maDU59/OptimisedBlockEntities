@@ -1,6 +1,9 @@
 {
   "pack": {
     "pack_format": 15,
-    "description": "Custom skull textures to optimize some skulls on Hypixel's Skyblock with OBE"
+    "description": "Custom skull textures to optimize some skulls on Hypixel's Skyblock with OBE",
+    "supported_formats": {"min_inclusive": 15, "max_inclusive": 999},
+		"min_format": 15,
+		"max_format": 999
   }
 }
