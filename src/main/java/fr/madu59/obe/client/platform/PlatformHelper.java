@@ -1,11 +1,9 @@
 package fr.madu59.obe.client.platform;
 
 import java.nio.file.Path;
-
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.fml.loading.FMLPaths;
-
-
 
 public class PlatformHelper {
 

@@ -24,8 +24,8 @@ public class SpecialModelGetter {
     private static Map<String, SpecialModelProvider> defaultspecialModelGetterProvider = new ConcurrentHashMap<>();
 
     public static void init(){
-        registerDefault("bell", new SpecialModelProvider(BellUtil::getBellModelLayerLocation, BellUtil::getBellMaterial, BellUtil::transformBell, SpecialModelProvider::getDummyCacheKey).keepOriginalModel().showOriginalWhenHidden());
-        registerDefault("skull", new SpecialModelProvider(SkullBlockUtil::getSkullBlockModelLayerLocation, SkullBlockUtil::getSkullBlockMaterial, SkullBlockUtil::transformSkullBlock, SkullBlockUtil::getBuiltInTexture));
+        registerDefault("bell", new SpecialModelProvider(BellUtil::getModelLayerLocation, BellUtil::getMaterial, BellUtil::transform, SpecialModelProvider::getDummyCacheKey).keepOriginalModel().showOriginalWhenHidden());
+        registerDefault("skull", new SpecialModelProvider(SkullBlockUtil::getModelLayerLocation, SkullBlockUtil::getMaterial, SkullBlockUtil::transform, SkullBlockUtil::getBuiltInTexture));
     }
 
     public static void registerDefault(String group, SpecialModelProvider getter){

@@ -7,7 +7,7 @@ import com.mojang.math.Axis;
 
 import fr.madu59.obe.client.compat.ModCompat;
 import fr.madu59.obe.client.config.SettingsManager;
-import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager;
+import fr.madu59.obe.client.renderer.misc.RenderModeManager;
 
 import java.util.List;
 import java.util.Map;

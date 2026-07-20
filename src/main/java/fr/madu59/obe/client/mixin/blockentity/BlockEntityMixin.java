@@ -25,7 +25,7 @@ public class BlockEntityMixin {
             
             boolean hasBook = newBlockState != null && BackportUtil.getValueOrElse(newBlockState, LecternBlock.HAS_BOOK, true);
 
-            ext.shouldSkipBeRendering(!hasBook && SettingsManager.OPTIMISED_LECTERNS.getValue() &&  SettingsManager.MOD_TOGGLE.getValue());
+            ext.shouldSkipRendering(!hasBook && SettingsManager.OPTIMISED_LECTERNS.getValue() &&  SettingsManager.MOD_TOGGLE.getValue());
         }
     }
 }

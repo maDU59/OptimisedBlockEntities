@@ -1,6 +1,7 @@
 package fr.madu59.obe.client.mixin.renderer.compat.sodium;
 
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
@@ -12,6 +13,7 @@ import net.caffeinemc.mods.sodium.client.render.chunk.RenderSectionManager;
 import net.caffeinemc.mods.sodium.client.render.chunk.compile.ChunkBuildOutput;
 import net.caffeinemc.mods.sodium.client.render.chunk.translucent_sorting.data.TranslucentData;
 
+@Pseudo
 @Mixin(value = RenderSectionManager.class, remap = false)
 public class RenderSectionManagerMixin {
     @WrapOperation(method = "processChunkBuildResults", at = @At(value = "INVOKE", target = "Lnet/caffeinemc/mods/sodium/client/render/chunk/RenderSection;getTranslucentData()Lnet/caffeinemc/mods/sodium/client/render/chunk/translucent_sorting/data/TranslucentData;"), require = 0) // Before Sodium 0.9.0
