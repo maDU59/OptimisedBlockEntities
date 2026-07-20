@@ -14,8 +14,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import fr.madu59.obe.client.registry.Registry;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
-import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager;
-import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager.RenderMode;
+import fr.madu59.obe.client.renderer.misc.RenderModeManager;
+import fr.madu59.obe.client.renderer.misc.RenderModeManager.RenderMode;
 
 @Mixin(BellBlockEntity.class)
 public class BellBlockEntityMixin {
@@ -25,7 +25,7 @@ public class BellBlockEntityMixin {
         BlockEntity be = (BlockEntity)(Object)this;
         BlockEntityExt ext = (BlockEntityExt)be;
 
-        ext.isSupportedBlockEntity(Registry.isSupported("bell", be.getType()));
+        ext.isSupported(Registry.isSupported("bell", be.getType()));
         ext.hasSpecialRenderer(true);
     }
 

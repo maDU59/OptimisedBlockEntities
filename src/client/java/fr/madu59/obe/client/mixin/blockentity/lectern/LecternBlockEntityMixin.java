@@ -28,6 +28,6 @@ public abstract class LecternBlockEntityMixin{
         LecternBlockEntity be = (LecternBlockEntity)(Object)this;
         BlockEntityExt ext = (BlockEntityExt)be;
         
-        ext.shouldSkipBeRendering(!state.getValueOrElse(LecternBlock.HAS_BOOK, true) && SettingsManager.OPTIMISED_LECTERNS.getValue() &&  SettingsManager.MOD_TOGGLE.getValue());
+        ext.shouldSkipRendering(!state.getValueOrElse(LecternBlock.HAS_BOOK, true) && SettingsManager.OPTIMISED_LECTERNS.getValue() &&  SettingsManager.MOD_TOGGLE.getValue());
     }
 }

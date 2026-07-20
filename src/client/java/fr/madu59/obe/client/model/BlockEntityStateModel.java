@@ -11,10 +11,12 @@ import org.joml.Vector3fc;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import fr.madu59.obe.client.compat.ModCompat;
-import fr.madu59.obe.client.util.ResourceUtil;
+import fr.madu59.obe.client.config.SettingsManager;
+import fr.madu59.obe.client.resources.ResourceUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.ModelPart.Polygon;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -25,13 +27,15 @@ import net.minecraft.world.level.block.BannerBlock;
 import net.minecraft.world.level.block.CeilingHangingSignBlock;
 import net.minecraft.world.level.block.WallBannerBlock;
 import net.minecraft.world.level.block.WallHangingSignBlock;
+import net.minecraft.world.level.block.ChestBlock;
+import net.minecraft.world.level.block.EnderChestBlock;
+import net.minecraft.world.level.block.ShulkerBoxBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.SimpleBakedModel;
 
 public class BlockEntityStateModel implements BakedModel{
-    private final List<SimpleBakedModel> models = new ArrayList<>();
-    private final Map<String, BakedModel> partsMap = new HashMap<>();
+    private SimpleBakedModel modelPart;
     private final TextureAtlasSprite particleMaterial;
     private final boolean useAo;
 
@@ -56,24 +60,20 @@ public class BlockEntityStateModel implements BakedModel{
         this.useAo = false;
     }
 
-    public BakedModel getPart(String name){
-        return partsMap.get(name);
-    }
-
     private void generateModel(ModelLayerLocation modelLayerLocation, TextureAtlasSprite sprite, PoseStack poseStack, boolean useAo, BlockState state){
         ModelPart root = Minecraft.getInstance().getEntityModels().bakeLayer(modelLayerLocation);
         ModCompat.applyEMFRestPose(root, state);
+
         Map<String, ModelPart> children = root.children;
+        List<BakedQuad> bakedQuadsList = new ArrayList<>();
         children.forEach((key, part) -> {
             if(shouldAddModelPart(key, state)){
-                List<BakedQuad> bakedQuadsList = getBakedQuads(part, poseStack, sprite, shouldFixBFC(key));
-
-                Map<Direction, List<BakedQuad>> dirs = new HashMap<>();
-                SimpleBakedModel bakedModel = new SimpleBakedModel(bakedQuadsList, dirs, true, useAo, false, particleMaterial, null);
-
-                addModelPart(key, bakedModel);
+                getBakedQuads(bakedQuadsList, part, poseStack, sprite, key, state);
             }
         });
+
+        Map<Direction, List<BakedQuad>> dirs = new HashMap<>();
+        modelPart = new SimpleBakedModel(bakedQuadsList, dirs, useAo, true, false, particleMaterial, null);
     }
 
     private boolean shouldAddModelPart(String key, BlockState state){
@@ -93,15 +93,16 @@ public class BlockEntityStateModel implements BakedModel{
         return true;
     }
 
-    private List<BakedQuad> getBakedQuads(ModelPart part, PoseStack poseStack, TextureAtlasSprite sprite, boolean fixBfc){
-        List<BakedQuad> bakedQuadsList = new ArrayList<>();
-        part.visit(poseStack, (pose, name, idx, cube) -> {
-            for(ModelPart.Polygon polygon : cube.polygons){
-                if (polygon.vertices().length != 4) {
-                    continue;
-                }
+    private void getBakedQuads(List<BakedQuad> output, ModelPart part, PoseStack poseStack, TextureAtlasSprite sprite, String partName, BlockState state){
 
-                Vector3f normal = new Vector3f();
+        boolean fixBfc = shouldFixBFC(partName);
+
+        Vector3f[] positions = new Vector3f[4];
+        Vector3f normal = new Vector3f();
+
+        part.visit(poseStack, (pose, partPath, cubeIndex, cube) -> {
+            for(ModelPart.Polygon polygon : cube.polygons){
+                if (polygon.vertices().length != 4) continue;
 
                 polygon.normal().mul(pose.normal(), normal);
                 
@@ -131,8 +132,12 @@ public class BlockEntityStateModel implements BakedModel{
                     packedVertices[offset + 5] = Float.floatToRawIntBits(v);
 
                     packedVertices[offset + 6] = 0;
-                    packedVertices[offset + 7] = 0; 
+                    packedVertices[offset + 7] = 0;
+
+                    positions[i] = vec;
                 }
+
+                if (shouldSkipQuad(polygon, positions, state, partName)) continue;
 
                 BakedQuad baked = new BakedQuad(
                     packedVertices,
@@ -142,7 +147,7 @@ public class BlockEntityStateModel implements BakedModel{
                     true,
                     0
                 );
-                bakedQuadsList.add(baked);
+                output.add(baked);
                 if(fixBfc){
                     int[] invertedVertices = new int[32];
                     for (int i = 0; i < 4; i++) {
@@ -158,11 +163,10 @@ public class BlockEntityStateModel implements BakedModel{
                     true,
                     0
                     );
-                    bakedQuadsList.add(baked);
+                    output.add(baked);
                 }
             }
         });
-        return bakedQuadsList;
     }
 
     private Direction getDirection(Vector3fc vec){
@@ -173,9 +177,38 @@ public class BlockEntityStateModel implements BakedModel{
         return key.equals("vChains") || key.equals("normalChains");
     }
 
-    private void addModelPart(String key, SimpleBakedModel simpleBakedModel){
-        models.add(simpleBakedModel);
-        partsMap.put(key, simpleBakedModel);
+    private boolean shouldSkipQuad(Polygon polygon, Vector3f[] positions, BlockState state, String partName){
+        if(!SettingsManager.MODEL_OPTIMIZATION.getValue() || state == null) return false;
+        if(state.getBlock() instanceof ChestBlock || state.getBlock() instanceof EnderChestBlock){
+            if(partName.equals("lid") || partName.equals("bottom")) {
+                boolean isHorizontal = positions[0].y() == positions[1].y() && positions[1].y() == positions[2].y() && positions[2].y() == positions[3].y();
+
+                if (isHorizontal) {
+                    float yPos = positions[0].y();
+                    return yPos <= (10.1f / 16f) && yPos >= (8.9f / 16f);
+                }
+            }
+        }
+        else if(state.getBlock() instanceof ShulkerBoxBlock){
+            if (partName.equals("lid") || partName.equals("base")) {
+                float threshold = 1f/32f;
+                boolean touchesCorner = false;
+
+                for (Vector3f pos : positions) {
+                    boolean touchX = pos.x() <= threshold || pos.x() >= (1.0f - threshold);
+                    boolean touchY = pos.y() <= threshold || pos.y() >= (1.0f - threshold);
+                    boolean touchZ = pos.z() <= threshold || pos.z() >= (1.0f - threshold);
+
+                    if (touchX && touchY && touchZ) {
+                        touchesCorner = true;
+                        break;
+                    }
+                }
+
+                return !touchesCorner;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -186,10 +219,8 @@ public class BlockEntityStateModel implements BakedModel{
     @Override
     public List<BakedQuad> getQuads(BlockState arg0, Direction arg1, RandomSource arg2) {
         List<BakedQuad> output = new ArrayList<BakedQuad>();
-        if(arg1 != null) return output;
-        for(BakedModel model : models){
-            output.addAll(model.getQuads(arg0, arg1, arg2));
-        }
+        if(arg1 != null || modelPart == null) return output;
+        output.addAll(modelPart.getQuads(arg0, arg1, arg2));
         return output;
     }
 

@@ -13,8 +13,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager;
-
 @Mixin(ItemBlockRenderTypes.class)
 public class ItemBlockRenderTypesMixin {
 

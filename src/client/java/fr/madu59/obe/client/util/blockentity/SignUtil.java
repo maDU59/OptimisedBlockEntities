@@ -6,7 +6,6 @@ import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.Sheets;
-import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.SignBlock;
 import net.minecraft.world.level.block.StandingSignBlock;
@@ -15,12 +14,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.WoodType;
 
 public class SignUtil {
-    public static ResourceLocation getSignMaterial(BlockState state){
+    public static ResourceLocation getMaterial(BlockState state){
         WoodType woodType = SignBlock.getWoodType(state.getBlock());
         return Sheets.getSignMaterial(woodType).texture();
     }
 
-    public static ModelLayerLocation getSignModelLayerLocation(BlockState state){
+    public static ModelLayerLocation getModelLayerLocation(BlockState state){
         WoodType woodType = SignBlock.getWoodType(state.getBlock());
         if (state.getBlock() instanceof SignBlock block) {
             if(block instanceof WallSignBlock){
@@ -33,7 +32,7 @@ public class SignUtil {
         else return null;
     }
 
-    public static void transformSign(BlockState state, PoseStack poseStack){
+    public static void transform(BlockState state, PoseStack poseStack){
         if (state.getBlock() instanceof SignBlock block) {
             poseStack.translate(0.5F, 0.75F * 0.6666667F, 0.5F);
             poseStack.mulPose(Axis.YP.rotationDegrees(-block.getYRotationDegrees(state)));

@@ -23,15 +23,15 @@ public class MaterialGetter {
     private static Map<String, Function<BlockState, ResourceLocation>> defaultMaterialsGetterProvider = new ConcurrentHashMap<>();
 
     public static void init(){
-        registerDefault("chest", ChestUtil::getChestMaterial);
-        registerDefault("skull", SkullBlockUtil::getSkullBlockMaterial);
-        registerDefault("bell", BellUtil::getBellMaterial);
-        registerDefault("banner", BannerUtil::getBannerMaterial);
-        registerDefault("shulker_box", ShulkerBoxUtil::getShulkerBoxMaterial);
-        registerDefault("decorated_pot", DecoratedPotUtil::getDecoratedPotMaterial);
-        registerDefault("sign", SignUtil::getSignMaterial);
-        registerDefault("hanging_sign", HangingSignUtil::getHangingSignMaterial);
-        registerDefault("bed", BedUtil::getBedMaterial);
+        registerDefault("chest", ChestUtil::getMaterial);
+        registerDefault("skull", SkullBlockUtil::getMaterial);
+        registerDefault("bell", BellUtil::getMaterial);
+        registerDefault("banner", BannerUtil::getMaterial);
+        registerDefault("shulker_box", ShulkerBoxUtil::getMaterial);
+        registerDefault("decorated_pot", DecoratedPotUtil::getMaterial);
+        registerDefault("sign", SignUtil::getMaterial);
+        registerDefault("hanging_sign", HangingSignUtil::getMaterial);
+        registerDefault("bed", BedUtil::getMaterial);
     }
 
     public static void registerDefault(String group, Function<BlockState, ResourceLocation> getter){

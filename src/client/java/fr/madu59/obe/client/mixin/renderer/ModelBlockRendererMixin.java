@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
-import fr.madu59.obe.client.renderer.OBEBlockRenderer;
+import fr.madu59.obe.client.renderer.blockentity.BlockEntityModelsManager;
 import net.minecraft.client.renderer.block.ModelBlockRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
@@ -18,11 +18,11 @@ import net.minecraft.world.level.block.state.BlockState;
 
 @Mixin(ModelBlockRenderer.class)
 public class ModelBlockRendererMixin {
-    @Unique private final OBEBlockRenderer obeBlockRenderer = new OBEBlockRenderer();
+    @Unique private final BlockEntityModelsManager blockEntityModelsManager = new BlockEntityModelsManager();
 
     @ModifyVariable(method = "tesselateBlock", at = @At("HEAD"), argsOnly = true)
     private BakedModel obe$modifyModel(BakedModel model, BlockAndTintGetter blockAndTintGetter, BakedModel originalModel, BlockState blockState, BlockPos blockPos, PoseStack poseStack, VertexConsumer vertexConsumer, boolean bl, RandomSource randomSource, long l, int i) {
-        model = obeBlockRenderer.getModel(blockState, blockPos, blockState.getSeed(blockPos), model, blockAndTintGetter);
+        model = blockEntityModelsManager.getModel(blockState, blockPos, blockState.getSeed(blockPos), model, blockAndTintGetter);
         return model == null? originalModel : model;
     }
 }
