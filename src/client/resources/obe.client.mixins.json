@@ -25,6 +25,7 @@
 		"blockentity.renderers.decoratedpot.DecoratedPotRendererMixin",
 		"blockentity.renderers.sign.AbstractSignRendererMixin",
 		"blockentity.renderers.bed.BedRendererMixin",
+		"entity.ext.EntityMixin",
 		"renderer.SectionCompilerMixin",
 		"renderer.ModelBlockRendererMixin",
 		"renderer.LevelRendererMixin",

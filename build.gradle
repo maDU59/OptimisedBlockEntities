@@ -38,10 +38,11 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
-	modImplementation("net.caffeinemc:sodium-fabric-api:0.8.12-alpha.4+mc1.21.1")
+	modCompileOnly("net.caffeinemc:sodium-fabric-api:0.8.12+mc1.21.1")
 
-	modImplementation ("com.terraformersmc:modmenu:${project.modmenu_version}")
-	modImplementation "net.caffeinemc:sodium-fabric:0.8.12-alpha.4+mc1.21.1"
+	modImplementation ("maven.modrinth:modmenu:${project.modmenu_version}")
+	modCompileOnly "net.caffeinemc:sodium-fabric:0.8.12+mc1.21.1"
+	modRuntimeOnly "maven.modrinth:AANobbMI:KIRFiWG4"
 
     modImplementation("org.antlr:antlr4-runtime:4.13.1")
     modImplementation("io.github.douira:glsl-transformer:2.0.1")

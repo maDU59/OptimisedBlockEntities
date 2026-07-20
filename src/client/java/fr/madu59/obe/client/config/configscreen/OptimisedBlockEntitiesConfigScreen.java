@@ -45,6 +45,7 @@ public class OptimisedBlockEntitiesConfigScreen extends Screen {
         list.category("obe.config.category.general").build();
         list.button(SettingsManager.MOD_TOGGLE).build();
         list.button(SettingsManager.EMF_COMPAT).build();
+        list.button(SettingsManager.MODEL_OPTIMIZATION).build();
 
         list.category("obe.config.category.chests").build();
         list.button(SettingsManager.OPTIMISED_CHESTS).build();
