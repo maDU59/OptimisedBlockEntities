@@ -21,8 +21,6 @@ import me.jellysquid.mods.sodium.client.render.chunk.compile.pipeline.BlockRende
 import me.jellysquid.mods.sodium.client.render.chunk.compile.pipeline.BlockRenderer;
 import me.jellysquid.mods.sodium.client.render.chunk.compile.tasks.ChunkBuilderMeshingTask;
 import me.jellysquid.mods.sodium.client.world.WorldSlice;
-import net.minecraft.client.Minecraft;
-import me.jellysquid.mods.sodium.client.render.chunk.compile.pipeline.BlockRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.resources.model.BakedModel;
@@ -117,9 +115,26 @@ public class ChunkBuilderMeshingTaskMixin {
         at = @At(
             value = "INVOKE",
             target = "Lnet/minecraft/client/renderer/blockentity/BlockEntityRenderDispatcher;getRenderer(Lnet/minecraft/world/level/block/entity/BlockEntity;)Lnet/minecraft/client/renderer/blockentity/BlockEntityRenderer;"
-        )
+        ),
+        require = 0
     )
     private BlockEntityRenderer<?> obe$wrapShouldRender(BlockEntityRenderDispatcher instance, BlockEntity be, Operation<BlockEntityRenderer<?>> original) {
+        BlockEntityExt ext = (BlockEntityExt) be;
+        if(ext != null && ext.isEnabled() && (!(ext.forceEntity() || !ext.isSupported() || ext.renderModeDelayed() == RenderMode.ENTITY || ext.renderBoth()) || ext.shouldSkipRendering())) {
+            return null;
+        }
+        return original.call(instance, be);
+    }
+
+    @WrapOperation(
+        method = "execute",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/renderer/blockentity/BlockEntityRenderDispatcher;m_112265_(Lnet/minecraft/world/level/block/entity/BlockEntity;)Lnet/minecraft/client/renderer/blockentity/BlockEntityRenderer;"
+        ),
+        require = 0
+    )
+    private BlockEntityRenderer<?> obe$wrapShouldRender2(BlockEntityRenderDispatcher instance, BlockEntity be, Operation<BlockEntityRenderer<?>> original) {
         BlockEntityExt ext = (BlockEntityExt) be;
         if(ext != null && ext.isEnabled() && (!(ext.forceEntity() || !ext.isSupported() || ext.renderModeDelayed() == RenderMode.ENTITY || ext.renderBoth()) || ext.shouldSkipRendering())) {
             return null;
