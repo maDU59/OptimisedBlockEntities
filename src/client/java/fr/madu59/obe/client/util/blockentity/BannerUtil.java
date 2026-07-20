@@ -3,7 +3,7 @@ package fr.madu59.obe.client.util.blockentity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
-import fr.madu59.obe.client.util.ResourceUtil;
+import fr.madu59.obe.client.resources.ResourceUtil;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.resources.model.ModelBakery;
@@ -14,16 +14,16 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RotationSegment;
 
 public class BannerUtil {
-    public static Identifier getBannerMaterial(BlockState state){
+    public static Identifier getMaterial(BlockState state){
         return ResourceUtil.entityTextureFormatter(ModelBakery.BANNER_BASE.texture());
     }
 
-    public static ModelLayerLocation getBannerModelLayerLocation(BlockState state){
+    public static ModelLayerLocation getModelLayerLocation(BlockState state){
         if(state.getBlock() instanceof WallBannerBlock)  return ModelLayers.WALL_BANNER;
         else return  ModelLayers.STANDING_BANNER;
     }
 
-    public static void transformBanner(BlockState state, PoseStack poseStack){
+    public static void transform(BlockState state, PoseStack poseStack){
         float angle;
         if (state.getBlock() instanceof WallBannerBlock) {
             angle = -(state.getValue(WallBannerBlock.FACING)).toYRot();

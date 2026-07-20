@@ -12,19 +12,19 @@ import net.minecraft.world.level.block.DecoratedPotBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class DecoratedPotUtil {
-    public static Identifier getDecoratedPotMaterial(BlockState state){
+    public static Identifier getMaterial(BlockState state){
         return Sheets.DECORATED_POT_BASE.texture();
     }
 
-    public static ModelLayerLocation getDecoratedPotModelLayerLocation(BlockState state){
+    public static ModelLayerLocation getModelLayerLocation(BlockState state){
         return ModelLayers.DECORATED_POT_BASE;
     }
 
-    public static ModelLayerLocation getDecoratedPotSideModelLayerLocation(BlockState state){
+    public static ModelLayerLocation getSideModelLayerLocation(BlockState state){
         return ModelLayers.DECORATED_POT_SIDES;
     }
 
-    public static void transformDecoratedPot(BlockState state, PoseStack poseStack){
+    public static void transform(BlockState state, PoseStack poseStack){
         Direction facing = state.getValue(DecoratedPotBlock.HORIZONTAL_FACING);
         poseStack.pushPose();
         poseStack.translate((double)0.5F, (double)0.0F, (double)0.5F);

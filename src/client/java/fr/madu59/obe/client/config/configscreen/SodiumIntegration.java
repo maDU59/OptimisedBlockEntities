@@ -28,6 +28,7 @@ public class SodiumIntegration implements ConfigEntryPoint {
                 .setName(Component.translatable("obe.config.category.general"))
                 .addOption(createBooleanOption(builder, SettingsManager.MOD_TOGGLE))
                 .addOption(createBooleanOption(builder, SettingsManager.EMF_COMPAT))
+                .addOption(createBooleanOption(builder, SettingsManager.MODEL_OPTIMIZATION))
             )
             
             .addOptionGroup(builder.createOptionGroup()

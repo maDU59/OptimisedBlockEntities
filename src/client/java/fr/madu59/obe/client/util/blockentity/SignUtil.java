@@ -13,12 +13,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.WoodType;
 
 public class SignUtil {
-    public static Identifier getSignMaterial(BlockState state){
+    public static Identifier getMaterial(BlockState state){
         WoodType woodType = SignBlock.getWoodType(state.getBlock());
         return Sheets.getSignMaterial(woodType).texture();
     }
 
-    public static ModelLayerLocation getSignModelLayerLocation(BlockState state){
+    public static ModelLayerLocation getModelLayerLocation(BlockState state){
         WoodType woodType = SignBlock.getWoodType(state.getBlock());
         if (state.getBlock() instanceof SignBlock block) {
             if(block instanceof WallSignBlock){
@@ -31,7 +31,7 @@ public class SignUtil {
         else return null;
     }
 
-    public static void transformSign(BlockState state, PoseStack poseStack){
+    public static void transform(BlockState state, PoseStack poseStack){
         if (state.getBlock() instanceof SignBlock block) {
             SignRenderer.translateBase(poseStack, -block.getYRotationDegrees(state));
             if (block instanceof WallSignBlock) {

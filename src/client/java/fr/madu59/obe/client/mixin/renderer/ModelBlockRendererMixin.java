@@ -11,7 +11,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import fr.madu59.obe.client.model.BlockEntityStateModel;
-import fr.madu59.obe.client.renderer.OBEBlockRenderer;
+import fr.madu59.obe.client.renderer.blockentity.BlockEntityModelsManager;
 import net.minecraft.client.renderer.block.ModelBlockRenderer;
 import net.minecraft.client.renderer.block.model.BlockModelPart;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
@@ -22,11 +22,11 @@ import net.minecraft.world.level.block.state.BlockState;
 
 @Mixin(ModelBlockRenderer.class)
 public class ModelBlockRendererMixin {
-    @Unique private final OBEBlockRenderer obeBlockRenderer = new OBEBlockRenderer();
+    @Unique private final BlockEntityModelsManager blockEntityModelsManager = new BlockEntityModelsManager();
 
     @ModifyVariable(method = "tesselateBlock", at = @At("HEAD"), argsOnly = true)
     private List<BlockModelPart> obe$modifyModel(List<BlockModelPart> list, BlockAndTintGetter blockAndTintGetter, List<BlockModelPart> originalList, BlockState blockState, BlockPos blockPos, PoseStack poseStack, VertexConsumer vertexConsumer, boolean bl, int i) {
-        BlockStateModel model = obeBlockRenderer.getModel(blockState, blockPos, blockState.getSeed(blockPos), new BlockEntityStateModel(originalList), blockAndTintGetter);
+        BlockStateModel model = blockEntityModelsManager.getModel(blockState, blockPos, blockState.getSeed(blockPos), new BlockEntityStateModel(originalList), blockAndTintGetter);
         if(model != null){
             list = model.collectParts(RandomSource.create(blockState.getSeed(blockPos)));
         }

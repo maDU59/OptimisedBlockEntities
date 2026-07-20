@@ -1,7 +1,7 @@
 package fr.madu59.obe.client.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+
 import java.util.List;
 import java.util.Map;
 
@@ -11,26 +11,30 @@ import org.joml.Vector3fc;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import fr.madu59.obe.client.compat.ModCompat;
-import fr.madu59.obe.client.util.ResourceUtil;
+import fr.madu59.obe.client.config.SettingsManager;
+import fr.madu59.obe.client.resources.ResourceUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.ModelPart.Polygon;
 import net.minecraft.client.model.geom.builders.UVPair;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.BlockModelPart;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.block.model.SimpleModelWrapper;
-import net.minecraft.client.renderer.block.model.SingleVariant;
+
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.QuadCollection;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.block.ChestBlock;
+import net.minecraft.world.level.block.EnderChestBlock;
+import net.minecraft.world.level.block.ShulkerBoxBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class BlockEntityStateModel implements BlockStateModel{
-    private final List<SingleVariant> models = new ArrayList<>();
-    private final Map<String, BlockStateModel> partsMap = new HashMap<>();
+    private SimpleModelWrapper modelPart;
     private final TextureAtlasSprite particleMaterial;
 
     public BlockEntityStateModel(ModelLayerLocation modelLayerLocation, Identifier texture, boolean useAo, BlockState state, TextureAtlasSprite particleMaterial){
@@ -53,68 +57,71 @@ public class BlockEntityStateModel implements BlockStateModel{
 
     public BlockEntityStateModel(List<BlockModelPart> list){
         this.particleMaterial = list.get(0).particleIcon();
+        QuadCollection.Builder collectionBuilder = new QuadCollection.Builder();
         for(BlockModelPart part: list){
-            addModelPart(String.valueOf(part.hashCode()), new SingleVariant(part));
+            for(BakedQuad quad : part.getQuads(null)){
+                collectionBuilder.addUnculledFace(quad);
+            }
+            for(Direction dir : Direction.values()){
+                for(BakedQuad quad : part.getQuads(dir)){
+                    collectionBuilder.addCulledFace(dir, quad);
+                }
+            }
         }
+        modelPart = new SimpleModelWrapper(collectionBuilder.build(), list.get(0).useAmbientOcclusion(), particleMaterial);
     }
 
     @Override
-    public void collectParts(RandomSource randomSource, List<BlockModelPart> list) {
-        if (models.isEmpty()) return;
+    public void collectParts(RandomSource randomSource, List<BlockModelPart> output) {
+        if (modelPart == null) return;
 
         long seed = randomSource.nextLong();
 
-        for (BlockStateModel model : this.models) {
-            randomSource.setSeed(seed);
-            model.collectParts(randomSource, list);
-        }
-    }
-
-    public BlockStateModel getPart(String name){
-        return partsMap.get(name);
+        randomSource.setSeed(seed);
+        output.add(modelPart);
     }
 
     private void generateModel(ModelLayerLocation modelLayerLocation, TextureAtlasSprite sprite, PoseStack poseStack, boolean useAo, BlockState state){
         ModelPart root = Minecraft.getInstance().getEntityModels().bakeLayer(modelLayerLocation);
         ModCompat.applyEMFRestPose(root, state);
+
         Map<String, ModelPart> children = root.children;
+        List<BakedQuad> bakedQuadsList = new ArrayList<>();
         children.forEach((key, part) -> {
-
-            List<BakedQuad> bakedQuadsList = getBakedQuads(part, poseStack, sprite, shouldFixBFC(key));
-            QuadCollection collection = createQuadCollection(bakedQuadsList);
-            SimpleModelWrapper wrapper = new SimpleModelWrapper(collection, useAo, particleMaterial);
-            SingleVariant singleVariant = new SingleVariant(wrapper);
-
-            addModelPart(key, singleVariant);
+            getBakedQuads(bakedQuadsList, part, poseStack, sprite, key, state);
         });
+
+        QuadCollection collection = createQuadCollection(bakedQuadsList);
+        modelPart = new SimpleModelWrapper(collection, useAo, particleMaterial);
     }
 
-    private List<BakedQuad> getBakedQuads(ModelPart part, PoseStack poseStack, TextureAtlasSprite sprite, boolean fixBfc){
-        List<BakedQuad> bakedQuadsList = new ArrayList<>();
-        part.visit(poseStack, (pose, name, idx, cube) -> {
-            for(ModelPart.Polygon polygon : cube.polygons){
-                if (polygon.vertices().length != 4) {
-                    continue;
-                }
+    private void getBakedQuads(List<BakedQuad> output, ModelPart part, PoseStack poseStack, TextureAtlasSprite sprite, String partName, BlockState state){
 
-                Vector3f normal = new Vector3f();
+        boolean fixBfc = shouldFixBFC(partName);
+
+        Vector3f[] positions = new Vector3f[4];
+        long[] uvs = new long[4];
+        Vector3f normal = new Vector3f();
+
+        part.visit(poseStack, (pose, partPath, cubeIndex, cube) -> {
+            for(ModelPart.Polygon polygon : cube.polygons){
+                if (polygon.vertices().length != 4) continue;
 
                 polygon.normal().mul(pose.normal(), normal);
                 
                 Direction dir = getDirection(normal);
 
-                Vector3f[] positions = new Vector3f[4];
-                long[] uvs = new long[4];
-
                 for (int i = 0; i < 4; i++) {
                     ModelPart.Vertex vertex = polygon.vertices()[i];
-                    Vector3f vec = pose.pose().transformPosition(vertex.worldX(), vertex.worldY(), vertex.worldZ(), new Vector3f());
-                    positions[i] = vec;
+                    // From ModelPart#getExtentsForGui
+                    positions[i] = pose.pose().transformPosition(vertex.worldX(), vertex.worldY(), vertex.worldZ(), new Vector3f());
 
                     float u = sprite.getU(vertex.u());
                     float v = sprite.getV(vertex.v());
                     uvs[i] = UVPair.pack(u, v);
                 }
+
+                if (shouldSkipQuad(polygon, positions, state, partName)) continue;
 
                 BakedQuad baked = new BakedQuad(
                     positions[0], positions[1], positions[2], positions[3],
@@ -125,17 +132,16 @@ public class BlockEntityStateModel implements BlockStateModel{
                     true,
                     0
                 );
-                bakedQuadsList.add(baked);
+                output.add(baked);
                 if(fixBfc){
                     // Same geometry but with inverted winding order so they are visible from the other side of the model
                     baked = new BakedQuad(
                         positions[0], positions[3], positions[2], positions[1], uvs[0], uvs[3], uvs[2], uvs[1], 0, dir.getOpposite(), sprite, true, 0
                     );
-                    bakedQuadsList.add(baked);
+                    output.add(baked);
                 }
             }
         });
-        return bakedQuadsList;
     }
 
     private Direction getDirection(Vector3fc vec){
@@ -146,10 +152,40 @@ public class BlockEntityStateModel implements BlockStateModel{
         return key.equals("vChains") || key.equals("normalChains");
     }
 
-    private void addModelPart(String key, SingleVariant singleVariant){
-        models.add(singleVariant);
-        partsMap.put(key, singleVariant);
+    private boolean shouldSkipQuad(Polygon polygon, Vector3f[] positions, BlockState state, String partName){
+        if(!SettingsManager.MODEL_OPTIMIZATION.getValue() || state == null) return false;
+        if(state.getBlock() instanceof ChestBlock || state.getBlock() instanceof EnderChestBlock){
+            if(partName.equals("lid") || partName.equals("bottom")) {
+                boolean isHorizontal = positions[0].y() == positions[1].y() && positions[1].y() == positions[2].y() && positions[2].y() == positions[3].y();
+
+                if (isHorizontal) {
+                    float yPos = positions[0].y();
+                    return yPos <= (10.1f / 16f) && yPos >= (8.9f / 16f);
+                }
+            }
+        }
+        else if(state.getBlock() instanceof ShulkerBoxBlock){
+            if (partName.equals("lid") || partName.equals("base")) {
+                float threshold = 1f/32f;
+                boolean touchesCorner = false;
+
+                for (Vector3f pos : positions) {
+                    boolean touchX = pos.x() <= threshold || pos.x() >= (1.0f - threshold);
+                    boolean touchY = pos.y() <= threshold || pos.y() >= (1.0f - threshold);
+                    boolean touchZ = pos.z() <= threshold || pos.z() >= (1.0f - threshold);
+
+                    if (touchX && touchY && touchZ) {
+                        touchesCorner = true;
+                        break;
+                    }
+                }
+
+                return !touchesCorner;
+            }
+        }
+        return false;
     }
+
 
     private QuadCollection createQuadCollection(List<BakedQuad> quads) {
         QuadCollection.Builder builder = new QuadCollection.Builder();
