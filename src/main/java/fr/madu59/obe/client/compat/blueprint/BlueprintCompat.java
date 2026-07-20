@@ -1,4 +1,4 @@
-package fr.madu59.obe.client.compat.woodwork;
+package fr.madu59.obe.client.compat.blueprint;
 
 import com.teamabnormals.blueprint.client.BlueprintChestMaterials;
 import com.teamabnormals.blueprint.client.BlueprintChestMaterials.ChestMaterials;
@@ -16,12 +16,12 @@ import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
 
-public class WoodWorkCompat {
+public class BlueprintCompat {
     public static void init(){
         Registry.addBlockEntityTypeInGroup("chest", BlueprintBlockEntityTypes.CHEST.get(), BlueprintBlockEntityTypes.TRAPPED_CHEST.get());
         
-        MaterialGetter.register(BlueprintBlockEntityTypes.CHEST.get(), WoodWorkCompat::getChestMaterial);
-        MaterialGetter.register(BlueprintBlockEntityTypes.TRAPPED_CHEST.get(), WoodWorkCompat::getChestMaterial);
+        MaterialGetter.register(BlueprintBlockEntityTypes.CHEST.get(), BlueprintCompat::getChestMaterial);
+        MaterialGetter.register(BlueprintBlockEntityTypes.TRAPPED_CHEST.get(), BlueprintCompat::getChestMaterial);
     }
 
     public static ResourceLocation getChestMaterial(BlockState state) {

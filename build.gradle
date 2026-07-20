@@ -117,9 +117,9 @@ dependencies {
 	compileOnly renamer.dependency("maven.modrinth:entity-model-features:3.2.4-forge-1.20.1")
 
 	implementation renamer.dependency("maven.modrinth:lootr:mWTXC1ZX")
-	implementation renamer.dependency("maven.modrinth:cloth-config:t8TXrZvZ")
+	runtimeOnly renamer.dependency("maven.modrinth:cloth-config:t8TXrZvZ")
 
-    implementation renamer.dependency("maven.modrinth:woodworks:236Amnif")
+    runtimeOnly renamer.dependency("maven.modrinth:woodworks:236Amnif")
     implementation renamer.dependency("maven.modrinth:blueprint:AiaPEN6q")
 
     annotationProcessor 'org.spongepowered:mixin:0.8.7:processor'
