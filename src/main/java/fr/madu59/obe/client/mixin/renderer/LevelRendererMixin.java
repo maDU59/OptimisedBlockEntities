@@ -6,9 +6,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 
+import fr.madu59.obe.client.renderer.blockentity.SpecialBlockEntityRenderingManager;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
-import fr.madu59.obe.client.renderer.blockentity.misc.RenderModeManager;
 import net.minecraft.client.renderer.LevelRenderer;
+import fr.madu59.obe.client.renderer.misc.RenderModeManager;
 import net.minecraft.client.renderer.chunk.ChunkRenderDispatcher.CompiledChunk;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import java.util.List;
@@ -29,17 +30,10 @@ public class LevelRendererMixin {
 
         if (original == null || original.isEmpty())  return original;
 
-        original.removeIf(be -> {
-            return (be instanceof BlockEntityExt ext && ext.isEnabled() && (!RenderModeManager.shouldRenderEntityFast(ext) || ext.shouldSkipBeRendering()));
-        });
-
         for (int i = original.size() - 1; i >= 0; i--) {
             if (original.get(i) instanceof BlockEntityExt ext){
-                if(ext.isEnabled() && (!RenderModeManager.shouldRenderEntityFast(ext) || ext.shouldSkipBeRendering())) {
+                if(ext.isEnabled() && (!RenderModeManager.shouldRenderEntityFast(ext) || ext.shouldSkipRendering() || SpecialBlockEntityRenderingManager.shouldSkipRendering((BlockEntity)ext))){
                     original.remove(i);
-                }
-                else{
-                    RenderModeManager.updateOnRender(ext);
                 }
             }
         }

@@ -20,7 +20,7 @@ public class SignBlockEntityMixin {
         BlockEntityExt ext = (BlockEntityExt)be;
         
         ext.renderBoth(true);
-        ext.isSupportedBlockEntity(Registry.isSupported("sign", be.getType()));
-        if(!ext.isSupportedBlockEntity()) ext.isSupportedBlockEntity(Registry.isSupported("hanging_sign", be.getType()));
+        ext.isSupported(Registry.isSupported("sign", be.getType()));
+        if(!ext.isSupported()) ext.isSupported(Registry.isSupported("hanging_sign", be.getType()));
     }
 }

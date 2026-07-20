@@ -20,28 +20,67 @@ This mod renders supported block entities just like any other block, this means 
 ## Performances
 
 <table>
-  <caption>FPS: 170 OBE / 130 BBE / 10 Vanilla</caption>
-  <tr><td><img alt = "170 fps with OBE" src = "https://cdn.modrinth.com/data/cached_images/aa06e30a06eb1b9b42b826251b5530bffee379a7.png"></td>
-  <td><img alt ="130 fps with BBE" src = "https://cdn.modrinth.com/data/cached_images/cc201d847b46db942ce2431def7fe7b937598294.png"></td>
-  <td><img alt = "10 FPS vanilla" src = "https://cdn.modrinth.com/data/cached_images/ca48790971ca5cd4f9da5332e524f94e7256bccb.png"></td></tr>
+  <caption>FPS: 760 OBE / 520 BBE / 30 Sodium only</caption>
+  <tr><td><img alt = "OBE: 760FPS" src = "https://cdn.modrinth.com/data/cached_images/6a8cc4f821534d1fa6acae0d24c4626db12fbc3e.png"></td>
+  <td><img alt = "BBE: 520FPS" src = "https://cdn.modrinth.com/data/cached_images/16b9fa3f8a2de7cc2f588c624f04c20816f0ce90.png"></td>
+  <td><img alt = "Sodium only: 30FPS" src = "https://cdn.modrinth.com/data/cached_images/1ccae3753f9912e1fecbdf26d9990bd986c19000.png"></td></tr>
 </table>
 
-## Compatibility:
+<sub>*Performance tests ran on Minecraft 26.1.2 with OBE 1.1.27 and BBE 1.3.5 with Sodium 0.9.0 in FHD on a RTX 5060 laptop, an AMD Ryzen 7 260 w and 16Go of DDR5 RAM*</sub>
+
+## Compatibility
 
 - Compatible with EMF/ETF and any resource packs made for those (like FA: Objects) *Since OBE 1.1.4*
 - Compatible with Quark's chests *Since OBE 1.1.3 and Quark 4.1-481*
+- Compatible with Lootr *Since OBE 1.1.23*
 
-## Why 
+## Why
 
 Mods like this already exists like:
 - [BBE](https://modrinth.com/mod/better-block-entities), but it requires Sodium to run, isn't available on Neoforge (at least not at the time of OBE development) and heavily modifies Minecraft's rendering pipeling
 - [EBE](https://modrinth.com/mod/ebe), but it is sadly not updated anymore and isn't available on Neoforge
 
-Both are awesome, the developers did great work but I wanted to make one that was:
-- Updated
-- Less intrusive, which means better compatibility with other mods
-- Available on Neoforge as well as Fabric
+Both are awesome, the developers did great work but I wanted to make one that:
+- Is updated and available on most modern Minecraft versions
+- Is less intrusive, which means better compatibility with other mods
+- Is available on Neoforge as well as Fabric
+- Includes a way to support modded block entities
+
 and I even managed to make it faster somehow even though they are both really well done and optimized
+
+## List of all optimized block entities
+
+<details>
+<summary>Optimized block entities</summary>
+<ul>
+<li>Chests</li>
+<li>Shulker boxes</li>
+<li>Signs</li>
+<li>Decorated pots (with no pattern)</li>
+<li>Skulls (with no custom texture¹)</li>
+<li>Beds</li>
+<li>Copper golems</li>
+<li>Bells</li>
+<li>Banners (only the wooden post, not the flag as that would prevent the animation)</li>
+<li>Beacons</li>
+<li>Lecterns</li>
+<li>Campfires</li>
+<li>Shelves</li>
+</ul>
+
+<sub>¹: Some skulls with custom textures from Hypixel's Skyblock can also be optimized by using [this resource pack](https://modrinth.com/resourcepack/obe-x-hypixel-skyblock)</sub>
+
+</details>
+
+## Trouble shooting
+
+Invisible block entities:
+
+> Only vanilla, indigo and sodium (embeddium on forge 1.20.1) rendering pipelines are fully supported, issues may happen with other ones like Optifine, Embeddium, Optifabric etc... in that case it is recommended to disable the OBE optimizations causing the issues using OBE's config screen.
+
+Crash on 1.20.1 Forge with Embeddium:
+
+> You need the Forgified Fabric API mod if you want to use OBE and Embeddium at the same time.
 
 ## Modpacks
 

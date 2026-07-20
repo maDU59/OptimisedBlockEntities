@@ -12,16 +12,16 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.WoodType;
 
 public class HangingSignUtil {
-    public static ResourceLocation getHangingSignMaterial(BlockState state){
+    public static ResourceLocation getMaterial(BlockState state){
         WoodType woodType = SignBlock.getWoodType(state.getBlock());
         return Sheets.getHangingSignMaterial(woodType).texture();
     }
 
-    public static ModelLayerLocation getHangingSignModelLayerLocation(BlockState state){
+    public static ModelLayerLocation getModelLayerLocation(BlockState state){
         return ModelLayers.createHangingSignModelName(SignBlock.getWoodType(state.getBlock()));
     }
 
-    public static void transformHangingSign(BlockState state, PoseStack poseStack){
+    public static void transform(BlockState state, PoseStack poseStack){
         if (state.getBlock() instanceof SignBlock block) {
             poseStack.translate((double)0.5F, (double)0.9375F, (double)0.5F);
             poseStack.mulPose(Axis.YP.rotationDegrees(-block.getYRotationDegrees(state)));

@@ -5,10 +5,12 @@ import fr.madu59.obe.client.compat.ModCompat;
 import fr.madu59.obe.client.config.configscreen.OptimisedBlockEntitiesConfigScreen;
 import fr.madu59.obe.client.platform.PlatformHelper;
 import fr.madu59.obe.client.registry.Registry;
+import fr.madu59.obe.client.resources.loader.SkullPackLoader;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.ConfigScreenHandler;
 import net.minecraftforge.common.MinecraftForge;
@@ -34,6 +36,7 @@ public class OBEClient {
 		}
 
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onLoadComplete);
+		MinecraftForge.EVENT_BUS.addListener(this::onAddReloadListeners);
     }
 
 	private void onLoadComplete(FMLLoadCompleteEvent event){
@@ -43,4 +46,8 @@ public class OBEClient {
 	public static void debug(String debugInfo) {
 		OBE.LOGGER.info(debugInfo);
 	}
+
+	public void onAddReloadListeners(AddReloadListenerEvent event) {
+        event.addListener(new SkullPackLoader());
+    }
 }

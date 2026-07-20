@@ -75,16 +75,20 @@ public class MyConfigListWidget extends ContainerObjectSelectionList<MyConfigLis
         // @Override
         // public int height() {
         //     updateState();
-        //     if(this.isEnabledSupplier != null && !this.isEnabledSupplier.getAsBoolean()) return 0;
+        //     if(!isEnabled()) return 0;
         //     return super.get();
         // }
 
         // @Override
-        // public int contentHeight() {
+        // public int getContentHeight() {
         //     updateState();
-        //     if(this.isEnabledSupplier != null && !this.isEnabledSupplier.getAsBoolean()) return 0;
-        //     return super.contentHeight();
+        //     if(!isEnabled()) return 0;
+        //     return super.getContentHeight();
         // }
+
+        public boolean isEnabled(){
+            return this.isEnabledSupplier == null || this.isEnabledSupplier.getAsBoolean();
+        }
     }
 
     public static class CategoryEntry extends MyConfigListWidget.Entry {
@@ -100,7 +104,7 @@ public class MyConfigListWidget extends ContainerObjectSelectionList<MyConfigLis
 
         @Override
        public void render(GuiGraphics context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-            if(this.isEnabledSupplier != null && !this.isEnabledSupplier.getAsBoolean()) return;    
+            if(!isEnabled()) return;    
             Font textRenderer = Minecraft.getInstance().font;
             int textX = x + entryWidth / 2;
             int textY = y + (entryHeight - textRenderer.lineHeight) / 2;
@@ -135,7 +139,7 @@ public class MyConfigListWidget extends ContainerObjectSelectionList<MyConfigLis
 
         @Override
         public void render(GuiGraphics context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-            if(this.isEnabledSupplier != null && !this.isEnabledSupplier.getAsBoolean()) return;
+            if(!isEnabled()) return;
             this.button.setY(y + (entryHeight - this.button.getHeight()) / 2);
             this.button.setX(entryWidth - this.button.getWidth() - 10);
             this.button.render(context, mouseX, mouseY, tickDelta);
@@ -188,7 +192,7 @@ public class MyConfigListWidget extends ContainerObjectSelectionList<MyConfigLis
 
         @Override
         public void render(GuiGraphics context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-            if(this.isEnabledSupplier != null && !this.isEnabledSupplier.getAsBoolean()) return;
+            if(!isEnabled()) return;
             this.slider.setY(y + (entryHeight - this.slider.getHeight()) / 2);
             this.slider.setX(entryWidth - this.slider.getWidth() - 10);
             this.slider.render(context, mouseX, mouseY, tickDelta);

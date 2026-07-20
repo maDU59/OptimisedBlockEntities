@@ -9,10 +9,11 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.ShulkerBoxBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class ShulkerBoxUtil {
-    public static ResourceLocation getShulkerBoxMaterial(BlockState state){
+    public static ResourceLocation getMaterial(BlockState state){
         if(state.getBlock() instanceof ShulkerBoxBlock block){
             DyeColor color = block.getColor();
             if (color == null) {
@@ -24,11 +25,11 @@ public class ShulkerBoxUtil {
         else return null;
     }
 
-    public static ModelLayerLocation getShulkerBoxModelLayerLocation(BlockState state){
+    public static ModelLayerLocation getModelLayerLocation(BlockState state){
         return ModelLayers.SHULKER;
     }
 
-    public static void transformShulkerBox(BlockState state, PoseStack poseStack){
+    public static void transform(BlockState state, PoseStack poseStack){
         Direction facing = state.getValue(ShulkerBoxBlock.FACING);
         poseStack.translate(0.5F, 0.5F, 0.5F);
         float g = 0.9995F;
@@ -36,5 +37,13 @@ public class ShulkerBoxUtil {
         poseStack.mulPose(facing.getRotation());
         poseStack.scale(1.0F, -1.0F, -1.0F);
         poseStack.translate(0.0F, -1.0F, 0.0F);
+    }
+
+    public static ModelLayerLocation getModelLayerLocation(BlockState state, BlockEntity be){
+        return getModelLayerLocation(state);
+    }
+
+    public static void transform(BlockState state, BlockEntity be, PoseStack poseStack){
+        transform(state, poseStack);
     }
 }
