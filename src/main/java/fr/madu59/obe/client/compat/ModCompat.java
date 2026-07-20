@@ -3,10 +3,10 @@ package fr.madu59.obe.client.compat;
 import java.util.Arrays;
 import java.util.List;
 
+import fr.madu59.obe.client.compat.blueprint.BlueprintCompat;
 import fr.madu59.obe.client.compat.emf.EMFCompat;
 import fr.madu59.obe.client.compat.iris.IrisCompat;
 import fr.madu59.obe.client.compat.lootr.LootrCompat;
-import fr.madu59.obe.client.compat.woodwork.WoodWorkCompat;
 import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.platform.PlatformHelper;
 import net.minecraft.client.model.geom.ModelPart;
@@ -22,7 +22,7 @@ public class ModCompat {
 
     public static void init(){
         if(PlatformHelper.isModLoaded("lootr")) LootrCompat.init();
-        if(PlatformHelper.isModLoaded("woodworks")) WoodWorkCompat.init();
+        if(PlatformHelper.isModLoaded("blueprint")) BlueprintCompat.init();
     }
 
     public static boolean isIrisLoaded(){
