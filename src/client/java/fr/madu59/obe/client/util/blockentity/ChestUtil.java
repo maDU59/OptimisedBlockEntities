@@ -87,7 +87,7 @@ public class ChestUtil {
     }
 
     @Deprecated
-    public static void transformChest(BlockState state, PoseStack poseStack, BlockEntity be){
-        transform(state, poseStack, be);
+    public static void transformChest(BlockState state, BlockEntity be, PoseStack poseStack){
+        transform(state, be, poseStack);
     }
 }
