@@ -29,7 +29,7 @@ public abstract class ChestBlockEntityMixin{
     @Inject(method = "lidAnimateTick", at = @At("HEAD"))
     private static void obe$lidAnimateTick(final Level level, final BlockPos pos, final BlockState state, final ChestBlockEntity entity, CallbackInfo ci) {
         BlockEntityExt ext = (BlockEntityExt)entity;
-        if(entity.getOpenNess(0.5f) > 0.0001){
+        if(entity.getOpenNess(0.5f) > 0){
             RenderModeManager.setRenderModeDelayed(ext, RenderMode.ENTITY, pos);
         }
         else{
