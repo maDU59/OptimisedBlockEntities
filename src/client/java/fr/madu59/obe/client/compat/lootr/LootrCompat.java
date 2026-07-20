@@ -36,6 +36,8 @@ public class LootrCompat {
 
     public static final ResourceLocation SHULKER_BOX_MATERIAL = LootrShulkerBlockRenderer.MATERIAL.texture();
     public static final ResourceLocation SHULKER_BOX_MATERIAL2 = LootrShulkerBlockRenderer.MATERIAL2.texture();
+    public static final ResourceLocation SHULKER_BOX_OLD_MATERIAL = LootrShulkerBlockRenderer.OLD_MATERIAL.texture();
+    public static final ResourceLocation SHULKER_BOX_OLD_MATERIAL2 = LootrShulkerBlockRenderer.OLD_MATERIAL2.texture();
 
     private static UUID playerId = null;
 
@@ -103,24 +105,24 @@ public class LootrCompat {
                 if (playerId == null) {
                     Minecraft mc = Minecraft.getInstance();
                     if (mc.player == null) {
-                        return OLD_MATERIAL;
+                        return SHULKER_BOX_OLD_MATERIAL;
                     }
 
                     playerId = mc.player.getUUID();
                 }
 
-                return lootrShulkerBe.getOpeners().contains(playerId) ? OLD_MATERIAL2 : OLD_MATERIAL;
+                return lootrShulkerBe.getOpeners().contains(playerId) ? SHULKER_BOX_OLD_MATERIAL2 : SHULKER_BOX_OLD_MATERIAL;
             } else {
                 if (playerId == null) {
                     Minecraft mc = Minecraft.getInstance();
                     if (mc.player == null) {
-                        return MATERIAL;
+                        return SHULKER_BOX_MATERIAL;
                     }
 
                     playerId = mc.player.getUUID();
                 }
 
-                return lootrShulkerBe.getOpeners().contains(playerId) ? MATERIAL2 : MATERIAL;
+                return lootrShulkerBe.getOpeners().contains(playerId) ? SHULKER_BOX_MATERIAL2 : SHULKER_BOX_MATERIAL;
             }
         }
         else return ShulkerBoxUtil.getMaterial(state);
