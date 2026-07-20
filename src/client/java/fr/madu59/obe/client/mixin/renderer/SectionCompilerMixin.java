@@ -3,7 +3,6 @@ package fr.madu59.obe.client.mixin.renderer;
 import java.util.Map;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
@@ -28,9 +27,6 @@ import net.minecraft.world.level.block.state.BlockState;
 
 @Mixin(SectionCompiler.class)
 public abstract class SectionCompilerMixin {
-
-    @Shadow
-    protected abstract BufferBuilder getOrBeginLayer(Map<ChunkSectionLayer,BufferBuilder> map, SectionBufferBuilderPack buffer, ChunkSectionLayer layer);
 
     @WrapOperation(method = "compile", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/chunk/RenderSectionRegion;getBlockState(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;"))
     private BlockState obe$getBlockState(RenderSectionRegion region, BlockPos pos, Operation<BlockState> original, @Share("be") LocalRef<BlockEntity> beRef){
