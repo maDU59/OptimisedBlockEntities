@@ -1,4 +1,3 @@
 # What's new:
-- Fixed a rendering bug with bells
-
-- Added compatibility with Woodworks
+- Bug fixes
+- Added compat with all chests using the Blueprint mod (Woodworks and more)
