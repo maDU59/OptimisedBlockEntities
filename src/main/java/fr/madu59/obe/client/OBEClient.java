@@ -7,7 +7,6 @@ import fr.madu59.obe.client.registry.Registry;
 import fr.madu59.obe.client.resources.loader.SkullPackLoader;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;

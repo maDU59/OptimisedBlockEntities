@@ -77,7 +77,7 @@ public class ChestUtil {
 
     @Deprecated
     public static ModelLayerLocation getChestModelLayerLocation(BlockState state){
-        return getChestModelLayerLocation(state);
+        return getModelLayerLocation(state);
     }
 
     @Deprecated
@@ -92,7 +92,7 @@ public class ChestUtil {
 
     @Deprecated
     public static ModelLayerLocation getChestModelLayerLocation(BlockState state, BlockEntity be){
-        return getChestModelLayerLocation(state, be);
+        return getModelLayerLocation(state, be);
     }
 
     @Deprecated
