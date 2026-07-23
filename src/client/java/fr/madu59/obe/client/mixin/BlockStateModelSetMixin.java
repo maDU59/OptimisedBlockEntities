@@ -1,7 +1,5 @@
 package fr.madu59.obe.client.mixin;
 
-import java.util.Map;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -28,9 +26,6 @@ public class BlockStateModelSetMixin {
 
     @Unique private final BlockEntityModelsManager blockEntityModelsManager = new BlockEntityModelsManager();
     @Unique private final Identifier missingTexture = Identifier.tryParse("minecraft:missingno");
-
-    @Shadow
-    public Map<BlockState, BlockStateModel> modelByStateCache;
 
     @Shadow
     private ModelManager modelManager;
@@ -72,12 +67,10 @@ public class BlockStateModelSetMixin {
                 model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
                 if(model != null) cir.setReturnValue(model);
             }
-            // else if(group.equals("bell")){
-            //     BlockStateModelSet set = ((BlockStateModelSet)(Object)this);
-            //     blockEntityModelsManager.originalBellModel = (BlockStateModel)set.modelByState.getOrDefault(state, new BlockEntityStateModel());
-            //     model = new CompositeBlockStateModel(blockEntityModelsManager.getBellModel(state, random, obe$getOriginalModel(state)), (BlockStateModel)set.modelByState.getOrDefault(state, new BlockEntityStateModel());
-            //     if(model != null) cir.setReturnValue(model);
-            // }
+            else if(group.equals("bell") && SettingsManager.OPTIMISED_BELLS.getValue()){
+                model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
+                if(model != null) cir.setReturnValue(model);
+            }
             else if(group.equals("copper_golem_statue") && SettingsManager.OPTIMISED_COPPER_GOLEMS.getValue()){
                 model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
                 if(model != null) cir.setReturnValue(model);
@@ -98,14 +91,7 @@ public class BlockStateModelSetMixin {
 
     @Unique
     public BlockStateModel obe$getOriginalModel(BlockState state){
-        BlockStateModel blockStateModel = (BlockStateModel)this.modelByStateCache.get(state);
-        if (blockStateModel == null) {
-            blockStateModel = this.modelManager.getMissingBlockStateModel();
-        }
-        if (blockStateModel == null) {
-            blockStateModel = new BlockEntityStateModel(ResourceUtil.getSprite(missingTexture));
-        }
-
-        return blockStateModel;
+        BlockStateModel model = ResourceUtil.getDefaultModel(state);
+        return model == null? new BlockEntityStateModel(ResourceUtil.getSprite(missingTexture)) : model;
     }
 }

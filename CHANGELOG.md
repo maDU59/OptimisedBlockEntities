@@ -1,2 +1,2 @@
 # What's new:
-- Fixed a rendering bug with bells
+- Fixed incorrect ambient occlusion without Sodium

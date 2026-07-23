@@ -23,7 +23,6 @@ import net.minecraft.client.renderer.block.model.BlockModelPart;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.block.model.FaceBakery;
 import net.minecraft.client.renderer.block.model.SimpleModelWrapper;
-
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.QuadCollection;
 import net.minecraft.core.Direction;
@@ -152,7 +151,6 @@ public class BlockEntityStateModel implements BlockStateModel{
 
                 if(fixBfc){
                     // Same geometry but with inverted winding order so they are visible from the other side of the model
-
                     positionsCopy = positions.clone();
                     uvsCopy = uvs.clone();
                     try{
@@ -163,9 +161,7 @@ public class BlockEntityStateModel implements BlockStateModel{
                         uvs = new long[] { uvsCopy[0], uvsCopy[3], uvsCopy[2], uvsCopy[1] };
                     }
 
-                    baked = new BakedQuad(
-                        positions[0], positions[1], positions[2], positions[3], uvs[0], uvs[1], uvs[2], uvs[3], 0, dir.getOpposite(), sprite, true, 0
-                    );
+                    baked = new BakedQuad(positions[0], positions[1], positions[2], positions[3], uvs[0], uvs[1], uvs[2], uvs[3], 0, dir.getOpposite(), sprite, true, 0);
                     output.add(baked);
                 }
             }

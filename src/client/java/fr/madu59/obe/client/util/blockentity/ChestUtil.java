@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
 
 public class ChestUtil {
-    private static final boolean xmasTexture = ChestRenderer.xmasTextures();
+    public static final boolean isXmas = ChestRenderer.xmasTextures();
 
     public static Identifier getMaterial(BlockState state) {
         ChestMaterialType materialType;
@@ -35,7 +35,7 @@ public class ChestUtil {
             }
         } else if (block instanceof EnderChestBlock) {
             materialType = ChestMaterialType.ENDER_CHEST;
-        } else if (xmasTexture) {
+        } else if (isXmas) {
             materialType = ChestMaterialType.CHRISTMAS;
         } else {
             materialType = block instanceof TrappedChestBlock ? ChestMaterialType.TRAPPED : ChestMaterialType.REGULAR;
@@ -64,7 +64,7 @@ public class ChestUtil {
         poseStack.translate(-0.5F, -0.5F, -0.5F);
     }
 
-    public static void transform(BlockState state, PoseStack poseStack, BlockEntity entity){
+    public static void transform(BlockState state, BlockEntity entity, PoseStack poseStack){
         transform(state, poseStack);
     }
 
@@ -77,7 +77,7 @@ public class ChestUtil {
 
     @Deprecated
     public static ModelLayerLocation getChestModelLayerLocation(BlockState state){
-        return getChestModelLayerLocation(state);
+        return getModelLayerLocation(state);
     }
 
     @Deprecated
@@ -92,11 +92,11 @@ public class ChestUtil {
 
     @Deprecated
     public static ModelLayerLocation getChestModelLayerLocation(BlockState state, BlockEntity be){
-        return getChestModelLayerLocation(state, be);
+        return getModelLayerLocation(state, be);
     }
 
     @Deprecated
-    public static void transformChest(BlockState state, PoseStack poseStack, BlockEntity be){
-        transform(state, poseStack, be);
+    public static void transformChest(BlockState state, BlockEntity be, PoseStack poseStack){
+        transform(state, be, poseStack);
     }
 }

@@ -76,14 +76,14 @@ public class MyConfigListWidget extends ContainerObjectSelectionList<MyConfigLis
         @Override
         public int getHeight() {
             updateState();
-            if(this.isEnabledSupplier != null && !this.isEnabledSupplier.getAsBoolean()) return 0;
+            if(!isEnabled()) return 0;
             return super.getHeight();
         }
 
         @Override
         public int getContentHeight() {
             updateState();
-            if(this.isEnabledSupplier != null && !this.isEnabledSupplier.getAsBoolean()) return 0;
+            if(!isEnabled()) return 0;
             return super.getContentHeight();
         }
 

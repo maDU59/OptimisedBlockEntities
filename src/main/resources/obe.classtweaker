@@ -4,6 +4,9 @@ classTweaker v1 named
 accessible field net/minecraft/client/model/geom/ModelPart children Ljava/util/Map;
 accessible method net/minecraft/client/renderer/block/model/FaceBakery recalculateWinding ([Lorg/joml/Vector3fc;[JLnet/minecraft/core/Direction;)V
 
+# Model block state set accessing
+accessible field net/minecraft/client/renderer/block/BlockModelShaper modelByStateCache Ljava/util/Map;
+
 # Skull block rendering
 accessible field net/minecraft/client/renderer/blockentity/SkullBlockRenderer SKIN_BY_TYPE Ljava/util/Map;
 accessible field net/minecraft/world/level/block/entity/SkullBlockEntity isAnimating Z
