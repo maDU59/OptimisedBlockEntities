@@ -25,6 +25,7 @@ import fr.madu59.obe.client.renderer.entity.MeshableEntityTracker.MeshableEntity
 import fr.madu59.obe.client.renderer.entity.ext.EntityExt;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager.RenderMode;
+import fr.madu59.obe.client.resources.ResourceUtil;
 import net.caffeinemc.mods.sodium.client.render.chunk.compile.pipeline.BlockRenderer;
 import net.caffeinemc.mods.sodium.client.render.chunk.compile.tasks.ChunkBuilderMeshingTask;
 import net.caffeinemc.mods.sodium.client.world.LevelSlice;
@@ -59,9 +60,6 @@ public class ChunkBuilderMeshingTaskMixin {
             BlockEntityExt ext = (BlockEntityExt) be;
             if(ext != null && ext.isSupported()) {
                 RenderModeManager.updateBlockEntityOnChunkRemesh(ext, sectionPos);
-                if(ext.forceEntity()){
-                    return RenderShape.INVISIBLE;
-                }
                 if(ext.isEnabled() && ext.renderModeDelayed() == RenderMode.TERRAIN){
                     return RenderShape.MODEL;
                 }
@@ -79,16 +77,18 @@ public class ChunkBuilderMeshingTaskMixin {
     )
     public void obe$wrapRenderModel(BlockRenderer instance, BlockStateModel originalModel, BlockState state, BlockPos pos, BlockPos origin, Operation<Void> original, @Share("be") LocalRef<BlockEntity> beRef) {
         if(state.hasBlockEntity()){
-            BlockStateModel model = null;
+
+            BlockStateModel model = originalModel;
             BlockEntity be = beRef.get();
             BlockEntityExt ext = (BlockEntityExt) be;
-            if(ext != null && ext.isSupported()) {
-                if(ext.isEnabled() && !ext.hasSpecialRenderer() && ext.renderModeDelayed() != RenderMode.TERRAIN){
-                    model = new BlockEntityStateModel();
+
+            if(ext != null){
+                if(ext.renderModeDelayed() != RenderMode.TERRAIN || !ext.isSupported() || !ext.isEnabled()){
+                    model = ResourceUtil.getDefaultModel(be.getBlockState());
                 }
                 else if(ext.hasSpecialRenderer()) model = blockEntityModelsManager.getModel(state, pos, state.getSeed(pos), originalModel, be);
             }
-            model = model == null? originalModel : model;
+
             original.call(instance, model, state, pos, origin);
         }
         else original.call(instance, originalModel, state, pos, origin);

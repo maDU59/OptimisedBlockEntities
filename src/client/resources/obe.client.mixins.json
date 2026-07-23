@@ -31,10 +31,8 @@
 		"entity.cushion.CushionMixin",
 		"entity.renderers.cushion.CushionRendererMixin",
 		"renderer.SectionCompilerMixin",
-		"renderer.ModelBlockRendererMixin",
 		"renderer.LevelRendererMixin",
 		"renderer.SectionRenderDispatcherMixin",
-
 		"renderer.compat.sodium.ChunkBuilderMeshingTaskMixin",
 		"renderer.compat.sodium.RenderSectionManagerMixin",
 		"renderer.compat.sodium.SodiumWorldRendererMixin",
