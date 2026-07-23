@@ -6,14 +6,10 @@ import fr.madu59.obe.client.config.Option;
 import fr.madu59.obe.client.registry.Registry;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityRenderStateExt;
-import fr.madu59.obe.client.renderer.entity.ext.EntityExt;
-import fr.madu59.obe.client.renderer.entity.ext.EntityRenderStateExt;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
-import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -29,18 +25,6 @@ public class RenderModeManager {
             ext.renderMode(mode);
             ext.renderModeDelayed(mode);
         }
-    }
-
-    public static boolean shouldRenderEntity(EntityRenderState state){
-        return shouldRenderEntity(((EntityRenderStateExt)state).entity());
-    }
-
-    public static <T extends Entity> boolean shouldRenderEntity(T entity){
-        return shouldRenderEntity((EntityExt)entity);
-    }
-
-    public static <T extends Entity> boolean shouldRenderEntity(EntityExt ext){
-        return ext.renderMode() == RenderMode.ENTITY;
     }
 
     public static boolean shouldRenderEntity(BlockEntityRenderState state){

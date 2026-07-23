@@ -62,13 +62,10 @@ public class BlockEntityModelsManager {
                 if(material == null) return fail(be);
 
                 BlockStateModel model = ResourceUtil.getModel(layerLocation, material, state, cacheKey, poseStack, getAmbientOcclusion(group), originalModel.particleMaterial());
-                if(customModelProvider.shouldKeepOriginalModel()) model = new CompositeBlockStateModel(model, originalModel);
+                if(customModelProvider.shouldKeepOriginalModel()) model = new CompositeBlockStateModel(model, ResourceUtil.getDefaultModel(state));
                 ResourceUtil.cache(state, cacheKey, model);
                 return model;
             }
-        }
-        else if(!customModelProvider.shouldShowOriginalWhenHidden()){
-            return new BlockEntityStateModel(originalModel.particleMaterial());
         }
 
         return originalModel;

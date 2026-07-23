@@ -71,12 +71,10 @@ public class BlockStateModelSetMixin {
                 model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
                 if(model != null) cir.setReturnValue(model);
             }
-            // else if(group.equals("bell")){
-            //     BlockStateModelSet set = ((BlockStateModelSet)(Object)this);
-            //     blockEntityModelsManager.originalBellModel = (BlockStateModel)set.modelByState.getOrDefault(state, new BlockEntityStateModel());
-            //     model = new CompositeBlockStateModel(blockEntityModelsManager.getBellModel(state, random, obe$getOriginalModel(state)), (BlockStateModel)set.modelByState.getOrDefault(state, new BlockEntityStateModel());
-            //     if(model != null) cir.setReturnValue(model);
-            // }
+            else if(group.equals("bell") && SettingsManager.OPTIMISED_BELLS.getValue()){
+                model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
+                if(model != null) cir.setReturnValue(model);
+            }
             else if(group.equals("copper_golem_statue") && SettingsManager.OPTIMISED_COPPER_GOLEMS.getValue()){
                 model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
                 if(model != null) cir.setReturnValue(model);
@@ -97,7 +95,7 @@ public class BlockStateModelSetMixin {
 
     @Unique
     public BlockStateModel obe$getOriginalModel(BlockState state){
-        BlockStateModel model = modelByState.getOrDefault(state, this.missingModel);
+        BlockStateModel model = ResourceUtil.getDefaultModel(state);
         return model == null? new BlockEntityStateModel(ResourceUtil.getSprite(missingTexture)) : model;
     }
 }

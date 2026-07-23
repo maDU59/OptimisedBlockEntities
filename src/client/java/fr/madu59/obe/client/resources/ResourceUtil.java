@@ -8,6 +8,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import fr.madu59.obe.client.model.BlockEntityStateModel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.renderer.block.BlockStateModelSet;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.sprite.Material;
@@ -70,6 +71,11 @@ public class ResourceUtil{
 
     public static Identifier entityTextureFormatter(Identifier identifier){
         return Identifier.tryBuild(identifier.getNamespace(), identifier.getPath().replace(".png", "").replace("textures/", ""));
+    }
+
+    public static BlockStateModel getDefaultModel(BlockState blockState){
+        BlockStateModelSet modelSet = Minecraft.getInstance().getModelManager().getBlockStateModelSet();
+        return modelSet.modelByState.getOrDefault(blockState, modelSet.missingModel());
     }
 
     public record ModelCacheKey(ModelLayerLocation modelLayerLocation, BlockState blockState) {}

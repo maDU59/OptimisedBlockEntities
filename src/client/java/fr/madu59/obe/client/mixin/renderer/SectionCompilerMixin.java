@@ -1,9 +1,7 @@
 package fr.madu59.obe.client.mixin.renderer;
 
-import java.util.Map;
-
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
@@ -11,13 +9,16 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
-import com.mojang.blaze3d.vertex.BufferBuilder;
 
+import fr.madu59.obe.client.renderer.blockentity.BlockEntityModelsManager;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager.RenderMode;
-import net.minecraft.client.renderer.SectionBufferBuilderPack;
-import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
+import fr.madu59.obe.client.resources.ResourceUtil;
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
+import net.minecraft.client.renderer.block.BlockQuadOutput;
+import net.minecraft.client.renderer.block.ModelBlockRenderer;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.client.renderer.chunk.RenderSectionRegion;
 import net.minecraft.client.renderer.chunk.SectionCompiler;
 import net.minecraft.core.BlockPos;
@@ -29,8 +30,7 @@ import net.minecraft.world.level.block.state.BlockState;
 @Mixin(SectionCompiler.class)
 public abstract class SectionCompilerMixin {
 
-    @Shadow
-    protected abstract BufferBuilder getOrBeginLayer(Map<ChunkSectionLayer,BufferBuilder> map, SectionBufferBuilderPack buffer, ChunkSectionLayer layer);
+    @Unique private final BlockEntityModelsManager blockEntityModelsManager = new BlockEntityModelsManager();
 
     @WrapOperation(method = "compile", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/chunk/RenderSectionRegion;getBlockState(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;"))
     private BlockState obe$getBlockState(RenderSectionRegion region, BlockPos pos, Operation<BlockState> original, @Share("be") LocalRef<BlockEntity> beRef){
@@ -45,17 +45,37 @@ public abstract class SectionCompilerMixin {
             BlockEntityExt ext = (BlockEntityExt) be;
             if(ext != null && ext.isSupported()) {
                 RenderModeManager.updateBlockEntityOnChunkRemesh(ext, sectionPos);
-                if(ext.forceEntity()){
-                    return RenderShape.INVISIBLE;
-                }
-                if(ext.isEnabled() && !ext.hasSpecialRenderer() && ext.renderModeDelayed() != RenderMode.TERRAIN){
-                    return RenderShape.INVISIBLE;
-                }
                 if(ext.isEnabled() && ext.renderModeDelayed() == RenderMode.TERRAIN){
                     return RenderShape.MODEL;
                 }
             }
         }
         return original.call(state);
+    }
+
+    @WrapOperation(
+        method = "compile",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/renderer/block/ModelBlockRenderer;tesselateBlock(Lnet/minecraft/client/renderer/block/BlockQuadOutput;FFFLnet/minecraft/client/renderer/block/BlockAndTintGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/client/renderer/block/dispatch/BlockStateModel;J)V"
+        )
+    )
+    public void obe$wrapRenderModel(ModelBlockRenderer instance, BlockQuadOutput output, float x, float y, float z, BlockAndTintGetter level, BlockPos pos, BlockState state, BlockStateModel originalModel, long seed, Operation<Void> original, @Share("be") LocalRef<BlockEntity> beRef) {
+        if(state.hasBlockEntity()){
+
+            BlockStateModel model = originalModel;
+            BlockEntity be = beRef.get();
+            BlockEntityExt ext = (BlockEntityExt) be;
+
+            if(ext != null){
+                if(ext.renderModeDelayed() != RenderMode.TERRAIN || !ext.isSupported() || !ext.isEnabled()){
+                    model = ResourceUtil.getDefaultModel(be.getBlockState());
+                }
+                else if(ext.hasSpecialRenderer()) model = blockEntityModelsManager.getModel(state, pos, state.getSeed(pos), originalModel, be);
+            }
+
+            original.call(instance, output, x, y, z, level, pos, state, model, seed);
+        }
+        else original.call(instance, output, x, y, z, level, pos, state, originalModel, seed);
     }
 }
