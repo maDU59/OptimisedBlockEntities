@@ -1,5 +1,7 @@
 package fr.madu59.obe.client.mixin.blockentity.decoratedpot;
 
+import java.util.Optional;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -12,6 +14,8 @@ import fr.madu59.obe.client.registry.Registry;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager.RenderMode;
+import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.DecoratedPotBlockEntity;
 import net.minecraft.world.level.block.entity.PotDecorations;
@@ -61,7 +65,7 @@ public abstract class DecoratedPotBlockEntityMixin{
     private void obe$updatePot(){
         DecoratedPotBlockEntity be = (DecoratedPotBlockEntity)(Object)this;
         BlockEntityExt ext = (BlockEntityExt)be;
-        if(decorations != PotDecorations.EMPTY){
+        if(!decorations.equals(PotDecorations.EMPTY)){
             ext.forceEntity(true);
         }
         else{
