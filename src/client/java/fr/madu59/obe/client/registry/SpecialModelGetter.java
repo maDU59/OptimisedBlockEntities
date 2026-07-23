@@ -10,7 +10,6 @@ import org.apache.commons.lang3.function.TriConsumer;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import fr.madu59.obe.OBE;
-import fr.madu59.obe.client.util.blockentity.BellUtil;
 import fr.madu59.obe.client.util.blockentity.SkullBlockUtil;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.resources.Identifier;
@@ -24,7 +23,6 @@ public class SpecialModelGetter {
     private static Map<String, SpecialModelProvider> defaultspecialModelGetterProvider = new ConcurrentHashMap<>();
 
     public static void init(){
-        registerDefault("bell", new SpecialModelProvider(BellUtil::getModelLayerLocation, BellUtil::getMaterial, BellUtil::transform, SpecialModelProvider::getDummyCacheKey).keepOriginalModel().showOriginalWhenHidden());
         registerDefault("skull", new SpecialModelProvider(SkullBlockUtil::getModelLayerLocation, SkullBlockUtil::getMaterial, SkullBlockUtil::transform, SkullBlockUtil::getBuiltInTexture));
     }
 
@@ -64,7 +62,6 @@ public class SpecialModelGetter {
         private final TriConsumer<BlockState, BlockEntity, PoseStack> transformationProvider;
         private final Function<BlockEntity, Object> cacheKeyProvider;
         private boolean keepOriginalModel = false;
-        private boolean showOriginalWhenHidden = false;
 
         public SpecialModelProvider(BiFunction<BlockState, BlockEntity, ModelLayerLocation> modelLayerLocationProvider, BiFunction<BlockState, BlockEntity, Identifier> materialProvider, TriConsumer<BlockState, BlockEntity, PoseStack> transformationProvider, Function<BlockEntity, Object> cacheKeyProvider){
             this.modelLayerLocationProvider = modelLayerLocationProvider;
@@ -75,11 +72,6 @@ public class SpecialModelGetter {
 
         public SpecialModelProvider keepOriginalModel(){
             this.keepOriginalModel = true;
-            return this;
-        }
-
-        public SpecialModelProvider showOriginalWhenHidden(){
-            this.showOriginalWhenHidden = true;
             return this;
         }
 
@@ -101,10 +93,6 @@ public class SpecialModelGetter {
 
         public boolean shouldKeepOriginalModel(){
             return keepOriginalModel;
-        }
-
-        public boolean shouldShowOriginalWhenHidden(){
-            return showOriginalWhenHidden;
         }
 
         public static boolean getDummyCacheKey(BlockEntity be){

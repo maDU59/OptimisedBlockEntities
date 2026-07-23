@@ -2,7 +2,6 @@ package fr.madu59.obe.client.platform;
 
 import java.nio.file.Path;
 
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.fabricmc.loader.api.FabricLoader;
 
 public class PlatformHelper {
