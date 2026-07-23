@@ -20,6 +20,7 @@ import net.minecraft.client.model.geom.ModelPart.Polygon;
 import net.minecraft.client.model.geom.builders.UVPair;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
+import net.minecraft.client.resources.model.cuboid.FaceBakery;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.SimpleModelWrapper;
 import net.minecraft.client.resources.model.geometry.BakedQuad;
@@ -91,11 +92,16 @@ public class BlockEntityStateModel implements BlockStateModel{
         Material.Baked bakedMat = new Material.Baked(sprite, false);
         MaterialInfo matInfo = MaterialInfo.of(bakedMat, Transparency.TRANSPARENT, -1, null, 0);
 
-        Vector3f[] positions = new Vector3f[4];
-        long[] uvs = new long[4];
         Vector3f normal = new Vector3f();
 
         part.visit(poseStack, (pose, partPath, cubeIndex, cube) -> {
+
+            Vector3f[] positions = new Vector3f[4];
+            long[] uvs = new long[4];
+
+            Vector3f[] positionsCopy = new Vector3f[4];
+            long[] uvsCopy = new long[4];
+
             for(ModelPart.Polygon polygon : cube.polygons){
                 if (polygon.vertices().length != 4) continue;
 
@@ -115,6 +121,16 @@ public class BlockEntityStateModel implements BlockStateModel{
 
                 if (shouldSkipQuad(polygon, positions, state, partName)) continue;
 
+                positionsCopy = positions.clone();
+                uvsCopy = uvs.clone();                
+                try{
+                    FaceBakery.recalculateWinding(positions, uvs, dir);
+                }
+                catch(Exception e){
+                    positions = positionsCopy;
+                    uvs = uvsCopy;
+                }
+
                 BakedQuad baked = new BakedQuad(
                         positions[0], positions[1], positions[2], positions[3],
                         uvs[0], uvs[1], uvs[2], uvs[3],
@@ -122,9 +138,20 @@ public class BlockEntityStateModel implements BlockStateModel{
                         matInfo
                 );
                 output.add(baked);
+
                 if(fixBfc){
                     // Same geometry but with inverted winding order so they are visible from the other side of the model
-                    baked = new BakedQuad(positions[0], positions[3], positions[2], positions[1], uvs[0], uvs[3], uvs[2], uvs[1], dir.getOpposite(), matInfo );
+                    positionsCopy = positions.clone();
+                    uvsCopy = uvs.clone();
+                    try{
+                        FaceBakery.recalculateWinding(positions, uvs, dir.getOpposite());
+                    }
+                    catch(Exception e){
+                        positions = new Vector3f[] { positionsCopy[0], positionsCopy[3], positionsCopy[2], positionsCopy[1] };
+                        uvs = new long[] { uvsCopy[0], uvsCopy[3], uvsCopy[2], uvsCopy[1] };
+                    }
+
+                    baked = new BakedQuad(positions[0], positions[1], positions[2], positions[3], uvs[0], uvs[1], uvs[2], uvs[3], dir.getOpposite(), matInfo);
                     output.add(baked);
                 }
             }
