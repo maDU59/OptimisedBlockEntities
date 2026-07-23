@@ -13,10 +13,8 @@ import fr.madu59.obe.client.resources.ResourceUtil;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.entity.CushionRenderer;
-import net.minecraft.core.SectionPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.phys.Vec3;
 
 public class CushionUtil{
     private static Map<CacheKey, BlockEntityStateModel> MODEL_CACHE = new ConcurrentHashMap<>();
