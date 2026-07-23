@@ -2,6 +2,7 @@ classTweaker v1 named
 
 # Model building
 accessible field net/minecraft/client/model/geom/ModelPart children Ljava/util/Map;
+accessible method net/minecraft/client/renderer/block/model/FaceBakery recalculateWinding ([Lorg/joml/Vector3fc;[JLnet/minecraft/core/Direction;)V
 
 # Skull block rendering
 accessible field net/minecraft/client/renderer/blockentity/SkullBlockRenderer SKIN_BY_TYPE Ljava/util/Map;

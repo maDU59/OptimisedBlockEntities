@@ -21,6 +21,7 @@ import net.minecraft.client.model.geom.builders.UVPair;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.BlockModelPart;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
+import net.minecraft.client.renderer.block.model.FaceBakery;
 import net.minecraft.client.renderer.block.model.SimpleModelWrapper;
 
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -99,11 +100,16 @@ public class BlockEntityStateModel implements BlockStateModel{
 
         boolean fixBfc = shouldFixBFC(partName);
 
-        Vector3f[] positions = new Vector3f[4];
-        long[] uvs = new long[4];
         Vector3f normal = new Vector3f();
 
         part.visit(poseStack, (pose, partPath, cubeIndex, cube) -> {
+
+            Vector3f[] positions = new Vector3f[4];
+            long[] uvs = new long[4];
+
+            Vector3f[] positionsCopy = new Vector3f[4];
+            long[] uvsCopy = new long[4];
+
             for(ModelPart.Polygon polygon : cube.polygons){
                 if (polygon.vertices().length != 4) continue;
 
@@ -123,6 +129,16 @@ public class BlockEntityStateModel implements BlockStateModel{
 
                 if (shouldSkipQuad(polygon, positions, state, partName)) continue;
 
+                positionsCopy = positions.clone();
+                uvsCopy = uvs.clone();                
+                try{
+                    FaceBakery.recalculateWinding(positions, uvs, dir);
+                }
+                catch(Exception e){
+                    positions = positionsCopy;
+                    uvs = uvsCopy;
+                }
+
                 BakedQuad baked = new BakedQuad(
                     positions[0], positions[1], positions[2], positions[3],
                     uvs[0], uvs[1], uvs[2], uvs[3],
@@ -133,10 +149,22 @@ public class BlockEntityStateModel implements BlockStateModel{
                     0
                 );
                 output.add(baked);
+
                 if(fixBfc){
                     // Same geometry but with inverted winding order so they are visible from the other side of the model
+
+                    positionsCopy = positions.clone();
+                    uvsCopy = uvs.clone();
+                    try{
+                        FaceBakery.recalculateWinding(positions, uvs, dir.getOpposite());
+                    }
+                    catch(Exception e){
+                        positions = new Vector3f[] { positionsCopy[0], positionsCopy[3], positionsCopy[2], positionsCopy[1] };
+                        uvs = new long[] { uvsCopy[0], uvsCopy[3], uvsCopy[2], uvsCopy[1] };
+                    }
+
                     baked = new BakedQuad(
-                        positions[0], positions[3], positions[2], positions[1], uvs[0], uvs[3], uvs[2], uvs[1], 0, dir.getOpposite(), sprite, true, 0
+                        positions[0], positions[1], positions[2], positions[3], uvs[0], uvs[1], uvs[2], uvs[3], 0, dir.getOpposite(), sprite, true, 0
                     );
                     output.add(baked);
                 }
