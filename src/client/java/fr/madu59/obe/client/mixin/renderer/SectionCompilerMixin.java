@@ -58,12 +58,8 @@ public abstract class SectionCompilerMixin {
             target = "Lnet/minecraft/client/renderer/block/BlockRenderDispatcher;getBlockModel(Lnet/minecraft/world/level/block/state/BlockState;)Lnet/minecraft/client/renderer/block/model/BlockStateModel;"
         )
     )
-    public BlockStateModel obe$wrapRenderModel(BlockRenderDispatcher instance, BlockState state, Operation<BlockStateModel> original, @Share("be") LocalRef<BlockEntity> beRef, @Local(ordinal = 2) BlockPos pos) {
-        System.out.println("THIS RUNS 1");
-        
+    public BlockStateModel obe$wrapRenderModel(BlockRenderDispatcher instance, BlockState state, Operation<BlockStateModel> original, @Share("be") LocalRef<BlockEntity> beRef) {
         BlockStateModel originalModel = original.call(instance, state);
-
-        System.out.println("THIS RUNS");
         
         if(state.hasBlockEntity()){
 
@@ -72,12 +68,10 @@ public abstract class SectionCompilerMixin {
             BlockEntityExt ext = (BlockEntityExt) be;
 
             if(ext != null){
-                System.out.println("WHUT");
                 if(ext.renderModeDelayed() != RenderMode.TERRAIN || !ext.isSupported() || !ext.isEnabled() || ext.forceEntity()){
-                    System.out.println("SHOULD BE INVISIBLE");
                     model = ResourceUtil.getDefaultModel(be.getBlockState());
                 }
-                else if(ext.hasSpecialRenderer()) model = blockEntityModelsManager.getModel(state, pos, state.getSeed(pos), originalModel, be);
+                else if(ext.hasSpecialRenderer()) model = blockEntityModelsManager.getModel(state, originalModel, be);
             }
 
             return model;

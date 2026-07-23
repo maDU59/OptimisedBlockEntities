@@ -55,22 +55,6 @@ public class BlockEntityStateModel implements BlockStateModel{
         this.particleMaterial = particleMaterial;
     }
 
-    public BlockEntityStateModel(List<BlockModelPart> list){
-        this.particleMaterial = list.get(0).particleIcon();
-        QuadCollection.Builder collectionBuilder = new QuadCollection.Builder();
-        for(BlockModelPart part: list){
-            for(BakedQuad quad : part.getQuads(null)){
-                collectionBuilder.addUnculledFace(quad);
-            }
-            for(Direction dir : Direction.values()){
-                for(BakedQuad quad : part.getQuads(dir)){
-                    collectionBuilder.addCulledFace(dir, quad);
-                }
-            }
-        }
-        modelPart = new SimpleModelWrapper(collectionBuilder.build(), list.get(0).useAmbientOcclusion(), particleMaterial);
-    }
-
     @Override
     public void collectParts(RandomSource randomSource, List<BlockModelPart> output) {
         if (modelPart == null) return;

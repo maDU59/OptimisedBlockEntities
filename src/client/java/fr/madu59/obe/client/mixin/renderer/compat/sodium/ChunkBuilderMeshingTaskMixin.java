@@ -78,7 +78,7 @@ public class ChunkBuilderMeshingTaskMixin {
                 if(ext.renderModeDelayed() != RenderMode.TERRAIN || !ext.isSupported() || !ext.isEnabled() || ext.forceEntity()){
                     model = ResourceUtil.getDefaultModel(be.getBlockState());
                 }
-                else if(ext.hasSpecialRenderer()) model = blockEntityModelsManager.getModel(state, pos, state.getSeed(pos), originalModel, be);
+                else if(ext.hasSpecialRenderer()) model = blockEntityModelsManager.getModel(state, originalModel, be);
             }
 
             original.call(instance, model, state, pos, origin);
