@@ -20,17 +20,16 @@ public class EMFCompat {
     
     public static ModelPart applyRestPose(ModelPart root, BlockState blockState) {
         if (blockState.getBlock() instanceof EntityBlock entityBlock) {
-            return applyRestPose(root, blockState, (pos, state) -> entityBlock.newBlockEntity(pos, state));
+            return applyRestPose(root, entityBlock.newBlockEntity(BlockPos.ZERO, blockState));
         }
         return root;
     }
 
-    public static <T extends BlockEntity> ModelPart applyRestPose(ModelPart root, BlockState blockState, BiFunction<BlockPos, BlockState, T> beConstructor) {
+    public static <T extends BlockEntity> ModelPart applyRestPose(ModelPart root, BlockEntity be) {
         try{
             if (root instanceof EMFModelPartRoot emfRoot) {
                 
-                var state = (EMFEntityRenderState) ETFEntityRenderState.forEntity(
-                        (ETFEntity) beConstructor.apply(BlockPos.ZERO, blockState));
+                var state = (EMFEntityRenderState) ETFEntityRenderState.forEntity((ETFEntity) be);
 
                 EMFAnimationEntityContext.setCurrentEntityIteration(state);
                 emfRoot.animate();
