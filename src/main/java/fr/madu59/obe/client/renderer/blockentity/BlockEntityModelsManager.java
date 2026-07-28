@@ -8,20 +8,28 @@ import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.model.BlockEntityStateModel;
 import fr.madu59.obe.client.model.CompositeBlockStateModel;
 import fr.madu59.obe.client.registry.SpecialModelGetter;
+import fr.madu59.obe.client.api.model.SpecialBakedModelContext;
+import fr.madu59.obe.client.api.model.SpecialBakedModelProvider;
+import fr.madu59.obe.client.registry.SpecialBakedModelRegistry;
+import fr.madu59.obe.client.registry.SpecialBakedModelRegistry.Registration;
 import fr.madu59.obe.client.registry.MaterialGetter;
 import fr.madu59.obe.client.registry.ModelLayerLocationGetter;
 import fr.madu59.obe.client.registry.Registry;
 import fr.madu59.obe.client.registry.TransformationGetter;
 import fr.madu59.obe.client.registry.SpecialModelGetter.SpecialModelProvider;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
+import fr.madu59.obe.client.renderer.misc.RenderModeManager;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager.RenderMode;
 import fr.madu59.obe.client.resources.ResourceUtil;
+import fr.madu59.obe.client.resources.SpecialBakedModelCache;
+import fr.madu59.obe.client.compat.sophisticatedstorage.SophisticatedStorageDiagnostics;
 import fr.madu59.obe.client.util.blockentity.DecoratedPotUtil;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -46,11 +54,15 @@ public class BlockEntityModelsManager {
         if (ext == null || !ext.isSupported() || !ext.hasSpecialRenderer() || !ext.isEnabled()) return null;
 
         String group = Registry.getGroup(state);
+        Registration<?> arbitraryRegistration = SpecialBakedModelRegistry.get(be.getType()).orElse(null);
         SpecialModelProvider customModelProvider = SpecialModelGetter.getSpecialModelProvider(state, group);
         if(ext.renderModeDelayed() == RenderMode.TERRAIN){
+            if (arbitraryRegistration != null) {
+                return getArbitraryModel(arbitraryRegistration, state, originalModel, be);
+            }
             if(customModelProvider != null){
-                if(ResourceUtil.cacheContains(state, be)) return ResourceUtil.getModel(state, be);
                 Object cacheKey = customModelProvider.getCacheKeyProvider().apply(be);
+                if(ResourceUtil.specialModelCacheContains(state, cacheKey)) return ResourceUtil.getSpecialModel(state, cacheKey);
                 PoseStack poseStack = new PoseStack();
 
                 ModelLayerLocation layerLocation = customModelProvider.getModelLayerLocationProvider().apply(state, be);
@@ -67,11 +79,68 @@ public class BlockEntityModelsManager {
                 return model;
             }
         }
-        else if(!customModelProvider.shouldShowOriginalWhenHidden()){
+        else if(arbitraryRegistration != null && !arbitraryRegistration.provider().showOriginalWhenEntityRendered()){
+            return new BlockEntityStateModel(originalModel.getParticleIcon());
+        }
+        else if(customModelProvider != null && !customModelProvider.shouldShowOriginalWhenHidden()){
             return new BlockEntityStateModel(originalModel.getParticleIcon());
         }
 
         return originalModel;
+    }
+
+    @SuppressWarnings("unchecked")
+    private <K> @Nullable BakedModel getArbitraryModel(
+            Registration<?> rawRegistration,
+            BlockState state,
+            BakedModel originalModel,
+            BlockEntity blockEntity
+    ) {
+        Registration<K> registration = (Registration<K>) rawRegistration;
+        SpecialBakedModelProvider<K> provider = registration.provider();
+        SpecialBakedModelContext context = new SpecialBakedModelContext(
+                state,
+                blockEntity,
+                originalModel,
+                originalModel.getParticleIcon()
+        );
+
+        K appearance = null;
+        try {
+            appearance = provider.resolveAppearance(context);
+            if (appearance == null) {
+                return failArbitrary(blockEntity, new FailureKey(typeId(blockEntity), state), "appearance resolver returned null");
+            }
+            if (!((BlockEntityExt) blockEntity).specialModelState()
+                    .canAttempt(appearance, SpecialBakedModelCache.generation())) {
+                return failArbitrary(blockEntity, appearance, "previous failure for this appearance");
+            }
+            K resolvedAppearance = appearance;
+            ResourceLocation typeId = BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(blockEntity.getType());
+            BakedModel model = SpecialBakedModelCache.getOrBake(
+                    registration.identity(),
+                    typeId,
+                    state,
+                    resolvedAppearance,
+                    () -> provider.bake(resolvedAppearance, context)
+            );
+            ((BlockEntityExt) blockEntity).specialModelState()
+                    .prepareTerrain(resolvedAppearance, SpecialBakedModelCache.generation());
+            return provider.keepOriginalModel() ? new CompositeBlockStateModel(model, originalModel) : model;
+        } catch (Exception exception) {
+            fr.madu59.obe.OBE.LOGGER.warn(
+                    "Failed to build arbitrary block-entity model for {} at {}",
+                    typeId(blockEntity),
+                    blockEntity.getBlockPos(),
+                    exception
+            );
+            Object failureKey = appearance != null ? appearance : new FailureKey(typeId(blockEntity), state);
+            return failArbitrary(blockEntity, failureKey, exception.toString());
+        }
+    }
+
+    private ResourceLocation typeId(BlockEntity blockEntity) {
+        return BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(blockEntity.getType());
     }
 
     public BakedModel getBlockModel(BlockState state, RandomSource random, BakedModel originalModel, String group) {
@@ -125,6 +194,8 @@ public class BlockEntityModelsManager {
             case "decorated_pot" -> SettingsManager.DECORATED_POT_AMBIENT_OCCLUSION.getValue();
             case "copper_golem_statue" -> SettingsManager.COPPER_GOLEM_AMBIENT_OCCLUSION.getValue();
             case "shulker_box" -> SettingsManager.SHULKER_BOX_AMBIENT_OCCLUSION.getValue();
+            case "sophisticated_storage_chest" -> SettingsManager.SOPHISTICATED_CHEST_AMBIENT_OCCLUSION.getValue();
+            case "sophisticated_storage_shulker_box" -> SettingsManager.SOPHISTICATED_SHULKER_AMBIENT_OCCLUSION.getValue();
             case "sign" -> SettingsManager.SIGN_AMBIENT_OCCLUSION.getValue();
             case "hanging_sign" -> SettingsManager.SIGN_AMBIENT_OCCLUSION.getValue();
             case "bed" -> SettingsManager.BED_AMBIENT_OCCLUSION.getValue();
@@ -137,4 +208,17 @@ public class BlockEntityModelsManager {
         ((BlockEntityExt) be).renderModeDelayed(RenderMode.ENTITY);
         return null;
     }
+
+    private @Nullable BakedModel failArbitrary(BlockEntity blockEntity, Object appearance, String reason) {
+        BlockEntityExt ext = (BlockEntityExt) blockEntity;
+        ext.specialModelState().fail(appearance, SpecialBakedModelCache.generation(), reason);
+        ResourceLocation type = typeId(blockEntity);
+        if (type != null && type.getNamespace().equals("sophisticatedstorage")) {
+            SophisticatedStorageDiagnostics.fallback();
+        }
+        RenderModeManager.setRenderModeDelayed(blockEntity, RenderMode.ENTITY, blockEntity.getBlockPos());
+        return null;
+    }
+
+    private record FailureKey(ResourceLocation blockEntityType, BlockState state) {}
 }

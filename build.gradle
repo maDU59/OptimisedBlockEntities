@@ -23,6 +23,7 @@ repositories {
     maven{url = "https://maven.caffeinemc.net/releases"}
     maven{url = "https://maven.caffeinemc.net/snapshots"}
 	maven{url = "https://api.modrinth.com/maven"}
+	maven{url = "https://www.cursemaven.com"}
 	maven{url = "https://repo.codemc.org/repository/maven-public/"}
     maven{url = "https://jitpack.io"}
     maven{url = "https://maven.su5ed.dev/releases"}
@@ -61,6 +62,10 @@ runs {
     client {
         // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
         systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        if (providers.gradleProperty("obe_live_validation").orElse("false").get().toBoolean()) {
+            systemProperty 'obe.liveValidation', 'true'
+            arguments.addAll '--quickPlaySingleplayer', 'New World'
+        }
     }
 
     server {
@@ -93,6 +98,24 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 // "optional", meaning it will not be pulled by dependents of this mod.
 configurations {
     runtimeClasspath.extendsFrom localRuntime
+    sodiumBootstrapRuntime
+    sodiumImplementationRuntime
+}
+
+// NeoGradle's dev launcher sees Sodium's bootstrap jar before its nested mod jar.
+// This opt-in merged jar keeps the bootstrap workarounds and exposes the actual
+// implementation classes early enough to validate OBE's optional Sodium mixins.
+def sodiumDevRuntimeJar = tasks.register('sodiumDevRuntimeJar', Jar) {
+    archiveFileName = 'sodium-neoforge-0.8.12+mc1.21.1-dev-merged.jar'
+    destinationDirectory = layout.buildDirectory.dir('devlibs')
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from({ configurations.sodiumImplementationRuntime.collect { zipTree(it) } })
+    from({ configurations.sodiumBootstrapRuntime.collect { zipTree(it) } }) {
+        exclude 'META-INF/MANIFEST.MF'
+        exclude 'META-INF/neoforge.mods.toml'
+        exclude 'META-INF/jarjar/**'
+        exclude 'META-INF/services/net.neoforged.neoforgespi.locating.IModFileCandidateLocator'
+    }
 }
 
 dependencies {
@@ -104,6 +127,29 @@ dependencies {
     // For all intends and purposes: You can treat this dependency as if it is a normal library you would use.
     implementation "net.neoforged:neoforge:${neo_version}"
 
+    // Optional Sophisticated Storage compatibility. These exact artifacts are
+    // compile/dev inputs only and are never exposed as production dependencies.
+    compileOnly("curse.maven:sophisticated-core-618298:${sophisticated_core_curse_file}") { transitive = false }
+    compileOnly("curse.maven:sophisticated-storage-619320:${sophisticated_storage_curse_file}") { transitive = false }
+    testCompileOnly("curse.maven:sophisticated-core-618298:${sophisticated_core_curse_file}") { transitive = false }
+    testCompileOnly("curse.maven:sophisticated-storage-619320:${sophisticated_storage_curse_file}") { transitive = false }
+    testRuntimeOnly("curse.maven:sophisticated-core-618298:${sophisticated_core_curse_file}") { transitive = false }
+    testRuntimeOnly("curse.maven:sophisticated-storage-619320:${sophisticated_storage_curse_file}") { transitive = false }
+    if (providers.gradleProperty("sophisticated_runtime").orElse("true").get().toBoolean()) {
+        localRuntime("curse.maven:sophisticated-core-618298:${sophisticated_core_curse_file}") { transitive = false }
+        if (providers.gradleProperty("sophisticated_storage_runtime_jar").isPresent()) {
+            // Runtime-only ABI validation against a supplied Storage jar. The
+            // authoritative compile target remains the pinned CurseForge file.
+            localRuntime(files(providers.gradleProperty("sophisticated_storage_runtime_jar").get()))
+        } else {
+            localRuntime("curse.maven:sophisticated-storage-619320:${sophisticated_storage_curse_file}") { transitive = false }
+        }
+    }
+
+    testImplementation "org.junit.jupiter:junit-jupiter:5.11.4"
+    testImplementation "org.mockito:mockito-core:5.15.2"
+    testRuntimeOnly "org.junit.platform:junit-platform-launcher:1.11.4"
+
     implementation "org.sinytra.forgified-fabric-api:forgified-fabric-api:0.116.7+2.2.4+1.21.1"
 
     implementation("net.caffeinemc:sodium-neoforge-api:0.8.12+mc1.21.1")
@@ -113,7 +159,13 @@ dependencies {
 	compileOnly "maven.modrinth:iris:1.8.8+1.21.1-neoforge"
 
     compileOnly("net.caffeinemc:sodium-neoforge-mod:0.8.12+mc1.21.1")
-    runtimeOnly("net.caffeinemc:sodium-neoforge:0.8.12+mc1.21.1")
+    sodiumBootstrapRuntime("net.caffeinemc:sodium-neoforge:0.8.12+mc1.21.1") { transitive = false }
+    sodiumImplementationRuntime("net.caffeinemc:sodium-neoforge-mod:0.8.12+mc1.21.1") { transitive = false }
+    if (providers.gradleProperty("sodium_direct_runtime").orElse("false").get().toBoolean()) {
+        localRuntime(files(sodiumDevRuntimeJar.flatMap { it.archiveFile }))
+    } else {
+        localRuntime("net.caffeinemc:sodium-neoforge:0.8.12+mc1.21.1")
+    }
 
     implementation "maven.modrinth:entitytexturefeatures:7.1-neoforge-1.21"
 	implementation "maven.modrinth:entity-model-features:3.2.4-neoforge-1.21"
@@ -172,6 +224,12 @@ tasks.withType(ProcessResources).configureEach {
     }
 }
 
+// Keep release archives byte-for-byte stable across clean builds with identical inputs.
+tasks.withType(AbstractArchiveTask).configureEach {
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
+}
+
 // Example configuration to allow publishing using the maven-publish plugin
 publishing {
     publications {
@@ -188,6 +246,10 @@ publishing {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
 }
 
 // IDEA no longer automatically downloads sources/javadoc jars for dependencies, so we need to explicitly enable the behavior.

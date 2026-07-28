@@ -1,6 +1,14 @@
-# What's new:
-- Bug fixes
-- Added compat with all chests using the Blueprint mod (Woodworks and more)
-
-# Hotfix 1:
-- Fixed a crash introduced in latest update when loading lootr quark chests
+# What's new in OBE 1.1.37:
+- Added optional, client-only Sophisticated Storage compatibility for chests and shulker boxes, declared for Storage 1.5.70 and later (NeoForge version range `[1.5.70,)`). The exact pinned compile target remains Storage 1.5.70.1941 (CurseForge file `8389899`) with Core 1.4.77.2173.
+- Added capability-based renderer ABI detection for the legacy 1.5.70--1.5.73 layout and the newer supplied 1.5.76/1.5.77/1.5.79/1.5.80 layout. Unknown future layouts now disable only the affected storage optimization and retain the untouched BER instead of crashing during mixin application.
+- Fixed Storage 1.5.76+ shulker shell interception after its renderer body moved from the six-argument entry method to a seven-argument overload.
+- Restricted the legacy Sophisticated Core constructor bridge to jars that contain the exact old Storage call site, preventing a delayed world-load injection failure on Storage 1.5.76+.
+- Preserved Sophisticated's upgrade icons, item displays, padlocks, tier previews, disabled-upgrade indicators, and other dynamic renderer overlays.
+- Added resource-pack/custom-wood texture discovery before block-atlas stitching, bounded layered-model caching, reload invalidation, and safe full-renderer fallback.
+- Added cross-chunk double-chest appearance invalidation and fixed terrain-to-terrain appearance commits found during live validation.
+- Barrels and limited barrels remain excluded.
+- Added a client-only per-frame dynamic BER predicate registry with fail-open behavior.
+- Closed terrain-rendered Sophisticated chests and shulker boxes now skip the complete original renderer when no displayed item, upgrade preview, padlock, hidden tier, animation, or fallback requires it.
+- Added once-per-game-tick held-item/tool-mode caching matching the pinned Sophisticated renderer, plus whole-renderer and reason diagnostics.
+- Sodium now applies the same decision before block-entity renderer lookup/extraction; shell-level interception remains the hybrid overlay fallback.
+- Added pure decision/cache/registry tests and a 400-chest live benchmark covering original BER, shell-only suppression, whole-BER skip, and displayed-item stress cases.

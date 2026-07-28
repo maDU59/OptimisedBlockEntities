@@ -28,6 +28,7 @@
     { "type": "single", "resource": "lootr:shulker" },
     { "type": "single", "resource": "lootr:shulker_opened" },
     { "type": "single", "resource": "lootr:old_shulker" },
-    { "type": "single", "resource": "lootr:old_shulker_opened" }
+    { "type": "single", "resource": "lootr:old_shulker_opened" },
+    { "type": "obe:storage_texture_definitions" }
   ]
 }

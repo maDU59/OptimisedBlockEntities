@@ -64,6 +64,18 @@ public class OptimisedBlockEntitiesConfigScreen extends Screen {
         list.button(SettingsManager.OPTIMISED_SHULKER_BOXES).build();
         list.button(SettingsManager.SHULKER_BOX_AMBIENT_OCCLUSION).isEnabled(() -> SettingsManager.OPTIMISED_SHULKER_BOXES.getValue()).build();
 
+        if (ModCompat.isSophisticatedStorageLoaded()) {
+            list.category("obe.config.category.sophisticated_storage_chests").build();
+            list.button(SettingsManager.OPTIMISED_SOPHISTICATED_CHESTS).build();
+            list.button(SettingsManager.SOPHISTICATED_CHEST_AMBIENT_OCCLUSION)
+                    .isEnabled(() -> SettingsManager.OPTIMISED_SOPHISTICATED_CHESTS.getValue()).build();
+
+            list.category("obe.config.category.sophisticated_storage_shulker_boxes").build();
+            list.button(SettingsManager.OPTIMISED_SOPHISTICATED_SHULKER_BOXES).build();
+            list.button(SettingsManager.SOPHISTICATED_SHULKER_AMBIENT_OCCLUSION)
+                    .isEnabled(() -> SettingsManager.OPTIMISED_SOPHISTICATED_SHULKER_BOXES.getValue()).build();
+        }
+
         list.category("obe.config.category.skulls").build();
         list.button(SettingsManager.OPTIMISED_SKULLS).build();
         list.button(SettingsManager.SKULL_AMBIENT_OCCLUSION).isEnabled(() -> SettingsManager.OPTIMISED_SKULLS.getValue()).build();

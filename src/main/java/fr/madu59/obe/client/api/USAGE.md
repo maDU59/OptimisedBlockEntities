@@ -40,6 +40,18 @@ This is not fully possible using only the API yet, some functions are there to h
 
 6. Inside your block entity's renderer, you'll have to add checks to know weither to display it or not (see ChestRendererMixin)
 
+### Case 4: Providing an arbitrary layered terrain model
+
+`RegistryApi.registerSpecialBakedModelProvider(type, provider)` sits alongside the legacy special-model API; it does not replace it. Implement `SpecialBakedModelProvider<K>` with:
+
+1. `resolveAppearance(context)`, which returns an immutable key containing every value that affects static geometry or materials.
+2. `bake(appearance, context)`, which creates the possibly layered `BakedModel`.
+3. Optionally, `getRenderTypes(...)` when the default non-mipped cutout layer is not appropriate.
+
+Appearance keys must not retain a `Level`, `BlockEntity`, chunk, renderer, `ModelPart`, `Material`, or any other world/resource-lifetime object. Resource identifiers, enums, primitive values, and immutable value collections are appropriate. The cache is globally bounded to 4096 entries and is cleared on resource reload.
+
+Resolution or baking failures do not fall through to the legacy provider. OBE requests ENTITY mode and retains the complete original block-entity renderer until a later appearance or resource generation can bake successfully. Providers whose original block model should also remain can opt into `keepOriginalModel()`; providers that want it visible during entity rendering can opt into `showOriginalWhenEntityRendered()`.
+
 
 ## Trouble shooting
 
@@ -65,6 +77,8 @@ If your textures are not being added to the block atlas, you have two options:
 1. Add a file [like this](https://github.com/maDU59/OptimisedBlockEntities/blob/1.21.1/src/main/resources/assets/minecraft/atlases/blocks.json) to your mod. It should be at that exact place but the source and targets name should be changed to where your textures are stored. To prevent memory issues, that should be made as a built-in resource pack that's only loaded when obe is present.
 
 2. Ask me to add your resource pack directory to obe's `atlases/blocks.json`
+
+Dynamic resource definitions must be discovered by an atlas sprite source before stitching. Sprites cannot be added after the atlas is stitched; resolving a texture later is too late and should be treated as a safe provider failure.
 
 
 ## Note

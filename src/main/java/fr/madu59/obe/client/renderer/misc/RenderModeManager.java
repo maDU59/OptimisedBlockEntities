@@ -79,10 +79,32 @@ public class RenderModeManager {
                 if(ext.isTimerFinished()){
                     ChunkTaskHolder.addTask(pos, () -> ext.renderMode(RenderMode.TERRAIN));
                 }
-                if(ext.renderMode() != ext.renderModeDelayed()){
-                    ChunkTaskHolder.addTask(pos, () -> ext.renderMode(ext.renderModeDelayed()));
+                RenderMode compiledRequestedMode = ext.renderModeDelayed();
+                if(ext.renderMode() != compiledRequestedMode || compiledRequestedMode == RenderMode.TERRAIN){
+                    ChunkTaskHolder.addTask(pos, () -> commitCompiledState(ext, compiledRequestedMode));
                 }
             }
+        }
+    }
+
+    static void commitCompiledState(BlockEntityExt ext, RenderMode compiledRequestedMode) {
+        if (compiledRequestedMode == RenderMode.TERRAIN
+                && ext.renderModeDelayed() == RenderMode.ENTITY
+                && ext.specialModelState().fallbackPending()) {
+            // This exact section was compiled without the failed terrain shell. Commit
+            // its full-BER fallback now instead of waiting for a second rebuild.
+            ext.commitRenderMode(RenderMode.ENTITY);
+            ext.specialModelState().commitFallbackEntity();
+            return;
+        }
+        if (ext.renderModeDelayed() != compiledRequestedMode) return;
+        ext.commitRenderMode(compiledRequestedMode);
+        if (compiledRequestedMode == RenderMode.TERRAIN) {
+            // A terrain-to-terrain remesh can replace only the immutable appearance key.
+            // It still needs the same completion barrier as an ENTITY-to-TERRAIN transition.
+            ext.specialModelState().commitPreparedTerrain();
+        } else {
+            ext.specialModelState().commitEntity();
         }
     }
 

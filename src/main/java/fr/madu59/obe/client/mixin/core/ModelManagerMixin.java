@@ -5,6 +5,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import fr.madu59.obe.client.resources.ResourceUtil;
+import fr.madu59.obe.client.compat.sophisticatedstorage.SophisticatedStorageDiagnostics;
 
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -18,6 +19,7 @@ public class ModelManagerMixin {
         at = @At("TAIL")
     )
     private void obe$onTextureReloadComplete(CallbackInfo ci) {
+        SophisticatedStorageDiagnostics.logSnapshot("before resource-cache clear");
         ResourceUtil.clearCache();
     }
 }

@@ -57,6 +57,18 @@ public class SodiumIntegration implements ConfigEntryPoint {
                             .addOption(createBooleanOption(builder, SettingsManager.OPTIMISED_SHULKER_BOXES))
                             .addOption(createBooleanOption(builder, SettingsManager.SHULKER_BOX_AMBIENT_OCCLUSION))
                     )
+
+                    .addOptionGroup(builder.createOptionGroup()
+                            .setName(Component.translatable("obe.config.category.sophisticated_storage_chests"))
+                            .addOption(createBooleanOption(builder, SettingsManager.OPTIMISED_SOPHISTICATED_CHESTS))
+                            .addOption(createBooleanOption(builder, SettingsManager.SOPHISTICATED_CHEST_AMBIENT_OCCLUSION))
+                    )
+
+                    .addOptionGroup(builder.createOptionGroup()
+                            .setName(Component.translatable("obe.config.category.sophisticated_storage_shulker_boxes"))
+                            .addOption(createBooleanOption(builder, SettingsManager.OPTIMISED_SOPHISTICATED_SHULKER_BOXES))
+                            .addOption(createBooleanOption(builder, SettingsManager.SOPHISTICATED_SHULKER_AMBIENT_OCCLUSION))
+                    )
                     
                     .addOptionGroup(builder.createOptionGroup()
                             .setName(Component.translatable("obe.config.category.skulls"))

@@ -33,6 +33,7 @@ This mod renders supported block entities just like any other block, this means 
 - Compatible with EMF/ETF and any resource packs made for those (like FA: Objects) *Since OBE 1.1.4*
 - Compatible with Quark's chests *Since OBE 1.1.3 and Quark 4.1-481*
 - Compatible with Lootr *Since OBE 1.1.23*
+- Optional Sophisticated Storage compatibility for chests and shulker boxes, declared for Storage 1.5.70 and later (NeoForge version range `[1.5.70,)`). OBE compiles against Storage 1.5.70.1941 (CurseForge file `8389899`) and Core 1.4.77.2173, recognizes both known renderer layouts, and was ABI-tested against the supplied 1.5.70, 1.5.71, 1.5.72, 1.5.73, 1.5.76, 1.5.77, 1.5.79, and 1.5.80 jars. Unknown renderer layouts fall back per storage type. Barrels and limited barrels are intentionally excluded.
 
 ## Why
 
@@ -66,6 +67,7 @@ and I even managed to make it faster somehow even though they are both really we
 <li>Lecterns</li>
 <li>Campfires</li>
 <li>Shelves</li>
+<li>Fully closed Sophisticated Storage chests and shulker boxes when the optional target mods are installed and no dynamic visual needs the original renderer</li>
 </ul>
 
 <sub>¹: Some skulls with custom textures from Hypixel's Skyblock can also be optimized by using [this resource pack](https://modrinth.com/resourcepack/obe-x-hypixel-skyblock)</sub>

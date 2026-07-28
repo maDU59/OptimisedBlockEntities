@@ -7,6 +7,7 @@ import fr.madu59.obe.client.compat.blueprint.BlueprintCompat;
 import fr.madu59.obe.client.compat.emf.EMFCompat;
 import fr.madu59.obe.client.compat.iris.IrisCompat;
 import fr.madu59.obe.client.compat.lootr.LootrCompat;
+import fr.madu59.obe.client.compat.sophisticatedstorage.SophisticatedStorageCompatLoader;
 import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.platform.PlatformHelper;
 import net.minecraft.client.model.geom.ModelPart;
@@ -17,12 +18,15 @@ public class ModCompat {
     private final static boolean isSodiumLoaded = PlatformHelper.isModLoaded("sodium") || PlatformHelper.isModLoaded("embeddium");
     private final static boolean isEMFLoaded = PlatformHelper.isModLoaded("entity_model_features");
     private final static boolean isPunchyLoaded = PlatformHelper.isModLoaded("punchy");
+    private final static boolean isSophisticatedStorageLoaded = PlatformHelper.isModLoaded("sophisticatedstorage")
+            && PlatformHelper.isModLoaded("sophisticatedcore");
 
     private static final List<String> incompatibleMods = Arrays.asList("vulkanmod","optifine","embeddium","optifabric");
 
     public static void init(){
         if(PlatformHelper.isModLoaded("lootr")) LootrCompat.init();
         if(PlatformHelper.isModLoaded("blueprint")) BlueprintCompat.init();
+        if(isSophisticatedStorageLoaded) SophisticatedStorageCompatLoader.init();
     }
 
     public static boolean isIrisLoaded(){
@@ -39,6 +43,10 @@ public class ModCompat {
 
     public static boolean isPunchyLoaded(){
         return isPunchyLoaded;
+    }
+
+    public static boolean isSophisticatedStorageLoaded(){
+        return isSophisticatedStorageLoaded;
     }
 
     public static boolean isShadowPass(){

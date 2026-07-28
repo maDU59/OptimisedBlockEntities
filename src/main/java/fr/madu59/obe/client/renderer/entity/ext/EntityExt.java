@@ -1,6 +1,7 @@
 package fr.madu59.obe.client.renderer.entity.ext;
 
 import fr.madu59.obe.client.renderer.misc.RenderModeManager.RenderMode;
+import fr.madu59.obe.client.renderer.blockentity.SpecialModelRuntimeState;
 
 public interface EntityExt {
     boolean isSupported();
@@ -8,6 +9,9 @@ public interface EntityExt {
 
     RenderMode renderMode();
     void renderMode(RenderMode mode);
+
+    /** Commits only the active mode after a compiled section is installed. */
+    void commitRenderMode(RenderMode mode);
 
     RenderMode renderModeDelayed();
     void renderModeDelayed(RenderMode mode);
@@ -27,4 +31,6 @@ public interface EntityExt {
 
     boolean forceEntity();
     void forceEntity(boolean bl);
+
+    SpecialModelRuntimeState specialModelState();
 }

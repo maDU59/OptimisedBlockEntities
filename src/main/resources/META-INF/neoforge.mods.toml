@@ -52,6 +52,9 @@ A client-side optimization mod to make block entities render faster
 [[mixins]]
 config="${mod_id}.mixins.json"
 
+[[mixins]]
+config="${mod_id}.sophisticatedstorage.mixins.json"
+
 # The [[accessTransformers]] block allows you to declare where your AT file is.
 # If this block is omitted, a fallback attempt will be made to load an AT from META-INF/accesstransformer.cfg
 #[[accessTransformers]]
@@ -86,6 +89,22 @@ config="${mod_id}.mixins.json"
     versionRange="${minecraft_version_range}"
     ordering="NONE"
     side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="sophisticatedstorage"
+    type="optional"
+    reason="Enables terrain-shell optimization for Sophisticated Storage chests and shulker boxes"
+    versionRange="[1.5.70,)"
+    ordering="AFTER"
+    side="CLIENT"
+
+[[dependencies.${mod_id}]]
+    modId="sophisticatedcore"
+    type="optional"
+    reason="Sophisticated Storage compatibility is compiled against Core 1.4.77 and supports Storage's 1.4.67+ runtime floor"
+    versionRange="[1.4.67,)"
+    ordering="AFTER"
+    side="CLIENT"
 
 # Features are specific properties of the game environment, that you may want to declare you require. This example declares
 # that your mod requires GL version 3.2 or higher. Other features will be added. They are side aware so declaring this won't
