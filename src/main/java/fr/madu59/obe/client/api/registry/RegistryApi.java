@@ -12,9 +12,13 @@ import fr.madu59.obe.client.registry.MaterialGetter;
 import fr.madu59.obe.client.registry.ModelLayerLocationGetter;
 import fr.madu59.obe.client.registry.Registry;
 import fr.madu59.obe.client.registry.SpecialModelGetter;
+import fr.madu59.obe.client.api.model.SpecialBakedModelProvider;
+import fr.madu59.obe.client.api.render.DynamicBlockEntityRenderPredicate;
+import fr.madu59.obe.client.registry.SpecialBakedModelRegistry;
 import fr.madu59.obe.client.registry.TransformationGetter;
 import fr.madu59.obe.client.registry.SpecialModelGetter.SpecialModelProvider;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
+import fr.madu59.obe.client.renderer.blockentity.DynamicBlockEntityRenderManager;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -22,6 +26,35 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class RegistryApi {
+    /**
+     * Registers a per-frame decision for whether a block entity needs its
+     * original dynamic renderer. This is separate from stable compiled-list
+     * skip decisions and is evaluated again whenever the renderer is invoked.
+     * Missing predicates and predicate failures render normally.
+     *
+     * @param type block-entity type handled by the predicate
+     * @param predicate stateless decision that must not retain world objects
+     * @since 1.1.37
+     */
+    public static <T extends BlockEntity> void registerDynamicRenderPredicate(
+            BlockEntityType<T> type, DynamicBlockEntityRenderPredicate<? super T> predicate) {
+        DynamicBlockEntityRenderManager.register(type, predicate);
+    }
+
+    /**
+     * Registers an arbitrary, potentially layered terrain-model provider for a
+     * block-entity type. This API is independent from and takes precedence over
+     * the legacy single-layer special-model provider.
+     *
+     * @param type block-entity type handled by the provider
+     * @param provider provider whose appearance keys must be immutable and must
+     *                 not retain world or block-entity references
+     * @since 1.1.37
+     */
+    public static <K> void registerSpecialBakedModelProvider(BlockEntityType<?> type, SpecialBakedModelProvider<K> provider) {
+        SpecialBakedModelRegistry.register(type, provider);
+    }
+
     /*
      * Register a new group of optimised block entities
      * @param id The id of the group to register

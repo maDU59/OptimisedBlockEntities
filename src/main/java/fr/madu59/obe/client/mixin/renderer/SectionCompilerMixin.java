@@ -10,12 +10,18 @@ import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
+import fr.madu59.obe.client.registry.SpecialBakedModelRegistry;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager.RenderMode;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.chunk.RenderChunkRegion;
 import net.minecraft.client.renderer.chunk.SectionCompiler;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
+import net.minecraft.util.RandomSource;
+import net.neoforged.neoforge.client.ChunkRenderTypeSet;
+import net.neoforged.neoforge.client.model.data.ModelData;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -48,5 +54,25 @@ public abstract class SectionCompilerMixin {
             }
         }
         return original.call(state);
+    }
+
+    @WrapOperation(
+            method = "compile(Lnet/minecraft/core/SectionPos;Lnet/minecraft/client/renderer/chunk/RenderChunkRegion;Lcom/mojang/blaze3d/vertex/VertexSorting;Lnet/minecraft/client/renderer/SectionBufferBuilderPack;Ljava/util/List;)Lnet/minecraft/client/renderer/chunk/SectionCompiler$Results;",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/resources/model/BakedModel;getRenderTypes(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/util/RandomSource;Lnet/neoforged/neoforge/client/model/data/ModelData;)Lnet/neoforged/neoforge/client/ChunkRenderTypeSet;"))
+    private ChunkRenderTypeSet obe$getArbitraryRenderTypes(BakedModel model, BlockState state,
+            RandomSource random, ModelData data, Operation<ChunkRenderTypeSet> original,
+            @Share("be") LocalRef<BlockEntity> beRef) {
+        BlockEntity blockEntity = beRef.get();
+        if (blockEntity != null) {
+            BlockEntityExt ext = (BlockEntityExt) blockEntity;
+            if (ext.isSupported() && ext.isEnabled() && !ext.forceEntity()
+                    && ext.renderModeDelayed() == RenderMode.TERRAIN) {
+                var registration = SpecialBakedModelRegistry.get(blockEntity.getType()).orElse(null);
+                if (registration != null) {
+                    return registration.provider().getRenderTypes(state, random, data);
+                }
+            }
+        }
+        return original.call(model, state, random, data);
     }
 }

@@ -46,12 +46,20 @@ public class ResourceUtil{
         return transformedSpecialModelCache.get(new SpecialModelCacheKey(state, be));
     }
 
+    public static BakedModel getSpecialModel(BlockState state, Object cacheKey){
+        return transformedSpecialModelCache.get(new SpecialModelCacheKey(state, cacheKey));
+    }
+
     public static boolean cacheContains(BlockState state){
         return transformedModelCache.containsKey(state);
     }
 
     public static boolean cacheContains(BlockState state, BlockEntity be){
         return transformedSpecialModelCache.containsKey(new SpecialModelCacheKey(state, be));
+    }
+
+    public static boolean specialModelCacheContains(BlockState state, Object cacheKey){
+        return transformedSpecialModelCache.containsKey(new SpecialModelCacheKey(state, cacheKey));
     }
 
     public static void cache(BlockState blockState, BakedModel model){
@@ -66,6 +74,7 @@ public class ResourceUtil{
         transformedSpecialModelCache.clear();
         transformedModelCache.clear();
         transformedSubModelCache.clear();
+        SpecialBakedModelCache.clearForReload();
     }
 
     public static ResourceLocation entityTextureFormatter(ResourceLocation resourceLocation){

@@ -1,0 +1,20 @@
+{
+  "required": false,
+  "package": "fr.madu59.obe.client.mixin.compat.sophisticatedstorage",
+  "plugin": "fr.madu59.obe.compat.SophisticatedStorageMixinPlugin",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "ChestBlockEntityMixin",
+    "ChestRendererMixin",
+    "ChestSubRendererMixin",
+    "ShulkerBoxBlockEntityMixin",
+    "ShulkerBoxRendererExtendedShellMixin",
+    "ShulkerBoxRendererLegacyShellMixin",
+    "ShulkerBoxRendererMixin",
+    "StorageBlockEntityMixin",
+    "StorageSettingsHandlerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

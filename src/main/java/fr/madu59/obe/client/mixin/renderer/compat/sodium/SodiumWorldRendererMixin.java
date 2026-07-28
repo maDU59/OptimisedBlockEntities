@@ -9,16 +9,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.llamalad7.mixinextras.sugar.Local;
 
 import fr.madu59.obe.client.renderer.blockentity.SpecialBlockEntityRenderingManager;
-import net.caffeinemc.mods.sodium.client.render.SodiumWorldRenderer;
+import fr.madu59.obe.client.renderer.blockentity.DynamicBlockEntityRenderManager;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 @Pseudo
-@Mixin(value = SodiumWorldRenderer.class, remap = false)
+@Mixin(targets = "net.caffeinemc.mods.sodium.client.render.SodiumWorldRenderer", remap = false)
 public class SodiumWorldRendererMixin {
 
     @Inject(method = "renderBlockEntity", at = @At("HEAD"), cancellable = true)
     private static void obe$preventUselessExtraction(CallbackInfo ci, @Local BlockEntity be){
-        if(SpecialBlockEntityRenderingManager.shouldSkipRendering(be)){
+        if(SpecialBlockEntityRenderingManager.shouldSkipRendering(be)
+                || !DynamicBlockEntityRenderManager.shouldRenderBeforeExtraction(be)){
             ci.cancel();
         }
     }

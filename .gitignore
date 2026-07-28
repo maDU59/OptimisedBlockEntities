@@ -35,6 +35,7 @@ run/
 # neoforge
 
 runs/
+/compat-test-jars/
 
 # java
 

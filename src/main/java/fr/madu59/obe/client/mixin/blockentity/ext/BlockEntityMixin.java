@@ -4,6 +4,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
+import fr.madu59.obe.client.renderer.blockentity.SpecialModelRuntimeState;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager.RenderMode;
 import net.minecraft.client.Minecraft;
@@ -22,6 +23,7 @@ public abstract class BlockEntityMixin implements BlockEntityExt {
     @Unique private boolean renderBoth = false;
     @Unique private boolean shouldSkipRendering = false;
     @Unique private boolean forceEntity = false;
+    @Unique private final SpecialModelRuntimeState specialModelState = new SpecialModelRuntimeState();
 
     @Override public boolean isSupported() { return isSupported; }
     @Override public void isSupported(boolean bl) {this.isSupported = bl; }
@@ -30,6 +32,10 @@ public abstract class BlockEntityMixin implements BlockEntityExt {
     @Override public void renderMode(RenderMode mode) {
         if(isEnabled) renderMode = mode;
         renderModeDelayed = mode;
+    }
+
+    @Override public void commitRenderMode(RenderMode mode) {
+        renderMode = isEnabled ? mode : RenderMode.ENTITY;
     }
 
     @Override public RenderMode renderModeDelayed() { return renderModeDelayed; }
@@ -69,4 +75,6 @@ public abstract class BlockEntityMixin implements BlockEntityExt {
 
     @Override public boolean forceEntity() { return forceEntity; }
     @Override public void forceEntity(boolean bl) { forceEntity = bl; }
+
+    @Override public SpecialModelRuntimeState specialModelState() { return specialModelState; }
 }
