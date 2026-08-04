@@ -1,7 +1,8 @@
 package fr.madu59.obe.client.renderer.blockentity;
 
 import fr.madu59.obe.client.config.SettingsManager;
-import net.minecraft.network.chat.Component;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BeaconBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -34,13 +35,7 @@ public class SpecialBlockEntityRenderingManager {
     }
 
     private static boolean isEmpty(SignBlockEntity be){
-        if(be.getText(true) == null || be.getText(false) == null) return false;
-        Component[] frontMessages = be.getText(true).getMessages(false);
-        Component[] backMessages = be.getText(false).getMessages(false);
-        for(int i = 0; i < 4; i++){
-            if(!frontMessages[i].getString().isEmpty()) return false;
-            if(!backMessages[i].getString().isEmpty()) return false;
-        }
-        return true;
+        LocalPlayer player = Minecraft.getInstance().player;
+        return (be.getText(true) == null || !be.getText(true).hasMessage(player)) && (be.getText(false) == null || !be.getText(false).hasMessage(player));
     }
 }
