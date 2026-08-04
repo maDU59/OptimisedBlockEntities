@@ -1,9 +1,7 @@
 package fr.madu59.obe.client.renderer.blockentity;
 
-import java.util.List;
-
 import fr.madu59.obe.client.config.SettingsManager;
-import net.minecraft.network.chat.Component;
+import net.minecraft.client.Minecraft;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BeaconBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -37,15 +35,7 @@ public class SpecialBlockEntityRenderingManager {
     }
 
     private static boolean isEmpty(SignBlockEntity be){
-        if(be.getText(SignTextSlot.FRONT) == null || be.getText(SignTextSlot.BACK) == null) return false;
-        List<Component> frontMessages = be.getText(SignTextSlot.FRONT).getMessages(false);
-        List<Component> backMessages = be.getText(SignTextSlot.BACK).getMessages(false);
-        for(Component text: frontMessages){
-            if(!text.getString().isEmpty()) return false;
-        }
-        for(Component text: backMessages){
-            if(!text.getString().isEmpty()) return false;
-        }
-        return true;
+        boolean shouldFilter = Minecraft.getInstance().player.isTextFilteringEnabled();
+        return (be.getText(SignTextSlot.FRONT) == null || !be.getText(SignTextSlot.FRONT).hasMessage(shouldFilter)) && (be.getText(SignTextSlot.BACK) == null || !be.getText(SignTextSlot.BACK).hasMessage(shouldFilter));
     }
 }
