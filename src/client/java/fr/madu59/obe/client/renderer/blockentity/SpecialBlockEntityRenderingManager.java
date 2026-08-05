@@ -35,7 +35,7 @@ public class SpecialBlockEntityRenderingManager {
     }
 
     private static boolean isEmpty(SignBlockEntity be){
-        boolean shouldFilter = Minecraft.getInstance().player.isTextFilteringEnabled();
+        boolean shouldFilter = Minecraft.getInstance().isTextFilteringEnabled();
         return (be.getText(SignTextSlot.FRONT) == null || !be.getText(SignTextSlot.FRONT).hasMessage(shouldFilter)) && (be.getText(SignTextSlot.BACK) == null || !be.getText(SignTextSlot.BACK).hasMessage(shouldFilter));
     }
 }

@@ -29,7 +29,7 @@ public class EMFCompat {
         try{
             if (root instanceof EMFModelPartRoot emfRoot) {
                 
-                var state = (EMFEntityRenderState) ETFEntityRenderState.forEntity((ETFEntity) be);
+                EMFEntityRenderState state = (EMFEntityRenderState) ETFEntityRenderState.forEntity((ETFEntity) be);
 
                 EMFAnimationEntityContext.setCurrentEntityIteration(state);
                 emfRoot.animate();
