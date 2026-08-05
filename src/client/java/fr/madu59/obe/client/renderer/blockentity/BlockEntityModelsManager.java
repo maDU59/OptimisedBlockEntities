@@ -34,11 +34,11 @@ public class BlockEntityModelsManager {
 
     public @Nullable BlockStateModel getModel(BlockState state, BlockPos pos, long seed, BlockStateModel originalModel, BlockAndTintGetter level){
         if (!state.hasBlockEntity()) return null;
-        return getModel(state, pos, seed, originalModel, level.getBlockEntity(pos));
+        return getModel(state, originalModel, level.getBlockEntity(pos));
     }
 
 
-    public @Nullable BlockStateModel getModel(BlockState state, BlockPos pos, long seed, BlockStateModel originalModel, BlockEntity be){
+    public @Nullable BlockStateModel getModel(BlockState state, BlockStateModel originalModel, BlockEntity be){
 
         if (be == null) return null;
 
@@ -62,13 +62,10 @@ public class BlockEntityModelsManager {
                 if(material == null) return fail(be);
 
                 BlockStateModel model = ResourceUtil.getModel(layerLocation, material, state, cacheKey, poseStack, getAmbientOcclusion(group), originalModel.particleIcon());
-                if(customModelProvider.shouldKeepOriginalModel()) model = new CompositeBlockStateModel(model, originalModel);
+                if(customModelProvider.shouldKeepOriginalModel()) model = new CompositeBlockStateModel(model, ResourceUtil.getDefaultModel(state));
                 ResourceUtil.cache(state, cacheKey, model);
                 return model;
             }
-        }
-        else if(!customModelProvider.shouldShowOriginalWhenHidden()){
-            return new BlockEntityStateModel(originalModel.particleIcon());
         }
 
         return originalModel;
