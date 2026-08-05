@@ -23,7 +23,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 public class SodiumWorldRendererMixin {
 
     @Inject(method = "extractBlockEntity", at = @At("HEAD"), cancellable = true)
-    public void obe$preventUselessExtraction(CallbackInfo ci, @Local BlockEntity be){
+    public void obe$preventUselessExtraction(CallbackInfo ci, @Local(argsOnly = true) BlockEntity be){
         if(SpecialBlockEntityRenderingManager.shouldSkipRendering(be)){
             ci.cancel();
         }
@@ -34,7 +34,7 @@ public class SodiumWorldRendererMixin {
         at = @At("HEAD"),
         cancellable = true
     )
-    private <T extends Entity> void obe$shouldRenderEntity(CallbackInfoReturnable<Boolean> cir, @Local T entity) {
+    private <T extends Entity> void obe$shouldRenderEntity(CallbackInfoReturnable<Boolean> cir, @Local(argsOnly = true) T entity) {
         if(entity instanceof EntityExt ext && ext.isSupported()){
             boolean modToggle = SettingsManager.MOD_TOGGLE.getValue();
             if(entity instanceof Cushion) ext.isEnabled(SettingsManager.OPTIMISED_CUSHIONS.getValue() && modToggle);
