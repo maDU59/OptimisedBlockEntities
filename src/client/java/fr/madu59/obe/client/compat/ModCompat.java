@@ -21,7 +21,14 @@ public class ModCompat {
     private static final List<String> incompatibleMods = Arrays.asList("vulkanmod","optifine","embeddium","optifabric");
 
     public static void init(){
-        if(PlatformHelper.isModLoaded("lootr")) LootrCompat.init();
+        if(PlatformHelper.isModLoaded("lootr")) {
+            try{
+                LootrCompat.init();
+            }
+            catch(Error e){
+                OBE.LOGGER.warn("Incompatible version of Lootr used, if you are using the latest one, please report that to OBE's author.");
+            }
+        }
     }
 
     public static boolean isIrisLoaded(){
