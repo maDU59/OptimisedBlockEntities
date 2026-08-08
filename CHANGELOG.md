@@ -5,3 +5,6 @@
 
 # Hotfix 1:
 - Fixed a crash
+
+# Hotfix 2:
+- Fixed settings not being respected
