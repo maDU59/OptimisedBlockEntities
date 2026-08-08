@@ -74,6 +74,8 @@ public abstract class SectionCompilerMixin {
                 else if(ext.hasSpecialRenderer()) model = blockEntityModelsManager.getModel(state, originalModel, be);
             }
 
+            if(model == null) model = ResourceUtil.getDefaultModel(be.getBlockState());
+
             return model;
         }
         return originalModel;
