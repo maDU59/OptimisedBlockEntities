@@ -13,6 +13,7 @@ import fr.madu59.obe.OBE;
 import fr.madu59.obe.client.util.blockentity.SkullBlockUtil;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -20,6 +21,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class SpecialModelGetter {
 
     private static Map<BlockEntityType<?>, SpecialModelProvider> specialModelGetterProvider = new ConcurrentHashMap<>();
+    private static Map<Block, SpecialModelProvider> perBlockSpecialModelGetterProvider = new ConcurrentHashMap<>();
     private static Map<String, SpecialModelProvider> defaultspecialModelGetterProvider = new ConcurrentHashMap<>();
 
     public static void init(){
@@ -39,19 +41,30 @@ public class SpecialModelGetter {
         specialModelGetterProvider.put(beType, getter);
     }
 
+    public static void register(Block block, SpecialModelProvider getter){
+        perBlockSpecialModelGetterProvider.put(block, getter);
+    }
+
     public static SpecialModelProvider getSpecialModelProvider(BlockState state){
         return getSpecialModelProvider(state, null);
     }
 
     public static SpecialModelProvider getSpecialModelProvider(BlockState state, String group){
         if(!state.hasBlockEntity()) return null;
+
+        Block block = state.getBlock();
+        SpecialModelProvider provider = perBlockSpecialModelGetterProvider.get(block);
+        if (provider != null) return provider;
+
         BlockEntityType<?> beType = Registry.getBlockEntityType(state);
         if (beType == null) return null;
-        SpecialModelProvider provider = specialModelGetterProvider.get(beType);
+        provider = specialModelGetterProvider.get(beType);
         if (provider != null) return provider;
+
         if (group == null) group = Registry.getGroup(beType);
         if (group != null) provider = defaultspecialModelGetterProvider.get(group);
         if (provider != null) return provider;
+        
         return null;
     }
 
