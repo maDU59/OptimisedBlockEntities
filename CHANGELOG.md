@@ -1,2 +1,3 @@
 # What's new:
-- Improved sign optimization
+- Improved mod compatiblity
+- Improved the API
