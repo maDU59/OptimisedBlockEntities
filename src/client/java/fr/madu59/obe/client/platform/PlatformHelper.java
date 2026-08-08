@@ -4,6 +4,8 @@ import java.nio.file.Path;
 
 import fr.madu59.obe.client.renderer.entity.MeshableEntityTracker;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
+import fr.madu59.obe.client.compat.ModCompat;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLevelEvents;
 import net.fabricmc.loader.api.FabricLoader;
 
 public class PlatformHelper {
@@ -31,5 +33,6 @@ public class PlatformHelper {
         ClientEntityEvents.ENTITY_UNLOAD.register((entity, clientLevel) -> {
             MeshableEntityTracker.deregisterMeshableEntity(entity, entity.blockPosition());
         });
+        ClientLevelEvents.AFTER_CLIENT_LEVEL_CHANGE.register((minecraft, level) -> ModCompat.onWorldLoad());
     }
 }
