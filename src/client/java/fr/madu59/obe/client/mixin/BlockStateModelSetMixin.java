@@ -65,7 +65,7 @@ public class BlockStateModelSetMixin {
                     if(model != null) cir.setReturnValue(model);
                 }
             }
-            else if(group.equals("skull") && SettingsManager.OPTIMISED_SKULLS.getValue()){
+            else if(group.equals("skull")){
                 if(SettingsManager.OPTIMISED_SKULLS.getValue()){
                     model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
                     if(model != null) cir.setReturnValue(model);
