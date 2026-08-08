@@ -1,7 +1,5 @@
 package fr.madu59.obe.client.compat.emf;
 
-import java.util.function.BiFunction;
-
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.EntityBlock;
