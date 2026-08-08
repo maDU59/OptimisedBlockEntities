@@ -9,6 +9,7 @@ import fr.madu59.obe.client.model.BlockEntityStateModel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
+import net.minecraft.client.renderer.block.BlockModelShaper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -70,6 +71,11 @@ public class ResourceUtil{
 
     public static ResourceLocation entityTextureFormatter(ResourceLocation resourceLocation){
         return ResourceLocation.tryBuild(resourceLocation.getNamespace(), resourceLocation.getPath().replace(".png", "").replace("textures/", ""));
+    }
+
+    public static BlockStateModel getDefaultModel(BlockState blockState){
+        BlockModelShaper modelSet = Minecraft.getInstance().getModelManager().getBlockModelShaper();
+        return modelSet.modelByStateCache.getOrDefault(blockState, modelSet.getModelManager().getMissingBlockStateModel());
     }
 
     public record ModelCacheKey(ModelLayerLocation modelLayerLocation, BlockState blockState) {}

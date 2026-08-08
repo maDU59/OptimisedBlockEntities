@@ -38,7 +38,7 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
-	modImplementation ("com.terraformersmc:modmenu:${project.modmenu_version}")
+	modImplementation ("maven.modrinth:modmenu:${project.modmenu_version}")
 	modImplementation "maven.modrinth:sodium:pJRT8Zxt"
 	
 	localRuntime 'org.anarres:jcpp:1.4.14'
@@ -50,6 +50,11 @@ dependencies {
 
 	modImplementation "maven.modrinth:lootr:KCO39N1z"
 	modImplementation "maven.modrinth:cloth-config:cz0b1j8R"
+
+	// runtimeOnly "maven.modrinth:betterend:21.800.1"
+	// runtimeOnly "maven.modrinth:betternether:21.800.1"
+	// runtimeOnly "maven.modrinth:worldweaver:21.800.1"
+	// runtimeOnly "maven.modrinth:bclib:21.800.1"
 }
 
 processResources {

@@ -1,2 +1,7 @@
 # What's new:
-- Fixed a rendering bug with bells
+- Improved mod compatiblity
+- Improved the API
+- Added BCLIB mods compatibility (betternether and betterend)
+
+# Hotfix 1:
+- Fixed a crash
