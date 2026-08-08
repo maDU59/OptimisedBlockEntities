@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import fr.madu59.obe.OBE;
+import fr.madu59.obe.client.compat.bclib.BclibCompat;
 import fr.madu59.obe.client.compat.emf.EMFCompat;
 import fr.madu59.obe.client.compat.iris.IrisCompat;
 import fr.madu59.obe.client.compat.lootr.LootrCompat;
@@ -21,7 +22,25 @@ public class ModCompat {
     private static final List<String> incompatibleMods = Arrays.asList("vulkanmod","optifine","embeddium","optifabric");
 
     public static void init(){
-        if(PlatformHelper.isModLoaded("lootr")) LootrCompat.init();
+        if(PlatformHelper.isModLoaded("lootr")) {
+            try{
+                LootrCompat.init();
+            }
+            catch(Error e){
+                OBE.LOGGER.warn("Incompatible version of Lootr used, if you are using the latest one, please report that to OBE's author.");
+            }
+        }
+    }
+
+    public static void onWorldLoad(){
+        if(PlatformHelper.isModLoaded("bclib")) {
+            try{
+                BclibCompat.init();
+            }
+            catch(Error e){
+                OBE.LOGGER.warn("Incompatible version of Bclib used, if you are using the latest one, please report that to OBE's author.");
+            }
+        }
     }
 
     public static boolean isIrisLoaded(){
