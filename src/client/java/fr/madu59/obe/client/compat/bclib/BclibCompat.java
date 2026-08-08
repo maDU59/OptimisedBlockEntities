@@ -6,7 +6,7 @@ import fr.madu59.obe.client.registry.MaterialGetter;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ChestBlock;
@@ -20,7 +20,7 @@ public class BclibCompat {
 
         TagKey<Block> tag = TagKey.create(
             Registries.BLOCK, 
-            Identifier.tryBuild("c", "chests")
+            ResourceLocation.tryBuild("c", "chests")
         );
 
         Iterable<Holder<Block>> chestTagHolders = BuiltInRegistries.BLOCK.getTagOrEmpty(tag);
@@ -28,7 +28,7 @@ public class BclibCompat {
         for (Holder<Block> blockHolder : chestTagHolders) {
             Block block = blockHolder.value();
             
-            Identifier blockId = BuiltInRegistries.BLOCK.getKey(block);
+            ResourceLocation blockId = BuiltInRegistries.BLOCK.getKey(block);
 
             if (BCLIB_MODS.contains(blockId.getNamespace())) {
                 MaterialGetter.register(block, (state) -> {
@@ -38,7 +38,7 @@ public class BclibCompat {
 
                     if(type == ChestType.LEFT) texturePath += "_left";
                     else if(type == ChestType.RIGHT) texturePath += "_right";
-                    return Identifier.tryBuild(blockId.getNamespace(), "entity/chest/" + texturePath);
+                    return ResourceLocation.tryBuild(blockId.getNamespace(), "entity/chest/" + texturePath);
                 });
             }
         }
