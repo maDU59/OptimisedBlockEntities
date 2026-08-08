@@ -37,7 +37,6 @@ public class BlockEntityModelsManager {
         return getModel(state, pos, seed, originalModel, level.getBlockEntity(pos));
     }
 
-
     public @Nullable BlockStateModel getModel(BlockState state, BlockPos pos, long seed, BlockStateModel originalModel, BlockEntity be){
 
         if (be == null) return null;

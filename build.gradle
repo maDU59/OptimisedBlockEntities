@@ -45,6 +45,11 @@ dependencies {
 	implementation "maven.modrinth:entitytexturefeatures:7.1-fabric-26.1"
 	implementation "maven.modrinth:entity-model-features:3.2.4-fabric-26.1"
 	implementation "maven.modrinth:lootr:kDUmREOC"
+
+	runtimeOnly "maven.modrinth:betterend:26.101.1"
+	runtimeOnly "maven.modrinth:betternether:26.101.1"
+	runtimeOnly "maven.modrinth:worldweaver:26.101.1"
+	runtimeOnly "maven.modrinth:bclib:26.101.1"
 }
 
 processResources {

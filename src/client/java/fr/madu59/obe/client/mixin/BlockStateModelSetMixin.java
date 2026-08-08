@@ -87,6 +87,8 @@ public class BlockStateModelSetMixin {
                 model = blockEntityModelsManager.getDecoratedPotModel(state, random, obe$getOriginalModel(state));
                 if(model != null) cir.setReturnValue(model);
             }
+            model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
+            if(model != null) cir.setReturnValue(model);
         }
         catch(Exception e){
 
