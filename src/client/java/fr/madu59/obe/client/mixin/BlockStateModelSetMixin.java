@@ -77,19 +77,19 @@ public class BlockStateModelSetMixin {
                     if(model != null) cir.setReturnValue(model);
                 }
             }
-            else if(group.equals("banner") && SettingsManager.OPTIMISED_BANNERS.getValue()){
+            else if(group.equals("banner")){
                 if(SettingsManager.OPTIMISED_BANNERS.getValue()){
                     model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
                     if(model != null) cir.setReturnValue(model);
                 }
             }
-            else if(group.equals("bell") && SettingsManager.OPTIMISED_BELLS.getValue()){
+            else if(group.equals("bell")){
                 if(SettingsManager.OPTIMISED_BELLS.getValue()){
                     model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
                     if(model != null) cir.setReturnValue(model);
                 }
             }
-            else if(group.equals("copper_golem_statue") && SettingsManager.OPTIMISED_COPPER_GOLEMS.getValue()){
+            else if(group.equals("copper_golem_statue")){
                 if(SettingsManager.OPTIMISED_COPPER_GOLEMS.getValue()){    
                     model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
                     if(model != null) cir.setReturnValue(model);
