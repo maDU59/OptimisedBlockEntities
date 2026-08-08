@@ -81,6 +81,8 @@ public class ChunkBuilderMeshingTaskMixin {
                 else if(ext.hasSpecialRenderer()) model = blockEntityModelsManager.getModel(state, pos, state.getSeed(pos), originalModel, be);
             }
 
+            if(model == null) model = ResourceUtil.getDefaultModel(be.getBlockState());
+
             original.call(instance, model, state, pos, origin);
         }
         else original.call(instance, originalModel, state, pos, origin);
