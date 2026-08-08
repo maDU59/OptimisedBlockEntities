@@ -38,7 +38,7 @@ public class ModCompat {
                 BclibCompat.init();
             }
             catch(Error e){
-                OBE.LOGGER.warn("Incompatible version of Lootr used, if you are using the latest one, please report that to OBE's author.");
+                OBE.LOGGER.warn("Incompatible version of Bclib used, if you are using the latest one, please report that to OBE's author.");
             }
         }
     }
