@@ -54,6 +54,9 @@ dependencies {
 
 	modImplementation "maven.modrinth:lootr:eYyx60ld"
 	modImplementation "maven.modrinth:cloth-config:HpMb5wGb"
+
+	modImplementation "maven.modrinth:every-compat:1.21-2.11.48-fabric"
+	modImplementation "maven.modrinth:moonlight:1.21.1-3.3.3-fabric"
 }
 
 processResources {
