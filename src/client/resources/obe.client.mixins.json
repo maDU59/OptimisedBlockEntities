@@ -15,6 +15,7 @@
 		"blockentity.lectern.LecternBlockEntityMixin",
 		"blockentity.compat.lootr.LootrChestBlockEntityMixin",
 		"blockentity.compat.lootr.LootrShulkerBoxBlockEntityMixin",
+		"blockentity.compat.everycompat.CompatChestBlockEntityMixin",
 		"blockentity.BlockEntityMixin",
 		"blockentity.ext.BlockEntityMixin",
 		"blockentity.renderers.chest.ChestRendererMixin",
