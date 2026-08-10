@@ -60,7 +60,7 @@ dependencies {
 	modImplementation "maven.modrinth:cloth-config:2xQdCMyG"
 
 	modImplementation ("net.mehvahdjukaar:everycomp-fabric:1.20-2.9.20") {transitive = false}
-	modImplementation ("net.mehvahdjukaar:moonlight-fabric:1.20-2.16.34") {transitive = false}
+	modImplementation("maven.modrinth:moonlight:1.20-2.16.34-fabric")
 
 	modImplementation "maven.modrinth:carved-wood:1.9.7-E-Fabric-1.20.1"
 }
