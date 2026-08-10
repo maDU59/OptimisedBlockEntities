@@ -3,6 +3,7 @@ package fr.madu59.obe.client.compat;
 import java.util.Arrays;
 import java.util.List;
 
+import fr.madu59.obe.client.compat.carvedwood.CarvedWoodCompat;
 import fr.madu59.obe.client.compat.emf.EMFCompat;
 import fr.madu59.obe.client.compat.iris.IrisCompat;
 import fr.madu59.obe.client.compat.lootr.LootrCompat;
@@ -21,6 +22,7 @@ public class ModCompat {
 
     public static void init(){
         if(PlatformHelper.isModLoaded("lootr")) LootrCompat.init();
+        if(PlatformHelper.isModLoaded("carved_wood")) CarvedWoodCompat.init();
     }
 
     public static boolean isIrisLoaded(){
