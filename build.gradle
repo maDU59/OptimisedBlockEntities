@@ -13,6 +13,7 @@ repositories {
     maven{url = "https://maven.caffeinemc.net/snapshots"}
 	maven{url = "https://api.modrinth.com/maven"}
 	maven{url = "https://maven.terraformersmc.com/releases"}
+	maven{url = "https://registry.somethingcatchy.net/repository/maven-releases/"}
 }
 
 loom {
@@ -55,8 +56,11 @@ dependencies {
 	modImplementation "maven.modrinth:lootr:eYyx60ld"
 	modImplementation "maven.modrinth:cloth-config:HpMb5wGb"
 
-	modImplementation "maven.modrinth:every-compat:1.21-2.11.48-fabric"
-	modImplementation "maven.modrinth:moonlight:1.21.1-3.3.3-fabric"
+	modImplementation ("net.mehvahdjukaar:everycomp-fabric:1.21-2.11.48") {transitive = false}
+	modImplementation ("net.mehvahdjukaar:moonlight-fabric:1.21.1-3.3.3") {transitive = false}
+	modImplementation ("net.mehvahdjukaar:codecui-fabric:1.21.1-1.4.0") {transitive = false}
+
+	modImplementation "maven.modrinth:carved-wood:1.9.7-B-Fabric-1.21.1"
 }
 
 processResources {

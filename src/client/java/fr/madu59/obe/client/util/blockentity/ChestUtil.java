@@ -36,7 +36,7 @@ public class ChestUtil {
         }
     }
 
-    private static ResourceLocation chooseMaterial(ChestType chestType, Material material, Material material2, Material material3) {
+    public static ResourceLocation chooseMaterial(ChestType chestType, Material material, Material material2, Material material3) {
         if(chestType == null) return material.texture();
         return switch (chestType) {
             case RIGHT -> material3.texture();
@@ -65,7 +65,7 @@ public class ChestUtil {
         poseStack.translate(-0.5F, -0.5F, -0.5F);
     }
 
-    public static void transform(BlockState state, PoseStack poseStack, BlockEntity entity){
+    public static void transform(BlockState state, BlockEntity entity, PoseStack poseStack){
         transform(state, poseStack);
     }
 
@@ -97,7 +97,7 @@ public class ChestUtil {
     }
 
     @Deprecated
-    public static void transformChest(BlockState state, PoseStack poseStack, BlockEntity be){
-        transform(state, poseStack, be);
+    public static void transformChest(BlockState state, BlockEntity be, PoseStack poseStack){
+        transform(state, be, poseStack);
     }
 }
