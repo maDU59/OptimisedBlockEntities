@@ -3,7 +3,11 @@ package fr.madu59.obe.client.renderer.misc;
 import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.chunk.ChunkTaskHolder;
 import fr.madu59.obe.client.config.Option;
+import fr.madu59.obe.client.registry.MaterialGetter;
+import fr.madu59.obe.client.registry.ModelLayerLocationGetter;
 import fr.madu59.obe.client.registry.Registry;
+import fr.madu59.obe.client.registry.SpecialModelGetter;
+import fr.madu59.obe.client.registry.SpecialModelGetter.SpecialModelProvider;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -50,7 +54,7 @@ public class RenderModeManager {
     }
 
     public static void setRenderModeDelayed(BlockEntityExt ext, RenderMode mode, BlockPos pos){
-        if(ext.renderModeDelayed() != mode) {
+        if(ext.renderModeDelayed() != mode && (mode != RenderMode.TERRAIN || canBeTerrain(ext))){
             ext.renderModeDelayed(mode);
             setDirty(pos);
         }
@@ -84,6 +88,24 @@ public class RenderModeManager {
                 }
             }
         }
+    }
+
+    public static boolean canBeTerrain(BlockEntityExt ext){
+        BlockEntity be = (BlockEntity)ext;
+        BlockState state = be.getBlockState();
+        String group = Registry.getGroup(state);
+
+        if(ext.hasSpecialRenderer()){
+            SpecialModelProvider customModelProvider = SpecialModelGetter.getSpecialModelProvider(state, group);
+
+            if(customModelProvider.getModelLayerLocationProvider().apply(state, be) == null) return false;
+            if(customModelProvider.getMaterialProvider().apply(state, be) == null) return false;
+        }
+        else{
+            if(ModelLayerLocationGetter.getModelLayerLocation(state, group) == null) return false;
+            if(MaterialGetter.getMaterial(state, group) == null) return false;
+        }
+        return true;
     }
 
     public static enum RenderMode {

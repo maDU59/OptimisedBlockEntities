@@ -17,7 +17,6 @@ public class OBEClient implements ClientModInitializer {
 		ModCompat.init();
 		OptimisedBlockEntitiesConfigScreen.registerCommand();
 		ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new SkullPackLoader());
-		PlatformHelper.registerPlatformEvents();
 	}
 
 	public static void debug(String debugInfo) {

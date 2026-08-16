@@ -3,6 +3,10 @@ classTweaker v1 named
 # Model building
 accessible field net/minecraft/client/model/geom/ModelPart children Ljava/util/Map;
 accessible field net/minecraft/client/model/geom/ModelPart$Cube polygons [Lnet/minecraft/client/model/geom/ModelPart$Polygon;
+accessible method net/minecraft/client/renderer/block/model/FaceBakery recalculateWinding ([ILnet/minecraft/core/Direction;)V
+
+# Model block state set accessing
+accessible field net/minecraft/client/renderer/block/BlockModelShaper modelByStateCache Ljava/util/Map;
 
 # Skull block rendering
 accessible field net/minecraft/client/renderer/blockentity/SkullBlockRenderer SKIN_BY_TYPE Ljava/util/Map;
