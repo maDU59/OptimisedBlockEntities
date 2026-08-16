@@ -116,6 +116,9 @@ public class RenderModeManager {
     }
 
     public static boolean canBeTerrain(BlockEntityExt ext){
+
+        if(Minecraft.getInstance().level == null) return false;
+        
         BlockEntity be = (BlockEntity)ext;
         BlockState state = be.getBlockState();
         String group = Registry.getGroup(state);
