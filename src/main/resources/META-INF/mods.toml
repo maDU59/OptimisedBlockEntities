@@ -45,7 +45,7 @@ authors="maDU59_"
 
 # The description text for the mod (multi line!) (#mandatory)
 description='''
-Improves the speed of Iris' shadow mapping
+Makes block entities render faster
 '''
 
 # The coremods config file path is not configurable and is always loaded from META-INF/coremods.json
