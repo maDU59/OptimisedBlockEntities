@@ -35,7 +35,6 @@
 		"renderer.compat.sodium.RenderSectionManagerMixin",
 		"renderer.compat.sodium.SodiumWorldRendererMixin",
 		"core.ModelManagerMixin",
-		"accessor.FaceBakeryInvoker",
 		"BlockStateModelSetMixin"
 	],
 	"mixins": [
