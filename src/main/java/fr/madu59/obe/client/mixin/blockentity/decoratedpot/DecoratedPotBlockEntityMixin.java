@@ -61,7 +61,7 @@ public abstract class DecoratedPotBlockEntityMixin{
     private void obe$updatePot(){
         DecoratedPotBlockEntity be = (DecoratedPotBlockEntity)(Object)this;
         BlockEntityExt ext = (BlockEntityExt)be;
-        if(decorations != PotDecorations.EMPTY){
+        if(!decorations.equals(PotDecorations.EMPTY)){
             ext.forceEntity(true);
         }
         else{

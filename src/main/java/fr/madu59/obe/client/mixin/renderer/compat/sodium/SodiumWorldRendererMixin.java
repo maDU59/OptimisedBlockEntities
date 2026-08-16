@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 public class SodiumWorldRendererMixin {
 
     @Inject(method = "renderBlockEntity", at = @At("HEAD"), cancellable = true)
-    private static void obe$preventUselessExtraction(CallbackInfo ci, @Local BlockEntity be){
+    private static void obe$preventUselessExtraction(CallbackInfo ci, @Local(argsOnly = true) BlockEntity be){
         if(SpecialBlockEntityRenderingManager.shouldSkipRendering(be)){
             ci.cancel();
         }

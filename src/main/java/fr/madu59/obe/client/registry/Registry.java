@@ -21,7 +21,10 @@ public class Registry {
     private static final String noneGroupKey = "OBE_NONE";
     private static final BlockEntityType<?> noneBlockEntityType = BlockEntityType.ENCHANTING_TABLE;
 
+    private static boolean isInit = false;
+
     public static void init(){
+        if(isInit) return;
         register("chest", BlockEntityType.CHEST, BlockEntityType.ENDER_CHEST, BlockEntityType.TRAPPED_CHEST);
         register("bell", BlockEntityType.BELL);
         register("skull", BlockEntityType.SKULL);
@@ -35,6 +38,7 @@ public class Registry {
         TransformationGetter.init();
         ModelLayerLocationGetter.init();
         SpecialModelGetter.init();
+        isInit = true;
     }
 
     private static void register(String group, BlockEntityType<?> ... types){
@@ -45,6 +49,7 @@ public class Registry {
     }
 
     public static void registerGroup(String group){
+        if(!isInit) init();
         if(supportedBeTypes.containsKey(group)){
             OBE.LOGGER.warn("An external mod tried to register an already-existing group (" + group + "), this may cause issues and is probably due to to an incompatibility between 2 mods");
         }
@@ -54,6 +59,7 @@ public class Registry {
     }
 
     public static void addBlockEntityTypeInGroup(String group, BlockEntityType<?> ... types){
+        if(!isInit) init();
         if(!supportedBeTypes.containsKey(group)){
             OBE.LOGGER.error("An external mod tried registering a block entity type in a non existing group: " + group);
         }
@@ -66,6 +72,7 @@ public class Registry {
     }
 
     public static boolean isSupported(String group, BlockEntityType<?> type){
+        if(!isInit) init();
         if(!supportedBeTypes.containsKey(group)){
             OBE.LOGGER.warn("An external mod tried accessing a non existing group: " + group);
             return false;
@@ -77,6 +84,7 @@ public class Registry {
 
     public static boolean isSupported(String group, BlockState state){
         if(!state.hasBlockEntity()) return false;
+        if(!isInit) init();
         if(!supportedBeTypes.containsKey(group)){
             OBE.LOGGER.warn("An external mod tried accessing a non existing group: " + group);
             return false;

@@ -26,6 +26,8 @@ repositories {
 	maven{url = "https://repo.codemc.org/repository/maven-public/"}
     maven{url = "https://jitpack.io"}
     maven{url = "https://maven.su5ed.dev/releases"}
+    maven{url = "https://maven.terraformersmc.com/releases"}
+	maven{url = "https://registry.somethingcatchy.net/repository/maven-releases/"}
 }
 
 base {
@@ -126,6 +128,12 @@ dependencies {
 
     runtimeOnly "maven.modrinth:quark:yvp3Jbmk"
     runtimeOnly "maven.modrinth:zeta:9GjNW2Gf"
+
+    implementation ("net.mehvahdjukaar:everycomp-neoforge:1.21-2.11.48") {transitive = false}
+	implementation ("net.mehvahdjukaar:moonlight-neoforge:1.21.1-3.3.3") {transitive = false}
+	implementation ("net.mehvahdjukaar:codecui-neoforge:1.21.1-1.4.0") {transitive = false}
+
+	implementation "maven.modrinth:carved-wood:1.9.7-B-NeoForge-1.21.1"
 
     // Example optional mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
