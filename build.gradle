@@ -51,6 +51,11 @@ dependencies {
 
 	modImplementation "maven.modrinth:lootr:C5cP6if7"
 	modImplementation "maven.modrinth:cloth-config:qA00xo1O"
+
+	// runtimeOnly "maven.modrinth:betterend:21.800.1"
+	// runtimeOnly "maven.modrinth:betternether:21.800.1"
+	// runtimeOnly "maven.modrinth:worldweaver:21.800.1"
+	// runtimeOnly "maven.modrinth:bclib:21.800.1"
 }
 
 processResources {

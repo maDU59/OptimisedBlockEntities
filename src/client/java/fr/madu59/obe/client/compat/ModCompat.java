@@ -3,6 +3,8 @@ package fr.madu59.obe.client.compat;
 import java.util.Arrays;
 import java.util.List;
 
+import fr.madu59.obe.OBE;
+import fr.madu59.obe.client.compat.bclib.BclibCompat;
 import fr.madu59.obe.client.compat.emf.EMFCompat;
 import fr.madu59.obe.client.compat.iris.IrisCompat;
 import fr.madu59.obe.client.compat.lootr.LootrCompat;
@@ -14,13 +16,31 @@ import net.minecraft.world.level.block.state.BlockState;
 public class ModCompat {
     private final static boolean isIrisLoaded = PlatformHelper.isModLoaded("iris") || PlatformHelper.isModLoaded("oculus");
     private final static boolean isSodiumLoaded = PlatformHelper.isModLoaded("sodium") || PlatformHelper.isModLoaded("embeddium");
-    private final static boolean isEMFLoaded = PlatformHelper.isModLoaded("entity_model_features");
+    private static boolean isEMFLoaded = PlatformHelper.isModLoaded("entity_model_features");
     private final static boolean isPunchyLoaded = PlatformHelper.isModLoaded("punchy");
 
     private static final List<String> incompatibleMods = Arrays.asList("vulkanmod","optifine","embeddium","optifabric");
 
     public static void init(){
-        if(PlatformHelper.isModLoaded("lootr")) LootrCompat.init();
+        if(PlatformHelper.isModLoaded("lootr")) {
+            try{
+                LootrCompat.init();
+            }
+            catch(Error e){
+                OBE.LOGGER.warn("Incompatible version of Lootr used, if you are using the latest one, please report that to OBE's author.");
+            }
+        }
+    }
+
+    public static void onWorldLoad(){
+        if(PlatformHelper.isModLoaded("bclib")) {
+            try{
+                BclibCompat.init();
+            }
+            catch(Error e){
+                OBE.LOGGER.warn("Incompatible version of Bclib used, if you are using the latest one, please report that to OBE's author.");
+            }
+        }
     }
 
     public static boolean isIrisLoaded(){
@@ -45,7 +65,16 @@ public class ModCompat {
     }
 
     public static ModelPart applyEMFRestPose(ModelPart root, BlockState state){
-        if(isEMFLoaded() && SettingsManager.EMF_COMPAT.getValue() && state != null) return EMFCompat.applyRestPose(root, state);
+        if(isEMFLoaded() && SettingsManager.EMF_COMPAT.getValue() && state != null) {
+            try{
+                return EMFCompat.applyRestPose(root, state);
+            }
+            catch(Error e){
+                OBE.LOGGER.warn("Incompatible version of EMF used, if you are using the latest one, please report that to OBE's author.");
+                isEMFLoaded = false;
+                return root;
+            }
+        }
         else return root;
     }
 

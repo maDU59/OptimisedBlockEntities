@@ -1,7 +1,5 @@
 package fr.madu59.obe.client.mixin;
 
-import java.util.Map;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -30,9 +28,6 @@ public class BlockStateModelSetMixin {
     @Unique private final ResourceLocation missingTexture = ResourceLocation.tryParse("minecraft:missingno");
 
     @Shadow
-    public Map<BlockState, BlockStateModel> modelByStateCache;
-
-    @Shadow
     private ModelManager modelManager;
 
     @Inject(method = "getBlockModel", at = @At("HEAD"), cancellable = true)
@@ -48,42 +43,62 @@ public class BlockStateModelSetMixin {
             String group = Registry.getGroup(state);
             if(group == null) return;
 
-            if(group.equals("sign") && SettingsManager.OPTIMISED_SIGNS.getValue()){
-                model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
-                if(model != null) cir.setReturnValue(model);
+            if(group.equals("sign")){
+                if(SettingsManager.OPTIMISED_SIGNS.getValue()){
+                    model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
+                    if(model != null) cir.setReturnValue(model);
+                }
             }
-            else if(group.equals("hanging_sign") && SettingsManager.OPTIMISED_SIGNS.getValue()){
-                model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
-                if(model != null) cir.setReturnValue(model);
+            else if(group.equals("hanging_sign")){
+                if(SettingsManager.OPTIMISED_SIGNS.getValue()){
+                    model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
+                    if(model != null) cir.setReturnValue(model);
+                }
             }
-            else if(group.equals("bed") && SettingsManager.OPTIMISED_BEDS.getValue()){
-                model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
-                if(model != null) cir.setReturnValue(model);
+            else if(group.equals("bed")){
+                if(SettingsManager.OPTIMISED_BEDS.getValue()){
+                    model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
+                    if(model != null) cir.setReturnValue(model);
+                }
             }
-            else if(group.equals("skull") && SettingsManager.OPTIMISED_SKULLS.getValue()){
-                model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
-                if(model != null) cir.setReturnValue(model);
+            else if(group.equals("skull")){
+                if(SettingsManager.OPTIMISED_SKULLS.getValue()){
+                    model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
+                    if(model != null) cir.setReturnValue(model);
+                }
             }
-            else if(group.equals("chest") && SettingsManager.OPTIMISED_CHESTS.getValue()){
-                model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
-                if(model != null) cir.setReturnValue(model);
+            else if(group.equals("chest")){
+                if(SettingsManager.OPTIMISED_CHESTS.getValue()){
+                    model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
+                    if(model != null) cir.setReturnValue(model);
+                }
             }
-            else if(group.equals("banner") && SettingsManager.OPTIMISED_BANNERS.getValue()){
-                model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
-                if(model != null) cir.setReturnValue(model);
+            else if(group.equals("banner")){
+                if(SettingsManager.OPTIMISED_BANNERS.getValue()){
+                    model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
+                    if(model != null) cir.setReturnValue(model);
+                }
             }
-            // else if(group.equals("bell")){
-            //     BlockStateModelSet set = ((BlockStateModelSet)(Object)this);
-            //     blockEntityModelsManager.originalBellModel = (BlockStateModel)set.modelByState.getOrDefault(state, new BlockEntityStateModel());
-            //     model = new CompositeBlockStateModel(blockEntityModelsManager.getBellModel(state, random, obe$getOriginalModel(state)), (BlockStateModel)set.modelByState.getOrDefault(state, new BlockEntityStateModel());
-            //     if(model != null) cir.setReturnValue(model);
-            // }
-            else if(group.equals("shulker_box") && SettingsManager.OPTIMISED_SHULKER_BOXES.getValue()){
-                model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
-                if(model != null) cir.setReturnValue(model);
+            else if(group.equals("bell")){
+                if(SettingsManager.OPTIMISED_BELLS.getValue()){
+                    model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
+                    if(model != null) cir.setReturnValue(model);
+                }
             }
-            else if(group.equals("decorated_pot") && SettingsManager.OPTIMISED_DECORATED_POTS.getValue()){
-                model = blockEntityModelsManager.getDecoratedPotModel(state, random, obe$getOriginalModel(state));
+            else if(group.equals("shulker_box")){
+                if(SettingsManager.OPTIMISED_SHULKER_BOXES.getValue()){
+                    model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
+                    if(model != null) cir.setReturnValue(model);
+                }
+            }
+            else if(group.equals("decorated_pot")){
+                if(SettingsManager.OPTIMISED_DECORATED_POTS.getValue()){
+                    model = blockEntityModelsManager.getDecoratedPotModel(state, random, obe$getOriginalModel(state));
+                    if(model != null) cir.setReturnValue(model);
+                }
+            }
+            else{
+                model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
                 if(model != null) cir.setReturnValue(model);
             }
         }
@@ -94,14 +109,7 @@ public class BlockStateModelSetMixin {
 
     @Unique
     public BlockStateModel obe$getOriginalModel(BlockState state){
-        BlockStateModel blockStateModel = (BlockStateModel)this.modelByStateCache.get(state);
-        if (blockStateModel == null) {
-            blockStateModel = this.modelManager.getMissingBlockStateModel();
-        }
-        if (blockStateModel == null) {
-            blockStateModel = new BlockEntityStateModel(ResourceUtil.getSprite(missingTexture));
-        }
-
-        return blockStateModel;
+        BlockStateModel model = ResourceUtil.getDefaultModel(state);
+        return model == null? new BlockEntityStateModel(ResourceUtil.getSprite(missingTexture)) : model;
     }
 }
