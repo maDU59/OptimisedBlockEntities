@@ -28,11 +28,13 @@ This mod renders supported block entities just like any other block, this means 
 
 <sub>*Performance tests ran on Minecraft 26.1.2 with OBE 1.1.27 and BBE 1.3.5 with Sodium 0.9.0 in FHD on a RTX 5060 laptop, an AMD Ryzen 7 260 w and 16Go of DDR5 RAM*</sub>
 
-## Compatibility
+## Modded block entities compatibility
 
-- Compatible with EMF/ETF and any resource packs made for those (like FA: Objects) *Since OBE 1.1.4*
-- Compatible with Quark's chests *Since OBE 1.1.3 and Quark 4.1-481*
-- Compatible with Lootr *Since OBE 1.1.23*
+While OBE by default does not optimize modded block entities, the following ones have been implemented:
+- Quark's chests *Since OBE 1.1.3 and Quark 4.1-481*
+- Lootr *Since OBE 1.1.23*
+- Mods using Blueprint (Woodworks and more) *Since OBE 1.1.36*
+- Mods using BCLIB (BetterEnd and BetterNether) *Since OBE 1.1.40*
 
 ## Why
 

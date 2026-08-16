@@ -26,7 +26,6 @@ public class BellBlockEntityMixin {
         BlockEntityExt ext = (BlockEntityExt)be;
 
         ext.isSupported(Registry.isSupported("bell", be.getType()));
-        ext.hasSpecialRenderer(true);
     }
 
     @Inject(method = "tick", at = @At("RETURN"))

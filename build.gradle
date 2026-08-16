@@ -61,6 +61,8 @@ dependencies {
 	modImplementation ("net.mehvahdjukaar:codecui-fabric:1.21.1-1.4.0") {transitive = false}
 
 	modImplementation "maven.modrinth:carved-wood:1.9.7-B-Fabric-1.21.1"
+	
+	modCompileOnly "maven.modrinth:bclib:21.0.13"
 }
 
 processResources {

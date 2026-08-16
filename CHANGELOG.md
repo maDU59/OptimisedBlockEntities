@@ -1,6 +1,10 @@
 # What's new:
-- Fixed a rendering bug with bells
+- Improved mod compatiblity
+- Improved the API
+- Added BCLIB mods compatibility (betternether and betterend)
 
-# Patch 1:
-- Added compatiblity with Every Compat
-- Added compatibility with Carved Wood
+# Hotfix 1:
+- Fixed a crash
+
+# Hotfix 2:
+- Fixed settings not being respected
