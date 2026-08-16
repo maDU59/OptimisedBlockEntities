@@ -11,3 +11,6 @@
 
 # Hotfix 3:
 - Fixed an error when using some other mods
+
+# Hotfix 4:
+- Fixed an obscure crash

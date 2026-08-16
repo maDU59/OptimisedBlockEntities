@@ -12,6 +12,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import fr.madu59.obe.client.compat.ModCompat;
 import fr.madu59.obe.client.config.SettingsManager;
+import fr.madu59.obe.client.mixin.accessor.FaceBakeryInvoker;
 import fr.madu59.obe.client.resources.ResourceUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -156,7 +157,7 @@ public class BlockEntityStateModel implements BakedModel{
                 if (shouldSkipQuad(polygon, positions, state, partName)) continue;
        
                 if(isAxisAlignedRectangle(positions)){
-                    FACE_BAKERY.recalculateWinding(packedVertices, dir);
+                    ((FaceBakeryInvoker) FACE_BAKERY).obe$recalculateWinding(packedVertices, dir);
                 }
 
                 BakedQuad baked = new BakedQuad(
@@ -172,8 +173,7 @@ public class BlockEntityStateModel implements BakedModel{
                     // Same geometry but with inverted winding order so they are visible from the other side of the model
                     packedVerticesCopy = packedVertices.clone();
                     if(isAxisAlignedRectangle(positions)){
-                        Minecraft.getInstance().getResourceManager();
-                        FACE_BAKERY.recalculateWinding(packedVerticesCopy, dir.getOpposite());
+                        ((FaceBakeryInvoker) FACE_BAKERY).obe$recalculateWinding(packedVerticesCopy, dir.getOpposite());
                     }
                     else{
                         for (int i = 0; i < 4; i++) {
