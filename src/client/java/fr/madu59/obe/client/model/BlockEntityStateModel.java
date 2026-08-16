@@ -18,6 +18,7 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.ModelPart.Polygon;
 import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.FaceBakery;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
@@ -72,10 +73,12 @@ public class BlockEntityStateModel implements BakedModel{
 
         boolean fixBfc = shouldFixBFC(partName);
 
-        Vector3f[] positions = new Vector3f[4];
         Vector3f normal = new Vector3f();
 
         part.visit(poseStack, (pose, partPath, cubeIndex, cube) -> {
+
+            Vector3f[] positions = new Vector3f[4];
+
             for(ModelPart.Polygon polygon : cube.polygons){
                 if (polygon.vertices().length != 4) continue;
 
@@ -83,6 +86,7 @@ public class BlockEntityStateModel implements BakedModel{
                 
                 Direction dir = getDirection(normal);
 
+                int[] packedVerticesCopy = new int[32];
                 int[] packedVertices = new int[32];
 
                 for (int i = 0; i < 4; i++) {
@@ -113,6 +117,10 @@ public class BlockEntityStateModel implements BakedModel{
                 }
 
                 if (shouldSkipQuad(polygon, positions, state, partName)) continue;
+       
+                if(isAxisAlignedRectangle(positions)){
+                    FaceBakery.recalculateWinding(packedVertices, dir);
+                }
 
                 BakedQuad baked = new BakedQuad(
                     packedVertices,
@@ -123,15 +131,23 @@ public class BlockEntityStateModel implements BakedModel{
                     0
                 );
                 output.add(baked);
+
                 if(fixBfc){
-                    int[] invertedVertices = new int[32];
-                    for (int i = 0; i < 4; i++) {
-                        int srcOffset = i * 8;
-                        int destOffset = ((4 - i) % 4) * 8;
-                        System.arraycopy(packedVertices, srcOffset, invertedVertices, destOffset, 8);
+                    // Same geometry but with inverted winding order so they are visible from the other side of the model
+                    packedVerticesCopy = packedVertices.clone();
+                    if(isAxisAlignedRectangle(positions)){
+                        FaceBakery.recalculateWinding(packedVerticesCopy, dir.getOpposite());
                     }
+                    else{
+                        for (int i = 0; i < 4; i++) {
+                            int srcOffset = i * 8;
+                            int destOffset = ((4 - i) % 4) * 8;
+                            System.arraycopy(packedVerticesCopy, srcOffset, packedVertices, destOffset, 8);
+                        }
+                    }
+
                     baked = new BakedQuad(
-                        invertedVertices,
+                        packedVerticesCopy,
                     0,
                     dir.getOpposite(),
                     sprite,
@@ -216,6 +232,38 @@ public class BlockEntityStateModel implements BakedModel{
 
     @Override
     public boolean usesBlockLight() {
+        return true;
+    }
+
+    private static boolean isAxisAlignedRectangle(Vector3f[] pos) {
+        float eps = 0.0001f;
+
+        boolean sameX = Math.abs(pos[0].x() - pos[1].x()) < eps && Math.abs(pos[0].x() - pos[2].x()) < eps && Math.abs(pos[0].x() - pos[3].x()) < eps;
+        boolean sameY = Math.abs(pos[0].y() - pos[1].y()) < eps && Math.abs(pos[0].y() - pos[2].y()) < eps && Math.abs(pos[0].y() - pos[3].y()) < eps;
+        boolean sameZ = Math.abs(pos[0].z() - pos[1].z()) < eps && Math.abs(pos[0].z() - pos[2].z()) < eps && Math.abs(pos[0].z() - pos[3].z()) < eps;
+
+        if (!sameX && !sameY && !sameZ) {
+            return false;
+        }
+
+        for (int i = 0; i < 4; i++) {
+            Vector3f p1 = pos[i];
+            Vector3f p2 = pos[(i + 1) % 4];
+
+            float dx = Math.abs(p2.x() - p1.x());
+            float dy = Math.abs(p2.y() - p1.y());
+            float dz = Math.abs(p2.z() - p1.z());
+
+            int zeroComponents = 0;
+            if (dx < eps) zeroComponents++;
+            if (dy < eps) zeroComponents++;
+            if (dz < eps) zeroComponents++;
+
+            if (zeroComponents < 2) {
+                return false;
+            }
+        }
+
         return true;
     }
 }

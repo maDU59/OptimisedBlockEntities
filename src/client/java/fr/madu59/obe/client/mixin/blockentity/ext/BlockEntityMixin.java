@@ -24,7 +24,14 @@ public abstract class BlockEntityMixin implements BlockEntityExt {
     @Unique private boolean forceEntity = false;
 
     @Override public boolean isSupported() { return isSupported; }
-    @Override public void isSupported(boolean bl) {this.isSupported = bl; }
+    @Override public void isSupported(boolean bl) {
+        if(bl && bl != isSupported && renderModeDelayed == RenderMode.TERRAIN){
+            if(!RenderModeManager.canBeTerrain(this)) {
+                renderModeDelayed = RenderMode.ENTITY;
+            }
+        }
+        this.isSupported = bl; 
+    }
 
     @Override public RenderMode renderMode() { return renderMode; }
     @Override public void renderMode(RenderMode mode) {
