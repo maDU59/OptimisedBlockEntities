@@ -46,7 +46,6 @@ public abstract class DecoratedPotBlockEntityMixin{
         if(!be.hasLevel()) return;
         BlockEntityExt ext = (BlockEntityExt)be;
         if(!decorations.equals(Decorations.EMPTY)){
-            if(!ext.forceEntity()) RenderModeManager.setDirty(be.getBlockPos());
             ext.forceEntity(true);
         }
         else{

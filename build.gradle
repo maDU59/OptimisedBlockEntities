@@ -100,6 +100,7 @@ repositories {
 	maven { url 'https://repo.codemc.org/repository/maven-public/'}
     maven { url "https://maven.su5ed.dev/releases"}
     maven { url "https://cursemaven.com"}
+    maven { url = "https://registry.somethingcatchy.net/repository/maven-releases/"}
 }
 
 dependencies {
@@ -121,6 +122,11 @@ dependencies {
 
     runtimeOnly renamer.dependency("maven.modrinth:woodworks:236Amnif")
     implementation renamer.dependency("maven.modrinth:blueprint:AiaPEN6q")
+
+    implementation renamer.dependency("maven.modrinth:every-compat:1.20-2.9.24-forge")
+	implementation renamer.dependency("maven.modrinth:moonlight:1.20-2.16.34-forge")
+
+	implementation renamer.dependency("maven.modrinth:carved-wood:1.9.7-E-Forge-1.20.1")
 
     annotationProcessor 'org.spongepowered:mixin:0.8.7:processor'
 }

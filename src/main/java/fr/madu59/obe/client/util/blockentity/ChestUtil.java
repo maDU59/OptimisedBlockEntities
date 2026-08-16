@@ -35,7 +35,7 @@ public class ChestUtil {
         }
     }
 
-    private static ResourceLocation chooseMaterial(ChestType chestType, Material material, Material material2, Material material3) {
+    public static ResourceLocation chooseMaterial(ChestType chestType, Material material, Material material2, Material material3) {
         if(chestType == null) return material.texture();
         return switch (chestType) {
             case RIGHT -> material3.texture();
@@ -77,7 +77,7 @@ public class ChestUtil {
 
     @Deprecated
     public static ModelLayerLocation getChestModelLayerLocation(BlockState state){
-        return getChestModelLayerLocation(state);
+        return getModelLayerLocation(state);
     }
 
     @Deprecated
@@ -92,7 +92,7 @@ public class ChestUtil {
 
     @Deprecated
     public static ModelLayerLocation getChestModelLayerLocation(BlockState state, BlockEntity be){
-        return getChestModelLayerLocation(state, be);
+        return getModelLayerLocation(state, be);
     }
 
     @Deprecated

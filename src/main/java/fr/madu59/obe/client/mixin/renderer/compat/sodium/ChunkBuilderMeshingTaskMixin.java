@@ -11,11 +11,11 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 
-import fr.madu59.obe.client.model.BlockEntityStateModel;
 import fr.madu59.obe.client.renderer.blockentity.BlockEntityModelsManager;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager.RenderMode;
+import fr.madu59.obe.client.resources.ResourceUtil;
 import me.jellysquid.mods.sodium.client.render.chunk.compile.ChunkBuildBuffers;
 import me.jellysquid.mods.sodium.client.render.chunk.compile.pipeline.BlockRenderContext;
 import me.jellysquid.mods.sodium.client.render.chunk.compile.pipeline.BlockRenderer;
@@ -54,9 +54,6 @@ public class ChunkBuilderMeshingTaskMixin {
                     sectionPos = SectionPos.of(pos);
                 }
                 RenderModeManager.updateBlockEntityOnChunkRemesh(ext, sectionPos);
-                if(ext.forceEntity()){
-                    return RenderShape.INVISIBLE;
-                }
                 if(ext.isEnabled() && ext.renderModeDelayed() == RenderMode.TERRAIN){
                     return RenderShape.MODEL;
                 }
@@ -95,17 +92,21 @@ public class ChunkBuilderMeshingTaskMixin {
     )
     public void obe$wrapRenderModel(BlockRenderer instance, BlockRenderContext ctx, ChunkBuildBuffers buffers, Operation<Void> original, @Share("be") LocalRef<BlockEntity> beRef) {
         if(ctx.state().hasBlockEntity()){
-            BakedModel model = null;
+            BakedModel model = ctx.model();
             BlockPos origin = new BlockPos((int)ctx.origin().x(), (int)ctx.origin().y(), (int)ctx.origin().z());
             BlockEntity be = beRef.get();
             BlockEntityExt ext = (BlockEntityExt) be;
-            if(ext != null && ext.isSupported()) {
-                if(ext.isEnabled() && !ext.hasSpecialRenderer() && ext.renderModeDelayed() != RenderMode.TERRAIN){
-                    model = new BlockEntityStateModel();
+
+            if(ext != null){
+                if(ext.renderModeDelayed() != RenderMode.TERRAIN || !ext.isSupported() || !ext.isEnabled() || ext.forceEntity()){
+                    model = ResourceUtil.getDefaultModel(be.getBlockState());
                 }
-                else if(ext.hasSpecialRenderer()) model = blockEntityModelsManager.getModel(ctx.state(), ctx.pos(), ctx.seed(), ctx.model(), be);
+                else if(ext.hasSpecialRenderer()) model = blockEntityModelsManager.getModel(ctx.state(), ctx.model(), be);
             }
-            if(model != null) ctx.update(ctx.pos(), origin, ctx.state(), model, ctx.seed(), ctx.modelData(), ctx.renderLayer());
+
+            if(model == null) model = ResourceUtil.getDefaultModel(be.getBlockState());
+
+            ctx.update(ctx.pos(), origin, ctx.state(), model, ctx.seed(), ctx.modelData(), ctx.renderLayer());
         }
         original.call(instance, ctx, buffers);
     }
