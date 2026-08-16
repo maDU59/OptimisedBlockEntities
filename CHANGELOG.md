@@ -9,4 +9,7 @@
 # Hotfix 2:
 - Fixed settings not being respected
 
+# Hotfix 3:
+- Fixed an error when using some other mods
+
 ## If you're using Embeddium alongside OBE, you'll also need the [Forgified Fabric API](https://modrinth.com/mod/forgified-fabric-api)
