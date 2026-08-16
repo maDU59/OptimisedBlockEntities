@@ -87,20 +87,20 @@ public class BlockRenderDispatcherMixin {
     }
 
     @WrapOperation(
-        method = "getBlockModel",
+        method = "renderBatched",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/client/renderer/block/BlockModelShaper;getBlockModel(Lnet/minecraft/world/level/block/state/BlockState;)Lnet/minecraft/client/resources/model/BakedModel;"
+            target = "Lnet/minecraft/client/renderer/block/BlockRenderDispatcher;getBlockModel(Lnet/minecraft/world/level/block/state/BlockState;)Lnet/minecraft/client/resources/model/BakedModel;"
         )
     )
-    private BakedModel obe$wrapGetBlockModel(
-        BlockModelShaper shaper,
+    private BakedModel obe$wrapRenderBatchedModel(
+        BlockRenderDispatcher dispatcher,
         BlockState state,
         Operation<BakedModel> original,
         @Local BlockPos pos,
         @Local BlockAndTintGetter level
     ) {    
-        BakedModel originalModel = original.call(shaper, state);
+        BakedModel originalModel = original.call(dispatcher, state);
 
         if(state.hasBlockEntity()){
 
