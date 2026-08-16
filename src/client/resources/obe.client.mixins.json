@@ -30,6 +30,7 @@
 		"renderer.BlockRenderDispatcherMixin",
 		"renderer.ItemBlockRenderTypesMixin",
 		"renderer.SectionRenderDispatcherMixin",
+		"renderer.BlockRenderDispatcherMixin",
 		"renderer.compat.indigo.TerrainRenderContextMixin",
 		"renderer.compat.sodium.ChunkBuilderMeshingTaskMixin",
 		"renderer.compat.sodium.RenderSectionManagerMixin",
