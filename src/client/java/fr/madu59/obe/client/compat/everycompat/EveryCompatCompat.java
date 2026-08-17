@@ -30,9 +30,9 @@ public class EveryCompatCompat {
 
         if (isTrapped) {
             return switch (chestType) {
-                case LEFT -> EveryCompat.res(path + "_left");
-                case RIGHT -> EveryCompat.res(path + "_right");
-                default -> EveryCompat.res(path);
+                case LEFT -> EveryCompat.res(trapped_path + "_left");
+                case RIGHT -> EveryCompat.res(trapped_path + "_right");
+                default -> EveryCompat.res(trapped_path);
             };
         } else {
             if (ChestUtil.isXmas && shortenedId.equals("abnww")) {
@@ -43,9 +43,9 @@ public class EveryCompatCompat {
                 };
             } else {
                 return switch (chestType) {
-                    case LEFT -> EveryCompat.res(trapped_path + "_left");
-                case RIGHT -> EveryCompat.res(trapped_path + "_right");
-                default -> EveryCompat.res(trapped_path);
+                    case LEFT -> EveryCompat.res(path + "_left");
+                    case RIGHT -> EveryCompat.res(path + "_right");
+                    default -> EveryCompat.res(path);
                 };
             }
         }
