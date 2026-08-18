@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import fr.madu59.obe.client.model.BlockEntityStateModel;
+import fr.madu59.obe.client.registry.Registry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.block.BlockStateModelSet;
@@ -75,7 +76,12 @@ public class ResourceUtil{
 
     public static BlockStateModel getDefaultModel(BlockState blockState){
         BlockStateModelSet modelSet = Minecraft.getInstance().getModelManager().getBlockStateModelSet();
-        return modelSet.modelByState.getOrDefault(blockState, modelSet.missingModel());
+        if(Registry.getGroup(blockState) != null){
+            return modelSet.modelByState.getOrDefault(blockState, modelSet.missingModel());
+        }
+        else{
+            return modelSet.get(blockState);
+        }
     }
 
     public record ModelCacheKey(ModelLayerLocation modelLayerLocation, BlockState blockState) {}
