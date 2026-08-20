@@ -169,7 +169,6 @@ public class BlockEntityStateModel implements BakedModel{
                     // Same geometry but with inverted winding order so they are visible from the other side of the model
                     packedVerticesCopy = packedVertices.clone();
                     if(isAxisAlignedRectangle(positions)){
-                        Minecraft.getInstance().getResourceManager();
                         FACE_BAKERY.recalculateWinding(packedVerticesCopy, dir.getOpposite());
                     }
                     else{
