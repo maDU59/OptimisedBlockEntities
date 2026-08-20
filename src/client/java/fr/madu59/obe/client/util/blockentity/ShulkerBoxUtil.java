@@ -17,14 +17,15 @@ public class ShulkerBoxUtil {
         if(state.getBlock() instanceof ShulkerBoxBlock block){
             DyeColor color = block.getColor();
             if (color == null) {
-            return Sheets.DEFAULT_SHULKER_TEXTURE_LOCATION.texture();
+                return Sheets.DEFAULT_SHULKER_TEXTURE_LOCATION.texture();
             } else {
                 if(color.getId() >= 0 && color.getId() < Sheets.SHULKER_TEXTURE_LOCATION.size()){
                     return Sheets.SHULKER_TEXTURE_LOCATION.get(color.getId()).texture();
                 }
             }
         }
-        else return null;
+        
+        return null;
     }
 
     public static ModelLayerLocation getModelLayerLocation(BlockState state){
