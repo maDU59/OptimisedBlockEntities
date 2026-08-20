@@ -19,7 +19,9 @@ public class ShulkerBoxUtil {
             if (color == null) {
             return Sheets.DEFAULT_SHULKER_TEXTURE_LOCATION.texture();
             } else {
-                return Sheets.SHULKER_TEXTURE_LOCATION.get(color.getId()).texture();
+                if(color.getId() >= 0 && color.getId() < Sheets.SHULKER_TEXTURE_LOCATION.size()){
+                    return Sheets.SHULKER_TEXTURE_LOCATION.get(color.getId()).texture();
+                }
             }
         }
         else return null;
