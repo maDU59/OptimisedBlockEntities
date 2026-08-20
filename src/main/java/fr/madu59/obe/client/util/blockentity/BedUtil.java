@@ -15,7 +15,9 @@ import net.minecraft.world.level.block.state.properties.BedPart;
 public class BedUtil {
     public static ResourceLocation getMaterial(BlockState state){
         if(state.getBlock() instanceof BedBlock block){
-            return  Sheets.BED_TEXTURES[block.getColor().getId()].texture();
+            if(block.getColor().getId() >= 0 && block.getColor().getId() < Sheets.BED_TEXTURES.length){
+                return Sheets.BED_TEXTURES[block.getColor().getId()].texture();
+            }
         }
         return null;
     }
