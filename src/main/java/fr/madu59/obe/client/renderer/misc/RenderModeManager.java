@@ -99,10 +99,10 @@ public class RenderModeManager {
         BlockState state = be.getBlockState();
         String group = Registry.getGroup(state);
 
-        SpecialModelProvider customModelProvider = SpecialModelGetter.getSpecialModelProvider(state, group);
+        if(ext.hasSpecialRenderer()){
+            SpecialModelProvider customModelProvider = SpecialModelGetter.getSpecialModelProvider(state, group);
 
-        if(ext.hasSpecialRenderer() && customModelProvider != null){
-
+            if(customModelProvider == null) return false;
             if(customModelProvider.getModelLayerLocationProvider().apply(state, be) == null) return false;
             if(customModelProvider.getMaterialProvider().apply(state, be) == null) return false;
         }
