@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.Set;
 
 import fr.madu59.obe.OBE;
-import fr.madu59.obe.client.OBEClient;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.BlockEntityTypes;
@@ -116,14 +116,28 @@ public class Registry {
 
     public static BlockEntityType<?> getBlockEntityType(BlockState state){
         if(!state.hasBlockEntity()) return null;
-        return beTypeCache.computeIfAbsent(state.getBlock(), (key) -> {
-            for(Set<BlockEntityType<?>> set : supportedBeTypes.values())
-                for(BlockEntityType<?> type : set){
-                    if(type.isValid(state)){
-                        return Optional.of(type);
+        Block block = state.getBlock();
+
+        Optional<BlockEntityType<?>> cached = beTypeCache.get(block);
+        if(cached != null){
+            return cached.orElse(null);
+        }
+
+        BlockEntityType<?> match = null;
+        for(Set<BlockEntityType<?>> set : supportedBeTypes.values()){
+            for(BlockEntityType<?> type : set){
+                if(type.isValid(state)){
+                    if(match != null){
+                        // This tries to fix #69 (and #30 and # 13) where a block is considered as valid in a BlockEntityType where it shouldn't
+                        OBE.LOGGER.warn("Inconsistent BlockEntityType match detected for block " + block + " (" + BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(match).toString() + "), skipping cache for this query. This seems to happen when MoreCulling is used");
+                        return null;
                     }
+                    match = type;
                 }
-            return Optional.empty();
-        }).orElse(null);
+            }
+        }
+
+        beTypeCache.put(block, Optional.ofNullable(match));
+        return match;
     }
 }

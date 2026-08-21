@@ -44,11 +44,6 @@ public class BlockStateModelSetMixin {
             RandomSource random = RandomSource.create(42);
             BlockStateModel model;
 
-            // This tries to fix #69 (and #30 and # 13)
-            if(BlockEntityTypes.VAULT.isValid(state) && BlockEntityTypes.SIGN.isValid(state)){
-                return;
-            }
-
             String group = Registry.getGroup(state);
             if(group == null) return;
 
