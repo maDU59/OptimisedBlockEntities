@@ -1,2 +1,2 @@
 # What's new:
-- Bug fixes
+- Fixed a crash with MoreCulling
