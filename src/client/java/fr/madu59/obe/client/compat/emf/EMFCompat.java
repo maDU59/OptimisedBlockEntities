@@ -17,7 +17,7 @@ public class EMFCompat {
     // Thanks to Traben, EMF/ETF dev for helping fixing issues with the compatibility  :D
     
     public static ModelPart applyRestPose(ModelPart root, BlockState blockState) {
-        if (blockState.getBlock() instanceof EntityBlock entityBlock) {
+        if (root instanceof EMFModelPartRoot && blockState.getBlock() instanceof EntityBlock entityBlock) {
             return applyRestPose(root, entityBlock.newBlockEntity(BlockPos.ZERO, blockState));
         }
         return root;
