@@ -104,7 +104,7 @@ public class Registry {
         return group.equals(noneGroupKey)? null : group;
     }
 
-    public static String getGroupInternal(BlockEntityType<?> beType){
+    private static String getGroupInternal(BlockEntityType<?> beType){
         if(beType == null) return noneGroupKey;
         return beTypeGroupCache.computeIfAbsent(beType, (key) -> {
             for(Entry<String,Set<BlockEntityType<?>>> entry : supportedBeTypes.entrySet()){

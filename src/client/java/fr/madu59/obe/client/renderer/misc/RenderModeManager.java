@@ -110,6 +110,7 @@ public class RenderModeManager {
         if(ext.hasSpecialRenderer()){
             SpecialModelProvider customModelProvider = SpecialModelGetter.getSpecialModelProvider(state, group);
 
+            if(customModelProvider == null) return false;
             if(customModelProvider.getModelLayerLocationProvider().apply(state, be) == null) return false;
             if(customModelProvider.getMaterialProvider().apply(state, be) == null) return false;
         }
