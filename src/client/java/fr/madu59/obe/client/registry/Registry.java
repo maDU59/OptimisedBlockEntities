@@ -3,6 +3,7 @@ package fr.madu59.obe.client.registry;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.Set;
@@ -16,12 +17,11 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class Registry {
     private static Map<String, Set<BlockEntityType<?>>> supportedBeTypes = new ConcurrentHashMap<>();
-    private static Map<Block, BlockEntityType<?>> beTypeCache = new ConcurrentHashMap<>();
+    private static Map<Block, Optional<BlockEntityType<?>>> beTypeCache = new ConcurrentHashMap<>();
     private static Map<Block, String> blockGroupCache = new ConcurrentHashMap<>();
     private static Map<BlockEntityType<?>, String> beTypeGroupCache = new ConcurrentHashMap<>();
 
     private static final String noneGroupKey = "OBE_NONE";
-    private static final BlockEntityType<?> noneBlockEntityType = OBEClient.UNUSED_BLOCK_ENTITY_TYPE;
 
     public static void init(){
         register("chest", BlockEntityTypes.CHEST, BlockEntityTypes.ENDER_CHEST, BlockEntityTypes.TRAPPED_CHEST);
@@ -116,15 +116,14 @@ public class Registry {
 
     public static BlockEntityType<?> getBlockEntityType(BlockState state){
         if(!state.hasBlockEntity()) return null;
-        BlockEntityType<?> beType = beTypeCache.computeIfAbsent(state.getBlock(), (key) -> {
+        return beTypeCache.computeIfAbsent(state.getBlock(), (key) -> {
             for(Set<BlockEntityType<?>> set : supportedBeTypes.values())
                 for(BlockEntityType<?> type : set){
                     if(type.isValid(state)){
-                        return type;
+                        return Optional.of(type);
                     }
                 }
-            return noneBlockEntityType;
-        });
-        return beType == noneBlockEntityType? null : beType;
+            return Optional.empty();
+        }).orElse(null);
     }
 }

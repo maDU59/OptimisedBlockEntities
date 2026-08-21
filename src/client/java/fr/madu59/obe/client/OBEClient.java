@@ -10,13 +10,8 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.PackType;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.entity.BlockEntityTypes;
-import net.minecraft.world.level.block.entity.vault.VaultBlockEntity;
 
 public class OBEClient implements ClientModInitializer {
-
-	public static BlockEntityType<VaultBlockEntity> UNUSED_BLOCK_ENTITY_TYPE = BlockEntityTypes.VAULT;
 
 	@Override
 	public void onInitializeClient() {
