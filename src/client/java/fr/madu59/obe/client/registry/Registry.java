@@ -8,6 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.Set;
 
 import fr.madu59.obe.OBE;
+import fr.madu59.obe.client.OBEClient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.BlockEntityTypes;
@@ -20,7 +21,7 @@ public class Registry {
     private static Map<BlockEntityType<?>, String> beTypeGroupCache = new ConcurrentHashMap<>();
 
     private static final String noneGroupKey = "OBE_NONE";
-    private static final BlockEntityType<?> noneBlockEntityType = BlockEntityTypes.ENCHANTING_TABLE;
+    private static final BlockEntityType<?> noneBlockEntityType = OBEClient.UNUSED_BLOCK_ENTITY_TYPE;
 
     public static void init(){
         register("chest", BlockEntityTypes.CHEST, BlockEntityTypes.ENDER_CHEST, BlockEntityTypes.TRAPPED_CHEST);
