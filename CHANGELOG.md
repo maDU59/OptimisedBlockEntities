@@ -8,3 +8,6 @@
 
 # Hotfix 2:
 - Fixed settings not being respected
+
+# Hotfix 3:
+- Fixed a bug without Sodium
