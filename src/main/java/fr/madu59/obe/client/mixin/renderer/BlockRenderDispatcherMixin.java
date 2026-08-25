@@ -3,7 +3,6 @@ package fr.madu59.obe.client.mixin.renderer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
 
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
@@ -38,7 +37,7 @@ public class BlockRenderDispatcherMixin {
             BlockEntityExt ext = (BlockEntityExt) be;
             if(ext != null && ext.isSupported()) {
                 RenderModeManager.updateBlockEntityOnChunkRemesh(ext, SectionPos.of(pos));
-                if(ext.isEnabled() && ext.renderMode() == RenderMode.TERRAIN && !ext.forceEntity()){
+                if(ext.isEnabled() && ext.renderModeDelayed() == RenderMode.TERRAIN && !ext.forceEntity()){
                     return RenderShape.MODEL;
                 }
             }
@@ -125,13 +124,7 @@ public class BlockRenderDispatcherMixin {
             BlockEntityExt ext = (BlockEntityExt) be;
             if(ext != null && ext.isSupported()) {
                 RenderModeManager.updateBlockEntityOnChunkRemesh(ext, SectionPos.of(pos));
-                if(ext.forceEntity()){
-                    return original.call(state);
-                }
-                if(ext.isEnabled() && !ext.hasSpecialRenderer() && ext.renderMode() != RenderMode.TERRAIN){
-                    return original.call(state);
-                }
-                if(ext.isEnabled() && ext.renderMode() == RenderMode.TERRAIN){
+                if(ext.isEnabled() && ext.renderModeDelayed() == RenderMode.TERRAIN){
                     return RenderShape.MODEL;
                 }
             }
