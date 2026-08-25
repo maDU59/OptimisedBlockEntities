@@ -36,7 +36,7 @@ public class BlockRenderDispatcherMixin {
             BlockEntityExt ext = (BlockEntityExt) be;
             if(ext != null && ext.isSupported()) {
                 RenderModeManager.updateBlockEntityOnChunkRemesh(ext, SectionPos.of(pos));
-                if(ext.isEnabled() && ext.renderMode() == RenderMode.TERRAIN && !ext.forceEntity()){
+                if(ext.isEnabled() && ext.renderModeDelayed() == RenderMode.TERRAIN && !ext.forceEntity()){
                     return RenderShape.MODEL;
                 }
             }
