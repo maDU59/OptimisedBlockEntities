@@ -70,7 +70,7 @@ public class SettingsManager {
 
     public static Option<Boolean> BANNER_AMBIENT_OCCLUSION = loadOptionWithDefaults("banner_ambient_occlusion",
         "obe.config.option.banner_ao",
-        ModCompat.isSodiumLoaded(),
+        true,
         reloadResourcesAction
     );
 
@@ -82,7 +82,7 @@ public class SettingsManager {
 
     public static Option<Boolean> SIGN_AMBIENT_OCCLUSION = loadOptionWithDefaults("sign_ambient_occlusion",
         "obe.config.option.sign_ao",
-        ModCompat.isSodiumLoaded(),
+        true,
         reloadResourcesAction
     );
 
@@ -130,7 +130,7 @@ public class SettingsManager {
 
     public static Option<Boolean> BED_AMBIENT_OCCLUSION = loadOptionWithDefaults("bed_ambient_occlusion",
         "obe.config.option.bed_ao",
-        ModCompat.isSodiumLoaded(),
+        true,
         reloadResourcesAction
     );
 
@@ -166,7 +166,7 @@ public class SettingsManager {
 
     public static Option<Boolean> COPPER_GOLEM_AMBIENT_OCCLUSION = loadOptionWithDefaults("copper_golem_ambient_occlusion",
         "obe.config.option.copper_golem_ao",
-        ModCompat.isSodiumLoaded(),
+        true,
         reloadResourcesAction
     );
 

@@ -128,8 +128,8 @@ public class Registry {
             for(BlockEntityType<?> type : set){
                 if(type.isValid(state)){
                     if(match != null){
-                        // This tries to fix #69 (and #30 and # 13) where a block is considered as valid in a BlockEntityType where it shouldn't
-                        OBE.LOGGER.warn("Inconsistent BlockEntityType match detected for block " + block + " (" + BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(match).toString() + "), skipping cache for this query. This seems to happen when MoreCulling is used");
+                        // This tries to fix #69 (and #30 and # 13) where a block is considered as valid in a BlockEntityType where it shouldn't. EnderScape is causing issues
+                        OBE.LOGGER.warn("Inconsistent BlockEntityType match detected for block " + block + " (" + BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(match).toString() + "), skipping cache for this query.");
                         return null;
                     }
                     match = type;

@@ -26,7 +26,7 @@ public abstract class ChestBlockEntityMixin{
         ext.isSupported(Registry.isSupported("chest", be.getType()));
     }
 
-    @Inject(method = "lidAnimateTick", at = @At("HEAD"))
+    @Inject(method = "lidAnimateTick", at = @At("RETURN"))
     private static void obe$lidAnimateTick(final Level level, final BlockPos pos, final BlockState state, final ChestBlockEntity entity, CallbackInfo ci) {
         BlockEntityExt ext = (BlockEntityExt)entity;
         if(entity.getOpenNess(0.5f) > 0){
