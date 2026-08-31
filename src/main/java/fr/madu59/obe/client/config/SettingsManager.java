@@ -8,7 +8,7 @@ import fr.madu59.obe.OBE;
 import fr.madu59.obe.client.compat.ModCompat;
 import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.platform.PlatformHelper;
-import fr.madu59.obe.client.util.ResourceUtil;
+import fr.madu59.obe.client.resources.ResourceUtil;
 import net.minecraft.client.Minecraft;
 
 import java.io.*;
@@ -40,6 +40,12 @@ public class SettingsManager {
     
     public static Option<Boolean> EMF_COMPAT = loadOptionWithDefaults("emf_compat",
         "obe.config.option.emf_compat",
+        true,
+        reloadResourcesAction
+    );
+
+    public static Option<Boolean> MODEL_OPTIMIZATION = loadOptionWithDefaults("optimized_models",
+        "obe.config.option.optimised_models",
         true,
         reloadResourcesAction
     );
@@ -110,6 +116,12 @@ public class SettingsManager {
         reloadResourcesAction
     );
 
+    public static Option<Boolean> CUSTOM_SKULLS = loadOptionWithDefaults("built_in_custom_skull",
+        "obe.config.option.custom_skulls",
+        true,
+        reloadResourcesAction
+    );
+
     public static Option<Boolean> OPTIMISED_BEDS = loadOptionWithDefaults("optimized_bed",
         "obe.config.option.optimised_beds",
         true,
@@ -118,7 +130,7 @@ public class SettingsManager {
 
     public static Option<Boolean> BED_AMBIENT_OCCLUSION = loadOptionWithDefaults("bed_ambient_occlusion",
         "obe.config.option.bed_ao",
-        ModCompat.isSodiumLoaded(),
+        false,
         reloadResourcesAction
     );
 
@@ -154,7 +166,7 @@ public class SettingsManager {
 
     public static Option<Boolean> COPPER_GOLEM_AMBIENT_OCCLUSION = loadOptionWithDefaults("copper_golem_ambient_occlusion",
         "obe.config.option.copper_golem_ao",
-        ModCompat.isSodiumLoaded(),
+        false,
         reloadResourcesAction
     );
 
@@ -180,6 +192,30 @@ public class SettingsManager {
         "obe.config.option.optimised_beacons",
         true,
         reloadChunksAction
+    );
+
+    public static Option<Boolean> OPTIMISED_CUSHIONS = loadOptionWithDefaults("optimized_cushion",
+        "obe.config.option.optimised_cushions",
+        !isIncompatible,
+        reloadChunksAction
+    );
+
+    public static Option<Boolean> CUSHION_AMBIENT_OCCLUSION = loadOptionWithDefaults("cushion_ambient_occlusion",
+        "obe.config.option.cushion_ao",
+        false,
+        reloadResourcesAction
+    );
+
+    public static final Map<String, Option<Boolean>> GROUP_TOGGLE_SETTINGS = Map.of(
+        "chest", SettingsManager.OPTIMISED_CHESTS,
+        "banner", SettingsManager.OPTIMISED_BANNERS,
+        "shulker_box", SettingsManager.OPTIMISED_SHULKER_BOXES,
+        "skull", SettingsManager.OPTIMISED_SKULLS,
+        "bell", SettingsManager.OPTIMISED_BELLS,
+        "decorated_pot", SettingsManager.OPTIMISED_DECORATED_POTS,
+        "copper_golem_statue", SettingsManager.OPTIMISED_COPPER_GOLEMS,
+        "sign", SettingsManager.OPTIMISED_SKULLS,
+        "bed", SettingsManager.OPTIMISED_BEDS
     );
 
     public static void saveSettings() {

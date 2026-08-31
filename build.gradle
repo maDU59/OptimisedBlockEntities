@@ -122,7 +122,7 @@ dependencies {
     implementation "maven.modrinth:entitytexturefeatures:7.1-neoforge-26.1"
 	implementation "maven.modrinth:entity-model-features:3.2.4-neoforge-26.1"
 
-    implementation "maven.modrinth:lootr:DZnEpHKO"
+    implementation "maven.modrinth:lootr:yUf7Q96A"
 
     // Example optional mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime

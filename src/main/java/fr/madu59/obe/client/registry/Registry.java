@@ -95,19 +95,24 @@ public class Registry {
         if(!state.hasBlockEntity()) return null;
         String group = blockGroupCache.computeIfAbsent(state.getBlock(), (key) -> {
             BlockEntityType<?> beType = getBlockEntityType(state);
-            return getGroup(beType);
+            return getGroupInternal(beType);
         });
         return group.equals(noneGroupKey)? null : group;
     }
 
     public static String getGroup(BlockEntityType<?> beType){
-        String group = beTypeGroupCache.computeIfAbsent(beType, (key) -> {
+        String group = getGroupInternal(beType);
+        return group.equals(noneGroupKey)? null : group;
+    }
+
+    public static String getGroupInternal(BlockEntityType<?> beType){
+        if(beType == null) return noneGroupKey;
+        return beTypeGroupCache.computeIfAbsent(beType, (key) -> {
             for(Entry<String,Set<BlockEntityType<?>>> entry : supportedBeTypes.entrySet()){
                 if(entry.getValue().contains(beType)) return entry.getKey();
             }
             return noneGroupKey;
         });
-        return group.equals(noneGroupKey)? null : group;
     }
 
     public static BlockEntityType<?> getBlockEntityType(BlockState state){

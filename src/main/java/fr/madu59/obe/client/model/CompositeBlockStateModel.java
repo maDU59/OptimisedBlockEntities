@@ -5,7 +5,6 @@ import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
 import net.minecraft.client.resources.model.geometry.BakedQuad.MaterialFlags;
 import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.util.RandomSource;
-import net.neoforged.neoforge.model.data.ModelData;
 
 import java.util.List;
 

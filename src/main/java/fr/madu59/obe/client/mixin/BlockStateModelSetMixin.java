@@ -11,8 +11,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.model.BlockEntityStateModel;
 import fr.madu59.obe.client.registry.Registry;
-import fr.madu59.obe.client.renderer.OBEBlockRenderer;
-import fr.madu59.obe.client.util.ResourceUtil;
+import fr.madu59.obe.client.renderer.blockentity.BlockEntityModelsManager;
+import fr.madu59.obe.client.resources.ResourceUtil;
 
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -25,7 +25,7 @@ import net.minecraft.world.level.block.state.BlockState;
 @Mixin(BlockStateModelSet.class)
 public class BlockStateModelSetMixin {
 
-    @Unique private final OBEBlockRenderer obeBlockRenderer = new OBEBlockRenderer();
+    @Unique private final BlockEntityModelsManager blockEntityModelsManager = new BlockEntityModelsManager();
     @Unique private final Identifier missingTexture = Identifier.tryParse("minecraft:missingno");
 
     @Shadow
@@ -44,46 +44,71 @@ public class BlockStateModelSetMixin {
 
             BlockStateModel model;
 
-            if(Registry.isSupported("sign", state) && SettingsManager.OPTIMISED_SIGNS.getValue()){
-                model = obeBlockRenderer.getStandingSignModel(state, random, obe$getOriginalModel(state));
-                if(model != null) cir.setReturnValue(model);
+            String group = Registry.getGroup(state);
+            if(group == null) return;
+
+            if(group.equals("sign")){
+                if(SettingsManager.OPTIMISED_SIGNS.getValue()){
+                    model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
+                    if(model != null) cir.setReturnValue(model);
+                }
             }
-            else if(Registry.isSupported("hanging_sign", state) && SettingsManager.OPTIMISED_SIGNS.getValue()){
-                model = obeBlockRenderer.getHangingSignModel(state, random, obe$getOriginalModel(state));
-                if(model != null) cir.setReturnValue(model);
+            else if(group.equals("hanging_sign")){
+                if(SettingsManager.OPTIMISED_SIGNS.getValue()){
+                    model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
+                    if(model != null) cir.setReturnValue(model);
+                }
             }
-            else if(Registry.isSupported("bed", state) && SettingsManager.OPTIMISED_BEDS.getValue()){
-                model = obeBlockRenderer.getBedModel(state, random, obe$getOriginalModel(state));
-                if(model != null) cir.setReturnValue(model);
+            else if(group.equals("bed")){
+                if(SettingsManager.OPTIMISED_BEDS.getValue()){
+                    model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
+                    if(model != null) cir.setReturnValue(model);
+                }
             }
-            else if(Registry.isSupported("skull", state) && SettingsManager.OPTIMISED_SKULLS.getValue()){
-                model = obeBlockRenderer.getSkullBlockModel(state, random, obe$getOriginalModel(state));
-                if(model != null) cir.setReturnValue(model);
+            else if(group.equals("skull")){
+                if(SettingsManager.OPTIMISED_SKULLS.getValue()){
+                    model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
+                    if(model != null) cir.setReturnValue(model);
+                }
             }
-            else if(Registry.isSupported("chest", state) && SettingsManager.OPTIMISED_CHESTS.getValue()){
-                model = obeBlockRenderer.getChestModel(state, random, obe$getOriginalModel(state));
-                if(model != null) cir.setReturnValue(model);
+            else if(group.equals("chest")){
+                if(SettingsManager.OPTIMISED_CHESTS.getValue()){
+                    model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
+                    if(model != null) cir.setReturnValue(model);
+                }
             }
-            else if(Registry.isSupported("banner", state) && SettingsManager.OPTIMISED_BANNERS.getValue()){
-                model = obeBlockRenderer.getBannerModel(state, random, obe$getOriginalModel(state));
-                if(model != null) cir.setReturnValue(model);
+            else if(group.equals("banner")){
+                if(SettingsManager.OPTIMISED_BANNERS.getValue()){
+                    model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
+                    if(model != null) cir.setReturnValue(model);
+                }
             }
-            // else if(Registry.isSupported("bell", state)){
-            //     BlockStateModelSet set = ((BlockStateModelSet)(Object)this);
-            //     OBEBlockRenderer.originalBellModel = (BlockStateModel)set.modelByState.getOrDefault(state, new BlockEntityStateModel());
-            //     model = new CompositeBlockStateModel(obeBlockRenderer.getBellModel(state, random, obe$getOriginalModel(state)), (BlockStateModel)set.modelByState.getOrDefault(state, new BlockEntityStateModel());
-            //     if(model != null) cir.setReturnValue(model);
-            // }
-            else if(Registry.isSupported("copper_golem_statue", state) && SettingsManager.OPTIMISED_COPPER_GOLEMS.getValue()){
-                model = obeBlockRenderer.getCopperGolemStatueModel(state, random, obe$getOriginalModel(state));
-                if(model != null) cir.setReturnValue(model);
+            else if(group.equals("bell")){
+                if(SettingsManager.OPTIMISED_BELLS.getValue()){
+                    model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
+                    if(model != null) cir.setReturnValue(model);
+                }
             }
-            else if(Registry.isSupported("shulker_box", state) && SettingsManager.OPTIMISED_SHULKER_BOXES.getValue()){
-                model = obeBlockRenderer.getShulkerBoxModel(state, random, obe$getOriginalModel(state));
-                if(model != null) cir.setReturnValue(model);
+            else if(group.equals("copper_golem_statue")){
+                if(SettingsManager.OPTIMISED_COPPER_GOLEMS.getValue()){    
+                    model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
+                    if(model != null) cir.setReturnValue(model);
+                }
             }
-            else if(Registry.isSupported("decorated_pot", state) && SettingsManager.OPTIMISED_DECORATED_POTS.getValue()){
-                model = obeBlockRenderer.getDecoratedPotModel(state, random, obe$getOriginalModel(state));
+            else if(group.equals("shulker_box")){
+                if(SettingsManager.OPTIMISED_SHULKER_BOXES.getValue()){
+                    model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
+                    if(model != null) cir.setReturnValue(model);
+                }
+            }
+            else if(group.equals("decorated_pot")){
+                if(SettingsManager.OPTIMISED_DECORATED_POTS.getValue()){
+                    model = blockEntityModelsManager.getDecoratedPotModel(state, random, obe$getOriginalModel(state));
+                    if(model != null) cir.setReturnValue(model);
+                }
+            }
+            else{
+                model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
                 if(model != null) cir.setReturnValue(model);
             }
         }
@@ -94,7 +119,7 @@ public class BlockStateModelSetMixin {
 
     @Unique
     public BlockStateModel obe$getOriginalModel(BlockState state){
-        BlockStateModel model = modelByState.getOrDefault(state, this.missingModel);
+        BlockStateModel model = ResourceUtil.getDefaultModel(state);
         return model == null? new BlockEntityStateModel(ResourceUtil.getSprite(missingTexture)) : model;
     }
 }

@@ -18,6 +18,6 @@ public class BedBlockEntityMixin{
         BlockEntity be = (BlockEntity)(Object)this;
         BlockEntityExt ext = (BlockEntityExt)be;
         
-        ext.isSupportedBlockEntity(Registry.isSupported("bed", be.getType()));
+        ext.isSupported(Registry.isSupported("bed", be.getType()));
     }
 }
