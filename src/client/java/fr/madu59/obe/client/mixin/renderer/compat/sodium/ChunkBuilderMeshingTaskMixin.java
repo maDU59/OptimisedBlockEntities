@@ -23,9 +23,8 @@ import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import fr.madu59.obe.client.renderer.entity.MeshableEntityTracker;
 import fr.madu59.obe.client.renderer.entity.MeshableEntityTracker.MeshableEntityData;
 import fr.madu59.obe.client.renderer.entity.ext.EntityExt;
-import fr.madu59.obe.client.renderer.misc.RenderModeManager;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager.RenderMode;
-import fr.madu59.obe.client.resources.ResourceUtil;
+import fr.madu59.obe.client.util.meshing.SectionMeshingUtil;
 import net.caffeinemc.mods.sodium.client.render.chunk.compile.pipeline.BlockRenderer;
 import net.caffeinemc.mods.sodium.client.render.chunk.compile.tasks.ChunkBuilderMeshingTask;
 import net.caffeinemc.mods.sodium.client.world.LevelSlice;
@@ -55,17 +54,7 @@ public class ChunkBuilderMeshingTaskMixin {
 
     @WrapOperation(method = "execute", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getRenderShape()Lnet/minecraft/world/level/block/RenderShape;"))
     private RenderShape obe$getRenderShape(BlockState state, Operation<RenderShape> original, @Share("be") LocalRef<BlockEntity> beRef){
-        if(state.hasBlockEntity()){
-            BlockEntity be = beRef.get();
-            BlockEntityExt ext = (BlockEntityExt) be;
-            if(ext != null && ext.isSupported()) {
-                RenderModeManager.updateBlockEntityOnChunkRemesh(ext, sectionPos);
-                if(ext.isEnabled() && ext.renderModeDelayed() == RenderMode.TERRAIN && !ext.forceEntity()){
-                    return RenderShape.MODEL;
-                }
-            }
-        }
-        return original.call(state);
+        return SectionMeshingUtil.getCorrectedRenderShape(state, beRef.get(), sectionPos, original.call(state));
     }
 
     @WrapOperation(
@@ -76,24 +65,9 @@ public class ChunkBuilderMeshingTaskMixin {
         )
     )
     public void obe$wrapRenderModel(BlockRenderer instance, BlockStateModel originalModel, BlockState state, BlockPos pos, BlockPos origin, Operation<Void> original, @Share("be") LocalRef<BlockEntity> beRef) {
-        if(state.hasBlockEntity()){
-
-            BlockStateModel model = originalModel;
-            BlockEntity be = beRef.get();
-            BlockEntityExt ext = (BlockEntityExt) be;
-
-            if(ext != null){
-                if(ext.renderModeDelayed() != RenderMode.TERRAIN || !ext.isSupported() || !ext.isEnabled() || ext.forceEntity()){
-                    model = ResourceUtil.getDefaultModel(be.getBlockState());
-                }
-                else if(ext.hasSpecialRenderer()) model = blockEntityModelsManager.getModel(state, pos, state.getSeed(pos), originalModel, be);
-            }
-
-            if(model == null) model = ResourceUtil.getDefaultModel(be.getBlockState());
-
-            original.call(instance, model, state, pos, origin);
-        }
-        else original.call(instance, originalModel, state, pos, origin);
+        BlockStateModel model = SectionMeshingUtil.getCorrectedModel(state, beRef.get(), originalModel, pos);
+        
+        original.call(instance, model, state, pos, origin);
     }
 
     @WrapOperation(
