@@ -1,2 +1,2 @@
 # What's new:
-- Fixed some issues with double chests sync
+- Updated to support EMF 3.3+
