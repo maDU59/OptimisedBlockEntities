@@ -11,10 +11,7 @@ import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 
 import fr.madu59.obe.client.renderer.blockentity.BlockEntityModelsManager;
-import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
-import fr.madu59.obe.client.renderer.misc.RenderModeManager;
-import fr.madu59.obe.client.renderer.misc.RenderModeManager.RenderMode;
-import fr.madu59.obe.client.resources.ResourceUtil;
+import fr.madu59.obe.client.util.meshing.SectionMeshingUtil;
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.client.renderer.block.BlockQuadOutput;
 import net.minecraft.client.renderer.block.ModelBlockRenderer;
@@ -40,17 +37,7 @@ public abstract class SectionCompilerMixin {
 
     @WrapOperation(method = "compile", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getRenderShape()Lnet/minecraft/world/level/block/RenderShape;"))
     private RenderShape obe$getRenderShape(BlockState state, Operation<RenderShape> original, @Share("be") LocalRef<BlockEntity> beRef, @Local SectionPos sectionPos){
-        if(state.hasBlockEntity()){
-            BlockEntity be = beRef.get();
-            BlockEntityExt ext = (BlockEntityExt) be;
-            if(ext != null && ext.isSupported()) {
-                RenderModeManager.updateBlockEntityOnChunkRemesh(ext, sectionPos);
-                if(ext.isEnabled() && ext.renderModeDelayed() == RenderMode.TERRAIN && !ext.forceEntity()){
-                    return RenderShape.MODEL;
-                }
-            }
-        }
-        return original.call(state);
+        return SectionMeshingUtil.getCorrectedRenderShape(state, beRef.get(), sectionPos, original.call(state));
     }
 
     @WrapOperation(
@@ -61,23 +48,8 @@ public abstract class SectionCompilerMixin {
         )
     )
     public void obe$wrapRenderModel(ModelBlockRenderer instance, BlockQuadOutput output, float x, float y, float z, BlockAndTintGetter level, BlockPos pos, BlockState state, BlockStateModel originalModel, long seed, Operation<Void> original, @Share("be") LocalRef<BlockEntity> beRef) {
-        if(state.hasBlockEntity()){
+        BlockStateModel model = SectionMeshingUtil.getCorrectedModel(state, beRef.get(), originalModel, pos);
 
-            BlockStateModel model = originalModel;
-            BlockEntity be = beRef.get();
-            BlockEntityExt ext = (BlockEntityExt) be;
-
-            if(ext != null){
-                if(ext.renderModeDelayed() != RenderMode.TERRAIN || !ext.isSupported() || !ext.isEnabled() || ext.forceEntity()){
-                    model = ResourceUtil.getDefaultModel(be.getBlockState());
-                }
-                else if(ext.hasSpecialRenderer()) model = blockEntityModelsManager.getModel(state, pos, state.getSeed(pos), originalModel, be);
-            }
-
-            if(model == null) model = ResourceUtil.getDefaultModel(be.getBlockState());
-
-            original.call(instance, output, x, y, z, level, pos, state, model, seed);
-        }
-        else original.call(instance, output, x, y, z, level, pos, state, originalModel, seed);
+        original.call(instance, output, x, y, z, level, pos, state, model, seed);
     }
 }
