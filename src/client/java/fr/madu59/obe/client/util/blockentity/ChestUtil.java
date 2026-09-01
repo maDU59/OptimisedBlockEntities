@@ -103,12 +103,9 @@ public class ChestUtil {
             return null;
         }
 
-        Direction facing = state.getValueOrElse(BlockStateProperties.HORIZONTAL_FACING, Direction.NORTH);
-        
-        Direction connectedDirection = (type == ChestType.LEFT) ? facing.getClockWise() : facing.getCounterClockWise();
-        BlockPos neighborPos = pos.relative(connectedDirection);
+        BlockPos connectedPos = ChestBlock.getConnectedBlockPos(pos, state);
 
-        if (level.getBlockEntity(neighborPos) instanceof ChestBlockEntity neighborChest) {
+        if (level.getBlockEntity(connectedPos) instanceof ChestBlockEntity neighborChest) {
             return neighborChest;
         }
 
