@@ -42,8 +42,8 @@ dependencies {
 	compileOnly "net.caffeinemc:sodium-fabric:0.9.0+mc26.2"
 	compileOnly "maven.modrinth:iris:1.11.0+26.2-fabric"
 
-	compileOnly "maven.modrinth:entitytexturefeatures:7.2-fabric-26.2"
-	compileOnly "maven.modrinth:entity-model-features:3.3-fabric-26.2"
+	compileOnly "maven.modrinth:entitytexturefeatures:7.2.1-fabric-26.2"
+	compileOnly "maven.modrinth:entity-model-features:3.3.2-fabric-26.2"
     compileOnly "maven.modrinth:lootr:6aAxKwLC"
 
     // runtimeOnly "maven.modrinth:spark:iYFOl6lQ"
