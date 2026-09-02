@@ -43,8 +43,8 @@
 		"fabric-api": "*"
 	},
 	"breaks": {
-		"entity_model_features": "<3.3-fabric-26.2",
-		"entitytexturefeatures": "<7.2-fabric-26.2"
+		"entity_model_features": "<3.3.2-fabric-26.2",
+		"entitytexturefeatures": "<7.2.1-fabric-26.2"
 	},
 	"custom": {
 		"modmenu": {
