@@ -13,6 +13,7 @@ import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager.RenderMode;
 import fr.madu59.obe.client.resources.ResourceUtil;
+import fr.madu59.obe.client.util.meshing.SectionMeshingUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.BlockModelShaper;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
@@ -31,23 +32,8 @@ public class BlockRenderDispatcherMixin {
 
     @WrapOperation(method = "renderBreakingTexture", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getRenderShape()Lnet/minecraft/world/level/block/RenderShape;"))
     private RenderShape obe$getRenderShape(BlockState state, Operation<RenderShape> original, @Local BlockPos pos){
-        if(state.hasBlockEntity()){
-            BlockEntity be = Minecraft.getInstance().level.getBlockEntity(pos);
-            BlockEntityExt ext = (BlockEntityExt) be;
-            if(ext != null && ext.isSupported()) {
-                RenderModeManager.updateBlockEntityOnChunkRemesh(ext, SectionPos.of(pos));
-                if(ext.forceEntity()){
-                    return original.call(state);
-                }
-                if(ext.isEnabled() && !ext.hasSpecialRenderer() && ext.renderMode() != RenderMode.TERRAIN){
-                    return original.call(state);
-                }
-                if(ext.isEnabled() && ext.renderMode() == RenderMode.TERRAIN){
-                    return RenderShape.MODEL;
-                }
-            }
-        }
-        return original.call(state);
+        
+        return SectionMeshingUtil.getCorrectedRenderShape(state, Minecraft.getInstance().level.getBlockEntity(pos), SectionPos.of(pos), original.call(state));
     }
     
     @WrapOperation(
@@ -66,23 +52,6 @@ public class BlockRenderDispatcherMixin {
     ) {    
         BlockStateModel originalModel = original.call(shaper, state);
 
-        if(state.hasBlockEntity()){
-
-            BlockStateModel model = originalModel;
-            BlockEntity be = level.getBlockEntity(pos);
-            BlockEntityExt ext = (BlockEntityExt) be;
-
-            if(ext != null){
-                if(ext.renderModeDelayed() != RenderMode.TERRAIN || !ext.isSupported() || !ext.isEnabled() || ext.forceEntity()){
-                    model = ResourceUtil.getDefaultModel(be.getBlockState());
-                }
-                else if(ext.hasSpecialRenderer()) model = blockEntityModelsManager.getModel(state, originalModel, be);
-            }
-
-            if(model == null) model = ResourceUtil.getDefaultModel(be.getBlockState());
-
-            return model;
-        }
-        return originalModel;
+        return SectionMeshingUtil.getCorrectedModel(state, level.getBlockEntity(pos), originalModel);
     }
 }
