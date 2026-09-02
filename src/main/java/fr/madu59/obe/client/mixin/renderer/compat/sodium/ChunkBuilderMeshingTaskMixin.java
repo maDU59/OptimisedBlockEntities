@@ -16,6 +16,7 @@ import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager.RenderMode;
 import fr.madu59.obe.client.resources.ResourceUtil;
+import fr.madu59.obe.client.util.meshing.SectionMeshingUtil;
 import me.jellysquid.mods.sodium.client.render.chunk.compile.ChunkBuildBuffers;
 import me.jellysquid.mods.sodium.client.render.chunk.compile.pipeline.BlockRenderContext;
 import me.jellysquid.mods.sodium.client.render.chunk.compile.pipeline.BlockRenderer;
@@ -46,20 +47,10 @@ public class ChunkBuilderMeshingTaskMixin {
 
     @WrapOperation(method = "execute", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getRenderShape()Lnet/minecraft/world/level/block/RenderShape;"), require = 0)
     private RenderShape obe$getRenderShape(BlockState state, Operation<RenderShape> original, @Share("be") LocalRef<BlockEntity> beRef, @Local(ordinal = 0) MutableBlockPos pos){
-        if(state.hasBlockEntity()){
-            BlockEntity be = beRef.get();
-            BlockEntityExt ext = (BlockEntityExt) be;
-            if(ext != null && ext.isSupported()) {
-                if(sectionPos == null){
-                    sectionPos = SectionPos.of(pos);
-                }
-                RenderModeManager.updateBlockEntityOnChunkRemesh(ext, sectionPos);
-                if(ext.isEnabled() && ext.renderModeDelayed() == RenderMode.TERRAIN && !ext.forceEntity()){
-                    return RenderShape.MODEL;
-                }
-            }
+        if(sectionPos == null){
+            sectionPos = SectionPos.of(pos);
         }
-        return original.call(state);
+        return SectionMeshingUtil.getCorrectedRenderShape(state, beRef.get(), sectionPos, original.call(state));
     }
 
     @WrapOperation(method = "execute", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;m_60799_()Lnet/minecraft/world/level/block/RenderShape;"), require = 0)
@@ -91,23 +82,10 @@ public class ChunkBuilderMeshingTaskMixin {
         )
     )
     public void obe$wrapRenderModel(BlockRenderer instance, BlockRenderContext ctx, ChunkBuildBuffers buffers, Operation<Void> original, @Share("be") LocalRef<BlockEntity> beRef) {
-        if(ctx.state().hasBlockEntity()){
-            BakedModel model = ctx.model();
-            BlockPos origin = new BlockPos((int)ctx.origin().x(), (int)ctx.origin().y(), (int)ctx.origin().z());
-            BlockEntity be = beRef.get();
-            BlockEntityExt ext = (BlockEntityExt) be;
+        BakedModel model = SectionMeshingUtil.getCorrectedModel(ctx.state(), beRef.get(), ctx.model());
 
-            if(ext != null){
-                if(ext.renderModeDelayed() != RenderMode.TERRAIN || !ext.isSupported() || !ext.isEnabled() || ext.forceEntity()){
-                    model = ResourceUtil.getDefaultModel(be.getBlockState());
-                }
-                else if(ext.hasSpecialRenderer()) model = blockEntityModelsManager.getModel(ctx.state(), ctx.model(), be);
-            }
-
-            if(model == null) model = ResourceUtil.getDefaultModel(be.getBlockState());
-
-            ctx.update(ctx.pos(), origin, ctx.state(), model, ctx.seed(), ctx.modelData(), ctx.renderLayer());
-        }
+        BlockPos origin = new BlockPos((int)ctx.origin().x(), (int)ctx.origin().y(), (int)ctx.origin().z());
+        ctx.update(ctx.pos(), origin, ctx.state(), model, ctx.seed(), ctx.modelData(), ctx.renderLayer());
         original.call(instance, ctx, buffers);
     }
 
