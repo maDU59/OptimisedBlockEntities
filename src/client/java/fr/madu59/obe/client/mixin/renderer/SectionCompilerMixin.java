@@ -11,10 +11,7 @@ import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 
 import fr.madu59.obe.client.renderer.blockentity.BlockEntityModelsManager;
-import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
-import fr.madu59.obe.client.renderer.misc.RenderModeManager;
-import fr.madu59.obe.client.renderer.misc.RenderModeManager.RenderMode;
-import fr.madu59.obe.client.resources.ResourceUtil;
+import fr.madu59.obe.client.util.meshing.SectionMeshingUtil;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.chunk.RenderChunkRegion;
@@ -38,17 +35,7 @@ public abstract class SectionCompilerMixin {
 
     @WrapOperation(method = "compile", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getRenderShape()Lnet/minecraft/world/level/block/RenderShape;"))
     private RenderShape obe$getRenderShape(BlockState state, Operation<RenderShape> original, @Share("be") LocalRef<BlockEntity> beRef, @Local SectionPos sectionPos){
-        if(state.hasBlockEntity()){
-            BlockEntity be = beRef.get();
-            BlockEntityExt ext = (BlockEntityExt) be;
-            if(ext != null && ext.isSupported()) {
-                RenderModeManager.updateBlockEntityOnChunkRemesh(ext, sectionPos);
-                if(ext.isEnabled() && ext.renderModeDelayed() == RenderMode.TERRAIN){
-                    return RenderShape.MODEL;
-                }
-            }
-        }
-        return original.call(state);
+        return SectionMeshingUtil.getCorrectedRenderShape(state, beRef.get(), sectionPos, original.call(state));
     }
 
     @WrapOperation(
@@ -61,23 +48,6 @@ public abstract class SectionCompilerMixin {
     public BlockStateModel  obe$wrapRenderModel(BlockRenderDispatcher instance, BlockState state, Operation<BlockStateModel> original, @Share("be") LocalRef<BlockEntity> beRef) {
         BlockStateModel originalModel = original.call(instance, state);
         
-        if(state.hasBlockEntity()){
-
-            BlockStateModel model = originalModel;
-            BlockEntity be = beRef.get();
-            BlockEntityExt ext = (BlockEntityExt) be;
-
-            if(ext != null){
-                if(ext.renderModeDelayed() != RenderMode.TERRAIN || !ext.isSupported() || !ext.isEnabled() || ext.forceEntity()){
-                    model = ResourceUtil.getDefaultModel(be.getBlockState());
-                }
-                else if(ext.hasSpecialRenderer()) model = blockEntityModelsManager.getModel(state, originalModel, be);
-            }
-
-            if(model == null) model = ResourceUtil.getDefaultModel(be.getBlockState());
-
-            return model;
-        }
-        return originalModel;
+        return SectionMeshingUtil.getCorrectedModel(state, beRef.get(), originalModel);
     }
 }
