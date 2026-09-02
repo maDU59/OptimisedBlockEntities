@@ -10,53 +10,55 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class CompositeBlockStateModel implements BakedModel {
-    private final BakedModel firstModel;
-    private final BakedModel secondModel;
+    private final BakedModel[] models;
 
-    public CompositeBlockStateModel(BakedModel firstModel, BakedModel secondModel) {
-        this.firstModel = firstModel;
-        this.secondModel = secondModel;
+    public CompositeBlockStateModel(BakedModel... models) {
+        this.models = Arrays.stream(models)
+            .filter(model -> model != null && model != this)
+            .toArray(BakedModel[]::new);
     }
 
     @Override
     public TextureAtlasSprite getParticleIcon() {
-        return firstModel.getParticleIcon();
+        return models[0].getParticleIcon();
     }
 
     @Override
     public List<BakedQuad> getQuads(BlockState arg0, Direction arg1, RandomSource arg2) {
         List<BakedQuad> output = new ArrayList<>();
-        output.addAll(firstModel.getQuads(arg0, arg1, arg2));
-        output.addAll(secondModel.getQuads(arg0, arg1, arg2));
+        for(BakedModel model : models){
+            output.addAll(model.getQuads(arg0, arg1, arg2));
+        }
         return output;
     }
 
     @Override
     public ItemTransforms getTransforms() {
-        return firstModel.getTransforms();
+        return models[0].getTransforms();
     }
 
     @Override
     public boolean isGui3d() {
-        return firstModel.isGui3d();
+        return models[0].isGui3d();
     }
 
     @Override
     public boolean useAmbientOcclusion() {
-        return firstModel.useAmbientOcclusion();
+        return models[0].useAmbientOcclusion();
     }
 
     @Override
     public boolean usesBlockLight() {
-        return firstModel.usesBlockLight();
+        return models[0].usesBlockLight();
     }
 
     @Override
     public boolean isCustomRenderer() {
-        return firstModel.isCustomRenderer();
+        return models[0].isCustomRenderer();
     }
 
     @Override

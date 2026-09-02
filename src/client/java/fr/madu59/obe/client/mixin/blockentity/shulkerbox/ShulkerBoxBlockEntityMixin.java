@@ -27,7 +27,7 @@ public class ShulkerBoxBlockEntityMixin{
         ext.isSupported(Registry.isSupported("shulker_box", be.getType()));
     }
 
-    @Inject(method = "updateAnimation", at = @At("HEAD"))
+    @Inject(method = "updateAnimation", at = @At("RETURN"))
     public void obe$updateAnimation(final Level level, final BlockPos pos, final BlockState blockState, CallbackInfo ci){
         ShulkerBoxBlockEntity be = (ShulkerBoxBlockEntity) (Object) this;
         if(be.getAnimationStatus() != AnimationStatus.CLOSED){
