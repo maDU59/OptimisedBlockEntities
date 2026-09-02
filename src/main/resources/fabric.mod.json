@@ -14,7 +14,7 @@
 	},
 	"license": "LGPL-3.0-or-later",
 	"icon": "assets/obe/icon.png",
-	"environment": "*",
+	"environment": "client",
 	"entrypoints": {
 		"main": [
 			"fr.madu59.obe.OBE"
@@ -41,6 +41,10 @@
 		"minecraft": "~1.21.6",
 		"java": ">=21",
 		"fabric-api": "*"
+	},
+	"breaks": {
+		"entity_model_features": "<3.3-fabric-26.1",
+		"entitytexturefeatures": "<7.2-fabric-26.1"
 	},
 	"custom": {
 		"modmenu": {
