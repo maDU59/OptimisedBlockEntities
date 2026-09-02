@@ -3,23 +3,24 @@ package fr.madu59.obe.client.registry;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.Set;
 
 import fr.madu59.obe.OBE;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class Registry {
     private static Map<String, Set<BlockEntityType<?>>> supportedBeTypes = new ConcurrentHashMap<>();
-    private static Map<Block, BlockEntityType<?>> beTypeCache = new ConcurrentHashMap<>();
+    private static Map<Block, Optional<BlockEntityType<?>>> beTypeCache = new ConcurrentHashMap<>();
     private static Map<Block, String> blockGroupCache = new ConcurrentHashMap<>();
     private static Map<BlockEntityType<?>, String> beTypeGroupCache = new ConcurrentHashMap<>();
 
     private static final String noneGroupKey = "OBE_NONE";
-    private static final BlockEntityType<?> noneBlockEntityType = BlockEntityType.ENCHANTING_TABLE;
 
     private static boolean isInit = false;
 
@@ -112,7 +113,7 @@ public class Registry {
         return group.equals(noneGroupKey)? null : group;
     }
 
-    public static String getGroupInternal(BlockEntityType<?> beType){
+    private static String getGroupInternal(BlockEntityType<?> beType){
         if(beType == null) return noneGroupKey;
         return beTypeGroupCache.computeIfAbsent(beType, (key) -> {
             for(Entry<String,Set<BlockEntityType<?>>> entry : supportedBeTypes.entrySet()){
@@ -124,15 +125,28 @@ public class Registry {
 
     public static BlockEntityType<?> getBlockEntityType(BlockState state){
         if(!state.hasBlockEntity()) return null;
-        BlockEntityType<?> beType = beTypeCache.computeIfAbsent(state.getBlock(), (key) -> {
-            for(Set<BlockEntityType<?>> set : supportedBeTypes.values())
-                for(BlockEntityType<?> type : set){
-                    if(type.isValid(state)){
-                        return type;
+        Block block = state.getBlock();
+
+        Optional<BlockEntityType<?>> cached = beTypeCache.get(block);
+        if(cached != null){
+            return cached.orElse(null);
+        }
+
+        BlockEntityType<?> match = null;
+        for(Set<BlockEntityType<?>> set : supportedBeTypes.values()){
+            for(BlockEntityType<?> type : set){
+                if(type.isValid(state)){
+                    if(match != null){
+                        // This tries to fix #69 (and #30 and # 13) where a block is considered as valid in a BlockEntityType where it shouldn't. EnderScape is causing issues
+                        OBE.LOGGER.warn("Inconsistent BlockEntityType match detected for block " + block + " (" + BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(match).toString() + "), skipping cache for this query.");
+                        return null;
                     }
+                    match = type;
                 }
-            return noneBlockEntityType;
-        });
-        return beType == noneBlockEntityType? null : beType;
+            }
+        }
+
+        beTypeCache.put(block, Optional.ofNullable(match));
+        return match;
     }
 }

@@ -11,6 +11,7 @@ import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.server.packs.PackType;
 
 public class OBEClient implements ClientModInitializer {
+
 	@Override
 	public void onInitializeClient() {
 		Registry.init();
