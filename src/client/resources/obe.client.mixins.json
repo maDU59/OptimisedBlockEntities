@@ -29,6 +29,7 @@
 		"renderer.LevelRendererMixin",
 		"renderer.BlockRenderDispatcherMixin",
 		"renderer.ItemBlockRenderTypesMixin",
+		"renderer.BlockRenderDispatcherMixin",
 		"renderer.SectionRenderDispatcherMixin",
 		"renderer.BlockRenderDispatcherMixin",
 		"renderer.compat.indigo.TerrainRenderContextMixin",
