@@ -1,5 +1,7 @@
 package fr.madu59.obe.client.util.blockentity;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
@@ -8,15 +10,19 @@ import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.ChestRenderer;
 import net.minecraft.client.renderer.blockentity.state.ChestRenderState.ChestMaterialType;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.CopperChestBlock;
 import net.minecraft.world.level.block.EnderChestBlock;
 import net.minecraft.world.level.block.TrappedChestBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.ChestType;
 
 public class ChestUtil {
@@ -98,5 +104,20 @@ public class ChestUtil {
     @Deprecated
     public static void transformChest(BlockState state, BlockEntity be, PoseStack poseStack){
         transform(state, be, poseStack);
+    }
+
+    public static @Nullable ChestBlockEntity getOtherHalf(final Level level, final BlockPos pos, final BlockState state){
+        ChestType type = state.getValueOrElse(BlockStateProperties.CHEST_TYPE, ChestType.SINGLE);
+        if (type == ChestType.SINGLE) {
+            return null;
+        }
+
+        BlockPos connectedPos = ChestBlock.getConnectedBlockPos(pos, state);
+
+        if (level.getBlockEntity(connectedPos) instanceof ChestBlockEntity neighborChest) {
+            return neighborChest;
+        }
+
+        return null;
     }
 }
