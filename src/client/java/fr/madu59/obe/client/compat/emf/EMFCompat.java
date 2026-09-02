@@ -5,8 +5,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import traben.entity_model_features.EMFAnimationApi;
 import traben.entity_model_features.models.animation.state.EMFEntityRenderState;
 import traben.entity_model_features.models.parts.EMFModelPartRoot;
+import traben.entity_model_features.utils.EMFEntity;
 import traben.entity_texture_features.features.state.ETFEntityRenderState;
 import traben.entity_texture_features.features.state.ETFState;
 import traben.entity_texture_features.utils.ETFEntity;
@@ -25,15 +27,8 @@ public class EMFCompat {
     public static <T extends BlockEntity> ModelPart applyRestPose(ModelPart root, BlockEntity be) {
         try{
             if (root instanceof EMFModelPartRoot emfRoot) {
-                
-                EMFEntityRenderState state = (EMFEntityRenderState) ETFEntityRenderState.forEntity((ETFEntity) be);
 
-                ETFState.mount(state);
-                try {
-                    emfRoot.animate();
-                } finally {
-                    ETFState.unMount();
-                }
+                EMFAnimationApi.animateModelForEntity((EMFEntity) be, emfRoot, true);
                 
                 return emfRoot;
             }
