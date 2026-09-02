@@ -46,8 +46,8 @@ dependencies {
     localRuntime 'io.github.douira:glsl-transformer:3.0.0-pre3'
 	modImplementation "maven.modrinth:iris:1.10.7+1.21.11-fabric"
 	
-	modImplementation "maven.modrinth:entitytexturefeatures:7.1-fabric-1.21.11"
-	modImplementation "maven.modrinth:entity-model-features:3.2.4-fabric-1.21.11"
+	modImplementation "maven.modrinth:entitytexturefeatures:7.2.1-fabric-1.21.11"
+	modImplementation "maven.modrinth:entity-model-features:3.3.2-fabric-1.21.11"
 
 	modImplementation "maven.modrinth:lootr:efKMR8nl"
 	modImplementation "maven.modrinth:cloth-config:xuX40TN5"
