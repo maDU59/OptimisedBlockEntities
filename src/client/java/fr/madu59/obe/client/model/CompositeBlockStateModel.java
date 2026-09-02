@@ -63,6 +63,6 @@ public class CompositeBlockStateModel implements BakedModel {
 
     @Override
     public ItemOverrides getOverrides() {
-        return firstModel.getOverrides();
+        return models[0].getOverrides();
     }
 }

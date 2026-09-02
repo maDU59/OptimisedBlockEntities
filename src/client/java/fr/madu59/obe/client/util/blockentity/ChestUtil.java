@@ -107,7 +107,7 @@ public class ChestUtil {
     }
 
     public static @Nullable ChestBlockEntity getOtherHalf(final Level level, final BlockPos pos, final BlockState state){
-        ChestType type = state.getValueOrElse(BlockStateProperties.CHEST_TYPE, ChestType.SINGLE);
+        ChestType type = BackportUtil.getValueOrElse(state, BlockStateProperties.CHEST_TYPE, ChestType.SINGLE);
         if (type == ChestType.SINGLE) {
             return null;
         }
