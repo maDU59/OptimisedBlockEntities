@@ -70,7 +70,7 @@ public class SettingsManager {
 
     public static Option<Boolean> BANNER_AMBIENT_OCCLUSION = loadOptionWithDefaults("banner_ambient_occlusion",
         "obe.config.option.banner_ao",
-        ModCompat.isSodiumLoaded(),
+        true,
         reloadResourcesAction
     );
 
@@ -82,7 +82,7 @@ public class SettingsManager {
 
     public static Option<Boolean> SIGN_AMBIENT_OCCLUSION = loadOptionWithDefaults("sign_ambient_occlusion",
         "obe.config.option.sign_ao",
-        ModCompat.isSodiumLoaded(),
+        true,
         reloadResourcesAction
     );
 

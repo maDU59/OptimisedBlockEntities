@@ -1,2 +1,2 @@
 # What's new:
-- Bug fixes
+- Updated to support EMF 3.3.2+
