@@ -9,8 +9,12 @@ import fr.madu59.obe.client.registry.Registry;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager.RenderMode;
+import fr.madu59.obe.client.util.blockentity.ChestUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.ChestBlock;
+import net.minecraft.world.level.block.DoubleBlockCombiner.Combiner;
+import net.minecraft.world.level.block.DoubleBlockCombiner.NeighborCombineResult;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -26,14 +30,30 @@ public abstract class ChestBlockEntityMixin{
         ext.isSupported(Registry.isSupported("chest", be.getType()));
     }
 
-    @Inject(method = "lidAnimateTick", at = @At("HEAD"))
+    @Inject(method = "lidAnimateTick", at = @At("RETURN"))
     private static void obe$lidAnimateTick(final Level level, final BlockPos pos, final BlockState state, final ChestBlockEntity entity, CallbackInfo ci) {
         BlockEntityExt ext = (BlockEntityExt)entity;
-        if(entity.getOpenNess(0.5f) > 0){
+
+        NeighborCombineResult<? extends ChestBlockEntity> combineResult;
+        if (entity.hasLevel() && state.getBlock() instanceof ChestBlock chestBlock) {
+            combineResult = chestBlock.combine(state, entity.getLevel(), entity.getBlockPos(), true);
+        } else {
+            combineResult = Combiner::acceptNone;
+        }
+
+        float openness = combineResult.apply(ChestBlock.opennessCombiner(entity)).get(0.5f);
+
+        if(openness > 0){
             RenderModeManager.setRenderModeDelayed(ext, RenderMode.ENTITY, pos);
+
+            ChestBlockEntity doubleChest = ChestUtil.getOtherHalf(level, pos, state);
+            if(doubleChest != null) RenderModeManager.setRenderModeDelayed(doubleChest, RenderMode.ENTITY, pos);
         }
         else{
             RenderModeManager.setRenderModeDelayed(ext, RenderMode.TERRAIN, pos);
+
+            ChestBlockEntity doubleChest = ChestUtil.getOtherHalf(level, pos, state);
+            if(doubleChest != null) RenderModeManager.setRenderModeDelayed(doubleChest, RenderMode.TERRAIN, pos);
         }
     }
 }

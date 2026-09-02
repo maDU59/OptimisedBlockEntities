@@ -30,6 +30,7 @@
 		"renderer.LevelRendererMixin",
 		"renderer.BlockRenderDispatcherMixin",
 		"renderer.ItemBlockRenderTypesMixin",
+		"renderer.BlockRenderDispatcherMixin",
 		"renderer.SectionRenderDispatcherMixin",
 		"renderer.compat.sodium.ChunkBuilderMeshingTaskMixin",
 		"renderer.compat.sodium.RenderSectionManagerMixin",

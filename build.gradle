@@ -117,8 +117,8 @@ dependencies {
     compileOnly("net.caffeinemc:sodium-neoforge-mod:0.8.12+mc1.21.1")
     runtimeOnly("net.caffeinemc:sodium-neoforge:0.8.12+mc1.21.1")
 
-    implementation "maven.modrinth:entitytexturefeatures:7.1-neoforge-1.21"
-	implementation "maven.modrinth:entity-model-features:3.2.4-neoforge-1.21"
+    implementation "maven.modrinth:entitytexturefeatures:7.2.1-neoforge-1.21"
+	implementation "maven.modrinth:entity-model-features:3.3.2-neoforge-1.21"
 
     implementation "maven.modrinth:lootr:e0t1hEpP"
 	implementation "maven.modrinth:cloth-config:izKINKFg"
