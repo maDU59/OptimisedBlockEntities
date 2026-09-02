@@ -10,6 +10,7 @@ import fr.madu59.obe.client.renderer.blockentity.BlockEntityModelsManager;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager.RenderMode;
 import fr.madu59.obe.client.resources.ResourceUtil;
+import fr.madu59.obe.client.util.meshing.SectionMeshingUtil;
 import net.fabricmc.fabric.impl.client.indigo.renderer.render.AbstractTerrainRenderContext;
 import net.fabricmc.fabric.impl.client.indigo.renderer.render.TerrainRenderContext;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
@@ -31,19 +32,6 @@ public abstract class TerrainRenderContextMixin extends AbstractTerrainRenderCon
     )
     public BlockStateModel obe$wrapRenderModel(BlockStateModel originalModel, BlockStateModel model, BlockState state, BlockPos pos) {
         
-        if(state.hasBlockEntity()){
-            BlockEntity be = this.blockInfo.blockView.getBlockEntity(pos);
-            BlockEntityExt ext = (BlockEntityExt) be;
-
-            if(ext != null){
-                if(ext.renderModeDelayed() != RenderMode.TERRAIN || !ext.isSupported() || !ext.isEnabled() || ext.forceEntity()){
-                    model = ResourceUtil.getDefaultModel(be.getBlockState());
-                }
-                else if(ext.hasSpecialRenderer()) model = blockEntityModelsManager.getModel(state, originalModel, be);
-            }
-
-            return model;
-        }
-        return originalModel;
+        return SectionMeshingUtil.getCorrectedModel(state, this.blockInfo.blockView.getBlockEntity(pos), originalModel);
     }
 }
