@@ -11,14 +11,9 @@ import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 
 import fr.madu59.obe.client.renderer.blockentity.BlockEntityModelsManager;
-import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
-import fr.madu59.obe.client.renderer.misc.RenderModeManager;
-import fr.madu59.obe.client.renderer.misc.RenderModeManager.RenderMode;
-import fr.madu59.obe.client.resources.ResourceUtil;
-import net.minecraft.client.renderer.block.BlockRenderDispatcher;
+import fr.madu59.obe.client.util.meshing.SectionMeshingUtil;
 import net.minecraft.client.renderer.chunk.RenderChunkRegion;
 import net.minecraft.client.renderer.chunk.SectionCompiler;
-import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.world.level.block.RenderShape;
@@ -38,16 +33,6 @@ public abstract class SectionCompilerMixin {
 
     @WrapOperation(method = "compile", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getRenderShape()Lnet/minecraft/world/level/block/RenderShape;"))
     private RenderShape obe$getRenderShape(BlockState state, Operation<RenderShape> original, @Share("be") LocalRef<BlockEntity> beRef, @Local SectionPos sectionPos){
-        if(state.hasBlockEntity()){
-            BlockEntity be = beRef.get();
-            BlockEntityExt ext = (BlockEntityExt) be;
-            if(ext != null && ext.isSupported()) {
-                RenderModeManager.updateBlockEntityOnChunkRemesh(ext, sectionPos);
-                if(ext.isEnabled() && ext.renderModeDelayed() == RenderMode.TERRAIN){
-                    return RenderShape.MODEL;
-                }
-            }
-        }
-        return original.call(state);
+        return SectionMeshingUtil.getCorrectedRenderShape(state, beRef.get(), sectionPos, original.call(state));
     }
 }
