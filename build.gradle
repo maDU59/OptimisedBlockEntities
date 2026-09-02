@@ -42,8 +42,8 @@ dependencies {
 	implementation "net.caffeinemc:sodium-fabric:0.8.12+mc26.1.2"
 	implementation "maven.modrinth:iris:1.10.9+26.1-fabric"
 	
-	implementation "maven.modrinth:entitytexturefeatures:7.2-fabric-26.1"
-	implementation "maven.modrinth:entity-model-features:3.3-fabric-26.1"
+	implementation "maven.modrinth:entitytexturefeatures:7.2.1-fabric-26.1"
+	implementation "maven.modrinth:entity-model-features:3.3.2-fabric-26.1"
 	implementation "maven.modrinth:lootr:m1PLActz"
 
 	runtimeOnly "maven.modrinth:betterend:26.101.1"
