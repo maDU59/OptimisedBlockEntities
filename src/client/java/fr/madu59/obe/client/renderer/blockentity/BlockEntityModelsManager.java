@@ -31,12 +31,12 @@ public class BlockEntityModelsManager {
 
     public BlockEntityModelsManager(){}
 
-    public @Nullable BlockStateModel getModel(BlockState state, BlockPos pos, long seed, BlockStateModel originalModel, BlockAndTintGetter level){
+    public @Nullable BlockStateModel getModel(BlockState state, BlockPos pos, BlockStateModel originalModel, BlockAndTintGetter level){
         if (!state.hasBlockEntity()) return null;
-        return getModel(state, pos, seed, originalModel, level.getBlockEntity(pos));
+        return getModel(state, originalModel, level.getBlockEntity(pos));
     }
 
-    public @Nullable BlockStateModel getModel(BlockState state, BlockPos pos, long seed, BlockStateModel originalModel, BlockEntity be){
+    public @Nullable BlockStateModel getModel(BlockState state, BlockStateModel originalModel, BlockEntity be){
 
         if (be == null) return null;
 
