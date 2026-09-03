@@ -34,7 +34,6 @@ import net.minecraft.world.level.block.AbstractSkullBlock;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.EnderChestBlock;
 import net.minecraft.world.level.block.ShulkerBoxBlock;
-import net.minecraft.world.level.block.SkullBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class BlockEntityStateModel implements BlockStateModel{
@@ -172,7 +171,7 @@ public class BlockEntityStateModel implements BlockStateModel{
     }
 
     private boolean shouldFixBFC(BlockState state, String key){
-        if(state.getBlock() instanceof SkullBlock) return true;
+        if(state.getBlock() instanceof AbstractSkullBlock) return true;
         return key.equals("vChains") || key.equals("normalChains");
     }
 
