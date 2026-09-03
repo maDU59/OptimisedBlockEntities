@@ -30,9 +30,11 @@ import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.block.AbstractSkullBlock;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.EnderChestBlock;
 import net.minecraft.world.level.block.ShulkerBoxBlock;
+import net.minecraft.world.level.block.SkullBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class BlockEntityStateModel implements BlockStateModel{
@@ -87,14 +89,21 @@ public class BlockEntityStateModel implements BlockStateModel{
 
     private void getBakedQuads(List<BakedQuad> output, ModelPart part, PoseStack poseStack, TextureAtlasSprite sprite, String partName, BlockState state){
 
-        boolean fixBfc = shouldFixBFC(partName);
+        boolean fixBfc = shouldFixBFC(state, partName);
 
         Material.Baked bakedMat = new Material.Baked(sprite, false);
-        MaterialInfo matInfo = MaterialInfo.of(bakedMat, Transparency.TRANSPARENT, -1, null, 0);
 
         Vector3f normal = new Vector3f();
 
         part.visit(poseStack, (pose, partPath, cubeIndex, cube) -> {
+
+            Transparency transparency = Transparency.TRANSPARENT;
+
+            if(state.getBlock() instanceof AbstractSkullBlock && partPath.equals("")){
+                transparency = Transparency.NONE;
+            }
+
+            MaterialInfo matInfo = MaterialInfo.of(bakedMat, transparency, -1, null, 0);
 
             Vector3f[] positions = new Vector3f[4];
             long[] uvs = new long[4];
@@ -162,7 +171,8 @@ public class BlockEntityStateModel implements BlockStateModel{
         return Direction.getApproximateNearest(vec.x(), vec.y(), vec.z());
     }
 
-    private boolean shouldFixBFC(String key){
+    private boolean shouldFixBFC(BlockState state, String key){
+        if(state.getBlock() instanceof SkullBlock) return true;
         return key.equals("vChains") || key.equals("normalChains");
     }
 
