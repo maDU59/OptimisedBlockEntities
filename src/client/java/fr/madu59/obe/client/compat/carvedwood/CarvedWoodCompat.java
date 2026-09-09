@@ -66,6 +66,6 @@ public class CarvedWoodCompat {
     }
 
     private static Material chestMaterial(String pChestName) {
-        return new Material(Sheets.CHEST_SHEET, ResourceLocation.fromNamespaceAndPath(CarvedWood.MOD_ID, "entity/chest/" + pChestName));
+        return new Material(Sheets.CHEST_SHEET, new ResourceLocation(CarvedWood.MOD_ID, "entity/chest/" + pChestName));
     }
 }
