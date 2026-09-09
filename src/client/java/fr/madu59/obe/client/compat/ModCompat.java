@@ -5,6 +5,7 @@ import java.util.List;
 
 import fr.madu59.obe.OBE;
 import fr.madu59.obe.client.compat.bclib.BclibCompat;
+import fr.madu59.obe.client.compat.carvedwood.CarvedWoodCompat;
 import fr.madu59.obe.client.compat.emf.EMFCompat;
 import fr.madu59.obe.client.compat.iris.IrisCompat;
 import fr.madu59.obe.client.compat.lootr.LootrCompat;
@@ -28,6 +29,14 @@ public class ModCompat {
             }
             catch(Error e){
                 OBE.LOGGER.warn("Incompatible version of Lootr used, if you are using the latest one, please report that to OBE's author.");
+            }
+        }
+        if(PlatformHelper.isModLoaded("carved_wood")) {
+            try{
+                CarvedWoodCompat.init();
+            }
+            catch(Error e){
+                OBE.LOGGER.warn("Incompatible version of Carved Wood used, if you are using the latest one, please report that to OBE's author.");
             }
         }
     }
