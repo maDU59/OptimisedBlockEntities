@@ -179,4 +179,13 @@ public class RegistryApi {
     public static void registerSpecialModelProvider(Block block, BiFunction<BlockState, BlockEntity, ModelLayerLocation> modelLayerLocationProvider, BiFunction<BlockState, BlockEntity, Identifier> materialProvider, TriConsumer<BlockState, BlockEntity, PoseStack> transformationProvider, Function<BlockEntity, Object> cacheKeyProvider){
         SpecialModelGetter.register(block, new SpecialModelProvider(modelLayerLocationProvider, materialProvider, transformationProvider, cacheKeyProvider));
     }
+
+    /*
+     * Executes code if the registry is ready, delays it otherwise
+     * @param runnable The code to run once the registry is ready
+     * @since 1.1.46
+     */
+    public static void runWhenReady(Runnable runnable){
+        Registry.runWhenReady(runnable);
+    }
 }
