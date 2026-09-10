@@ -1,7 +1,9 @@
 package fr.madu59.obe.client.registry;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Map.Entry;
@@ -15,14 +17,18 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class Registry {
+    private static boolean isInit = false;
+
     private static Map<String, Set<BlockEntityType<?>>> supportedBeTypes = new ConcurrentHashMap<>();
     private static Map<Block, Optional<BlockEntityType<?>>> beTypeCache = new ConcurrentHashMap<>();
     private static Map<Block, String> blockGroupCache = new ConcurrentHashMap<>();
     private static Map<BlockEntityType<?>, String> beTypeGroupCache = new ConcurrentHashMap<>();
+    private static final List<Runnable> onInitList = new ArrayList<>();
 
     private static final String noneGroupKey = "OBE_NONE";
 
     public static void init(){
+        isInit = true;
         register("chest", BlockEntityType.CHEST, BlockEntityType.ENDER_CHEST, BlockEntityType.TRAPPED_CHEST);
         register("bell", BlockEntityType.BELL);
         register("skull", BlockEntityType.SKULL);
@@ -37,6 +43,19 @@ public class Registry {
         TransformationGetter.init();
         ModelLayerLocationGetter.init();
         SpecialModelGetter.init();
+        
+        for(Runnable onInit : onInitList){
+            onInit.run();
+        }
+    }
+
+    public static void runWhenReady(Runnable runnable){
+        if(isInit){
+            runnable.run();
+        }
+        else{
+            onInitList.add(runnable);
+        }
     }
 
     private static void register(String group, BlockEntityType<?> ... types){
