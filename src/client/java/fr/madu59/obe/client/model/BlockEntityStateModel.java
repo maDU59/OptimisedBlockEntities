@@ -24,6 +24,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.block.AbstractSkullBlock;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.EnderChestBlock;
 import net.minecraft.world.level.block.ShulkerBoxBlock;
@@ -71,7 +72,7 @@ public class BlockEntityStateModel implements BakedModel{
 
     private void getBakedQuads(List<BakedQuad> output, ModelPart part, PoseStack poseStack, TextureAtlasSprite sprite, String partName, BlockState state){
 
-        boolean fixBfc = shouldFixBFC(partName);
+        boolean fixBfc = shouldFixBFC(state, partName);
 
         Vector3f normal = new Vector3f();
 
@@ -164,7 +165,8 @@ public class BlockEntityStateModel implements BakedModel{
         return Direction.getApproximateNearest(vec.x(), vec.y(), vec.z());
     }
 
-    private boolean shouldFixBFC(String key){
+    private boolean shouldFixBFC(BlockState state, String key){
+        if(state.getBlock() instanceof AbstractSkullBlock) return true;
         return key.equals("vChains") || key.equals("normalChains");
     }
 
