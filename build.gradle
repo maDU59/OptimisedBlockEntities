@@ -113,7 +113,7 @@ publishing {
 publishMods {
     file = jar.archiveFile
     changelog = providers.fileContents(layout.projectDirectory.file("CHANGELOG.md")).asText.get()
-    type = STABLE
+    type = BETA
 	version = project.mod_version
     modLoaders.add("fabric")
 	modLoaders.add("quilt")
