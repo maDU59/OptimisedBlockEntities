@@ -52,6 +52,8 @@ dependencies {
 	runtimeOnly "maven.modrinth:bclib:26.201.1"
 
     runtimeOnly "maven.modrinth:spark:iYFOl6lQ"
+
+	compileOnly "maven.modrinth:vulkanmod:0.6.8+26.1.2"
 	
 }
 
