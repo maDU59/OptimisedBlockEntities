@@ -52,6 +52,8 @@ dependencies {
 	runtimeOnly "maven.modrinth:bclib:26.101.1"
 
 	implementation "maven.modrinth:carved-wood:1.9.7-B-Fabric-26.1"
+
+	compileOnly "maven.modrinth:vulkanmod:0.6.8+26.1.2"
 }
 
 processResources {
