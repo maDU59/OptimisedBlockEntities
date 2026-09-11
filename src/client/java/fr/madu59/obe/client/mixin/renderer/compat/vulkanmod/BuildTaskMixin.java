@@ -24,6 +24,7 @@ import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import fr.madu59.obe.client.renderer.entity.MeshableEntityTracker;
 import fr.madu59.obe.client.renderer.entity.MeshableEntityTracker.MeshableEntityData;
 import fr.madu59.obe.client.renderer.entity.ext.EntityExt;
+import fr.madu59.obe.client.renderer.misc.RenderModeManager;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager.RenderMode;
 import fr.madu59.obe.client.util.meshing.SectionMeshingUtil;
 import net.caffeinemc.mods.sodium.client.world.LevelSlice;
@@ -62,6 +63,9 @@ public class BuildTaskMixin {
     @Inject(method = "handleBlockEntity", at = @At("HEAD"), cancellable = true)
     private void obe$suppressEntityRender(CompileResult compileResult, BlockEntity be, CallbackInfo ci) {
         BlockEntityExt ext = (BlockEntityExt) be;
+        if(ext != null && ext.isSupported()){
+            RenderModeManager.updateBlockEntityOnChunkRemesh(ext, SectionPos.of(be.getBlockPos()));
+        }
         if(ext != null && ext.isEnabled() && (!(ext.forceEntity() || !ext.isSupported() || ext.renderModeDelayed() == RenderMode.ENTITY || ext.renderBoth()) || ext.shouldSkipRendering())) {
             ci.cancel();
         }

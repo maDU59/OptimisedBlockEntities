@@ -36,6 +36,10 @@
 		"renderer.compat.sodium.ChunkBuilderMeshingTaskMixin",
 		"renderer.compat.sodium.RenderSectionManagerMixin",
 		"renderer.compat.sodium.SodiumWorldRendererMixin",
+		"renderer.compat.vulkanmod.BlockRendererMixin",
+		"renderer.compat.vulkanmod.BuildTaskMixin",
+		"renderer.compat.vulkanmod.CompileResultMixin",
+		"renderer.compat.vulkanmod.WorldRendererMixin",
 		"core.ModelManagerMixin",
 		"BlockStateModelSetMixin"
 	],
