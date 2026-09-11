@@ -46,6 +46,8 @@ dependencies {
 	compileOnly "maven.modrinth:entity-model-features:3.3.2-fabric-26.2"
     compileOnly "maven.modrinth:lootr:6aAxKwLC"
 
+	compileOnly "maven.modrinth:vulkanmod:0.6.8+26.1.2"
+
     // runtimeOnly "maven.modrinth:spark:iYFOl6lQ"
 	
 }
