@@ -27,7 +27,6 @@ import fr.madu59.obe.client.renderer.entity.ext.EntityExt;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager.RenderMode;
 import fr.madu59.obe.client.util.meshing.SectionMeshingUtil;
-import net.caffeinemc.mods.sodium.client.world.LevelSlice;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
@@ -72,7 +71,7 @@ public class BuildTaskMixin {
     }
 
     @Inject(method = "compile", at = @At(value = "INVOKE", target = "Lnet/vulkanmod/render/chunk/build/RenderRegion;loadBlockStates()V"))
-    private void obe$appendMeshData(CallbackInfo ci, @Local BlockRenderer blockRenderer, @Local LevelSlice slice, @Local(ordinal = 0) BlockPos startPos){
+    private void obe$appendMeshData(CallbackInfo ci, @Local BlockRenderer blockRenderer, @Local(ordinal = 0) BlockPos startPos){
         if(!SettingsManager.MOD_TOGGLE.getValue()) return;
 
         SectionPos sectionPos = SectionPos.of(startPos);
