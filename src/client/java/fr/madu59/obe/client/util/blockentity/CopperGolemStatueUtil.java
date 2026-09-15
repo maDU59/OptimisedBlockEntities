@@ -38,6 +38,6 @@ public class CopperGolemStatueUtil {
         Direction facing = state.getValue(CopperGolemStatueBlock.FACING);
         poseStack.mulPose(CopperGolemStatueBlockRenderer.modelTransformation(facing));
 
-        poseStack.mulPose(Axis.ZP.rotationDegrees(180.0F));
+        poseStack.rotate(Axis.ZP.rotationDegrees(180.0F));
     }
 }

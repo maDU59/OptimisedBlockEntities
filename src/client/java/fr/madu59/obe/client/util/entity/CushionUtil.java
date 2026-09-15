@@ -36,8 +36,8 @@ public class CushionUtil{
         return MODEL_CACHE.computeIfAbsent(new CacheKey(relativeX, relativeY, relativeZ, snapshot.rotation().y, snapshot.color().getId()), (k) -> {
             PoseStack poseStack = new PoseStack();
             poseStack.translate(k.relativeX, k.relativeY, k.relativeZ);
-            poseStack.mulPose(Axis.YP.rotationDegrees(k.yRot));
-            poseStack.mulPose(Axis.XP.rotationDegrees(180.0F));
+            poseStack.rotate(Axis.YP.rotationDegrees(k.yRot));
+            poseStack.rotate(Axis.XP.rotationDegrees(180.0F));
             poseStack.translate(0.0, -0.25, 0.0);
             return new BlockEntityStateModel(getModelLayerLocation(), getMaterial(snapshot.color()), poseStack, SettingsManager.CUSHION_AMBIENT_OCCLUSION.getValue(), null, null);
         });
