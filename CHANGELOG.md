@@ -1,2 +1,2 @@
 # What's new:
-- Added full VulkanMod compatibility
+- Fixed a crash

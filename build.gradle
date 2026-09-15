@@ -38,9 +38,9 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
-	compileOnly "net.caffeinemc:sodium-fabric-api:0.9.2-beta.2+mc26.3r1"
-	compileOnly "net.caffeinemc:sodium-fabric:0.9.2-beta.2+mc26.3r1"
-	compileOnly "maven.modrinth:iris:1.11.0+26.2-fabric"
+	compileOnly "net.caffeinemc:sodium-fabric-api:0.9.2+mc26.3"
+	implementation "net.caffeinemc:sodium-fabric:0.9.2+mc26.3"
+	implementation "maven.modrinth:iris:1.11.6+26.3-fabric"
 
 	compileOnly "maven.modrinth:entitytexturefeatures:7.2.1-fabric-26.2"
 	compileOnly "maven.modrinth:entity-model-features:3.3.2-fabric-26.2"
