@@ -40,6 +40,7 @@ import net.minecraft.client.renderer.chunk.SectionCompiler.Results;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.core.SectionPos;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -117,7 +118,7 @@ public abstract class SectionCompilerMixin {
                 if(ext != null) ext.renderMode(RenderMode.TERRAIN);
             });
             pos.set(data.blockPos());
-            blockRenderer.tesselateBlock(quadOutput, SectionPos.sectionRelative(pos.getX()), SectionPos.sectionRelative(pos.getY()), SectionPos.sectionRelative(pos.getZ()), region, pos, region.getBlockState(data.blockPos()), model, 42);
+            blockRenderer.tesselateBlock(quadOutput, SectionPos.sectionRelative(pos.getX()), SectionPos.sectionRelative(pos.getY()), SectionPos.sectionRelative(pos.getZ()), region, pos, Blocks.AIR.defaultBlockState(), model, 42);
         }
     }
 }

@@ -35,6 +35,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -114,7 +115,7 @@ public class ChunkBuilderMeshingTaskMixin {
             int localZ = pos.getZ() & 15;
             modelOffset.set(localX, localY, localZ);
 
-            blockRenderer.renderModel(model, slice.getBlockState(pos), pos, modelOffset);
+            blockRenderer.renderModel(model, Blocks.AIR.defaultBlockState(), pos, modelOffset);
         }
     }
 
