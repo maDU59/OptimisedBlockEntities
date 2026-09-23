@@ -81,7 +81,7 @@ public class ChunkBuilderMeshingTaskMixin {
     )
     private boolean obe$wrapShouldRender(BlockEntityType<?> type, BlockGetter slice, BlockPos pos, BlockEntity be, Operation<Boolean> original) {
         BlockEntityExt ext = (BlockEntityExt) be;
-        if(ext != null && ext.isEnabled() && (!(ext.forceEntity() || !ext.isSupported() || ext.renderModeDelayed() == RenderMode.ENTITY || ext.renderBoth()) || ext.shouldSkipRendering())) {
+        if(ext != null && ext.obe$isEnabled() && (!(ext.obe$forceEntity() || !ext.obe$isSupported() || ext.obe$renderModeDelayed() == RenderMode.ENTITY || ext.obe$renderBoth()) || ext.obe$shouldSkipRendering())) {
             return false;
         }
         return original.call(type, slice, pos, be);
@@ -106,7 +106,7 @@ public class ChunkBuilderMeshingTaskMixin {
             BlockEntityStateModel model = data.getModel();
             ChunkTaskHolder.addTask(sectionPos, () -> {
                 EntityExt ext = ((EntityExt)Minecraft.getInstance().level.getEntity(data.id()));
-                if(ext != null) ext.renderMode(RenderMode.TERRAIN);
+                if(ext != null) ext.obe$renderMode(RenderMode.TERRAIN);
             });
             pos.set(data.blockPos());
 

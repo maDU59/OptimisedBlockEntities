@@ -115,7 +115,7 @@ public abstract class SectionCompilerMixin {
             BlockEntityStateModel model = data.getModel();
             ChunkTaskHolder.addTask(sectionPos, () -> {
                 EntityExt ext = ((EntityExt)Minecraft.getInstance().level.getEntity(data.id()));
-                if(ext != null) ext.renderMode(RenderMode.TERRAIN);
+                if(ext != null) ext.obe$renderMode(RenderMode.TERRAIN);
             });
             pos.set(data.blockPos());
             blockRenderer.tesselateBlock(quadOutput, SectionPos.sectionRelative(pos.getX()), SectionPos.sectionRelative(pos.getY()), SectionPos.sectionRelative(pos.getZ()), region, pos, Blocks.AIR.defaultBlockState(), model, 42);

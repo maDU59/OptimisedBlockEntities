@@ -62,10 +62,10 @@ public class BuildTaskMixin {
     @Inject(method = "handleBlockEntity", at = @At("HEAD"), cancellable = true)
     private void obe$suppressEntityRender(CompileResult compileResult, BlockEntity be, CallbackInfo ci) {
         BlockEntityExt ext = (BlockEntityExt) be;
-        if(ext != null && ext.isSupported()){
+        if(ext != null && ext.obe$isSupported()){
             RenderModeManager.updateBlockEntityOnChunkRemesh(ext, SectionPos.of(be.getBlockPos()));
         }
-        if(ext != null && ext.isEnabled() && (!(ext.forceEntity() || !ext.isSupported() || ext.renderModeDelayed() == RenderMode.ENTITY || ext.renderBoth()) || ext.shouldSkipRendering())) {
+        if(ext != null && ext.obe$isEnabled() && (!(ext.obe$forceEntity() || !ext.obe$isSupported() || ext.obe$renderModeDelayed() == RenderMode.ENTITY || ext.obe$renderBoth()) || ext.obe$shouldSkipRendering())) {
             ci.cancel();
         }
     }
@@ -91,7 +91,7 @@ public class BuildTaskMixin {
             BlockEntityStateModel model = data.getModel();
             ChunkTaskHolder.addTask(sectionPos, () -> {
                 EntityExt ext = ((EntityExt)Minecraft.getInstance().level.getEntity(data.id()));
-                if(ext != null) ext.renderMode(RenderMode.TERRAIN);
+                if(ext != null) ext.obe$renderMode(RenderMode.TERRAIN);
             });
             pos.set(data.blockPos());
 

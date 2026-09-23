@@ -25,7 +25,7 @@ public class MeshableEntityTracker {
     private static final Map<SectionPos, Map<Integer, MeshableEntityData>> meshableEntities = new ConcurrentHashMap<>();
 
     public static void registerMeshableEntity(Entity entity, BlockPos pos) {
-        if(!entity.level().isClientSide() || !((EntityExt)entity).isSupported()) return;
+        if(!entity.level().isClientSide() || !((EntityExt)entity).obe$isSupported()) return;
 
         int id = 0;
         try{
@@ -44,12 +44,12 @@ public class MeshableEntityTracker {
 
         if(data == null) return;
         getSectionMap(sectionPos).put(id, data);
-        ((EntityExt)entity).renderModeDelayed(RenderMode.TERRAIN);
+        ((EntityExt)entity).obe$renderModeDelayed(RenderMode.TERRAIN);
         RenderModeManager.setDirty(pos);
     }
 
     public static void deregisterMeshableEntity(Entity entity, BlockPos pos) {
-        if(!entity.level().isClientSide() || !((EntityExt)entity).isSupported()) return;
+        if(!entity.level().isClientSide() || !((EntityExt)entity).obe$isSupported()) return;
 
         int id = 0;
         try{
@@ -60,7 +60,7 @@ public class MeshableEntityTracker {
         }
 
         getSectionMap(pos).remove(id);
-        ChunkTaskHolder.addTask(SectionPos.of(pos), () -> ((EntityExt)entity).renderMode(RenderMode.ENTITY));
+        ChunkTaskHolder.addTask(SectionPos.of(pos), () -> ((EntityExt)entity).obe$renderMode(RenderMode.ENTITY));
         RenderModeManager.setDirty(pos);
     }
 
@@ -69,7 +69,7 @@ public class MeshableEntityTracker {
     }
 
     public static void updateMeshableEntity(Entity entity, BlockPos pos) {
-        if(!entity.level().isClientSide() || !((EntityExt)entity).isSupported()) return;
+        if(!entity.level().isClientSide() || !((EntityExt)entity).obe$isSupported()) return;
         if(entity.isRemoved()) deregisterMeshableEntity(entity, pos);
         else registerMeshableEntity(entity, pos);
     }

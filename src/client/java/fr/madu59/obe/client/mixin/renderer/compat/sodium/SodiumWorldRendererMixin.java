@@ -35,10 +35,10 @@ public class SodiumWorldRendererMixin {
         cancellable = true
     )
     private <T extends Entity> void obe$shouldRenderEntity(CallbackInfoReturnable<Boolean> cir, @Local(argsOnly = true) T entity) {
-        if(entity instanceof EntityExt ext && ext.isSupported()){
+        if(entity instanceof EntityExt ext && ext.obe$isSupported()){
             boolean modToggle = SettingsManager.MOD_TOGGLE.getValue();
-            if(entity instanceof Cushion) ext.isEnabled(SettingsManager.OPTIMISED_CUSHIONS.getValue() && modToggle);
-            if(ext.isEnabled() && ext.renderMode() == RenderMode.TERRAIN && !entity.shouldShowName()){
+            if(entity instanceof Cushion) ext.obe$isEnabled(SettingsManager.OPTIMISED_CUSHIONS.getValue() && modToggle);
+            if(ext.obe$isEnabled() && ext.obe$renderMode() == RenderMode.TERRAIN && !entity.shouldShowName()){
                 cir.setReturnValue(false);
             }
         }

@@ -34,7 +34,7 @@ public abstract class DecoratedPotBlockEntityMixin{
         BlockEntity be = (BlockEntity)(Object)this;
         BlockEntityExt ext = (BlockEntityExt)be;
 
-        ext.isSupported(Registry.isSupported("decorated_pot", be.getType()));
+        ext.obe$isSupported(Registry.isSupported("decorated_pot", be.getType()));
         obe$updatePot();
     }
 
@@ -53,14 +53,14 @@ public abstract class DecoratedPotBlockEntityMixin{
         DecoratedPotBlockEntity be = (DecoratedPotBlockEntity)(Object)this;
         BlockEntityExt ext = (BlockEntityExt)be;
         RenderModeManager.setRenderModeDelayed(ext, RenderMode.ENTITY, be.getBlockPos());
-        ext.setTimer(be.wobbleStartedAtTick, be.lastWobbleStyle.duration);
+        ext.obe$setTimer(be.wobbleStartedAtTick, be.lastWobbleStyle.duration);
     }
 
     @Inject(method = "getDecorations", at = @At("RETURN"))
     public void obe$updateTimer(CallbackInfoReturnable<PotDecorations> cir) {
         DecoratedPotBlockEntity be = (DecoratedPotBlockEntity)(Object)this;
         BlockEntityExt ext = (BlockEntityExt)be;
-        if(ext.isTimerFinished()) RenderModeManager.setRenderModeDelayed(ext, RenderMode.TERRAIN, be.getBlockPos());
+        if(ext.obe$isTimerFinished()) RenderModeManager.setRenderModeDelayed(ext, RenderMode.TERRAIN, be.getBlockPos());
     }
 
     @Unique
@@ -68,10 +68,10 @@ public abstract class DecoratedPotBlockEntityMixin{
         DecoratedPotBlockEntity be = (DecoratedPotBlockEntity)(Object)this;
         BlockEntityExt ext = (BlockEntityExt)be;
         if(!decorations.equals(PotDecorations.EMPTY) && !decorations.equals(defaultPotDecorations)){
-            ext.forceEntity(true);
+            ext.obe$forceEntity(true);
         }
         else{
-            ext.forceEntity(false);
+            ext.obe$forceEntity(false);
         }
     }
 }

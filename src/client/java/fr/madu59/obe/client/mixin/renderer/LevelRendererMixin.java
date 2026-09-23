@@ -39,7 +39,7 @@ public class LevelRendererMixin {
 
         for (int i = original.size() - 1; i >= 0; i--) {
             if (original.get(i) instanceof BlockEntityExt ext){
-                if(ext.isEnabled() && (!RenderModeManager.shouldRenderEntityFast(ext) || ext.shouldSkipRendering() || SpecialBlockEntityRenderingManager.shouldSkipRendering((BlockEntity)ext))){
+                if(ext.obe$isEnabled() && (!RenderModeManager.shouldRenderEntityFast(ext) || ext.obe$shouldSkipRendering() || SpecialBlockEntityRenderingManager.shouldSkipRendering((BlockEntity)ext))){
                     original.remove(i);
                 }
             }
@@ -54,10 +54,10 @@ public class LevelRendererMixin {
         cancellable = true
     )
     private void obe$shouldRenderEntity(CallbackInfoReturnable<Boolean> cir, @Local Entity entity) {
-        if(entity instanceof EntityExt ext && ext.isSupported()){
+        if(entity instanceof EntityExt ext && ext.obe$isSupported()){
             boolean modToggle = SettingsManager.MOD_TOGGLE.getValue();
-            if(entity instanceof Cushion) ext.isEnabled(SettingsManager.OPTIMISED_CUSHIONS.getValue() && modToggle);
-            if(ext.isEnabled() && ext.renderMode() == RenderMode.TERRAIN && !entity.shouldShowName()){
+            if(entity instanceof Cushion) ext.obe$isEnabled(SettingsManager.OPTIMISED_CUSHIONS.getValue() && modToggle);
+            if(ext.obe$isEnabled() && ext.obe$renderMode() == RenderMode.TERRAIN && !entity.shouldShowName()){
                 cir.setReturnValue(false);
             }
         }

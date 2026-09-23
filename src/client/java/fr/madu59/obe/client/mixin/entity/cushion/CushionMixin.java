@@ -23,7 +23,7 @@ public class CushionMixin {
         Entity entity = (Entity)(Object)this;
         EntityExt ext = (EntityExt)entity;
 
-        ext.isSupported(entityType == EntityTypes.CUSHION);
+        ext.obe$isSupported(entityType == EntityTypes.CUSHION);
     }
 
     @Inject(method = "setPos(DDD)V", at = @At("HEAD"))
