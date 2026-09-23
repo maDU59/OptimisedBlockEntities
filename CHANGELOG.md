@@ -1,2 +1,2 @@
 # What's new:
-- Added full VulkanMod compatibility
+- Reduced the probability of naming collisions which could have caused crashes

@@ -24,9 +24,9 @@ public abstract class SkullBlockEntityMixin{
         SkullBlockEntity be = (SkullBlockEntity)(Object)this;
         BlockEntityExt ext = (BlockEntityExt)be;
         
-        if(obe$isDynamicTexture(be)) ext.renderMode(RenderMode.ENTITY);
-        ext.isSupported(Registry.isSupported("skull", be.getType()));
-        ext.hasSpecialRenderer(SkullBlockUtil.hasBuiltInTexture(be));
+        if(obe$isDynamicTexture(be)) ext.obe$renderMode(RenderMode.ENTITY);
+        ext.obe$isSupported(Registry.isSupported("skull", be.getType()));
+        ext.obe$hasSpecialRenderer(SkullBlockUtil.hasBuiltInTexture(be));
     }
 
     @Inject(method = "animation", at = @At("TAIL"))
@@ -44,16 +44,16 @@ public abstract class SkullBlockEntityMixin{
     private void obe$checkProfile(CallbackInfo ci){
         BlockEntityExt ext = (BlockEntityExt)(Object)this;
         SkullBlockEntity skullBe = (SkullBlockEntity)(Object)this;
-        if(obe$isDynamicTexture(skullBe)) ext.renderMode(RenderMode.ENTITY);
-        ext.hasSpecialRenderer(SkullBlockUtil.hasBuiltInTexture(skullBe));
+        if(obe$isDynamicTexture(skullBe)) ext.obe$renderMode(RenderMode.ENTITY);
+        ext.obe$hasSpecialRenderer(SkullBlockUtil.hasBuiltInTexture(skullBe));
     }
 
     @Inject(method = "loadAdditional", at = @At("RETURN"))
     private void obe$checkProfileBis(CallbackInfo ci){
         BlockEntityExt ext = (BlockEntityExt)(Object)this;
         SkullBlockEntity skullBe = (SkullBlockEntity)(Object)this;
-        if(obe$isDynamicTexture(skullBe)) ext.renderMode(RenderMode.ENTITY);
-        ext.hasSpecialRenderer(SkullBlockUtil.hasBuiltInTexture(skullBe));
+        if(obe$isDynamicTexture(skullBe)) ext.obe$renderMode(RenderMode.ENTITY);
+        ext.obe$hasSpecialRenderer(SkullBlockUtil.hasBuiltInTexture(skullBe));
     }
 
     @Unique

@@ -11,6 +11,6 @@ public class BlockEntityAPI {
      * @since 1.1.21
      */
     public void addSpecialRenderer(BlockEntity be){
-        if(be instanceof BlockEntityExt ext) ext.hasSpecialRenderer(true);
+        if(be instanceof BlockEntityExt ext) ext.obe$hasSpecialRenderer(true);
     }
 }

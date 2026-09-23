@@ -24,10 +24,10 @@ public class RenderModeManager {
     }
 
     public static void setRenderMode(BlockEntityExt ext, RenderMode mode, BlockPos pos){
-        if(ext.renderMode() != mode) {
+        if(ext.obe$renderMode() != mode) {
             setDirty(pos);
-            ext.renderMode(mode);
-            ext.renderModeDelayed(mode);
+            ext.obe$renderMode(mode);
+            ext.obe$renderModeDelayed(mode);
         }
     }
 
@@ -44,7 +44,7 @@ public class RenderModeManager {
     }
 
     public static <T extends BlockEntity> boolean shouldRenderEntity(boolean setting, BlockEntityExt ext, BlockEntity be){
-        return ext == null || !be.hasLevel() || !ext.isSupported() || setting || !SettingsManager.MOD_TOGGLE.getValue();
+        return ext == null || !be.hasLevel() || !ext.obe$isSupported() || setting || !SettingsManager.MOD_TOGGLE.getValue();
     }
 
     public static <T extends BlockEntity> boolean shouldRenderEntity(T be){
@@ -52,11 +52,11 @@ public class RenderModeManager {
     }
 
     public static <T extends BlockEntity> boolean shouldRenderEntity(BlockEntityExt ext, T be){
-        return ext == null || !be.hasLevel() || ext.forceEntity() || !ext.isSupported() || ext.renderMode() == RenderMode.ENTITY || ext.renderModeDelayed() == RenderMode.ENTITY || ext.renderBoth();
+        return ext == null || !be.hasLevel() || ext.obe$forceEntity() || !ext.obe$isSupported() || ext.obe$renderMode() == RenderMode.ENTITY || ext.obe$renderModeDelayed() == RenderMode.ENTITY || ext.obe$renderBoth();
     }
 
     public static <T extends BlockEntity> boolean shouldRenderEntityFast(BlockEntityExt ext){
-        return ext.forceEntity() || !ext.isSupported() || ext.renderMode() == RenderMode.ENTITY || ext.renderModeDelayed() == RenderMode.ENTITY || ext.renderBoth();
+        return ext.obe$forceEntity() || !ext.obe$isSupported() || ext.obe$renderMode() == RenderMode.ENTITY || ext.obe$renderModeDelayed() == RenderMode.ENTITY || ext.obe$renderBoth();
     }
 
     public static <T extends BlockEntity> void setRenderModeDelayed(T be, RenderMode mode, BlockPos pos){
@@ -64,8 +64,8 @@ public class RenderModeManager {
     }
 
     public static void setRenderModeDelayed(BlockEntityExt ext, RenderMode mode, BlockPos pos){
-        if(ext.renderModeDelayed() != mode && (mode != RenderMode.TERRAIN || canBeTerrain(ext))){
-            ext.renderModeDelayed(mode);
+        if(ext.obe$renderModeDelayed() != mode && (mode != RenderMode.TERRAIN || canBeTerrain(ext))){
+            ext.obe$renderModeDelayed(mode);
             setDirty(pos);
         }
     }
@@ -81,19 +81,19 @@ public class RenderModeManager {
     }
 
     public static void updateBlockEntityOnChunkRemesh(BlockEntityExt ext, SectionPos pos){
-        if(!ext.isSupported()) return;
-        else if(!SettingsManager.MOD_TOGGLE.getValue()) ext.isEnabled(false);
+        if(!ext.obe$isSupported()) return;
+        else if(!SettingsManager.MOD_TOGGLE.getValue()) ext.obe$isEnabled(false);
         else{
             String group = Registry.getGroup(((BlockEntity)ext).getType());
             if(group == null) return;
             Option<Boolean> option = SettingsManager.GROUP_TOGGLE_SETTINGS.get(group);
-            if(option != null) ext.isEnabled(option.getValue());
-            if(ext.isEnabled()){
-                if(ext.isTimerFinished()){
-                    ChunkTaskHolder.addTask(pos, () -> ext.renderMode(RenderMode.TERRAIN));
+            if(option != null) ext.obe$isEnabled(option.getValue());
+            if(ext.obe$isEnabled()){
+                if(ext.obe$isTimerFinished()){
+                    ChunkTaskHolder.addTask(pos, () -> ext.obe$renderMode(RenderMode.TERRAIN));
                 }
-                if(ext.renderMode() != ext.renderModeDelayed()){
-                    ChunkTaskHolder.addTask(pos, () -> ext.renderMode(ext.renderModeDelayed()));
+                if(ext.obe$renderMode() != ext.obe$renderModeDelayed()){
+                    ChunkTaskHolder.addTask(pos, () -> ext.obe$renderMode(ext.obe$renderModeDelayed()));
                 }
             }
         }
@@ -109,7 +109,7 @@ public class RenderModeManager {
 
         SpecialModelProvider customModelProvider = SpecialModelGetter.getSpecialModelProvider(state, group);
 
-        if(ext.hasSpecialRenderer() && customModelProvider != null){
+        if(ext.obe$hasSpecialRenderer() && customModelProvider != null){
             if(customModelProvider.getModelLayerLocationProvider().apply(state, be) == null) return false;
             if(customModelProvider.getMaterialProvider().apply(state, be) == null) return false;
         }

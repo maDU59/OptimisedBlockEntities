@@ -26,8 +26,8 @@ public class LootrShulkerBoxBlockEntityMixin {
         BlockEntity be = (BlockEntity)(Object)this;
         BlockEntityExt ext = (BlockEntityExt)be;
         
-        ext.isSupported(Registry.isSupported("shulker_box", be.getType()));
-        ext.hasSpecialRenderer(true);
+        ext.obe$isSupported(Registry.isSupported("shulker_box", be.getType()));
+        ext.obe$hasSpecialRenderer(true);
     }
 
     @Inject(method = "updateAnimation", at = @At("HEAD"))
