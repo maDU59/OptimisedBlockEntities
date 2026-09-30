@@ -12,6 +12,7 @@
 		"blockentity.decoratedpot.DecoratedPotBlockEntityMixin",
 		"blockentity.shulkerbox.ShulkerBoxBlockEntityMixin",
 		"blockentity.lectern.LecternBlockEntityMixin",
+		"blockentity.sign.SignTextMixin",
 		"blockentity.compat.lootr.LootrChestBlockEntityMixin",
 		"blockentity.compat.lootr.LootrShulkerBoxBlockEntityMixin",
 		"blockentity.BlockEntityMixin",
