@@ -98,7 +98,7 @@ public class BlockEntityStateModel implements BlockStateModel{
 
             Transparency transparency = Transparency.TRANSPARENT;
 
-            if(state.getBlock() instanceof AbstractSkullBlock && partPath.equals("")){
+            if(state != null && state.getBlock() instanceof AbstractSkullBlock && partPath.equals("")){
                 transparency = Transparency.NONE;
             }
 
@@ -171,7 +171,7 @@ public class BlockEntityStateModel implements BlockStateModel{
     }
 
     private boolean shouldFixBFC(BlockState state, String key){
-        if(state.getBlock() instanceof AbstractSkullBlock) return true;
+        if(state != null && state.getBlock() instanceof AbstractSkullBlock) return true;
         return key.equals("vChains") || key.equals("normalChains");
     }
 

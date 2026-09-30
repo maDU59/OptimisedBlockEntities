@@ -24,7 +24,7 @@ public class LootrChestBlockEntityMixin {
         BlockEntity be = (BlockEntity)(Object)this;
         BlockEntityExt ext = (BlockEntityExt)be;
         
-        ext.hasSpecialRenderer(true);
+        ext.obe$hasSpecialRenderer(true);
     }
 
     @Inject(method = "defaultTick", at = @At("HEAD"))

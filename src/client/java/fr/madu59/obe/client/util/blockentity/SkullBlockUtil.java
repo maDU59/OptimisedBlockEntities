@@ -79,7 +79,7 @@ public class SkullBlockUtil {
         if(!SettingsManager.CUSTOM_SKULLS.getValue()) return false;
         String textureValue = getBuiltInTextureValue(be);
         if(textureValue == null) {
-            ((BlockEntityExt) be).hasSpecialRenderer(false);
+            ((BlockEntityExt) be).obe$hasSpecialRenderer(false);
             return false;
         }
         return SkullBlockUtil.BUILT_IN_TEXTURES.containsKey(textureValue);

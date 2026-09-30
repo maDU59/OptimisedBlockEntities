@@ -78,7 +78,7 @@ public class RegistryApi {
      * @since 1.1.0
      */
     public static <T extends BlockEntity> void registerSupportedBlockEntity(T be){
-        ((BlockEntityExt)be).isSupported(true);
+        ((BlockEntityExt)be).obe$isSupported(true);
     }
 
     /*

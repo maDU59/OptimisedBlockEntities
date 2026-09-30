@@ -23,8 +23,8 @@ public abstract class BlockEntityMixin implements BlockEntityExt {
     @Unique private boolean shouldSkipRendering = false;
     @Unique private boolean forceEntity = false;
 
-    @Override public boolean isSupported() { return isSupported; }
-    @Override public void isSupported(boolean bl) {
+    @Override public boolean obe$isSupported() { return isSupported; }
+    @Override public void obe$isSupported(boolean bl) {
         if(bl && bl != isSupported && renderModeDelayed == RenderMode.TERRAIN){
             if(!RenderModeManager.canBeTerrain(this)) {
                 renderModeDelayed = RenderMode.ENTITY;
@@ -33,40 +33,40 @@ public abstract class BlockEntityMixin implements BlockEntityExt {
         this.isSupported = bl; 
     }
 
-    @Override public RenderMode renderMode() { return renderMode; }
-    @Override public void renderMode(RenderMode mode) {
+    @Override public RenderMode obe$renderMode() { return renderMode; }
+    @Override public void obe$renderMode(RenderMode mode) {
         if(isEnabled) renderMode = mode;
         renderModeDelayed = mode;
     }
 
-    @Override public RenderMode renderModeDelayed() { return renderModeDelayed; }
-    @Override public void renderModeDelayed(RenderMode mode) { renderModeDelayed = mode; }
+    @Override public RenderMode obe$renderModeDelayed() { return renderModeDelayed; }
+    @Override public void obe$renderModeDelayed(RenderMode mode) { renderModeDelayed = mode; }
 
-    @Override public boolean hasSpecialRenderer() { return hasSpecialRenderer; }
-    @Override public void hasSpecialRenderer(boolean bl) { hasSpecialRenderer = bl; }
+    @Override public boolean obe$hasSpecialRenderer() { return hasSpecialRenderer; }
+    @Override public void obe$hasSpecialRenderer(boolean bl) { hasSpecialRenderer = bl; }
 
-    @Override public boolean isEnabled() { return isEnabled; }
-    @Override public void isEnabled(boolean bl) {
+    @Override public boolean obe$isEnabled() { return isEnabled; }
+    @Override public void obe$isEnabled(boolean bl) {
         isEnabled = bl;
         if(!isEnabled) renderMode = RenderMode.ENTITY;
     }
 
-    @Override public boolean renderBoth() { return renderBoth; }
-    @Override public void renderBoth(boolean bl) { renderBoth = bl;}
+    @Override public boolean obe$renderBoth() { return renderBoth; }
+    @Override public void obe$renderBoth(boolean bl) { renderBoth = bl;}
 
-    @Override public boolean isTimerFinished(){
+    @Override public boolean obe$isTimerFinished(){
         if(timerStart == 0) return false;
         else return Minecraft.getInstance().level.getGameTime() - timerStart > timerDuration;
     }
 
-    @Override public void setTimer(long start, int duration){
+    @Override public void obe$setTimer(long start, int duration){
         timerStart = start;
         timerDuration = duration;
     }
 
-    @Override public boolean shouldSkipRendering() { return shouldSkipRendering; }
-    @Override public void shouldSkipRendering(boolean bl) { shouldSkipRendering = bl; }
-    @Override public void shouldSkipRenderingAndUpdate(boolean bl) {
+    @Override public boolean obe$shouldSkipRendering() { return shouldSkipRendering; }
+    @Override public void obe$shouldSkipRendering(boolean bl) { shouldSkipRendering = bl; }
+    @Override public void obe$shouldSkipRenderingAndUpdate(boolean bl) {
         if(bl != shouldSkipRendering) {
             shouldSkipRendering = bl;
             BlockPos pos = ((BlockEntity)(Object)this).getBlockPos();
@@ -74,6 +74,6 @@ public abstract class BlockEntityMixin implements BlockEntityExt {
         }
     }
 
-    @Override public boolean forceEntity() { return forceEntity; }
-    @Override public void forceEntity(boolean bl) { forceEntity = bl; }
+    @Override public boolean obe$forceEntity() { return forceEntity; }
+    @Override public void obe$forceEntity(boolean bl) { forceEntity = bl; }
 }
