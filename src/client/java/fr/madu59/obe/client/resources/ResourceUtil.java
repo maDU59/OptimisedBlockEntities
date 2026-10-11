@@ -16,7 +16,6 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.data.AtlasIds;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class ResourceUtil{
@@ -45,16 +44,16 @@ public class ResourceUtil{
         return transformedModelCache.get(state);
     }
 
-    public static BlockStateModel getModel(BlockState state, BlockEntity be){
-        return transformedSpecialModelCache.get(new SpecialModelCacheKey(state, be));
+    public static BlockStateModel getModel(BlockState state, Object cacheKey){
+        return transformedSpecialModelCache.get(new SpecialModelCacheKey(state, cacheKey));
     }
 
     public static boolean cacheContains(BlockState state){
         return transformedModelCache.containsKey(state);
     }
 
-    public static boolean cacheContains(BlockState state, BlockEntity be){
-        return transformedSpecialModelCache.containsKey(new SpecialModelCacheKey(state, be));
+    public static boolean cacheContains(BlockState state, Object cacheKey){
+        return transformedSpecialModelCache.containsKey(new SpecialModelCacheKey(state, cacheKey));
     }
 
     public static void cache(BlockState blockState, BlockStateModel model){

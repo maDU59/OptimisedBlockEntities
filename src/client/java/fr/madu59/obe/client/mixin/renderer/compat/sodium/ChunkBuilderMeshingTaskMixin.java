@@ -7,6 +7,7 @@ import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
@@ -50,8 +51,9 @@ public class ChunkBuilderMeshingTaskMixin {
 
     @WrapOperation(method = "execute", at = @At(value = "INVOKE", target = "Lnet/caffeinemc/mods/sodium/client/world/LevelSlice;getBlockState(III)Lnet/minecraft/world/level/block/state/BlockState;"))
     private BlockState obe$getBlockState(LevelSlice slice, int x, int y, int z, Operation<BlockState> original, @Share("be") LocalRef<BlockEntity> beRef){
-        beRef.set(slice.getBlockEntity(x, y, z));
-        return original.call(slice, x, y, z);
+        BlockState state = original.call(slice, x, y, z);
+        beRef.set(state.hasBlockEntity() ? slice.getBlockEntity(x, y, z) : null);
+        return state;
     }
 
     @WrapOperation(method = "execute", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getRenderShape()Lnet/minecraft/world/level/block/RenderShape;"))
@@ -59,17 +61,16 @@ public class ChunkBuilderMeshingTaskMixin {
         return SectionMeshingUtil.getCorrectedRenderShape(state, beRef.get(), sectionPos, original.call(state));
     }
 
-    @WrapOperation(
+    @ModifyArg(
         method = "execute",
         at = @At(
             value = "INVOKE",
             target = "Lnet/caffeinemc/mods/sodium/client/render/chunk/compile/pipeline/BlockRenderer;renderModel(Lnet/minecraft/client/renderer/block/dispatch/BlockStateModel;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/BlockPos;)V"
-        )
+        ),
+        index = 0
     )
-    public void obe$wrapRenderModel(BlockRenderer instance, BlockStateModel originalModel, BlockState state, BlockPos pos, BlockPos origin, Operation<Void> original, @Share("be") LocalRef<BlockEntity> beRef) {
-        BlockStateModel model = SectionMeshingUtil.getCorrectedModel(state, beRef.get(), originalModel, pos);
-        
-        original.call(instance, model, state, pos, origin);
+    private BlockStateModel obe$wrapRenderModel(BlockStateModel originalModel, BlockState state, BlockPos pos, BlockPos origin, @Share("be") LocalRef<BlockEntity> beRef) {
+        return SectionMeshingUtil.getCorrectedModel(state, beRef.get(), originalModel, pos);
     }
 
     @WrapOperation(
