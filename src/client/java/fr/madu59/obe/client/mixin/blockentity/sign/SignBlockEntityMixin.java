@@ -19,8 +19,8 @@ public class SignBlockEntityMixin {
         BlockEntity be = (BlockEntity)(Object)this;
         BlockEntityExt ext = (BlockEntityExt)be;
         
-        ext.renderBoth(true);
-        ext.isSupported(Registry.isSupported("sign", be.getType()));
-        if(!ext.isSupported()) ext.isSupported(Registry.isSupported("hanging_sign", be.getType()));
+        ext.obe$renderBoth(true);
+        ext.obe$isSupported(Registry.isSupported("sign", be.getType()));
+        if(!ext.obe$isSupported()) ext.obe$isSupported(Registry.isSupported("hanging_sign", be.getType()));
     }
 }

@@ -19,9 +19,9 @@ public class SectionMeshingUtil {
     public static RenderShape getCorrectedRenderShape(BlockState state, BlockEntity be, SectionPos sectionPos, RenderShape originalRenderShape){
         if(state.hasBlockEntity()){
             BlockEntityExt ext = (BlockEntityExt) be;
-            if(ext != null && ext.isSupported()) {
+            if(ext != null && ext.obe$isSupported()) {
                 RenderModeManager.updateBlockEntityOnChunkRemesh(ext, sectionPos);
-                if(ext.isEnabled() && ext.renderModeDelayed() == RenderMode.TERRAIN && !ext.forceEntity()){
+                if(ext.obe$isEnabled() && ext.obe$renderModeDelayed() == RenderMode.TERRAIN && !ext.obe$forceEntity()){
                     return RenderShape.MODEL;
                 }
             }
@@ -36,10 +36,10 @@ public class SectionMeshingUtil {
             BlockEntityExt ext = (BlockEntityExt) be;
 
             if(ext != null){
-                if(ext.renderModeDelayed() != RenderMode.TERRAIN || !ext.isSupported() || !ext.isEnabled() || ext.forceEntity()){
+                if(ext.obe$renderModeDelayed() != RenderMode.TERRAIN || !ext.obe$isSupported() || !ext.obe$isEnabled() || ext.obe$forceEntity()){
                     model = ResourceUtil.getDefaultModel(be.getBlockState());
                 }
-                else if(ext.hasSpecialRenderer()) model = blockEntityModelsManager.getModel(state, originalModel, be);
+                else if(ext.obe$hasSpecialRenderer()) model = blockEntityModelsManager.getModel(state, originalModel, be);
             }
 
             if(model == null) model = ResourceUtil.getDefaultModel(be.getBlockState());
