@@ -22,16 +22,16 @@ public class WorldRendererMixin {
             method = "renderBlockEntities",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/renderer/blockentity/BlockEntityRenderDispatcher;tryExtractRenderState(Lnet/minecraft/world/level/block/entity/BlockEntity;FLnet/minecraft/client/renderer/feature/ModelFeatureRenderer$CrumblingOverlay;)Lnet/minecraft/client/renderer/blockentity/state/BlockEntityRenderState;",
+                    target = "Lnet/minecraft/client/renderer/blockentity/BlockEntityRenderDispatcher;tryExtractRenderState(Lnet/minecraft/world/level/block/entity/BlockEntity;FLnet/minecraft/client/renderer/feature/ModelFeatureRenderer$CrumblingOverlay;Z)Lnet/minecraft/client/renderer/blockentity/state/BlockEntityRenderState;",
                     ordinal = 0
             )
     )
     private BlockEntityRenderState obe$preventUselessExtraction(BlockEntityRenderDispatcher instance, BlockEntity be, float partialTick,
-                                                                  ModelFeatureRenderer.CrumblingOverlay overlay,
+                                                                  ModelFeatureRenderer.CrumblingOverlay overlay, boolean bool,
                                                                   Operation<BlockEntityRenderState> original) {
         if (SpecialBlockEntityRenderingManager.shouldSkipRendering(be)) {
             return null;
         }
-        return original.call(instance, be, partialTick, overlay);
+        return original.call(instance, be, partialTick, overlay, bool);
     }
 }
