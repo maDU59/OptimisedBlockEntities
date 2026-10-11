@@ -29,7 +29,7 @@ public abstract class BlockRendererMixin extends AbstractBlockRenderContext {
     )
     private BlockStateModel obe$getCorrectedModel(BlockStateModelSet instance, BlockState state, Operation<BlockStateModel> original, @Local BlockPos pos) {
         BlockStateModel originalModel = original.call(instance, state);
-        BlockEntity be = this.renderRegion.getBlockEntity(pos);
+        BlockEntity be = state.hasBlockEntity() ? this.renderRegion.getBlockEntity(pos) : null;
         return SectionMeshingUtil.getCorrectedModel(state, be, originalModel, pos);
     }
 }
