@@ -8,6 +8,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import fr.madu59.obe.client.config.Option;
 import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.model.BlockEntityStateModel;
 import fr.madu59.obe.client.registry.Registry;
@@ -19,7 +20,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import net.minecraft.client.renderer.block.BlockStateModelSet;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 
 @Mixin(BlockStateModelSet.class)
@@ -40,58 +40,27 @@ public class BlockStateModelSetMixin {
 
         if(!SettingsManager.MOD_TOGGLE.getValue()) return;
         try{ // In case of another mod trying to access the block states before the entity model set is populated
-            RandomSource random = RandomSource.create(42);
-            BlockStateModel model;
-
             String group = Registry.getGroup(state);
             if(group == null) return;
 
-            if(group.equals("skull")){
-                if(SettingsManager.OPTIMISED_SKULLS.getValue()){
-                    model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
-                    if(model != null) cir.setReturnValue(model);
-                }
+            Option<Boolean> toggle = switch (group) {
+                case "skull" -> SettingsManager.OPTIMISED_SKULLS;
+                case "chest" -> SettingsManager.OPTIMISED_CHESTS;
+                case "banner" -> SettingsManager.OPTIMISED_BANNERS;
+                case "bell" -> SettingsManager.OPTIMISED_BELLS;
+                case "copper_golem_statue" -> SettingsManager.OPTIMISED_COPPER_GOLEMS;
+                case "shulker_box" -> SettingsManager.OPTIMISED_SHULKER_BOXES;
+                case "decorated_pot" -> SettingsManager.OPTIMISED_DECORATED_POTS;
+                default -> null;
+            };
+            if(toggle != null && !toggle.getValue()) return;
+
+            BlockStateModel model = ResourceUtil.getModel(state);
+            if(model == null){
+                if(group.equals("decorated_pot")) model = blockEntityModelsManager.getDecoratedPotModel(state, null, obe$getOriginalModel(state));
+                else model = blockEntityModelsManager.getBlockModel(state, null, obe$getOriginalModel(state), group);
             }
-            else if(group.equals("chest")){
-                if(SettingsManager.OPTIMISED_CHESTS.getValue()){
-                    model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
-                    if(model != null) cir.setReturnValue(model);
-                }
-            }
-            else if(group.equals("banner")){
-                if(SettingsManager.OPTIMISED_BANNERS.getValue()){
-                    model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
-                    if(model != null) cir.setReturnValue(model);
-                }
-            }
-            else if(group.equals("bell")){
-                if(SettingsManager.OPTIMISED_BELLS.getValue()){
-                    model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
-                    if(model != null) cir.setReturnValue(model);
-                }
-            }
-            else if(group.equals("copper_golem_statue")){
-                if(SettingsManager.OPTIMISED_COPPER_GOLEMS.getValue()){    
-                    model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
-                    if(model != null) cir.setReturnValue(model);
-                }
-            }
-            else if(group.equals("shulker_box")){
-                if(SettingsManager.OPTIMISED_SHULKER_BOXES.getValue()){
-                    model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
-                    if(model != null) cir.setReturnValue(model);
-                }
-            }
-            else if(group.equals("decorated_pot")){
-                if(SettingsManager.OPTIMISED_DECORATED_POTS.getValue()){
-                    model = blockEntityModelsManager.getDecoratedPotModel(state, random, obe$getOriginalModel(state));
-                    if(model != null) cir.setReturnValue(model);
-                }
-            }
-            else{
-                model = blockEntityModelsManager.getBlockModel(state, random, obe$getOriginalModel(state), group);
-                if(model != null) cir.setReturnValue(model);
-            }
+            if(model != null) cir.setReturnValue(model);
         }
         catch(Exception e){
 

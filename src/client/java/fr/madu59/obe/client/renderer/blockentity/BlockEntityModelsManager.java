@@ -51,8 +51,9 @@ public class BlockEntityModelsManager {
         SpecialModelProvider customModelProvider = SpecialModelGetter.getSpecialModelProvider(state, group);
         if(ext.obe$renderModeDelayed() == RenderMode.TERRAIN){
             if(customModelProvider != null){
-                if(ResourceUtil.cacheContains(state, be)) return ResourceUtil.getModel(state, be);
                 Object cacheKey = customModelProvider.getCacheKeyProvider().apply(be);
+                BlockStateModel cached = ResourceUtil.getModel(state, cacheKey);
+                if(cached != null) return cached;
                 PoseStack poseStack = new PoseStack();
 
                 ModelLayerLocation layerLocation = customModelProvider.getModelLayerLocationProvider().apply(state, be);

@@ -1,2 +1,2 @@
 # What's new:
-- Improved sign optimization (@Wyvest)
+- Various optimizations (@Wyvest)
