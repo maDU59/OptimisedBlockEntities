@@ -153,7 +153,7 @@ public class Registry {
                 if(type.isValid(state)){
                     if(match != null){
                         // This tries to fix #69 (and #30 and # 13) where a block is considered as valid in a BlockEntityType where it shouldn't. EnderScape is causing issues
-                        OBE.LOGGER.warn("Inconsistent BlockEntityType match detected for block " + block + " (" + BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(match).toString() + "), skipping cache for this query.");
+                        OBE.LOGGER.warn("Inconsistent BlockEntityType match detected for block " + block + " (" + BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(match).toString() + " / " + BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(type).toString() + "), skipping cache for this query.");
                         return null;
                     }
                     match = type;
