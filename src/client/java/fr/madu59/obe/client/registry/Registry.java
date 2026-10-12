@@ -31,6 +31,7 @@ public class Registry {
         if(isInit) return;
         isInit = true;
         register("chest", BlockEntityType.CHEST, BlockEntityType.ENDER_CHEST, BlockEntityType.TRAPPED_CHEST);
+        register("bell", BlockEntityType.BELL);
         register("skull", BlockEntityType.SKULL);
         register("banner", BlockEntityType.BANNER);
         register("shulker_box", BlockEntityType.SHULKER_BOX);
