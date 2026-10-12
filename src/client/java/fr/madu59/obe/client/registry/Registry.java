@@ -149,22 +149,11 @@ public class Registry {
         for(Set<BlockEntityType<?>> set : supportedBeTypes.values()){
             for(BlockEntityType<?> type : set){
                 if(type.isValid(state)){
-
-                    // Should never happen but does with EnderScape or MoreCulling
                     if(match != null){
-                        // This tries to fix #69 (and #30 and # 13) where a block is considered as valid in a BlockEntityType where it shouldn't.
-
-                        // Tries to get the BlockEntityType from the block itself, which is more reliable than the isValid check but allocates a new BlockEntity instance
-                        if(block instanceof EntityBlock eb){
-                            BlockEntity be = eb.newBlockEntity(BlockPos.ZERO, state);
-                            if (be != null) return be.getType();
-                        }
-
-                        // If the block is not an EntityBlock or if the newBlockEntity returned null, we log a warning and skip caching for this query
+                        // This tries to fix #69 (and #30 and # 13) where a block is considered as valid in a BlockEntityType where it shouldn't. EnderScape is causing issues
                         OBE.LOGGER.warn("Inconsistent BlockEntityType match detected for block " + block + " (" + BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(match).toString() + " / " + BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(type).toString() + "), skipping cache for this query.");
                         return null;
                     }
-
                     match = type;
                 }
             }
