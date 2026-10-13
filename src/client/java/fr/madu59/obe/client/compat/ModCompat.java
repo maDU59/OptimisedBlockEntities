@@ -19,7 +19,7 @@ public class ModCompat {
     private static boolean isEMFLoaded = PlatformHelper.isModLoaded("entity_model_features");
     private final static boolean isPunchyLoaded = PlatformHelper.isModLoaded("punchy");
 
-    private static final List<String> incompatibleMods = Arrays.asList("vulkanmod","optifine","embeddium","optifabric");
+    private static final List<String> incompatibleMods = Arrays.asList("optifine","embeddium","optifabric");
 
     public static void init(){
         if(PlatformHelper.isModLoaded("lootr")) {

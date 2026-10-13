@@ -2,7 +2,6 @@ package fr.madu59.obe.client.mixin.blockentity.renderers.sign;
 
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
-import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -47,11 +46,10 @@ public abstract class AbstractSignRendererMixin {
     public void obe$cancelSignText(BlockPos blockPos, SignText signText, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j, int k, boolean bl, CallbackInfo ci){
         poseStack.pushPose();
         this.translateSignText(poseStack, bl, this.getTextOffset());
-        if((ModCompat.isShadowPass() || !obe$isFacingCamera(poseStack)) && SettingsManager.SIGN_TEXT_CULLING.getValue()) {
-            poseStack.popPose();
+        poseStack.popPose();
+        if(SettingsManager.SIGN_TEXT_CULLING.getValue() && (ModCompat.isShadowPass() || !obe$isFacingCamera(poseStack))) {
             ci.cancel();
         }
-        else poseStack.popPose();
     }
 
     @Inject(method = "renderSignWithText", at = @At("HEAD"), cancellable = true)
@@ -70,15 +68,9 @@ public abstract class AbstractSignRendererMixin {
 
     @Unique
     private static boolean obe$isFacingCamera(PoseStack poseStack) {
-        Matrix4f pose = poseStack.last().pose();
-
         PoseStack.Pose topPose = poseStack.last();
-        Matrix3f normalMatrix = topPose.normal();
-        Vector3f forwardVector = new Vector3f();
-        normalMatrix.getColumn(2, forwardVector);
-
-        Vector3f pos = pose.transformPosition(0, 0, 0, new Vector3f());
-
-        return forwardVector.dot(pos) < 0.0f;
+        Matrix4f pose = topPose.pose();
+        Matrix3f normal = topPose.normal();
+        return Math.fma(normal.m20(), pose.m30(), Math.fma(normal.m21(), pose.m31(), normal.m22() * pose.m32())) < 0.0f;
     }
 }
