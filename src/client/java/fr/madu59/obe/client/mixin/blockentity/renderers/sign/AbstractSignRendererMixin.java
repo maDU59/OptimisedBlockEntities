@@ -48,10 +48,10 @@ public abstract class AbstractSignRendererMixin<S extends SignRenderState> {
         if(!RenderModeManager.shouldRenderEntity(!SettingsManager.OPTIMISED_SIGNS.getValue(), state)){
             ci.cancel();
 
-            poseStack.pushPose();
-            poseStack.mulPose(state.transformations.body());
+            // poseStack.pushPose();
+            // poseStack.mulPose(state.transformations.body());
             // this.submitSign(poseStack, state.lightCoords, state.woodType, bodyModel, breakProgress, submitNodeCollector);
-            poseStack.popPose();
+            // poseStack.popPose();
             if (state.frontText != null) {
                 poseStack.pushPose();
                 poseStack.mulPose(state.transformations.frontText());
