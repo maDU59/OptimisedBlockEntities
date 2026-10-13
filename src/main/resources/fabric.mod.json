@@ -27,6 +27,9 @@
 		],
 		"sodium:config_api_user": [
 			"fr.madu59.obe.client.config.configscreen.SodiumIntegration"
+		],
+		"oneconfig:toggle": [
+			"fr.madu59.obe.client.config.configscreen.oneconfig.OBEToggle"
 		]
 	},
 	"mixins": [
