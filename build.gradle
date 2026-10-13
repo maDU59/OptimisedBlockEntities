@@ -53,8 +53,8 @@ dependencies {
     modImplementation("org.anarres:jcpp:1.4.14")
 	modImplementation "maven.modrinth:iris:1.7.6+1.20.1-fabric"
 	
-	modImplementation "maven.modrinth:entitytexturefeatures:7.2.1-fabric-1.20.1"
-	modImplementation "maven.modrinth:entity-model-features:3.3.2-fabric-1.20.1"
+	modImplementation "maven.modrinth:entitytexturefeatures:7.2.5-fabric-1.20.1"
+	modImplementation "maven.modrinth:entity-model-features:3.3.11-fabric-1.20.1"
 
 	modImplementation "maven.modrinth:lootr:nj1zDLc6"
 	modImplementation "maven.modrinth:cloth-config:2xQdCMyG"
@@ -65,6 +65,8 @@ dependencies {
 	modImplementation "maven.modrinth:carved-wood:1.9.7-E-Fabric-1.20.1"
 	
 	modCompileOnly "maven.modrinth:bclib:3.0.14"
+
+	modCompileOnly "maven.modrinth:vulkanmod:ZhvilXaM"
 }
 
 processResources {

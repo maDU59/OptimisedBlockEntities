@@ -4,6 +4,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -14,7 +15,6 @@ import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import fr.madu59.obe.client.renderer.blockentity.BlockEntityModelsManager;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager.RenderMode;
-import fr.madu59.obe.client.resources.ResourceUtil;
 import fr.madu59.obe.client.util.meshing.SectionMeshingUtil;
 import me.jellysquid.mods.sodium.client.render.chunk.compile.ChunkBuildBuffers;
 import me.jellysquid.mods.sodium.client.render.chunk.compile.pipeline.BlockRenderContext;
@@ -40,8 +40,9 @@ public class ChunkBuilderMeshingTaskMixin {
 
     @WrapOperation(method = "execute", at = @At(value = "INVOKE", target = "Lme/jellysquid/mods/sodium/client/world/WorldSlice;getBlockState(III)Lnet/minecraft/world/level/block/state/BlockState;"))
     private BlockState obe$getBlockState(WorldSlice slice, int x, int y, int z, Operation<BlockState> original, @Share("be") LocalRef<BlockEntity> beRef){
-        beRef.set(slice.getBlockEntity(x, y, z));
-        return original.call(slice, x, y, z);
+        BlockState state = original.call(slice, x, y, z);
+        beRef.set(state.hasBlockEntity() ? slice.getBlockEntity(x, y, z) : null);
+        return state;
     }
 
     @WrapOperation(method = "execute", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getRenderShape()Lnet/minecraft/world/level/block/RenderShape;"))
@@ -76,7 +77,7 @@ public class ChunkBuilderMeshingTaskMixin {
     )
     private BlockEntityRenderer<?> obe$wrapShouldRender(BlockEntityRenderDispatcher instance, BlockEntity be, Operation<BlockEntityRenderer<?>> original) {
         BlockEntityExt ext = (BlockEntityExt) be;
-        if(ext != null && ext.isEnabled() && (!(ext.forceEntity() || !ext.isSupported() || ext.renderModeDelayed() == RenderMode.ENTITY || ext.renderBoth()) || ext.shouldSkipRendering())) {
+        if(ext != null && ext.obe$isEnabled() && (!(ext.obe$forceEntity() || !ext.obe$isSupported() || ext.obe$renderModeDelayed() == RenderMode.ENTITY || ext.obe$renderBoth()) || ext.obe$shouldSkipRendering())) {
             return null;
         }
         return original.call(instance, be);

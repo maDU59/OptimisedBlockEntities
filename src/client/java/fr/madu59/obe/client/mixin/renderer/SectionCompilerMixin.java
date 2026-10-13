@@ -26,8 +26,9 @@ public class SectionCompilerMixin {
 
     @WrapOperation(method = "compile", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/chunk/RenderChunkRegion;getBlockState(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;"))
     private BlockState obe$getBlockState(RenderChunkRegion region, BlockPos pos, Operation<BlockState> original, @Share("be") LocalRef<BlockEntity> beRef){
-        beRef.set(region.getBlockEntity(pos));
-        return original.call(region, pos);
+        BlockState state = original.call(region, pos);
+        beRef.set(state.hasBlockEntity() ? region.getBlockEntity(pos) : null);
+        return state;
     }
 
     @WrapOperation(method = "compile", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getRenderShape()Lnet/minecraft/world/level/block/RenderShape;"))
