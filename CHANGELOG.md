@@ -1,2 +1,2 @@
 # What's new:
-- Various optimizations (@Wyvest)
+- Various optimizations

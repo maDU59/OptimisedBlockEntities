@@ -2,6 +2,7 @@ package fr.madu59.obe.client.platform;
 
 import java.nio.file.Path;
 
+import fr.madu59.obe.client.chunk.ChunkTaskHolder;
 import fr.madu59.obe.client.compat.ModCompat;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientWorldEvents;
 import net.fabricmc.loader.api.FabricLoader;
@@ -25,6 +26,9 @@ public class PlatformHelper {
     }
 
     public static void registerPlatformEvents(){
-        ClientWorldEvents.AFTER_CLIENT_WORLD_CHANGE.register((minecraft, level) -> ModCompat.onWorldLoad());
+        ClientWorldEvents.AFTER_CLIENT_WORLD_CHANGE.register((minecraft, level) -> {
+            ModCompat.onWorldLoad();
+            ChunkTaskHolder.clearTasks();
+        });
     }
 }

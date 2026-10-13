@@ -19,6 +19,7 @@ import fr.madu59.obe.client.resources.ResourceUtil;
 import fr.madu59.obe.client.util.blockentity.DecoratedPotUtil;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -43,7 +44,7 @@ public class BlockEntityModelsManager {
         if (be == null) return null;
 
         BlockEntityExt ext = (BlockEntityExt)be;
-        if (ext == null || !ext.obe$isSupported() || !ext.obe$hasSpecialRenderer() || !ext.obe$isEnabled()) return null;
+        if (!ext.obe$isSupported() || !ext.obe$hasSpecialRenderer() || !ext.obe$isEnabled()) return null;
 
         String group = Registry.getGroup(state);
         SpecialModelProvider customModelProvider = SpecialModelGetter.getSpecialModelProvider(state, group);
@@ -52,6 +53,7 @@ public class BlockEntityModelsManager {
                 Object cacheKey = customModelProvider.getCacheKeyProvider().apply(be);
                 BakedModel cached = ResourceUtil.getModel(state, cacheKey);
                 if(cached != null) return cached;
+
                 PoseStack poseStack = new PoseStack();
 
                 ModelLayerLocation layerLocation = customModelProvider.getModelLayerLocationProvider().apply(state, be);
@@ -62,7 +64,7 @@ public class BlockEntityModelsManager {
                 ResourceLocation material = customModelProvider.getMaterialProvider().apply(state, be);
                 if(material == null) return fail(be);
 
-                BakedModel model = ResourceUtil.getModel(layerLocation, material, state, cacheKey, poseStack, getAmbientOcclusion(group), originalModel.getParticleIcon());
+                BakedModel model = new BlockEntityStateModel(layerLocation, material, poseStack, getAmbientOcclusion(group), state, originalModel.getParticleIcon());
                 if(customModelProvider.shouldKeepOriginalModel()) model = new CompositeBlockStateModel(model, ResourceUtil.getDefaultModel(state));
                 ResourceUtil.cache(state, cacheKey, model);
                 return model;
@@ -73,7 +75,8 @@ public class BlockEntityModelsManager {
     }
 
     public BakedModel getBlockModel(BlockState state, RandomSource random, BakedModel originalModel, String group) {
-        if(ResourceUtil.cacheContains(state)) return ResourceUtil.getModel(state);
+        BakedModel model = ResourceUtil.getModel(state);
+        if(model != null) return model;
         PoseStack poseStack = new PoseStack();
         
         ModelLayerLocation layerLocation = ModelLayerLocationGetter.getModelLayerLocation(state, group);
@@ -84,7 +87,7 @@ public class BlockEntityModelsManager {
 
         TransformationGetter.applyTransformation(state, poseStack, group);
 
-        BakedModel model = new BlockEntityStateModel(layerLocation, material, poseStack, getAmbientOcclusion(group), state, originalModel.getParticleIcon());
+        model = new BlockEntityStateModel(layerLocation, material, poseStack, getAmbientOcclusion(group), state, originalModel.getParticleIcon());
 
         model = new CompositeBlockStateModel(model, originalModel);
         ResourceUtil.cache(state, model);
@@ -92,15 +95,21 @@ public class BlockEntityModelsManager {
     }
 
     public BakedModel getDecoratedPotModel(BlockState state, RandomSource random, BakedModel originalModel) {
-        if(ResourceUtil.cacheContains(state)) return ResourceUtil.getModel(state);
+        BakedModel model = ResourceUtil.getModel(state);
+        if(model != null) return model;
+
+        String group = "decorated_pot";
         PoseStack poseStack = new PoseStack();
         
-        ModelLayerLocation layerLocation = ModelLayerLocationGetter.getModelLayerLocation(state, "decorated_pot");
+        ModelLayerLocation layerLocation = ModelLayerLocationGetter.getModelLayerLocation(state, group);
         if(layerLocation == null) return null;
 
-        TransformationGetter.applyTransformation(state, poseStack, "decorated_pot");
+        ResourceLocation material = MaterialGetter.getMaterial(state, group);
+        if(material == null) return null;
 
-        BakedModel model = ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "decorated_pot"), state, poseStack, getAmbientOcclusion("decorated_pot"), originalModel.getParticleIcon());
+        TransformationGetter.applyTransformation(state, poseStack, group);
+
+        model = ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "decorated_pot"), state, poseStack, getAmbientOcclusion("decorated_pot"), originalModel.getParticleIcon());
 
         layerLocation = DecoratedPotUtil.getSideModelLayerLocation(state);
 

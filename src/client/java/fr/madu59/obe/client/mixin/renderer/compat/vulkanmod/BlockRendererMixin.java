@@ -6,6 +6,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 
 import fr.madu59.obe.client.util.meshing.SectionMeshingUtil;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -29,7 +30,7 @@ public abstract class BlockRendererMixin extends AbstractBlockRenderContext {
     )
     private BakedModel obe$getCorrectedModel(BlockRenderDispatcher instance, BlockState state, Operation<BakedModel> original, @Local BlockPos pos) {
         BakedModel originalModel = original.call(instance, state);
-        BlockEntity be = this.renderRegion.getBlockEntity(pos);
+        BlockEntity be = state.hasBlockEntity() ? this.renderRegion.getBlockEntity(pos) : null;
         return SectionMeshingUtil.getCorrectedModel(state, be, originalModel);
     }
 }
