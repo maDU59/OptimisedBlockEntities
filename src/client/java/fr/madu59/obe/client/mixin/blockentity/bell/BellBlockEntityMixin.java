@@ -25,7 +25,7 @@ public class BellBlockEntityMixin {
         BlockEntity be = (BlockEntity)(Object)this;
         BlockEntityExt ext = (BlockEntityExt)be;
 
-        ext.isSupported(Registry.isSupported("bell", be.getType()));
+        ext.obe$isSupported(Registry.isSupported("bell", be.getType()));
     }
 
     @Inject(method = "tick", at = @At("RETURN"))
