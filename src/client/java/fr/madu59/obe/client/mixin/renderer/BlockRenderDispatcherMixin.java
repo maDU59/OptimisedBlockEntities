@@ -9,10 +9,6 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 
 import fr.madu59.obe.client.renderer.blockentity.BlockEntityModelsManager;
-import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
-import fr.madu59.obe.client.renderer.misc.RenderModeManager;
-import fr.madu59.obe.client.renderer.misc.RenderModeManager.RenderMode;
-import fr.madu59.obe.client.resources.ResourceUtil;
 import fr.madu59.obe.client.util.meshing.SectionMeshingUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.BlockModelShaper;
@@ -22,7 +18,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.RenderShape;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 @Mixin(BlockRenderDispatcher.class)

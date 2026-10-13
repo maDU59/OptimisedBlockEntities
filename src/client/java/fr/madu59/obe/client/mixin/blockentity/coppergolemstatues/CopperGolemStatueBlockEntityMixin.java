@@ -18,6 +18,6 @@ public abstract class CopperGolemStatueBlockEntityMixin{
         BlockEntity be = (BlockEntity)(Object)this;
         BlockEntityExt ext = (BlockEntityExt)be;
         
-        ext.isSupported(Registry.isSupported("copper_golem_statue", be.getType()));
+        ext.obe$isSupported(Registry.isSupported("copper_golem_statue", be.getType()));
     }
 }

@@ -55,6 +55,8 @@ dependencies {
 	// runtimeOnly "maven.modrinth:betternether:26.101.1"
 	// runtimeOnly "maven.modrinth:worldweaver:26.101.1"
 	// runtimeOnly "maven.modrinth:bclib:26.101.1"
+
+	modCompileOnly "maven.modrinth:vulkanmod:jkDMvvWU"
 }
 
 processResources {
