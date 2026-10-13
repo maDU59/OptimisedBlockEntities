@@ -4,6 +4,7 @@ import java.util.List;
 
 import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
+import fr.madu59.obe.client.renderer.blockentity.sign.ext.SignTextExt;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.item.ItemStack;
@@ -12,12 +13,13 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.CampfireBlockEntity;
 import net.minecraft.world.level.block.entity.ShelfBlockEntity;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
+import net.minecraft.world.level.block.entity.SignText;
 
 public class SpecialBlockEntityRenderingManager {
     public static boolean shouldSkipRendering(BlockEntity be) {
         if(!SettingsManager.MOD_TOGGLE.getValue()) return false;
         else if(be instanceof SignBlockEntity signBe){
-            return SettingsManager.OPTIMISED_SIGNS.getValue() && ((BlockEntityExt)be).isSupported() && isEmpty(signBe);
+            return SettingsManager.OPTIMISED_SIGNS.getValue() && ((BlockEntityExt)be).obe$isSupported() && isEmpty(signBe);
         }
         else if(be instanceof BeaconBlockEntity beaconBe){
             return SettingsManager.OPTIMISED_BEACONS.getValue() && beaconBe.getBeamSections().isEmpty();
@@ -42,6 +44,10 @@ public class SpecialBlockEntityRenderingManager {
 
     private static boolean isEmpty(SignBlockEntity be){
         LocalPlayer player = Minecraft.getInstance().player;
-        return (be.getText(true) == null || !be.getText(true).hasMessage(player)) && (be.getText(false) == null || !be.getText(false).hasMessage(player));
+        return !hasMessage(be.getText(true), player) && !hasMessage(be.getText(false), player);
+    }
+
+    private static boolean hasMessage(SignText text, LocalPlayer player){
+        return text != null && ((SignTextExt) text).obe$hasMessage(player);
     }
 }

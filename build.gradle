@@ -124,6 +124,8 @@ dependencies {
 
     implementation "maven.modrinth:lootr:yUf7Q96A"
 
+    implementation "maven.modrinth:carved-wood:1.9.7-B-NeoForge-26.1"
+
     // Example optional mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
     // compileOnly "mezz.jei:jei-${mc_version}-common-api:${jei_version}"

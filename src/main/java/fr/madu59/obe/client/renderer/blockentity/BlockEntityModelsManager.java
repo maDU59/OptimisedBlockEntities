@@ -32,24 +32,26 @@ public class BlockEntityModelsManager {
 
     public BlockEntityModelsManager(){}
 
-    public @Nullable BlockStateModel getModel(BlockState state, BlockPos pos, long seed, BlockStateModel originalModel, BlockAndTintGetter level){
+    public @Nullable BlockStateModel getModel(BlockState state, BlockPos pos, BlockStateModel originalModel, BlockAndTintGetter level){
         if (!state.hasBlockEntity()) return null;
-        return getModel(state, pos, seed, originalModel, level.getBlockEntity(pos));
+        return getModel(state, originalModel, level.getBlockEntity(pos));
     }
 
-    public @Nullable BlockStateModel getModel(BlockState state, BlockPos pos, long seed, BlockStateModel originalModel, BlockEntity be){
+    public @Nullable BlockStateModel getModel(BlockState state, BlockStateModel originalModel, BlockEntity be){
 
         if (be == null) return null;
 
         BlockEntityExt ext = (BlockEntityExt)be;
-        if (ext == null || !ext.isSupported() || !ext.hasSpecialRenderer() || !ext.isEnabled()) return null;
+        if (!ext.obe$isSupported() || !ext.obe$hasSpecialRenderer() || !ext.obe$isEnabled()) return null;
 
         String group = Registry.getGroup(state);
         SpecialModelProvider customModelProvider = SpecialModelGetter.getSpecialModelProvider(state, group);
-        if(ext.renderModeDelayed() == RenderMode.TERRAIN){
+        if(ext.obe$renderModeDelayed() == RenderMode.TERRAIN){
             if(customModelProvider != null){
-                if(ResourceUtil.cacheContains(state, be)) return ResourceUtil.getModel(state, be);
                 Object cacheKey = customModelProvider.getCacheKeyProvider().apply(be);
+                BlockStateModel cached = ResourceUtil.getModel(state, cacheKey);
+                if(cached != null) return cached;
+
                 PoseStack poseStack = new PoseStack();
 
                 ModelLayerLocation layerLocation = customModelProvider.getModelLayerLocationProvider().apply(state, be);
@@ -60,7 +62,7 @@ public class BlockEntityModelsManager {
                 Identifier material = customModelProvider.getMaterialProvider().apply(state, be);
                 if(material == null) return fail(be);
 
-                BlockStateModel model = ResourceUtil.getModel(layerLocation, material, state, cacheKey, poseStack, getAmbientOcclusion(group), originalModel.particleMaterial());
+                BlockStateModel model = new BlockEntityStateModel(layerLocation, material, poseStack, getAmbientOcclusion(group), state, originalModel.particleMaterial());
                 if(customModelProvider.shouldKeepOriginalModel()) model = new CompositeBlockStateModel(model, ResourceUtil.getDefaultModel(state));
                 ResourceUtil.cache(state, cacheKey, model);
                 return model;
@@ -71,7 +73,9 @@ public class BlockEntityModelsManager {
     }
 
     public BlockStateModel getBlockModel(BlockState state, RandomSource random, BlockStateModel originalModel, String group) {
-        if(ResourceUtil.cacheContains(state)) return ResourceUtil.getModel(state);
+        BlockStateModel model = ResourceUtil.getModel(state);
+        if(model != null) return model;
+
         PoseStack poseStack = new PoseStack();
         
         ModelLayerLocation layerLocation = ModelLayerLocationGetter.getModelLayerLocation(state, group);
@@ -82,7 +86,7 @@ public class BlockEntityModelsManager {
 
         TransformationGetter.applyTransformation(state, poseStack, group);
 
-        BlockStateModel model = new BlockEntityStateModel(layerLocation, material, poseStack, getAmbientOcclusion(group), state, originalModel.particleMaterial());
+        model = new BlockEntityStateModel(layerLocation, material, poseStack, getAmbientOcclusion(group), state, originalModel.particleMaterial());
 
         model = new CompositeBlockStateModel(model, originalModel);
         ResourceUtil.cache(state, model);
@@ -90,19 +94,26 @@ public class BlockEntityModelsManager {
     }
 
     public BlockStateModel getDecoratedPotModel(BlockState state, RandomSource random, BlockStateModel originalModel) {
-        if(ResourceUtil.cacheContains(state)) return ResourceUtil.getModel(state);
+        BlockStateModel model = ResourceUtil.getModel(state);
+        if(model != null) return model;
+
+        String group = "decorated_pot";
+        
         PoseStack poseStack = new PoseStack();
         
-        ModelLayerLocation layerLocation = ModelLayerLocationGetter.getModelLayerLocation(state, "decorated_pot");
+        ModelLayerLocation layerLocation = ModelLayerLocationGetter.getModelLayerLocation(state, group);
         if(layerLocation == null) return null;
 
-        TransformationGetter.applyTransformation(state, poseStack, "decorated_pot");
+        Identifier material = MaterialGetter.getMaterial(state, group);
+        if(material == null) return null;
 
-        BlockStateModel model = ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "decorated_pot"), state, poseStack, getAmbientOcclusion("decorated_pot"), originalModel.particleMaterial());
+        TransformationGetter.applyTransformation(state, poseStack, group);
+
+        model = new BlockEntityStateModel(layerLocation, material, poseStack, getAmbientOcclusion(group), state, originalModel.particleMaterial());
 
         layerLocation = DecoratedPotUtil.getSideModelLayerLocation(state);
 
-        BlockStateModel sideModel = ResourceUtil.getSubModel(layerLocation, Sheets.getDecoratedPotSprite(DecoratedPotPatterns.BLANK).texture(), state, poseStack, SettingsManager.DECORATED_POT_AMBIENT_OCCLUSION.getValue(), originalModel.particleMaterial());
+        BlockStateModel sideModel = ResourceUtil.getOrCreateSubModel(layerLocation, Sheets.getDecoratedPotSprite(DecoratedPotPatterns.BLANK).texture(), state, poseStack, SettingsManager.DECORATED_POT_AMBIENT_OCCLUSION.getValue(), originalModel.particleMaterial());
         
         model = new CompositeBlockStateModel(model, sideModel);
 
@@ -129,8 +140,8 @@ public class BlockEntityModelsManager {
     }
 
     public @Nullable BlockStateModel fail(BlockEntity be){
-        ((BlockEntityExt) be).hasSpecialRenderer(false);
-        ((BlockEntityExt) be).renderModeDelayed(RenderMode.ENTITY);
+        ((BlockEntityExt) be).obe$hasSpecialRenderer(false);
+        ((BlockEntityExt) be).obe$renderModeDelayed(RenderMode.ENTITY);
         return null;
     }
 }

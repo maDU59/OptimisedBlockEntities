@@ -1,17 +1,14 @@
 package fr.madu59.obe.client.compat.emf;
 
+import fr.madu59.obe.OBE;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import traben.entity_model_features.EMFAnimationApi;
-import traben.entity_model_features.models.animation.state.EMFEntityRenderState;
 import traben.entity_model_features.models.parts.EMFModelPartRoot;
 import traben.entity_model_features.utils.EMFEntity;
-import traben.entity_texture_features.features.state.ETFEntityRenderState;
-import traben.entity_texture_features.features.state.ETFState;
-import traben.entity_texture_features.utils.ETFEntity;
 
 public class EMFCompat {
 
@@ -36,7 +33,7 @@ public class EMFCompat {
             return root;
         }
         catch(Exception e){
-            System.out.println(e);
+            OBE.LOGGER.error("Error occurred while applying rest pose to EMF model", e);
             return root;
         }
     }

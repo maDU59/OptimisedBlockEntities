@@ -7,7 +7,6 @@ import fr.madu59.obe.client.platform.PlatformHelper;
 import fr.madu59.obe.client.registry.Registry;
 import fr.madu59.obe.client.resources.loader.SkullPackLoader;
 import net.minecraft.resources.Identifier;
-import net.minecraft.server.packs.PackType;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;

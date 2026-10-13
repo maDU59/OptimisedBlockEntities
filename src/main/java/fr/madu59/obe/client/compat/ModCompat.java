@@ -5,6 +5,7 @@ import java.util.List;
 
 import fr.madu59.obe.OBE;
 import fr.madu59.obe.client.compat.bclib.BclibCompat;
+import fr.madu59.obe.client.compat.carvedwood.CarvedWoodCompat;
 import fr.madu59.obe.client.compat.emf.EMFCompat;
 import fr.madu59.obe.client.compat.iris.IrisCompat;
 import fr.madu59.obe.client.compat.lootr.LootrCompat;
@@ -19,7 +20,7 @@ public class ModCompat {
     private static boolean isEMFLoaded = PlatformHelper.isModLoaded("entity_model_features");
     private final static boolean isPunchyLoaded = PlatformHelper.isModLoaded("punchy");
 
-    private static final List<String> incompatibleMods = Arrays.asList("vulkanmod","optifine","embeddium","optifabric");
+    private static final List<String> incompatibleMods = Arrays.asList("optifine","embeddium","optifabric");
 
     public static void init(){
         if(PlatformHelper.isModLoaded("lootr")) {
@@ -28,6 +29,14 @@ public class ModCompat {
             }
             catch(Error e){
                 OBE.LOGGER.warn("Incompatible version of Lootr used, if you are using the latest one, please report that to OBE's author.");
+            }
+        }
+        if(PlatformHelper.isModLoaded("carved_wood")) {
+            try{
+                CarvedWoodCompat.init();
+            }
+            catch(Error e){
+                OBE.LOGGER.warn("Incompatible version of Carved Wood used, if you are using the latest one, please report that to OBE's author.");
             }
         }
     }

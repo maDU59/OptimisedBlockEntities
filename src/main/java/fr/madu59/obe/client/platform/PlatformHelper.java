@@ -3,6 +3,7 @@ package fr.madu59.obe.client.platform;
 import java.nio.file.Path;
 
 import fr.madu59.obe.client.compat.ModCompat;
+import fr.madu59.obe.client.chunk.ChunkTaskHolder;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.fml.loading.FMLPaths;
@@ -33,5 +34,6 @@ public class PlatformHelper {
 
     public static void onWorldLoad(LevelEvent.Load event){
         ModCompat.onWorldLoad();
+        ChunkTaskHolder.clearTasks();
     }
 }
