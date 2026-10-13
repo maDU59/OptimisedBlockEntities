@@ -1,5 +1,6 @@
 package fr.madu59.obe.client.compat.emf;
 
+import fr.madu59.obe.OBE;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.EntityBlock;
@@ -32,7 +33,7 @@ public class EMFCompat {
             return root;
         }
         catch(Exception e){
-            System.out.println(e);
+            OBE.LOGGER.error("Error occurred while applying rest pose to EMF model", e);
             return root;
         }
     }

@@ -11,8 +11,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.Set;
 
 import fr.madu59.obe.OBE;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -149,7 +152,7 @@ public class Registry {
                 if(type.isValid(state)){
                     if(match != null){
                         // This tries to fix #69 (and #30 and # 13) where a block is considered as valid in a BlockEntityType where it shouldn't. EnderScape is causing issues
-                        OBE.LOGGER.warn("Inconsistent BlockEntityType match detected for block " + block + " (" + BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(match).toString() + "), skipping cache for this query.");
+                        OBE.LOGGER.warn("Inconsistent BlockEntityType match detected for block " + block + " (" + BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(match).toString() + " / " + BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(type).toString() + "), skipping cache for this query.");
                         return null;
                     }
                     match = type;
