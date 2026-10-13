@@ -26,7 +26,7 @@ public abstract class EnderChestBlockEntityMixin{
         BlockEntity be = (BlockEntity)(Object)this;
         BlockEntityExt ext = (BlockEntityExt)be;
         
-        ext.isSupported(Registry.isSupported("chest", be.getType()));
+        ext.obe$isSupported(Registry.isSupported("chest", be.getType()));
     }
 
     @WrapMethod(method = "lidAnimateTick", order = 2000)

@@ -25,7 +25,7 @@ public abstract class DecoratedPotBlockEntityMixin{
         BlockEntity be = (BlockEntity)(Object)this;
         BlockEntityExt ext = (BlockEntityExt)be;
 
-        ext.isSupported(Registry.isSupported("decorated_pot", be.getType()));
+        ext.obe$isSupported(Registry.isSupported("decorated_pot", be.getType()));
         obe$updatePot();
     }
 
@@ -45,10 +45,10 @@ public abstract class DecoratedPotBlockEntityMixin{
         if(!be.hasLevel()) return;
         BlockEntityExt ext = (BlockEntityExt)be;
         if(!decorations.equals(Decorations.EMPTY)){
-            ext.forceEntity(true);
+            ext.obe$forceEntity(true);
         }
         else{
-            ext.forceEntity(false);
+            ext.obe$forceEntity(false);
         }
     }
 }

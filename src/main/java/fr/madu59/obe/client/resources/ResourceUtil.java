@@ -12,7 +12,6 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.block.BlockModelShaper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.resources.model.BakedModel;
 
@@ -28,15 +27,15 @@ public class ResourceUtil{
         return Minecraft.getInstance().getTextureAtlas(blockAtlas).apply(id);
     }
 
-    public static BakedModel getModel(ModelLayerLocation modelLayerLocation, ResourceLocation texture, BlockState blockState, PoseStack poseStack, boolean useAo, TextureAtlasSprite particleMaterial){
+    public static BakedModel getOrCreateModel(ModelLayerLocation modelLayerLocation, ResourceLocation texture, BlockState blockState, PoseStack poseStack, boolean useAo, TextureAtlasSprite particleMaterial){
         return transformedModelCache.computeIfAbsent(blockState, layer -> new BlockEntityStateModel(modelLayerLocation, texture, poseStack, useAo, blockState, particleMaterial));
     }
 
-    public static BakedModel getModel(ModelLayerLocation modelLayerLocation, ResourceLocation texture, BlockState blockState, Object cacheKey, PoseStack poseStack, boolean useAo, TextureAtlasSprite particleMaterial){
+    public static BakedModel getOrCreateModel(ModelLayerLocation modelLayerLocation, ResourceLocation texture, BlockState blockState, Object cacheKey, PoseStack poseStack, boolean useAo, TextureAtlasSprite particleMaterial){
         return transformedSpecialModelCache.computeIfAbsent(new SpecialModelCacheKey(blockState, cacheKey), layer -> new BlockEntityStateModel(modelLayerLocation, texture, poseStack, useAo, blockState, particleMaterial));
     }
 
-    public static BakedModel getSubModel(ModelLayerLocation modelLayerLocation, ResourceLocation texture, BlockState blockState, PoseStack poseStack, boolean useAo, TextureAtlasSprite particleMaterial){
+    public static BakedModel getOrCreateSubModel(ModelLayerLocation modelLayerLocation, ResourceLocation texture, BlockState blockState, PoseStack poseStack, boolean useAo, TextureAtlasSprite particleMaterial){
         return transformedSubModelCache.computeIfAbsent(new ModelCacheKey(modelLayerLocation, blockState), layer -> new BlockEntityStateModel(modelLayerLocation, texture, poseStack, useAo, blockState, particleMaterial));
     }
 
@@ -44,16 +43,16 @@ public class ResourceUtil{
         return transformedModelCache.get(state);
     }
 
-    public static BakedModel getModel(BlockState state, BlockEntity be){
-        return transformedSpecialModelCache.get(new SpecialModelCacheKey(state, be));
+    public static BakedModel getModel(BlockState state, Object cacheKey){
+        return transformedSpecialModelCache.get(new SpecialModelCacheKey(state, cacheKey));
     }
 
     public static boolean cacheContains(BlockState state){
         return transformedModelCache.containsKey(state);
     }
 
-    public static boolean cacheContains(BlockState state, BlockEntity be){
-        return transformedSpecialModelCache.containsKey(new SpecialModelCacheKey(state, be));
+    public static boolean cacheContains(BlockState state, Object cacheKey){
+        return transformedSpecialModelCache.containsKey(new SpecialModelCacheKey(state, cacheKey));
     }
 
     public static void cache(BlockState blockState, BakedModel model){
