@@ -1,2 +1,4 @@
 # What's new:
-- Various optimizations
+- Various improvements
+- Small optimizations
+- Improved compatibility with ImmersiveMc and other mod overriding chest opening behaviour
