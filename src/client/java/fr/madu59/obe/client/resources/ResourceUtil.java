@@ -27,15 +27,15 @@ public class ResourceUtil{
         return Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(AtlasIds.BLOCKS).getSprite(id);
     }
 
-    public static BlockStateModel getModel(ModelLayerLocation modelLayerLocation, Identifier texture, BlockState blockState, PoseStack poseStack, boolean useAo, Material.Baked particleMaterial){
+    public static BlockStateModel getOrCreateModel(ModelLayerLocation modelLayerLocation, Identifier texture, BlockState blockState, PoseStack poseStack, boolean useAo, Material.Baked particleMaterial){
         return transformedModelCache.computeIfAbsent(blockState, layer -> new BlockEntityStateModel(modelLayerLocation, texture, poseStack, useAo, blockState, particleMaterial));
     }
 
-    public static BlockStateModel getModel(ModelLayerLocation modelLayerLocation, Identifier texture, BlockState blockState, Object cacheKey, PoseStack poseStack, boolean useAo, Material.Baked particleMaterial){
+    public static BlockStateModel getOrCreateModel(ModelLayerLocation modelLayerLocation, Identifier texture, BlockState blockState, Object cacheKey, PoseStack poseStack, boolean useAo, Material.Baked particleMaterial){
         return transformedSpecialModelCache.computeIfAbsent(new SpecialModelCacheKey(blockState, cacheKey), layer -> new BlockEntityStateModel(modelLayerLocation, texture, poseStack, useAo, blockState, particleMaterial));
     }
 
-    public static BlockStateModel getSubModel(ModelLayerLocation modelLayerLocation, Identifier texture, BlockState blockState, PoseStack poseStack, boolean useAo, Material.Baked particleMaterial){
+    public static BlockStateModel getOrCreateSubModel(ModelLayerLocation modelLayerLocation, Identifier texture, BlockState blockState, PoseStack poseStack, boolean useAo, Material.Baked particleMaterial){
         return transformedSubModelCache.computeIfAbsent(new ModelCacheKey(modelLayerLocation, blockState), layer -> new BlockEntityStateModel(modelLayerLocation, texture, poseStack, useAo, blockState, particleMaterial));
     }
 

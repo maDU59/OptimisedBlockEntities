@@ -24,4 +24,12 @@ public class ChunkTaskHolder {
             }
         }
     }
+
+    public static void clearTasks() {
+        tasks.clear();
+    }
+
+    public static void clearTasks(SectionPos pos) {
+        tasks.remove(pos);
+    }
 }
