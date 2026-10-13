@@ -12,7 +12,6 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.block.BlockModelShaper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.resources.model.BakedModel;
 
@@ -44,16 +43,16 @@ public class ResourceUtil{
         return transformedModelCache.get(state);
     }
 
-    public static BakedModel getModel(BlockState state, BlockEntity be){
-        return transformedSpecialModelCache.get(new SpecialModelCacheKey(state, be));
+    public static BakedModel getModel(BlockState state, Object cacheKey){
+        return transformedSpecialModelCache.get(new SpecialModelCacheKey(state, cacheKey));
     }
 
     public static boolean cacheContains(BlockState state){
         return transformedModelCache.containsKey(state);
     }
 
-    public static boolean cacheContains(BlockState state, BlockEntity be){
-        return transformedSpecialModelCache.containsKey(new SpecialModelCacheKey(state, be));
+    public static boolean cacheContains(BlockState state, Object cacheKey){
+        return transformedSpecialModelCache.containsKey(new SpecialModelCacheKey(state, cacheKey));
     }
 
     public static void cache(BlockState blockState, BakedModel model){

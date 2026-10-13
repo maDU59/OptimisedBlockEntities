@@ -43,14 +43,15 @@ public class BlockEntityModelsManager {
         if (be == null) return null;
 
         BlockEntityExt ext = (BlockEntityExt)be;
-        if (ext == null || !ext.isSupported() || !ext.hasSpecialRenderer() || !ext.isEnabled()) return null;
+        if (ext == null || !ext.obe$isSupported() || !ext.obe$hasSpecialRenderer() || !ext.obe$isEnabled()) return null;
 
         String group = Registry.getGroup(state);
         SpecialModelProvider customModelProvider = SpecialModelGetter.getSpecialModelProvider(state, group);
-        if(ext.renderModeDelayed() == RenderMode.TERRAIN){
+        if(ext.obe$renderModeDelayed() == RenderMode.TERRAIN){
             if(customModelProvider != null){
-                if(ResourceUtil.cacheContains(state, be)) return ResourceUtil.getModel(state, be);
                 Object cacheKey = customModelProvider.getCacheKeyProvider().apply(be);
+                BakedModel cached = ResourceUtil.getModel(state, cacheKey);
+                if(cached != null) return cached;
                 PoseStack poseStack = new PoseStack();
 
                 ModelLayerLocation layerLocation = customModelProvider.getModelLayerLocationProvider().apply(state, be);
@@ -130,8 +131,8 @@ public class BlockEntityModelsManager {
     }
 
     public @Nullable BakedModel fail(BlockEntity be){
-        ((BlockEntityExt) be).hasSpecialRenderer(false);
-        ((BlockEntityExt) be).renderModeDelayed(RenderMode.ENTITY);
+        ((BlockEntityExt) be).obe$hasSpecialRenderer(false);
+        ((BlockEntityExt) be).obe$renderModeDelayed(RenderMode.ENTITY);
         return null;
     }
 }
