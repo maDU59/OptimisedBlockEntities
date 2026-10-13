@@ -108,7 +108,7 @@ public class BlockEntityModelsManager {
 
         TransformationGetter.applyTransformation(state, poseStack, group);
 
-        model = new BlockEntityStateModel(layerLocation, MaterialGetter.getMaterial(state, group), poseStack, getAmbientOcclusion(group), state, originalModel.particleMaterial());
+        model = new BlockEntityStateModel(layerLocation, material, poseStack, getAmbientOcclusion(group), state, originalModel.particleMaterial());
 
         layerLocation = DecoratedPotUtil.getSideModelLayerLocation(state);
 
