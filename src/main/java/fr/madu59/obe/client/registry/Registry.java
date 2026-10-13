@@ -1,7 +1,9 @@
 package fr.madu59.obe.client.registry;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Map.Entry;
@@ -9,23 +11,28 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.Set;
 
 import fr.madu59.obe.OBE;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class Registry {
+    private static boolean isInit = false;
+
     private static Map<String, Set<BlockEntityType<?>>> supportedBeTypes = new ConcurrentHashMap<>();
     private static Map<Block, Optional<BlockEntityType<?>>> beTypeCache = new ConcurrentHashMap<>();
     private static Map<Block, String> blockGroupCache = new ConcurrentHashMap<>();
     private static Map<BlockEntityType<?>, String> beTypeGroupCache = new ConcurrentHashMap<>();
+    private static final List<Runnable> onInitList = new ArrayList<>();
 
     private static final String noneGroupKey = "OBE_NONE";
 
-    private static boolean isInit = false;
-
     public static void init(){
         if(isInit) return;
+        isInit = true;
         register("chest", BlockEntityType.CHEST, BlockEntityType.ENDER_CHEST, BlockEntityType.TRAPPED_CHEST);
         register("bell", BlockEntityType.BELL);
         register("skull", BlockEntityType.SKULL);
@@ -39,7 +46,19 @@ public class Registry {
         TransformationGetter.init();
         ModelLayerLocationGetter.init();
         SpecialModelGetter.init();
-        isInit = true;
+        
+        for(Runnable onInit : onInitList){
+            onInit.run();
+        }
+    }
+
+    public static void runWhenReady(Runnable runnable){
+        if(isInit){
+            runnable.run();
+        }
+        else{
+            onInitList.add(runnable);
+        }
     }
 
     private static void register(String group, BlockEntityType<?> ... types){
@@ -138,7 +157,7 @@ public class Registry {
                 if(type.isValid(state)){
                     if(match != null){
                         // This tries to fix #69 (and #30 and # 13) where a block is considered as valid in a BlockEntityType where it shouldn't. EnderScape is causing issues
-                        OBE.LOGGER.warn("Inconsistent BlockEntityType match detected for block " + block + " (" + BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(match).toString() + "), skipping cache for this query.");
+                        OBE.LOGGER.warn("Inconsistent BlockEntityType match detected for block " + block + " (" + BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(match).toString() + " / " + BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(type).toString() + "), skipping cache for this query.");
                         return null;
                     }
                     match = type;

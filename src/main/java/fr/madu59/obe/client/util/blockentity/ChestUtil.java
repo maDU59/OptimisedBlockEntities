@@ -114,7 +114,10 @@ public class ChestUtil {
 
         BlockPos connectedPos = pos.relative(ChestBlock.getConnectedDirection(state));
 
-        if (level.getBlockEntity(connectedPos) instanceof ChestBlockEntity neighborChest) {
+        BlockState connectedState = level.getBlockState(connectedPos);
+        BlockEntity connectedEntity = level.getBlockEntity(connectedPos);
+
+        if (connectedEntity instanceof ChestBlockEntity neighborChest && connectedState.is(state.getBlock())) {
             return neighborChest;
         }
 

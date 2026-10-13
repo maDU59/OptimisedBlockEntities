@@ -4,6 +4,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -14,7 +15,6 @@ import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import fr.madu59.obe.client.renderer.blockentity.BlockEntityModelsManager;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager.RenderMode;
-import fr.madu59.obe.client.resources.ResourceUtil;
 import fr.madu59.obe.client.util.meshing.SectionMeshingUtil;
 import net.caffeinemc.mods.sodium.client.render.chunk.compile.pipeline.BlockRenderer;
 import net.caffeinemc.mods.sodium.client.render.chunk.compile.tasks.ChunkBuilderMeshingTask;
@@ -38,8 +38,9 @@ public class ChunkBuilderMeshingTaskMixin {
 
     @WrapOperation(method = "execute", at = @At(value = "INVOKE", target = "Lnet/caffeinemc/mods/sodium/client/world/LevelSlice;getBlockState(III)Lnet/minecraft/world/level/block/state/BlockState;"))
     private BlockState obe$getBlockState(LevelSlice slice, int x, int y, int z, Operation<BlockState> original, @Share("be") LocalRef<BlockEntity> beRef){
-        beRef.set(slice.getBlockEntity(x, y, z));
-        return original.call(slice, x, y, z);
+        BlockState state = original.call(slice, x, y, z);
+        beRef.set(state.hasBlockEntity() ? slice.getBlockEntity(x, y, z) : null);
+        return state;
     }
 
     @WrapOperation(method = "execute", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getRenderShape()Lnet/minecraft/world/level/block/RenderShape;"))
@@ -50,32 +51,16 @@ public class ChunkBuilderMeshingTaskMixin {
         return SectionMeshingUtil.getCorrectedRenderShape(state, beRef.get(), sectionPos, original.call(state));
     }
 
-    @WrapOperation(
+    @ModifyArg(
         method = "execute",
         at = @At(
             value = "INVOKE",
             target = "Lnet/caffeinemc/mods/sodium/client/render/chunk/compile/pipeline/BlockRenderer;renderModel(Lnet/minecraft/client/resources/model/BakedModel;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/BlockPos;)V"
-        )
+        ),
+        index = 0
     )
-    public void obe$wrapRenderModel(BlockRenderer instance, BakedModel originalModel, BlockState state, BlockPos pos, BlockPos origin, Operation<Void> original, @Share("be") LocalRef<BlockEntity> beRef) {
-        if(state.hasBlockEntity()){
-
-            BakedModel model = originalModel;
-            BlockEntity be = beRef.get();
-            BlockEntityExt ext = (BlockEntityExt) be;
-
-            if(ext != null){
-                if(ext.renderModeDelayed() != RenderMode.TERRAIN || !ext.isSupported() || !ext.isEnabled() || ext.forceEntity()){
-                    model = ResourceUtil.getDefaultModel(be.getBlockState());
-                }
-                else if(ext.hasSpecialRenderer()) model = blockEntityModelsManager.getModel(state, originalModel, be);
-            }
-
-            if(model == null) model = ResourceUtil.getDefaultModel(be.getBlockState());
-
-            original.call(instance, model, state, pos, origin);
-        }
-        else original.call(instance, originalModel, state, pos, origin);
+    public BakedModel obe$wrapRenderModel(BakedModel originalModel, BlockState state, BlockPos pos, BlockPos origin, @Share("be") LocalRef<BlockEntity> beRef) {
+        return SectionMeshingUtil.getCorrectedModel(state, beRef.get(), originalModel);
     }
 
     @WrapOperation(
@@ -87,7 +72,7 @@ public class ChunkBuilderMeshingTaskMixin {
     )
     private boolean obe$wrapShouldRender(BlockEntityType<?> type, BlockGetter slice, BlockPos pos, BlockEntity be, Operation<Boolean> original) {
         BlockEntityExt ext = (BlockEntityExt) be;
-        if(ext != null && ext.isEnabled() && (!(ext.forceEntity() || !ext.isSupported() || ext.renderModeDelayed() == RenderMode.ENTITY || ext.renderBoth()) || ext.shouldSkipRendering())) {
+        if(ext != null && ext.obe$isEnabled() && (!(ext.obe$forceEntity() || !ext.obe$isSupported() || ext.obe$renderModeDelayed() == RenderMode.ENTITY || ext.obe$renderBoth()) || ext.obe$shouldSkipRendering())) {
             return false;
         }
         return original.call(type, slice, pos, be);
