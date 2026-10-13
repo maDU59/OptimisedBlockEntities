@@ -19,7 +19,6 @@ import fr.madu59.obe.client.resources.ResourceUtil;
 import fr.madu59.obe.client.util.blockentity.DecoratedPotUtil;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.Sheets;
-import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -109,11 +108,11 @@ public class BlockEntityModelsManager {
 
         TransformationGetter.applyTransformation(state, poseStack, group);
 
-        model = ResourceUtil.getModel(layerLocation, MaterialGetter.getMaterial(state, "decorated_pot"), state, poseStack, getAmbientOcclusion("decorated_pot"), originalModel.getParticleIcon());
+        model = new BlockEntityStateModel(layerLocation, material, poseStack, getAmbientOcclusion(group), state, originalModel.getParticleIcon());
 
         layerLocation = DecoratedPotUtil.getSideModelLayerLocation(state);
 
-        BakedModel sideModel = ResourceUtil.getSubModel(layerLocation, Sheets.getDecoratedPotMaterial(DecoratedPotPatterns.BLANK).texture(), state, poseStack, SettingsManager.DECORATED_POT_AMBIENT_OCCLUSION.getValue(), originalModel.getParticleIcon());
+        BakedModel sideModel = ResourceUtil.getOrCreateSubModel(layerLocation, Sheets.getDecoratedPotMaterial(DecoratedPotPatterns.BLANK).texture(), state, poseStack, SettingsManager.DECORATED_POT_AMBIENT_OCCLUSION.getValue(), originalModel.getParticleIcon());
         
         model = new CompositeBlockStateModel(model, sideModel);
 

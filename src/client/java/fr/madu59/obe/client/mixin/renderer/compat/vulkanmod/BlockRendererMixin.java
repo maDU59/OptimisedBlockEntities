@@ -6,7 +6,6 @@ import com.llamalad7.mixinextras.sugar.Local;
 
 import fr.madu59.obe.client.util.meshing.SectionMeshingUtil;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
-import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
