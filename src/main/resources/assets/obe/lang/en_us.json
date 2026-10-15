@@ -27,6 +27,7 @@
     "obe.config.option.optimised_beacons": "Optimize Beacons",
     "obe.config.option.optimised_spawners": "Optimize Spawners",
     "obe.config.option.optimised_vaults": "Optimize Vaults",
+    "obe.config.option.optimised_brushables": "Optimize Brushable Blocks",
     "obe.config.option.optimised_models": "Optimize Models",
     "obe.config.option.optimised_cushions": "Optimize Cushions",
     "obe.config.option.cushion_ao": "Cushion Ambient Occlusion",
