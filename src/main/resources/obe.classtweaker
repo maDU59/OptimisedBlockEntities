@@ -30,4 +30,4 @@ accessible field net/minecraft/world/level/block/entity/CampfireBlockEntity item
 accessible field net/minecraft/client/renderer/entity/CushionRenderer TEXTURES_BY_COLOR Ljava/util/EnumMap;
 
 # Spawner rendering
-accessible field net/minecraft/world/level/BaseSpawner displayEntity Lnet/minecraft/world/entity/Entity;
+accessible method net/minecraft/world/level/BaseSpawner getOrCreateNextSpawnData (Lnet/minecraft/world/level/Level;Lnet/minecraft/util/RandomSource;Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/SpawnData;
