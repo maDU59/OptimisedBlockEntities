@@ -96,6 +96,9 @@ public class OptimisedBlockEntitiesConfigScreen extends Screen {
         list.category("obe.config.category.vaults").build();
         list.button(SettingsManager.OPTIMISED_VAULTS).build();
 
+        list.category("obe.config.category.brushables").build();
+        list.button(SettingsManager.OPTIMISED_BRUSHABLES).build();
+
         list.category("obe.config.category.cushions").build();
         list.button(SettingsManager.OPTIMISED_CUSHIONS).build();
         list.button(SettingsManager.CUSHION_AMBIENT_OCCLUSION).build();

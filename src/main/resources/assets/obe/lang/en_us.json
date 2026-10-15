@@ -49,6 +49,7 @@
     "obe.config.category.beacons": "Beacons",
     "obe.config.category.spawners": "Spawners",
     "obe.config.category.vaults": "Vaults",
+    "obe.config.category.brushables": "Brushable Blocks",
     "obe.config.category.cushions": "Cushions",
     "obe.config.category.advanced": "Advanced Settings",
     "obe.config.category.settings": "Settings",

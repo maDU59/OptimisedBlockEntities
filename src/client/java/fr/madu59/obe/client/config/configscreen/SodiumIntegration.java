@@ -118,6 +118,11 @@ public class SodiumIntegration implements ConfigEntryPoint {
             )
 
             .addOptionGroup(builder.createOptionGroup()
+                .setName(Component.translatable("obe.config.category.brushables"))
+                .addOption(createBooleanOption(builder, SettingsManager.OPTIMISED_BRUSHABLES))
+            )
+
+            .addOptionGroup(builder.createOptionGroup()
                 .setName(Component.translatable("obe.config.category.cushions"))
                 .addOption(createBooleanOption(builder, SettingsManager.OPTIMISED_CUSHIONS))
                 .addOption(createBooleanOption(builder, SettingsManager.CUSHION_AMBIENT_OCCLUSION))

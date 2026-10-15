@@ -206,6 +206,12 @@ public class SettingsManager {
         reloadChunksAction
     );
 
+    public static Option<Boolean> OPTIMISED_BRUSHABLES = loadOptionWithDefaults("optimized_brushable",
+        "obe.config.option.optimised_brushables",
+        true,
+        reloadChunksAction
+    );
+
     public static Option<Boolean> OPTIMISED_CUSHIONS = loadOptionWithDefaults("optimized_cushion",
         "obe.config.option.optimised_cushions",
         !isIncompatible,

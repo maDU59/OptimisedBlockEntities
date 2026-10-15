@@ -1,2 +1,3 @@
 # What's new:
-- Added support for OneConfige's mod toggle
+- Added optimizations for vaults, spawners and brushable blocks (suspicious sand and suspicious gravel)
+- Improved setting screen
