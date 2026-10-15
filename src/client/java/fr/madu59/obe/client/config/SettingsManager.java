@@ -194,6 +194,24 @@ public class SettingsManager {
         reloadChunksAction
     );
 
+    public static Option<Boolean> OPTIMISED_SPAWNERS = loadOptionWithDefaults("optimized_spawner",
+        "obe.config.option.optimised_spawners",
+        true,
+        reloadChunksAction
+    );
+
+    public static Option<Boolean> OPTIMISED_VAULTS = loadOptionWithDefaults("optimized_vault",
+        "obe.config.option.optimised_vaults",
+        true,
+        reloadChunksAction
+    );
+
+    public static Option<Boolean> OPTIMISED_BRUSHABLES = loadOptionWithDefaults("optimized_brushable",
+        "obe.config.option.optimised_brushables",
+        true,
+        reloadChunksAction
+    );
+
     public static Option<Boolean> OPTIMISED_CUSHIONS = loadOptionWithDefaults("optimized_cushion",
         "obe.config.option.optimised_cushions",
         !isIncompatible,
