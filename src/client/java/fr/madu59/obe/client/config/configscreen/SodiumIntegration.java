@@ -27,8 +27,6 @@ public class SodiumIntegration implements ConfigEntryPoint {
             .addOptionGroup(builder.createOptionGroup()
                 .setName(Component.translatable("obe.config.category.general"))
                 .addOption(createBooleanOption(builder, SettingsManager.MOD_TOGGLE))
-                .addOption(createBooleanOption(builder, SettingsManager.EMF_COMPAT))
-                .addOption(createBooleanOption(builder, SettingsManager.MODEL_OPTIMIZATION))
             )
             
             .addOptionGroup(builder.createOptionGroup()
@@ -101,9 +99,25 @@ public class SodiumIntegration implements ConfigEntryPoint {
             )
 
             .addOptionGroup(builder.createOptionGroup()
+                .setName(Component.translatable("obe.config.category.spawners"))
+                .addOption(createBooleanOption(builder, SettingsManager.OPTIMISED_SPAWNERS))
+            )
+
+            .addOptionGroup(builder.createOptionGroup()
+                .setName(Component.translatable("obe.config.category.vaults"))
+                .addOption(createBooleanOption(builder, SettingsManager.OPTIMISED_VAULTS))
+            )
+
+            .addOptionGroup(builder.createOptionGroup()
                 .setName(Component.translatable("obe.config.category.cushions"))
                 .addOption(createBooleanOption(builder, SettingsManager.OPTIMISED_CUSHIONS))
                 .addOption(createBooleanOption(builder, SettingsManager.CUSHION_AMBIENT_OCCLUSION))
+            )
+
+            .addOptionGroup(builder.createOptionGroup()
+                .setName(Component.translatable("obe.config.category.advanced"))
+                .addOption(createBooleanOption(builder, SettingsManager.EMF_COMPAT))
+                .addOption(createBooleanOption(builder, SettingsManager.MODEL_OPTIMIZATION))
             )
         );
     }

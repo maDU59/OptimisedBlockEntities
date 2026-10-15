@@ -28,3 +28,6 @@ accessible field net/minecraft/world/level/block/entity/CampfireBlockEntity item
 
 # Cushion rendering
 accessible field net/minecraft/client/renderer/entity/CushionRenderer TEXTURES_BY_COLOR Ljava/util/EnumMap;
+
+# Spawner rendering
+accessible field net/minecraft/world/level/BaseSpawner displayEntity Lnet/minecraft/world/entity/Entity;

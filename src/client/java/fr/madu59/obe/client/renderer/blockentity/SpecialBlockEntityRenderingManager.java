@@ -13,6 +13,9 @@ import net.minecraft.world.level.block.entity.ShelfBlockEntity;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraft.world.level.block.entity.SignText;
 import net.minecraft.world.level.block.entity.SignTextSlot;
+import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
+import net.minecraft.world.level.block.entity.vault.VaultBlockEntity;
+import net.minecraft.world.level.block.entity.vault.VaultBlockEntity.Client;
 
 public class SpecialBlockEntityRenderingManager {
     public static boolean shouldSkipRendering(BlockEntity be) {
@@ -28,6 +31,12 @@ public class SpecialBlockEntityRenderingManager {
         }
         else if(be instanceof ShelfBlockEntity shelfBe){
             return SettingsManager.OPTIMISED_SHELVES.getValue() && isContainerEmpty(shelfBe.getItems());
+        }
+        else if(be instanceof SpawnerBlockEntity spawnerBe){
+            return SettingsManager.OPTIMISED_SPAWNERS.getValue() && spawnerBe.getSpawner().displayEntity == null;
+        }
+        else if(be instanceof VaultBlockEntity vaultBe){
+            return SettingsManager.OPTIMISED_VAULTS.getValue() && (vaultBe.getSharedData().getDisplayItem().isEmpty() || vaultBe.getLevel() == null);
         }
         return false;
     }

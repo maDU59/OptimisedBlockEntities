@@ -51,7 +51,7 @@ dependencies {
 
     compileOnly "org.polyfrost.oneconfig:mod-toggles:1.0.0"
 
-    // runtimeOnly "maven.modrinth:spark:iYFOl6lQ"
+    runtimeOnly "maven.modrinth:spark:iYFOl6lQ"
 	
 }
 
