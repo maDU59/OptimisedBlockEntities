@@ -3,8 +3,11 @@ package fr.madu59.obe.client.config.configscreen;
 import fr.madu59.obe.client.config.Option;
 import fr.madu59.obe.client.config.SettingsManager;
 import net.caffeinemc.mods.sodium.api.config.ConfigEntryPoint;
+import net.caffeinemc.mods.sodium.api.config.structure.ColorThemeBuilder;
 import net.caffeinemc.mods.sodium.api.config.structure.ConfigBuilder;
 import net.caffeinemc.mods.sodium.api.config.structure.OptionBuilder;
+import net.caffeinemc.mods.sodium.api.util.ColorARGB;
+import net.caffeinemc.mods.sodium.client.gui.Colors;
 import net.minecraft.network.chat.Component;
 import net.caffeinemc.mods.sodium.api.config.StorageEventHandler;
 import net.minecraft.resources.Identifier;
@@ -20,14 +23,20 @@ public class SodiumIntegration implements ConfigEntryPoint {
     @Override
     public void registerConfigLate(ConfigBuilder builder) {
         builder.registerOwnModOptions()
-        .setNonTintedIcon(Identifier.parse("obe:icon.png"))
+        .setIcon(Identifier.parse("obe:icon-white.png"))
+        .setColorTheme(builder.createColorTheme().setFullThemeRGB(
+            ColorARGB.pack(191,146,255), ColorARGB.pack(214,185,255), ColorARGB.pack(137,104,184)
+        ))
         .addPage(builder.createOptionPage()
-            .setName(Component.literal("Settings"))
+            .setName(Component.translatable("obe.config.category.general"))
             
             .addOptionGroup(builder.createOptionGroup()
                 .setName(Component.translatable("obe.config.category.general"))
                 .addOption(createBooleanOption(builder, SettingsManager.MOD_TOGGLE))
             )
+        )
+        .addPage(builder.createOptionPage()
+            .setName(Component.translatable("obe.config.category.block_entities"))
             
             .addOptionGroup(builder.createOptionGroup()
                 .setName(Component.translatable("obe.config.category.chests"))
@@ -113,9 +122,12 @@ public class SodiumIntegration implements ConfigEntryPoint {
                 .addOption(createBooleanOption(builder, SettingsManager.OPTIMISED_CUSHIONS))
                 .addOption(createBooleanOption(builder, SettingsManager.CUSHION_AMBIENT_OCCLUSION))
             )
+        )
+        .addPage(builder.createOptionPage()
+            .setName(Component.translatable("obe.config.category.advanced"))
 
             .addOptionGroup(builder.createOptionGroup()
-                .setName(Component.translatable("obe.config.category.advanced"))
+                .setName(Component.translatable("obe.config.category.compatibility"))
                 .addOption(createBooleanOption(builder, SettingsManager.EMF_COMPAT))
                 .addOption(createBooleanOption(builder, SettingsManager.MODEL_OPTIMIZATION))
             )

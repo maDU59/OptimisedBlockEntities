@@ -51,6 +51,9 @@
     "obe.config.category.vaults": "Vaults",
     "obe.config.category.cushions": "Cushions",
     "obe.config.category.advanced": "Advanced Settings",
+    "obe.config.category.settings": "Settings",
+    "obe.config.category.block_entities": "Block Entities",
+    "obe.config.category.compatibility": "Compatibility",
 
     "obe.config.value.true": "Enabled",
     "obe.config.value.false": "Disabled",
