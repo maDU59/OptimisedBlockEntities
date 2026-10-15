@@ -27,4 +27,4 @@ accessible method net/minecraft/client/renderer/blockentity/BannerRenderer banne
 accessible field net/minecraft/world/level/block/entity/CampfireBlockEntity items Lnet/minecraft/core/NonNullList;
 
 # Spawner rendering
-accessible field net/minecraft/world/level/BaseSpawner displayEntity Lnet/minecraft/world/entity/Entity;
+accessible method net/minecraft/world/level/BaseSpawner getOrCreateNextSpawnData (Lnet/minecraft/world/level/Level;Lnet/minecraft/util/RandomSource;Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/SpawnData;

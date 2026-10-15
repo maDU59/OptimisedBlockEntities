@@ -16,7 +16,6 @@ import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraft.world.level.block.entity.SignText;
 import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
 import net.minecraft.world.level.block.entity.vault.VaultBlockEntity;
-import net.minecraft.world.level.block.entity.vault.VaultBlockEntity.Client;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 public class SpecialBlockEntityRenderingManager {
@@ -35,10 +34,10 @@ public class SpecialBlockEntityRenderingManager {
             return SettingsManager.OPTIMISED_SHELVES.getValue() && isContainerEmpty(shelfBe.getItems());
         }
         else if(be instanceof SpawnerBlockEntity spawnerBe){
-            return SettingsManager.OPTIMISED_SPAWNERS.getValue() && spawnerBe.getSpawner().displayEntity == null;
+            return SettingsManager.OPTIMISED_SPAWNERS.getValue() && spawnerBe.getSpawner().getOrCreateNextSpawnData(spawnerBe.getLevel(), spawnerBe.getLevel().getRandom(), spawnerBe.getBlockPos()).getEntityToSpawn().getString("id").isEmpty();
         }
         else if(be instanceof VaultBlockEntity vaultBe){
-            return SettingsManager.OPTIMISED_VAULTS.getValue() && (vaultBe.getSharedData().getDisplayItem().isEmpty());
+            return SettingsManager.OPTIMISED_VAULTS.getValue() && vaultBe.getSharedData().getDisplayItem().isEmpty();
         }
         else if(be instanceof BrushableBlockEntity brushableBe){
             return SettingsManager.OPTIMISED_BRUSHABLES.getValue() && (brushableBe.getHitDirection() == null || brushableBe.getItem().isEmpty() || brushableBe.getBlockState().getValue(BlockStateProperties.DUSTED) <= 0);
