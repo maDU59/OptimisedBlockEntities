@@ -13,6 +13,7 @@ repositories {
     maven{url = "https://maven.caffeinemc.net/snapshots"}
 	maven{url = "https://api.modrinth.com/maven"}
 	maven{url = "https://maven.terraformersmc.com/releases"}
+    maven{url = "https://repo.polyfrost.org/releases"}
 }
 
 loom {
@@ -54,6 +55,8 @@ dependencies {
 	implementation "maven.modrinth:carved-wood:1.9.7-B-Fabric-26.1"
 
 	compileOnly "maven.modrinth:vulkanmod:0.6.8+26.1.2"
+
+    compileOnly "org.polyfrost.oneconfig:mod-toggles:1.0.0"
 }
 
 processResources {

@@ -1,4 +1,4 @@
 # What's new:
-- Various improvements
-- Small optimizations
-- Improved compatibility with ImmersiveMc and other mod overriding chest opening behaviour
+- Added optimizations for vaults, spawners and brushable blocks (suspicious sand and suspicious gravel)
+- Improved setting screen
+- Added support for OneConfig's mod toggle
