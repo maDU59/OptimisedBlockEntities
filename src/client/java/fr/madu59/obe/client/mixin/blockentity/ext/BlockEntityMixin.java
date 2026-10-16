@@ -93,7 +93,7 @@ public abstract class BlockEntityMixin implements BlockEntityExt {
 
     @Override public boolean obe$isTimerFinished(){
         if(timerStart == 0) return false;
-        else return Minecraft.getInstance().level.getGameTime() - timerStart > timerDuration;
+        else return Minecraft.getInstance().level != null && Minecraft.getInstance().level.getGameTime() - timerStart > timerDuration;
     }
 
     @Override public void obe$setTimer(long start, int duration){
