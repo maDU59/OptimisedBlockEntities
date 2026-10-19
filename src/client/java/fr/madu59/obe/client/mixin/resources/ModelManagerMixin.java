@@ -1,4 +1,4 @@
-package fr.madu59.obe.client.mixin.core;
+package fr.madu59.obe.client.mixin.resources;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Inject;

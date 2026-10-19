@@ -3,6 +3,7 @@
 	"package": "fr.madu59.obe.client.mixin",
 	"compatibilityLevel": "JAVA_25",
 	"client": [
+		"BlockStateModelSetMixin",
 		"blockentity.banner.BannerBlockEntityMixin",
 		"blockentity.bell.BellBlockEntityMixin",
 		"blockentity.skull.SkullBlockEntityMixin",
@@ -41,8 +42,7 @@
 		"renderer.compat.vulkanmod.BuildTaskMixin",
 		"renderer.compat.vulkanmod.CompileResultMixin",
 		"renderer.compat.vulkanmod.WorldRendererMixin",
-		"core.ModelManagerMixin",
-		"BlockStateModelSetMixin",
+		"resources.ModelManagerMixin",
 		"resources.AtlasManagerMixin"
 	],
 	"mixins": [
