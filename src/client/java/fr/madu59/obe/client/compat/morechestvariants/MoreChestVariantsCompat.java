@@ -7,6 +7,7 @@ import dev.lieonlion.mcv.block.MoreChestBlock;
 import dev.lieonlion.mcv.block.MoreTrappedChestBlock;
 import dev.lieonlion.mcv.init.FabricMoreChestVariantsBlocks;
 import fr.madu59.obe.client.registry.MaterialGetter;
+import fr.madu59.obe.client.registry.Registry;
 import fr.madu59.obe.client.util.blockentity.ChestUtil;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
@@ -16,6 +17,8 @@ import net.minecraft.world.level.block.state.properties.ChestType;
 
 public class MoreChestVariantsCompat {
     public static void init() {
+        Registry.addBlockEntityTypeInGroup("chest", FabricMoreChestVariantsBlocks.MORE_CHEST_BLOCK_ENTITY, FabricMoreChestVariantsBlocks.MORE_TRAPPED_CHEST_BLOCK_ENTITY);
+
         for(Block block : FabricMoreChestVariantsBlocks.more_chest) {
             MaterialGetter.register(block, MoreChestVariantsCompat::getMaterial);
         }
@@ -31,7 +34,7 @@ public class MoreChestVariantsCompat {
                 return lolmcv$chooseMaterial(type, "starwars");
             } else if (state.getBlock() instanceof MoreTrappedChestBlock) {
                 return lolmcv$chooseMaterial(type, "trapped/" + moreChestBlock.woodType);
-            } 
+            }
             return lolmcv$chooseMaterial(type, moreChestBlock.woodType);
         }
         return ChestUtil.getMaterial(state);
