@@ -46,6 +46,7 @@ dependencies {
 	implementation "maven.modrinth:entitytexturefeatures:7.2.1-fabric-26.2"
 	implementation "maven.modrinth:entity-model-features:3.3.2-fabric-26.2"
     implementation "maven.modrinth:lootr:6aAxKwLC"
+	implementation "maven.modrinth:more-chest-variants-lieonlion:1.5.14+26.1.1-Fabric"
 
 	runtimeOnly "maven.modrinth:betterend:26.201.1"
 	runtimeOnly "maven.modrinth:betternether:26.201.1"
