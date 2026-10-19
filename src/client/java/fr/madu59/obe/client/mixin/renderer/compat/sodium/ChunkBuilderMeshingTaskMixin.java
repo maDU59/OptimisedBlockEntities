@@ -19,7 +19,6 @@ import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import fr.madu59.obe.client.chunk.ChunkTaskHolder;
 import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.model.BlockEntityStateModel;
-import fr.madu59.obe.client.renderer.blockentity.BlockEntityModelsManager;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import fr.madu59.obe.client.renderer.entity.MeshableEntityTracker;
 import fr.madu59.obe.client.renderer.entity.MeshableEntityTracker.MeshableEntityData;
