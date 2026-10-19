@@ -5,7 +5,8 @@ You can blacklist certain blocks from being modified by OBE using a config file.
 ```json
 {
     "mods": {
-        "chest": ["lootr"]
+        "chest": ["lootr", "betterend"],
+        "bells":"create"
     },
     "blocks": [
         "minecraft:chest"

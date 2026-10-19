@@ -63,11 +63,11 @@ public class Blacklist {
     private static void applyData(BlacklistData data){
         if(data == null) return;
         for(Map.Entry<String, List<String>> mod : data.mods.entrySet()){
-            MODS_BLACKLIST.put(mod.getKey(), new HashSet<>(mod.getValue()));
+            MODS_BLACKLIST.putIfAbsent(mod.getKey(), Collections.emptySet()).addAll(mod.getValue());
         }
         for(String block : data.blocks){
             Identifier id = Identifier.tryParse(block);
-            BLOCKS_BLACKLIST.add(id);
+            if(id != null) BLOCKS_BLACKLIST.add(id);
         }
     }
 
