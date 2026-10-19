@@ -46,19 +46,17 @@ import net.minecraft.world.level.block.state.BlockState;
 @Mixin(value = ChunkBuilderMeshingTask.class, remap = false)
 public class ChunkBuilderMeshingTaskMixin {
 
-    @Unique private final BlockEntityModelsManager blockEntityModelsManager = new BlockEntityModelsManager();
     @Unique private final SectionPos sectionPos = ((ChunkBuilderMeshingTask)(Object) this).getRenderSection().getPosition();
 
-    @WrapOperation(method = "execute", at = @At(value = "INVOKE", target = "Lnet/caffeinemc/mods/sodium/client/world/LevelSlice;getBlockState(III)Lnet/minecraft/world/level/block/state/BlockState;"))
-    private BlockState obe$getBlockState(LevelSlice slice, int x, int y, int z, Operation<BlockState> original, @Share("be") LocalRef<BlockEntity> beRef){
-        BlockState state = original.call(slice, x, y, z);
-        beRef.set(state.hasBlockEntity() ? slice.getBlockEntity(x, y, z) : null);
-        return state;
-    }
-
     @WrapOperation(method = "execute", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getRenderShape()Lnet/minecraft/world/level/block/RenderShape;"))
-    private RenderShape obe$getRenderShape(BlockState state, Operation<RenderShape> original, @Share("be") LocalRef<BlockEntity> beRef){
-        return SectionMeshingUtil.getCorrectedRenderShape(state, beRef.get(), sectionPos, original.call(state));
+    private RenderShape obe$getRenderShape(BlockState state, Operation<RenderShape> original, @Share("be") LocalRef<BlockEntity> beRef, @Local LevelSlice slice, @Local(ordinal = 0) MutableBlockPos pos){
+        RenderShape renderShape = original.call(state);
+        if(state.hasBlockEntity()){
+            BlockEntity be = slice.getBlockEntity(pos);
+            beRef.set(be);
+            return SectionMeshingUtil.getCorrectedRenderShape(state, be, sectionPos, renderShape);
+        }
+        else return renderShape;
     }
 
     @ModifyArg(
