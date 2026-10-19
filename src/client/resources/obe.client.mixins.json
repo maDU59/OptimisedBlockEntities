@@ -42,7 +42,8 @@
 		"renderer.compat.vulkanmod.CompileResultMixin",
 		"renderer.compat.vulkanmod.WorldRendererMixin",
 		"core.ModelManagerMixin",
-		"BlockStateModelSetMixin"
+		"BlockStateModelSetMixin",
+		"resources.AtlasManagerMixin"
 	],
 	"mixins": [
 	],

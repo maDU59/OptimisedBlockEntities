@@ -61,6 +61,7 @@ public class Blacklist {
     }
 
     private static void applyData(BlacklistData data){
+        if(data == null) return;
         for(Map.Entry<String, List<String>> mod : data.mods.entrySet()){
             MODS_BLACKLIST.put(mod.getKey(), new HashSet<>(mod.getValue()));
         }
