@@ -11,8 +11,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.Set;
 
 import fr.madu59.obe.OBE;
+import fr.madu59.obe.client.compat.blacklist.Blacklist;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.BlockEntityTypes;
 import net.minecraft.world.level.block.state.BlockState;
@@ -84,13 +86,14 @@ public class Registry {
         }
     }
 
-    public static boolean isSupported(String group, BlockEntityType<?> type){
+    public static boolean isSupported(String group, BlockEntity be){
+        if(Blacklist.isBlacklisted(be.getBlockState(), group)) return false;
         if(!supportedBeTypes.containsKey(group)){
             OBE.LOGGER.warn("An external mod tried accessing a non existing group: " + group);
             return false;
         }
         else{
-            return supportedBeTypes.get(group).contains(type);
+            return supportedBeTypes.get(group).contains(be.getType());
         }
     }
 
