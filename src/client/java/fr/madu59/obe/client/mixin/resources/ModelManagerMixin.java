@@ -1,9 +1,10 @@
-package fr.madu59.obe.client.mixin.core;
+package fr.madu59.obe.client.mixin.resources;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import fr.madu59.obe.client.compat.blacklist.Blacklist;
 import fr.madu59.obe.client.resources.ResourceUtil;
 
 import org.spongepowered.asm.mixin.injection.At;
@@ -19,5 +20,6 @@ public class ModelManagerMixin {
     )
     private void obe$onTextureReloadComplete(CallbackInfo ci) {
         ResourceUtil.clearCache();
+        Blacklist.load();
     }
 }

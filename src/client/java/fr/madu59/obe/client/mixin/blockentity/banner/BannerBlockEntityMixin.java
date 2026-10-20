@@ -19,7 +19,7 @@ public class BannerBlockEntityMixin{
         BlockEntity be = (BlockEntity)(Object)this;
         BlockEntityExt ext = (BlockEntityExt)be;
 
-        ext.obe$isSupported(Registry.isSupported("banner", be.getType()));
+        ext.obe$isSupported(Registry.isSupported("banner", be));
         ext.obe$renderBoth(true);
     }
 }
