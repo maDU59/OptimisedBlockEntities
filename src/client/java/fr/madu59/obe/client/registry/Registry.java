@@ -99,6 +99,7 @@ public class Registry {
 
     public static boolean isSupported(String group, BlockState state){
         if(!state.hasBlockEntity()) return false;
+        if(Blacklist.isBlacklisted(state, group)) return false;
         if(!supportedBeTypes.containsKey(group)){
             OBE.LOGGER.warn("An external mod tried accessing a non existing group: " + group);
             return false;
