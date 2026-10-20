@@ -1,6 +1,6 @@
 You can blacklist certain blocks from being modified by OBE using a config file.
 
-1. Create a file named "obe-blacklist.json"
+1. Create a file named `obe-blacklist.json` in your config folder, or if you're making a resource pack, `obe/blacklist.json`
 2. Fill in either or both of these keys:
    - `blocks`: exact block ids to blacklist. `some_mod:*` blacklists every block of that mod.
    - `mods`: a mod id, followed by the OBE groups to blacklist for that mod. Use `["*"]` for all groups.
