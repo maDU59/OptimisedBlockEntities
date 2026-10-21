@@ -3,13 +3,14 @@ package fr.madu59.obe.client.config.configscreen;
 import fr.madu59.obe.client.config.Option;
 import fr.madu59.obe.client.config.SettingsManager;
 import net.caffeinemc.mods.sodium.api.config.ConfigEntryPoint;
+import net.caffeinemc.mods.sodium.api.config.structure.BooleanOptionBuilder;
 import net.caffeinemc.mods.sodium.api.config.structure.ConfigBuilder;
-import net.caffeinemc.mods.sodium.api.config.structure.OptionBuilder;
+import net.caffeinemc.mods.sodium.api.config.structure.IntegerOptionBuilder;
 import net.caffeinemc.mods.sodium.api.util.ColorARGB;
 import net.caffeinemc.mods.sodium.client.gui.options.control.ControlValueFormatterImpls;
 import net.minecraft.network.chat.Component;
 import net.caffeinemc.mods.sodium.api.config.StorageEventHandler;
-import net.caffeinemc.mods.sodium.api.config.option.ControlValueFormatter;
+import net.caffeinemc.mods.sodium.api.config.option.OptionImpact;
 import net.minecraft.resources.Identifier;
 
 public class SodiumIntegration implements ConfigEntryPoint {
@@ -33,11 +34,11 @@ public class SodiumIntegration implements ConfigEntryPoint {
             .addOptionGroup(builder.createOptionGroup()
                 .setName(Component.translatable("obe.config.category.general"))
                 .addOption(createBooleanOption(builder, SettingsManager.MOD_TOGGLE))
-                .addOption(createIntegerOption(builder, SettingsManager.BLOCK_ENTITY_RENDER_DISTANCE, 8, 256, 4))
+                .addOption(createIntegerOption(builder, SettingsManager.BLOCK_ENTITY_RENDER_DISTANCE, 8, 256, 4).setImpact(OptionImpact.MEDIUM))
             )
         )
         .addPage(builder.createOptionPage()
-            .setName(Component.translatable("obe.config.category.block_entity_meshing"))
+            .setName(Component.translatable("obe.config.category.block_entities"))
             
             .addOptionGroup(builder.createOptionGroup()
                 .setName(Component.translatable("obe.config.category.chests"))
@@ -87,9 +88,6 @@ public class SodiumIntegration implements ConfigEntryPoint {
                 .addOption(createBooleanOption(builder, SettingsManager.OPTIMISED_COPPER_GOLEMS))
                 .addOption(createBooleanOption(builder, SettingsManager.COPPER_GOLEM_AMBIENT_OCCLUSION))
             )
-        )
-        .addPage(builder.createOptionPage()
-            .setName(Component.translatable("obe.config.category.block_entity_minor_optimizations"))
             
             .addOptionGroup(builder.createOptionGroup()
                 .setName(Component.translatable("obe.config.category.shelves"))
@@ -127,7 +125,7 @@ public class SodiumIntegration implements ConfigEntryPoint {
             )
         )
         .addPage(builder.createOptionPage()
-            .setName(Component.translatable("obe.config.category.entity_meshing"))
+            .setName(Component.translatable("obe.config.category.entities"))
             .addOptionGroup(builder.createOptionGroup()
                 .setName(Component.translatable("obe.config.category.cushions"))
                 .addOption(createBooleanOption(builder, SettingsManager.OPTIMISED_CUSHIONS))
@@ -145,7 +143,7 @@ public class SodiumIntegration implements ConfigEntryPoint {
         );
     }
 
-    public OptionBuilder createBooleanOption(ConfigBuilder builder, Option<Boolean> option){
+    public BooleanOptionBuilder createBooleanOption(ConfigBuilder builder, Option<Boolean> option){
         return builder.createBooleanOption(Identifier.parse("obe:"+option.getId()))
         .setName(Component.translatable(option.getName()))
         .setTooltip(Component.translatable(option.getDescription()))
@@ -155,7 +153,7 @@ public class SodiumIntegration implements ConfigEntryPoint {
         .setApplyHook(configState -> option.getRunnable());
     }
 
-    public OptionBuilder createIntegerOption(ConfigBuilder builder, Option<Integer> option, Integer min, Integer max, Integer step){
+    public IntegerOptionBuilder createIntegerOption(ConfigBuilder builder, Option<Integer> option, Integer min, Integer max, Integer step){
         return builder.createIntegerOption(Identifier.parse("obe:"+option.getId()))
         .setName(Component.translatable(option.getName()))
         .setTooltip(Component.translatable(option.getDescription()))
