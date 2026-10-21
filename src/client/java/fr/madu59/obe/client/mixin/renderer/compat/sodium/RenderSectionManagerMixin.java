@@ -14,7 +14,7 @@ import net.caffeinemc.mods.sodium.client.render.chunk.compile.ChunkBuildOutput;
 
 @Pseudo
 @Mixin(value = RenderSectionManager.class, remap = false)
-public class RenderSectionManagerMixin {
+public abstract class RenderSectionManagerMixin {
     @WrapOperation(method = "processChunkBuildResults", at = @At(value = "INVOKE", target = "Lnet/caffeinemc/mods/sodium/client/render/chunk/RenderSection;retrievePendingBuildOutput()Lnet/caffeinemc/mods/sodium/client/render/chunk/compile/ChunkBuildOutput;"))
     private ChunkBuildOutput obe$wrapProcessChunkBuildResults(RenderSection section, Operation<ChunkBuildOutput> original) {
         ChunkTaskHolder.executeTasks(section.getPosition());

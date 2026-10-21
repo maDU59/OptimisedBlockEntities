@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 
 @Pseudo
 @Mixin(value = SodiumWorldRenderer.class, remap = false)
-public class SodiumWorldRendererMixin {
+public abstract class SodiumWorldRendererMixin {
 
     @Inject(method = "extractBlockEntity", at = @At("HEAD"), cancellable = true)
     public void obe$preventUselessExtraction(CallbackInfo ci, @Local(argsOnly = true) BlockEntity be){

@@ -23,7 +23,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import java.util.List;
 
 @Mixin(LevelExtractor.class)
-public class LevelRendererMixin {
+public abstract class LevelRendererMixin {
 
     @WrapOperation(
         method = "extractVisibleBlockEntities",

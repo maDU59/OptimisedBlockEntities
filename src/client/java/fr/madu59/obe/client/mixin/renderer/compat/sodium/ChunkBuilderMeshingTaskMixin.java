@@ -43,7 +43,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 @Pseudo
 @Mixin(value = ChunkBuilderMeshingTask.class, remap = false)
-public class ChunkBuilderMeshingTaskMixin {
+public abstract class ChunkBuilderMeshingTaskMixin {
 
     @Unique private final SectionPos sectionPos = ((ChunkBuilderMeshingTask)(Object) this).getRenderSection().getPosition();
 

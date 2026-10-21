@@ -18,7 +18,7 @@ import fr.madu59.obe.client.renderer.misc.RenderModeManager;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager.RenderMode;
 
 @Mixin(BellBlockEntity.class)
-public class BellBlockEntityMixin {
+public abstract class BellBlockEntityMixin {
 
     @Inject(method = "<init>", at = @At("TAIL"))
     private void obe$init(CallbackInfo ci) {

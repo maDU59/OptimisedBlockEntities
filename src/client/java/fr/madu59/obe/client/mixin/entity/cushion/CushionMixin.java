@@ -16,7 +16,7 @@ import net.minecraft.world.entity.decoration.Cushion;
 import net.minecraft.world.item.DyeColor;
 
 @Mixin(Cushion.class)
-public class CushionMixin {
+public abstract class CushionMixin {
     @Inject(method = "<init>", at = @At("TAIL"))
     private void obe$init(CallbackInfo ci, @Local EntityType<Cushion> entityType){
 
