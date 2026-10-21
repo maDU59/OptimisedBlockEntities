@@ -31,6 +31,7 @@
     "obe.config.option.optimised_models": "Optimize Models",
     "obe.config.option.optimised_cushions": "Optimize Cushions",
     "obe.config.option.cushion_ao": "Cushion Ambient Occlusion",
+    "obe.config.option.block_entity_render_distance": "Non-Optimized Block Entity Render Distance",
 
     "obe.config.warning.incompatibility": "%s has been detected, changing the settings may cause issues!",
 

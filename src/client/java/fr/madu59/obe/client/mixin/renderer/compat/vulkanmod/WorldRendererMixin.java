@@ -16,7 +16,7 @@ import net.vulkanmod.render.chunk.WorldRenderer;
 
 @Pseudo
 @Mixin(value = WorldRenderer.class, remap = false)
-public class WorldRendererMixin {
+public abstract class WorldRendererMixin {
 
     @WrapOperation(
             method = "renderBlockEntities",

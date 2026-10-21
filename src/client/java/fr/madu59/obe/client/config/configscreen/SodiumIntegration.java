@@ -6,8 +6,10 @@ import net.caffeinemc.mods.sodium.api.config.ConfigEntryPoint;
 import net.caffeinemc.mods.sodium.api.config.structure.ConfigBuilder;
 import net.caffeinemc.mods.sodium.api.config.structure.OptionBuilder;
 import net.caffeinemc.mods.sodium.api.util.ColorARGB;
+import net.caffeinemc.mods.sodium.client.gui.options.control.ControlValueFormatterImpls;
 import net.minecraft.network.chat.Component;
 import net.caffeinemc.mods.sodium.api.config.StorageEventHandler;
+import net.caffeinemc.mods.sodium.api.config.option.ControlValueFormatter;
 import net.minecraft.resources.Identifier;
 
 public class SodiumIntegration implements ConfigEntryPoint {
@@ -31,6 +33,7 @@ public class SodiumIntegration implements ConfigEntryPoint {
             .addOptionGroup(builder.createOptionGroup()
                 .setName(Component.translatable("obe.config.category.general"))
                 .addOption(createBooleanOption(builder, SettingsManager.MOD_TOGGLE))
+                .addOption(createIntegerOption(builder, SettingsManager.BLOCK_ENTITY_RENDER_DISTANCE, 8, 256, 4))
             )
         )
         .addPage(builder.createOptionPage()
@@ -143,6 +146,18 @@ public class SodiumIntegration implements ConfigEntryPoint {
         .setTooltip(Component.translatable(option.getDescription()))
         .setStorageHandler(this.handler)
         .setBinding(option::setValue, option::getValue)
+        .setDefaultValue(option.getDefaultValue())
+        .setApplyHook(configState -> option.getRunnable());
+    }
+
+    public OptionBuilder createIntegerOption(ConfigBuilder builder, Option<Integer> option, Integer min, Integer max, Integer step){
+        return builder.createIntegerOption(Identifier.parse("obe:"+option.getId()))
+        .setName(Component.translatable(option.getName()))
+        .setTooltip(Component.translatable(option.getDescription()))
+        .setStorageHandler(this.handler)
+        .setRange(min, max, step)
+        .setBinding(option::setValue, option::getValue)
+        .setValueFormatter(ControlValueFormatterImpls.number())
         .setDefaultValue(option.getDefaultValue())
         .setApplyHook(configState -> option.getRunnable());
     }

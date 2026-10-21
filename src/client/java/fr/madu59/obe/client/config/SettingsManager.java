@@ -50,6 +50,12 @@ public class SettingsManager {
         reloadResourcesAction
     );
 
+    public static Option<Integer> BLOCK_ENTITY_RENDER_DISTANCE = loadOptionWithDefaults("block_entity_render_distance",
+        "obe.config.option.block_entity_render_distance",
+        64,
+        emptyAction
+    );
+
     public static Option<Boolean> OPTIMISED_CHESTS = loadOptionWithDefaults("optimized_chest",
         "obe.config.option.optimised_chests",
         !isIncompatible,
