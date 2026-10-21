@@ -43,13 +43,13 @@ public class SodiumIntegration implements ConfigEntryPoint {
             .addOptionGroup(builder.createOptionGroup()
                 .setName(Component.translatable("obe.config.category.chests"))
                 .addOption(createBooleanOption(builder, SettingsManager.OPTIMISED_CHESTS))
-                .addOption(createBooleanOption(builder, SettingsManager.CHEST_AMBIENT_OCCLUSION))
+                .addOption(createBooleanOption(builder, SettingsManager.CHEST_AMBIENT_OCCLUSION, SettingsManager.OPTIMISED_CHESTS))
             )
             
             .addOptionGroup(builder.createOptionGroup()
                 .setName(Component.translatable("obe.config.category.banners"))
                 .addOption(createBooleanOption(builder, SettingsManager.OPTIMISED_BANNERS))
-                .addOption(createBooleanOption(builder, SettingsManager.BANNER_AMBIENT_OCCLUSION))
+                .addOption(createBooleanOption(builder, SettingsManager.BANNER_AMBIENT_OCCLUSION, SettingsManager.OPTIMISED_BANNERS))
             )
             
             .addOptionGroup(builder.createOptionGroup()
@@ -61,32 +61,32 @@ public class SodiumIntegration implements ConfigEntryPoint {
             .addOptionGroup(builder.createOptionGroup()
                 .setName(Component.translatable("obe.config.category.shulker_boxes"))
                 .addOption(createBooleanOption(builder, SettingsManager.OPTIMISED_SHULKER_BOXES))
-                .addOption(createBooleanOption(builder, SettingsManager.SHULKER_BOX_AMBIENT_OCCLUSION))
+                .addOption(createBooleanOption(builder, SettingsManager.SHULKER_BOX_AMBIENT_OCCLUSION, SettingsManager.OPTIMISED_SHULKER_BOXES))
             )
             
             .addOptionGroup(builder.createOptionGroup()
                 .setName(Component.translatable("obe.config.category.skulls"))
                 .addOption(createBooleanOption(builder, SettingsManager.OPTIMISED_SKULLS))
-                .addOption(createBooleanOption(builder, SettingsManager.SKULL_AMBIENT_OCCLUSION))
-                .addOption(createBooleanOption(builder, SettingsManager.CUSTOM_SKULLS))
+                .addOption(createBooleanOption(builder, SettingsManager.SKULL_AMBIENT_OCCLUSION, SettingsManager.OPTIMISED_SKULLS))
+                .addOption(createBooleanOption(builder, SettingsManager.CUSTOM_SKULLS, SettingsManager.OPTIMISED_SKULLS))
             )
             
             .addOptionGroup(builder.createOptionGroup()
                 .setName(Component.translatable("obe.config.category.bells"))
                 .addOption(createBooleanOption(builder, SettingsManager.OPTIMISED_BELLS))
-                .addOption(createBooleanOption(builder, SettingsManager.BELL_AMBIENT_OCCLUSION))
+                .addOption(createBooleanOption(builder, SettingsManager.BELL_AMBIENT_OCCLUSION, SettingsManager.OPTIMISED_BELLS))
             )
             
             .addOptionGroup(builder.createOptionGroup()
                 .setName(Component.translatable("obe.config.category.decorated_pots"))
                 .addOption(createBooleanOption(builder, SettingsManager.OPTIMISED_DECORATED_POTS))
-                .addOption(createBooleanOption(builder, SettingsManager.DECORATED_POT_AMBIENT_OCCLUSION))
+                .addOption(createBooleanOption(builder, SettingsManager.DECORATED_POT_AMBIENT_OCCLUSION, SettingsManager.OPTIMISED_DECORATED_POTS))
             )
             
             .addOptionGroup(builder.createOptionGroup()
                 .setName(Component.translatable("obe.config.category.copper_golems"))
                 .addOption(createBooleanOption(builder, SettingsManager.OPTIMISED_COPPER_GOLEMS))
-                .addOption(createBooleanOption(builder, SettingsManager.COPPER_GOLEM_AMBIENT_OCCLUSION))
+                .addOption(createBooleanOption(builder, SettingsManager.COPPER_GOLEM_AMBIENT_OCCLUSION, SettingsManager.OPTIMISED_COPPER_GOLEMS))
             )
             
             .addOptionGroup(builder.createOptionGroup()
@@ -129,7 +129,7 @@ public class SodiumIntegration implements ConfigEntryPoint {
             .addOptionGroup(builder.createOptionGroup()
                 .setName(Component.translatable("obe.config.category.cushions"))
                 .addOption(createBooleanOption(builder, SettingsManager.OPTIMISED_CUSHIONS))
-                .addOption(createBooleanOption(builder, SettingsManager.CUSHION_AMBIENT_OCCLUSION))
+                .addOption(createBooleanOption(builder, SettingsManager.CUSHION_AMBIENT_OCCLUSION, SettingsManager.OPTIMISED_CUSHIONS))
             )
         )
         .addPage(builder.createOptionPage()
@@ -151,6 +151,11 @@ public class SodiumIntegration implements ConfigEntryPoint {
         .setBinding(option::setValue, option::getValue)
         .setDefaultValue(option.getDefaultValue())
         .setApplyHook(configState -> option.getRunnable());
+    }
+
+    public BooleanOptionBuilder createBooleanOption(ConfigBuilder builder, Option<Boolean> option, Option<Boolean> dependency){
+        Identifier dependencyId = Identifier.parse("obe:" + dependency.getId());
+        return createBooleanOption(builder, option).setEnabledProvider((i) -> i.readBooleanOption(dependencyId), dependencyId);
     }
 
     public IntegerOptionBuilder createIntegerOption(ConfigBuilder builder, Option<Integer> option, Integer min, Integer max, Integer step){
