@@ -37,7 +37,7 @@ public class SodiumIntegration implements ConfigEntryPoint {
             )
         )
         .addPage(builder.createOptionPage()
-            .setName(Component.translatable("obe.config.category.block_entities"))
+            .setName(Component.translatable("obe.config.category.block_entity_meshing"))
             
             .addOptionGroup(builder.createOptionGroup()
                 .setName(Component.translatable("obe.config.category.chests"))
@@ -87,6 +87,9 @@ public class SodiumIntegration implements ConfigEntryPoint {
                 .addOption(createBooleanOption(builder, SettingsManager.OPTIMISED_COPPER_GOLEMS))
                 .addOption(createBooleanOption(builder, SettingsManager.COPPER_GOLEM_AMBIENT_OCCLUSION))
             )
+        )
+        .addPage(builder.createOptionPage()
+            .setName(Component.translatable("obe.config.category.block_entity_minor_optimizations"))
             
             .addOptionGroup(builder.createOptionGroup()
                 .setName(Component.translatable("obe.config.category.shelves"))
@@ -122,7 +125,9 @@ public class SodiumIntegration implements ConfigEntryPoint {
                 .setName(Component.translatable("obe.config.category.brushables"))
                 .addOption(createBooleanOption(builder, SettingsManager.OPTIMISED_BRUSHABLES))
             )
-
+        )
+        .addPage(builder.createOptionPage()
+            .setName(Component.translatable("obe.config.category.entity_meshing"))
             .addOptionGroup(builder.createOptionGroup()
                 .setName(Component.translatable("obe.config.category.cushions"))
                 .addOption(createBooleanOption(builder, SettingsManager.OPTIMISED_CUSHIONS))
