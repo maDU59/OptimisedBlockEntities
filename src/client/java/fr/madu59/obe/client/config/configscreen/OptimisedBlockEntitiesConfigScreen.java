@@ -44,6 +44,7 @@ public class OptimisedBlockEntitiesConfigScreen extends Screen {
 
         list.category("obe.config.category.general").build();
         list.button(SettingsManager.MOD_TOGGLE).build();
+        list.slider(SettingsManager.BLOCK_ENTITY_RENDER_DISTANCE).range(8, 256).step(4).build();
 
         list.category("obe.config.category.chests").build();
         list.button(SettingsManager.OPTIMISED_CHESTS).build();

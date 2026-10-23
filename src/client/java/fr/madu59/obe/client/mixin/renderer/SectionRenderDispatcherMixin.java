@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.chunk.SectionRenderDispatcher.RenderSection
 import net.minecraft.core.SectionPos;
 
 @Mixin(RenderSection.class)
-public class SectionRenderDispatcherMixin {
+public abstract class SectionRenderDispatcherMixin {
     @Inject(method = "setSectionMesh", at = @At("RETURN"))
     private void obe$onTaskDone(CallbackInfoReturnable<SectionMesh> ci){
         ChunkTaskHolder.executeTasks(SectionPos.of(((RenderSection) (Object) this).getRenderOrigin()));

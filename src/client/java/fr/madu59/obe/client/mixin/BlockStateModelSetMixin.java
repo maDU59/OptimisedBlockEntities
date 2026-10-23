@@ -24,7 +24,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 
 @Mixin(BlockStateModelSet.class)
-public class BlockStateModelSetMixin {
+public abstract class BlockStateModelSetMixin {
 
     @Unique private final BlockEntityModelsManager blockEntityModelsManager = new BlockEntityModelsManager();
     @Unique private final Identifier missingTexture = Identifier.tryParse("minecraft:missingno");

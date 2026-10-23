@@ -45,7 +45,9 @@ public class Option<T> {
     }
 
     public String getDescription() {
-        return I18n.get(this.description);
+        String translatedDescription = I18n.get(this.description);
+        if(translatedDescription.equals(this.description)) return I18n.get(this.name);
+        else return translatedDescription;
     }
 
     public void setToNextValue() {
