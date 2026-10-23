@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import net.minecraft.client.resources.model.ModelManager;
 
 @Mixin(ModelManager.class)
-public class ModelManagerMixin {
+public abstract class ModelManagerMixin {
 
     @Inject(
         method = "apply",

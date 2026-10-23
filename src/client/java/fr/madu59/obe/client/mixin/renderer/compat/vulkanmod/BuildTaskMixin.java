@@ -29,7 +29,7 @@ import net.vulkanmod.render.chunk.build.task.CompileResult;
 
 @Pseudo
 @Mixin(value = BuildTask.class, remap = false)
-public class BuildTaskMixin {
+public abstract class BuildTaskMixin {
 
     @Shadow RenderRegion region;
 

@@ -23,205 +23,211 @@ public class SettingsManager {
     private static final Path CONFIG_PATH = PlatformHelper.getConfigDir().resolve(OBE.MOD_ID + ".json");
     private static Map<String, String> loadedSettings = loadSettings();
 
-    private static Runnable emptyAction = () -> {};
-    private static Runnable reloadResourcesAction = () -> {
+    private static Runnable EMPTY_ACTION = () -> {};
+    private static Runnable RELOAD_RESOURCES_ACTION = () -> {
         ResourceUtil.clearCache();
         Minecraft.getInstance().levelExtractor.allChanged();
     };
-    private static Runnable reloadChunksAction = () -> Minecraft.getInstance().levelExtractor.allChanged();
+    private static Runnable RELOAD_CHUNKS_ACTION = () -> Minecraft.getInstance().levelExtractor.allChanged();
 
     private static final boolean isIncompatible = ModCompat.isIncompatibilityDetected();
 
     public static Option<Boolean> MOD_TOGGLE = loadOptionWithDefaults("mod_toggle",
         "obe.config.option.mod_toggle",
         true,
-        reloadResourcesAction
+        RELOAD_RESOURCES_ACTION
     );
     
     public static Option<Boolean> EMF_COMPAT = loadOptionWithDefaults("emf_compat",
         "obe.config.option.emf_compat",
         true,
-        reloadResourcesAction
+        RELOAD_RESOURCES_ACTION
     );
 
     public static Option<Boolean> MODEL_OPTIMIZATION = loadOptionWithDefaults("optimized_models",
         "obe.config.option.optimised_models",
         true,
-        reloadResourcesAction
+        RELOAD_RESOURCES_ACTION
+    );
+
+    public static Option<Integer> BLOCK_ENTITY_RENDER_DISTANCE = loadOptionWithDefaults("block_entity_render_distance",
+        "obe.config.option.block_entity_render_distance",
+        64,
+        EMPTY_ACTION
     );
 
     public static Option<Boolean> OPTIMISED_CHESTS = loadOptionWithDefaults("optimized_chest",
         "obe.config.option.optimised_chests",
         !isIncompatible,
-        reloadChunksAction
+        RELOAD_CHUNKS_ACTION
     );
 
     public static Option<Boolean> CHEST_AMBIENT_OCCLUSION = loadOptionWithDefaults("chest_ambient_occlusion",
         "obe.config.option.chest_ao",
         false,
-        reloadResourcesAction
+        RELOAD_RESOURCES_ACTION
     );
 
     public static Option<Boolean> OPTIMISED_BANNERS = loadOptionWithDefaults("optimized_banner",
         "obe.config.option.optimised_banners",
         true,
-        reloadChunksAction
+        RELOAD_CHUNKS_ACTION
     );
 
     public static Option<Boolean> BANNER_AMBIENT_OCCLUSION = loadOptionWithDefaults("banner_ambient_occlusion",
         "obe.config.option.banner_ao",
         true,
-        reloadResourcesAction
+        RELOAD_RESOURCES_ACTION
     );
 
     public static Option<Boolean> OPTIMISED_SIGNS = loadOptionWithDefaults("optimized_sign",
         "obe.config.option.optimised_signs",
         true,
-        reloadChunksAction
+        RELOAD_CHUNKS_ACTION
     );
 
     public static Option<Boolean> SIGN_AMBIENT_OCCLUSION = loadOptionWithDefaults("sign_ambient_occlusion",
         "obe.config.option.sign_ao",
         true,
-        reloadResourcesAction
+        RELOAD_RESOURCES_ACTION
     );
 
     public static Option<Boolean> SIGN_TEXT_CULLING = loadOptionWithDefaults("sign_text_culling",
         "obe.config.option.sign_text_culling",
         true,
-        emptyAction
+        EMPTY_ACTION
     );
 
     public static Option<Boolean> OPTIMISED_SHULKER_BOXES = loadOptionWithDefaults("optimized_shulker_box",
         "obe.config.option.optimised_shulker_boxes",
         !isIncompatible,
-        reloadChunksAction
+        RELOAD_CHUNKS_ACTION
     );
 
     public static Option<Boolean> SHULKER_BOX_AMBIENT_OCCLUSION = loadOptionWithDefaults("shulker_box_ambient_occlusion",
         "obe.config.option.shulker_box_ao",
         false,
-        reloadResourcesAction
+        RELOAD_RESOURCES_ACTION
     );
 
     public static Option<Boolean> OPTIMISED_SKULLS = loadOptionWithDefaults("optimized_skull",
         "obe.config.option.optimised_skulls",
         true,
-        reloadChunksAction
+        RELOAD_CHUNKS_ACTION
     );
 
     public static Option<Boolean> SKULL_AMBIENT_OCCLUSION = loadOptionWithDefaults("skull_ambient_occlusion",
         "obe.config.option.skull_ao",
         false,
-        reloadResourcesAction
+        RELOAD_RESOURCES_ACTION
     );
 
     public static Option<Boolean> CUSTOM_SKULLS = loadOptionWithDefaults("built_in_custom_skull",
         "obe.config.option.custom_skulls",
         true,
-        reloadResourcesAction
+        RELOAD_RESOURCES_ACTION
     );
 
     public static Option<Boolean> OPTIMISED_BEDS = loadOptionWithDefaults("optimized_bed",
         "obe.config.option.optimised_beds",
         true,
-        reloadChunksAction
+        RELOAD_CHUNKS_ACTION
     );
 
     public static Option<Boolean> BED_AMBIENT_OCCLUSION = loadOptionWithDefaults("bed_ambient_occlusion",
         "obe.config.option.bed_ao",
         true,
-        reloadResourcesAction
+        RELOAD_RESOURCES_ACTION
     );
 
     public static Option<Boolean> OPTIMISED_BELLS = loadOptionWithDefaults("optimized_bell",
         "obe.config.option.optimised_bells",
         !isIncompatible,
-       reloadChunksAction
+       RELOAD_CHUNKS_ACTION
     );
 
     public static Option<Boolean> BELL_AMBIENT_OCCLUSION = loadOptionWithDefaults("bell_ambient_occlusion",
         "obe.config.option.bell_ao",
         true,
-        reloadResourcesAction
+        RELOAD_RESOURCES_ACTION
     );
 
     public static Option<Boolean> OPTIMISED_DECORATED_POTS = loadOptionWithDefaults("optimized_decorated_pot",
         "obe.config.option.optimised_decorated_pots",
         !isIncompatible,
-        reloadChunksAction
+        RELOAD_CHUNKS_ACTION
     );
 
     public static Option<Boolean> DECORATED_POT_AMBIENT_OCCLUSION = loadOptionWithDefaults("decorated_pot_ambient_occlusion",
         "obe.config.option.decorated_pot_ao",
         false,
-        reloadResourcesAction
+        RELOAD_RESOURCES_ACTION
     );
 
     public static Option<Boolean> OPTIMISED_COPPER_GOLEMS = loadOptionWithDefaults("optimized_copper_golem",
         "obe.config.option.optimised_copper_golems",
         true,
-        reloadChunksAction
+        RELOAD_CHUNKS_ACTION
     );
 
     public static Option<Boolean> COPPER_GOLEM_AMBIENT_OCCLUSION = loadOptionWithDefaults("copper_golem_ambient_occlusion",
         "obe.config.option.copper_golem_ao",
         true,
-        reloadResourcesAction
+        RELOAD_RESOURCES_ACTION
     );
 
     public static Option<Boolean> OPTIMISED_SHELVES = loadOptionWithDefaults("optimized_shelf",
         "obe.config.option.optimised_shelves",
         true,
-        reloadChunksAction
+        RELOAD_CHUNKS_ACTION
     );
 
     public static Option<Boolean> OPTIMISED_LECTERNS = loadOptionWithDefaults("optimized_lectern",
         "obe.config.option.optimised_lecterns",
         true,
-        reloadChunksAction
+        RELOAD_CHUNKS_ACTION
     );
 
     public static Option<Boolean> OPTIMISED_CAMPFIRES = loadOptionWithDefaults("optimized_campfire",
         "obe.config.option.optimised_campfires",
         true,
-        reloadChunksAction
+        RELOAD_CHUNKS_ACTION
     );
 
     public static Option<Boolean> OPTIMISED_BEACONS = loadOptionWithDefaults("optimized_beacon",
         "obe.config.option.optimised_beacons",
         true,
-        reloadChunksAction
+        RELOAD_CHUNKS_ACTION
     );
 
     public static Option<Boolean> OPTIMISED_SPAWNERS = loadOptionWithDefaults("optimized_spawner",
         "obe.config.option.optimised_spawners",
         true,
-        reloadChunksAction
+        RELOAD_CHUNKS_ACTION
     );
 
     public static Option<Boolean> OPTIMISED_VAULTS = loadOptionWithDefaults("optimized_vault",
         "obe.config.option.optimised_vaults",
         true,
-        reloadChunksAction
+        RELOAD_CHUNKS_ACTION
     );
 
     public static Option<Boolean> OPTIMISED_BRUSHABLES = loadOptionWithDefaults("optimized_brushable",
         "obe.config.option.optimised_brushables",
         true,
-        reloadChunksAction
+        RELOAD_CHUNKS_ACTION
     );
 
     public static Option<Boolean> OPTIMISED_CUSHIONS = loadOptionWithDefaults("optimized_cushion",
         "obe.config.option.optimised_cushions",
         !isIncompatible,
-        reloadChunksAction
+        RELOAD_CHUNKS_ACTION
     );
 
     public static Option<Boolean> CUSHION_AMBIENT_OCCLUSION = loadOptionWithDefaults("cushion_ambient_occlusion",
         "obe.config.option.cushion_ao",
         false,
-        reloadResourcesAction
+        RELOAD_RESOURCES_ACTION
     );
 
     public static final Map<String, Option<Boolean>> GROUP_TOGGLE_SETTINGS = Map.of(
@@ -303,25 +309,13 @@ public class SettingsManager {
         else return null;
     }
 
-    private static <T> Option<T> loadOptionWithDefaults(String id, String name, T defaultValue) {
-        return loadOptionWithDefaults(id, name, name, defaultValue, emptyAction);
-    }
-
     private static <T> Option<T> loadOptionWithDefaults(String id, String name, T defaultValue, Runnable action) {
-        return loadOptionWithDefaults(id, name, name, defaultValue, action);
-    }
-
-    private static <T> Option<T> loadOptionWithDefaults(String id, String name, String description, T defaultValue) {
-        return loadOptionWithDefaults(id, name, description, defaultValue, emptyAction);
-    }
-
-    private static <T> Option<T> loadOptionWithDefaults(String id, String name, String description, T defaultValue, Runnable action) {
         T optionValue= getOptionValue(id, defaultValue);
         if (optionValue == null) optionValue = defaultValue;
         Option<T> option = new Option<T>(
                 id,
                 name,
-                description,
+                name + "_desc",
                 optionValue,
                 defaultValue,
                 action

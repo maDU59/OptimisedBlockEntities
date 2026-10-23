@@ -19,7 +19,7 @@ import noobanidus.mods.lootr.common.block.entity.LootrShulkerBoxBlockEntity;
 
 @Pseudo
 @Mixin(value = LootrShulkerBoxBlockEntity.class, remap = false)
-public class LootrShulkerBoxBlockEntityMixin {
+public abstract class LootrShulkerBoxBlockEntityMixin {
     @Inject(method = "<init>", at = @At("TAIL"))
     private void obe$register(CallbackInfo ci){
         

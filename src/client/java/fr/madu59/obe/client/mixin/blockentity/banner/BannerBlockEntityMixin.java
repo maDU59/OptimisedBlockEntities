@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.entity.BannerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 @Mixin(BannerBlockEntity.class)
-public class BannerBlockEntityMixin{
+public abstract class BannerBlockEntityMixin{
 
     @Inject(method = "<init>(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/item/DyeColor;)V", at = @At("TAIL"))
     private void obe$init(CallbackInfo ci) {
