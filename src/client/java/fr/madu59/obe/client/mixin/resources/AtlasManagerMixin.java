@@ -11,7 +11,7 @@ import net.minecraft.client.resources.model.sprite.AtlasManager;
 import net.minecraft.resources.Identifier;
 
 @Mixin(AtlasManager.class)
-public abstract class AtlasmanagerMixin {
+public abstract class AtlasManagerMixin {
 
     @Unique 
     private static final Identifier blockAtlas = Identifier.tryParse("minecraft:textures/atlas/blocks.png");
