@@ -35,6 +35,8 @@ import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.EnderChestBlock;
 import net.minecraft.world.level.block.ShulkerBoxBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.client.model.quad.BakedColors;
+import net.neoforged.neoforge.client.model.quad.BakedNormals;
 
 public class BlockEntityStateModel implements BlockStateModel{
     private SimpleModelWrapper modelPart;
@@ -102,7 +104,7 @@ public class BlockEntityStateModel implements BlockStateModel{
                 transparency = Transparency.NONE;
             }
 
-            MaterialInfo matInfo = MaterialInfo.of(bakedMat, transparency, -1, true, 0);
+            MaterialInfo matInfo = MaterialInfo.of(bakedMat, transparency, -1, true, 0, true);
 
             Vector3f[] positions = new Vector3f[4];
             long[] uvs = new long[4];
@@ -143,7 +145,9 @@ public class BlockEntityStateModel implements BlockStateModel{
                         positions[0], positions[1], positions[2], positions[3],
                         uvs[0], uvs[1], uvs[2], uvs[3],
                         dir,
-                        matInfo
+                        matInfo,
+                        BakedNormals.of(BakedNormals.pack(normal.x(), normal.y(), normal.z())),
+                        BakedColors.DEFAULT
                 );
                 output.add(baked);
 
@@ -159,7 +163,9 @@ public class BlockEntityStateModel implements BlockStateModel{
                         uvs = new long[] { uvsCopy[0], uvsCopy[3], uvsCopy[2], uvsCopy[1] };
                     }
 
-                    baked = new BakedQuad(positions[0], positions[1], positions[2], positions[3], uvs[0], uvs[1], uvs[2], uvs[3], dir.getOpposite(), matInfo);
+                    baked = new BakedQuad(positions[0], positions[1], positions[2], positions[3], uvs[0], uvs[1], uvs[2], uvs[3], dir.getOpposite(), matInfo,
+                        BakedNormals.of(BakedNormals.pack(-normal.x(), -normal.y(), -normal.z())),
+                        BakedColors.DEFAULT);
                     output.add(baked);
                 }
             }
