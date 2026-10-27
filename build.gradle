@@ -113,11 +113,11 @@ dependencies {
 
 	implementation 'org.anarres:jcpp:1.4.14'
     implementation 'io.github.douira:glsl-transformer:3.0.0-pre3'
-	implementation "maven.modrinth:iris:1.10.9+26.1-neoforge"
+	implementation "maven.modrinth:iris:1.11.4+26.1-neoforge"
 
-	implementation "net.caffeinemc:sodium-neoforge-api:0.8.12+mc26.1.2"
-    compileOnly("net.caffeinemc:sodium-neoforge-mod:0.8.12+mc26.1.2")
-    runtimeOnly("net.caffeinemc:sodium-neoforge:0.8.12+mc26.1.2")
+	implementation "net.caffeinemc:sodium-neoforge-api:0.9.2+mc26.1.2"
+    compileOnly("net.caffeinemc:sodium-neoforge-mod:0.9.2+mc26.1.2")
+    runtimeOnly("net.caffeinemc:sodium-neoforge:0.9.2+mc26.1.2")
 
     implementation "maven.modrinth:entitytexturefeatures:7.2.1-neoforge-26.1"
 	implementation "maven.modrinth:entity-model-features:3.3.2-neoforge-26.1"
