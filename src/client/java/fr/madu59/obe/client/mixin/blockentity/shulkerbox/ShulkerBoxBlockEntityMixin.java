@@ -17,14 +17,14 @@ import net.minecraft.world.level.block.entity.ShulkerBoxBlockEntity.AnimationSta
 import net.minecraft.world.level.block.state.BlockState;
 
 @Mixin(ShulkerBoxBlockEntity.class)
-public class ShulkerBoxBlockEntityMixin{
+public abstract class ShulkerBoxBlockEntityMixin{
     @Inject(method = "<init>", at = @At("TAIL"))
     private void obe$init(CallbackInfo ci) {
         
         BlockEntity be = (BlockEntity)(Object)this;
         BlockEntityExt ext = (BlockEntityExt)be;
         
-        ext.obe$isSupported(Registry.isSupported("shulker_box", be.getType()));
+        ext.obe$isSupported(Registry.isSupported("shulker_box", be));
     }
 
     @Inject(method = "updateAnimation", at = @At("RETURN"))

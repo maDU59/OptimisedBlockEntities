@@ -58,7 +58,7 @@ public class CarvedWoodCompat {
         Material CHEST_LOCATION = chestMaterial(chestName + "/normal");
         Material CHEST_LOCATION_LEFT = chestMaterial(chestName + "/normal_left");
         Material CHEST_LOCATION_RIGHT = chestMaterial(chestName + "/normal_right");
-        if (ChestUtil.isXmas) {
+        if (ChestUtil.isXmas()) {
             return ChestUtil.chooseMaterial(chestType, Sheets.CHEST_XMAS_LOCATION, Sheets.CHEST_XMAS_LOCATION_LEFT, Sheets.CHEST_XMAS_LOCATION_RIGHT);
         } else {
             return (block instanceof CWTrappedChestBlock || block instanceof TrappedChestBlock) ? ChestUtil.chooseMaterial(chestType, CHEST_TRAP_LOCATION, CHEST_TRAP_LOCATION_LEFT, CHEST_TRAP_LOCATION_RIGHT) : ChestUtil.chooseMaterial(chestType, CHEST_LOCATION, CHEST_LOCATION_LEFT, CHEST_LOCATION_RIGHT);
