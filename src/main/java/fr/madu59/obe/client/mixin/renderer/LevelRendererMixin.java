@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import java.util.List;
 
 @Mixin(LevelRenderer.class)
-public class LevelRendererMixin {
+public abstract class LevelRendererMixin {
 
     @WrapOperation(
         method = "Lnet/minecraft/client/renderer/LevelRenderer;extractVisibleBlockEntities(Lnet/minecraft/client/Camera;FLnet/minecraft/client/renderer/state/level/LevelRenderState;Lnet/minecraft/client/renderer/culling/Frustum;)V",

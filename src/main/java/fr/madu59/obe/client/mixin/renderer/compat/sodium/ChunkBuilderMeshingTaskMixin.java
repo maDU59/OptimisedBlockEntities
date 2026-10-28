@@ -12,7 +12,6 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 
-import fr.madu59.obe.client.renderer.blockentity.BlockEntityModelsManager;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager.RenderMode;
 import fr.madu59.obe.client.util.meshing.SectionMeshingUtil;
@@ -30,24 +29,22 @@ import net.minecraft.world.level.block.state.BlockState;
 
 @Pseudo
 @Mixin(value = ChunkBuilderMeshingTask.class, remap = false)
-public class ChunkBuilderMeshingTaskMixin {
+public abstract class ChunkBuilderMeshingTaskMixin {
 
-    @Unique private final BlockEntityModelsManager blockEntityModelsManager = new BlockEntityModelsManager();
     @Unique private SectionPos sectionPos;
 
-    @WrapOperation(method = "execute", at = @At(value = "INVOKE", target = "Lnet/caffeinemc/mods/sodium/client/world/LevelSlice;getBlockState(III)Lnet/minecraft/world/level/block/state/BlockState;"))
-    private BlockState obe$getBlockState(LevelSlice slice, int x, int y, int z, Operation<BlockState> original, @Share("be") LocalRef<BlockEntity> beRef){
-        BlockState state = original.call(slice, x, y, z);
-        beRef.set(state.hasBlockEntity() ? slice.getBlockEntity(x, y, z) : null);
-        return state;
-    }
-
     @WrapOperation(method = "execute", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getRenderShape()Lnet/minecraft/world/level/block/RenderShape;"))
-    private RenderShape obe$getRenderShape(BlockState state, Operation<RenderShape> original, @Share("be") LocalRef<BlockEntity> beRef, @Local(ordinal = 0) MutableBlockPos pos){
-        if(sectionPos == null){
-            sectionPos = SectionPos.of(pos);
+    private RenderShape obe$getRenderShape(BlockState state, Operation<RenderShape> original, @Share("be") LocalRef<BlockEntity> beRef, @Local LevelSlice slice, @Local(ordinal = 0) MutableBlockPos pos){
+        RenderShape renderShape = original.call(state);
+        if(state.hasBlockEntity()){
+            if(sectionPos == null){
+                sectionPos = SectionPos.of(pos);
+            }
+            BlockEntity be = slice.getBlockEntity(pos);
+            beRef.set(be);
+            return SectionMeshingUtil.getCorrectedRenderShape(state, be, sectionPos, renderShape);
         }
-        return SectionMeshingUtil.getCorrectedRenderShape(state, beRef.get(), sectionPos, original.call(state));
+        else return renderShape;
     }
 
     @ModifyArg(

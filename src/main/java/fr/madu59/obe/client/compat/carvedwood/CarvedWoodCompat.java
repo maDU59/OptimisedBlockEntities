@@ -48,6 +48,6 @@ public class CarvedWoodCompat {
                 : ((CWChestBlock) block).getChestName();
 
         ChestType chestType = state.getValueOrElse(ChestBlock.TYPE, ChestType.SINGLE);
-        return ChestSheets.chooseMaterial(chestName, (block instanceof CWTrappedChestBlock || block instanceof TrappedChestBlock), chestType, ChestUtil.isXmas).texture();
+        return ChestSheets.chooseMaterial(chestName, (block instanceof CWTrappedChestBlock || block instanceof TrappedChestBlock), chestType, ChestUtil.isXmas()).texture();
     }
 }

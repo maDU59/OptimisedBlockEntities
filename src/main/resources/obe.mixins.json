@@ -18,6 +18,7 @@
 		"blockentity.compat.lootr.LootrChestBlockEntityMixin",
 		"blockentity.compat.lootr.LootrShulkerBoxBlockEntityMixin",
 		"blockentity.BlockEntityMixin",
+		"blockentity.BlockEntityRendererMixin",
 		"blockentity.ext.BlockEntityMixin",
 		"blockentity.ext.BlockEntityRenderStateMixin",
 		"blockentity.renderers.chest.ChestRendererMixin",
@@ -35,7 +36,7 @@
 		"renderer.compat.sodium.ChunkBuilderMeshingTaskMixin",
 		"renderer.compat.sodium.RenderSectionManagerMixin",
 		"renderer.compat.sodium.SodiumWorldRendererMixin",
-		"core.ModelManagerMixin",
+		"resources.ModelManagerMixin",
 		"BlockStateModelSetMixin"
 	],
 	"mixins": [

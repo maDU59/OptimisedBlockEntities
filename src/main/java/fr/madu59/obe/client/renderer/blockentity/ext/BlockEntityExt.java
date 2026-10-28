@@ -5,4 +5,7 @@ import fr.madu59.obe.client.renderer.entity.ext.EntityExt;
 public interface BlockEntityExt extends EntityExt {
     boolean obe$renderBoth();
     void obe$renderBoth(boolean bl);
+    
+    byte obe$specialKind();
+    void obe$specialKind(byte b);
 }

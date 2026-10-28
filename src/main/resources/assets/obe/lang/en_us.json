@@ -25,9 +25,17 @@
     "obe.config.option.optimised_lecterns": "Optimize Lecterns",
     "obe.config.option.optimised_campfires": "Optimize Campfires",
     "obe.config.option.optimised_beacons": "Optimize Beacons",
+    "obe.config.option.optimised_spawners": "Optimize Spawners",
+    "obe.config.option.optimised_vaults": "Optimize Vaults",
+    "obe.config.option.optimised_brushables": "Optimize Brushable Blocks",
     "obe.config.option.optimised_models": "Optimize Models",
     "obe.config.option.optimised_cushions": "Optimize Cushions",
     "obe.config.option.cushion_ao": "Cushion Ambient Occlusion",
+    "obe.config.option.block_entity_render_distance": "Block Entities Render Distance",
+
+    "obe.config.option.custom_skulls_desc": "Enables optimizations for some custom skulls from servers or player heads, this requires a resource pack containing the textures of the skulls to work.",
+    "obe.config.option.mod_toggle_desc": "Used to fully disable this mod.",
+    "obe.config.option.block_entity_render_distance_desc": "Maximum distance in blocks at which block entities not meshed into the chunk are rendered. Meshed block entities are part of the chunk and ignore this setting.",
 
     "obe.config.warning.incompatibility": "%s has been detected, changing the settings may cause issues!",
 
@@ -45,7 +53,15 @@
     "obe.config.category.lecterns": "Lecterns",
     "obe.config.category.campfires": "Campfires",
     "obe.config.category.beacons": "Beacons",
+    "obe.config.category.spawners": "Spawners",
+    "obe.config.category.vaults": "Vaults",
+    "obe.config.category.brushables": "Brushable Blocks",
     "obe.config.category.cushions": "Cushions",
+    "obe.config.category.advanced": "Advanced Settings",
+    "obe.config.category.settings": "Settings",
+    "obe.config.category.block_entities": "Block Entities",
+    "obe.config.category.compatibility": "Compatibility",
+    "obe.config.category.entities": "Entities",
 
     "obe.config.value.true": "Enabled",
     "obe.config.value.false": "Disabled",

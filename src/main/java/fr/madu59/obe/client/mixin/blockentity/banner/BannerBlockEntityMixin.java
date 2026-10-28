@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.entity.BannerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 @Mixin(BannerBlockEntity.class)
-public class BannerBlockEntityMixin{
+public abstract class BannerBlockEntityMixin{
 
     @Inject(method = "<init>(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/item/DyeColor;)V", at = @At("TAIL"))
     private void obe$init(CallbackInfo ci) {
@@ -19,7 +19,7 @@ public class BannerBlockEntityMixin{
         BlockEntity be = (BlockEntity)(Object)this;
         BlockEntityExt ext = (BlockEntityExt)be;
 
-        ext.obe$isSupported(Registry.isSupported("banner", be.getType()));
+        ext.obe$isSupported(Registry.isSupported("banner", be));
         ext.obe$renderBoth(true);
     }
 }
