@@ -26,7 +26,7 @@ public class BlueprintCompat {
 
     public static ResourceLocation getChestMaterial(BlockState state) {
         ChestType chestType = BackportUtil.getValueOrElse(state, ChestBlock.TYPE, ChestType.SINGLE);
-        if (ChestUtil.isXmas) {
+        if (ChestUtil.isXmas()) {
             return switch (chestType) {
                 case SINGLE -> Sheets.CHEST_XMAS_LOCATION.texture();
                 case LEFT -> Sheets.CHEST_XMAS_LOCATION_LEFT.texture();

@@ -35,7 +35,7 @@ public class EveryCompatCompat {
                 default -> EveryCompat.res(trapped_path);
             };
         } else {
-            if (ChestUtil.isXmas && shortenedId.equals("abnww")) {
+            if (ChestUtil.isXmas() && shortenedId.equals("abnww")) {
                 return switch (chestType) {
                     case LEFT -> Sheets.CHEST_XMAS_LOCATION_LEFT.texture();
                     case RIGHT -> Sheets.CHEST_XMAS_LOCATION_RIGHT.texture();

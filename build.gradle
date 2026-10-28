@@ -120,7 +120,7 @@ dependencies {
     implementation "maven.modrinth:entitytexturefeatures:7.2.5-neoforge-1.21"
 	implementation "maven.modrinth:entity-model-features:3.3.11-neoforge-1.21"
 
-    implementation "maven.modrinth:lootr:e0t1hEpP"
+    implementation "maven.modrinth:lootr:SPOrIzX8"
 	implementation "maven.modrinth:cloth-config:izKINKFg"
 
     runtimeOnly "maven.modrinth:woodworks:aJd8UVN0"
@@ -128,6 +128,9 @@ dependencies {
 
     runtimeOnly "maven.modrinth:quark:yvp3Jbmk"
     runtimeOnly "maven.modrinth:zeta:9GjNW2Gf"
+
+    runtimeOnly "maven.modrinth:quad:1.2.9+1.21.1-Neo"
+    implementation "maven.modrinth:more-chest-variants-lieonlion:1.5.15+1.21.1-Neo"
 
     implementation ("net.mehvahdjukaar:everycomp-neoforge:1.21-2.11.48") {transitive = false}
 	implementation ("net.mehvahdjukaar:moonlight-neoforge:1.21.1-3.3.3") {transitive = false}

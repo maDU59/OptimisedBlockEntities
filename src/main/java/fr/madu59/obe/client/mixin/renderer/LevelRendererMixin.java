@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import java.util.List;
 
 @Mixin(value = LevelRenderer.class, priority = 1001) //We don't want to prevent sodium from injecting here
-public class LevelRendererMixin {
+public abstract class LevelRendererMixin {
 
     @WrapOperation(
         method = "renderLevel",

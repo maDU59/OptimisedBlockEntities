@@ -22,7 +22,7 @@ public class ItemBlockRenderTypesMixin {
         if(blockState.hasBlockEntity()){
             if(cir.getReturnValue() == RenderType.solid()){
                 Block block = blockState.getBlock();
-                if(block instanceof ShulkerBoxBlock || block instanceof AbstractSkullBlock || block instanceof CeilingHangingSignBlock || block instanceof WallHangingSignBlock|| block instanceof ChestBlock){
+                if(block instanceof ShulkerBoxBlock || block instanceof AbstractSkullBlock || block instanceof CeilingHangingSignBlock || block instanceof WallHangingSignBlock || block instanceof ChestBlock){
                     cir.setReturnValue(RenderType.cutoutMipped());
                     return;
                 }
