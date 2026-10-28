@@ -1,7 +1,5 @@
 package fr.madu59.obe.client.mixin.renderer;
 
-import java.lang.reflect.Field;
-
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -16,7 +14,7 @@ import net.minecraft.client.renderer.chunk.ChunkRenderDispatcher.RenderChunk;
 import net.minecraft.core.SectionPos;
 
 @Mixin(targets = "net.minecraft.client.renderer.chunk.ChunkRenderDispatcher$RenderChunk$RebuildTask")
-public class SectionRenderDispatcherMixin {
+public abstract class SectionRenderDispatcherMixin {
 
     @Shadow @Final private RenderChunk this$1;
 

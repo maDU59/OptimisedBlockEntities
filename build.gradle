@@ -123,6 +123,9 @@ dependencies {
     runtimeOnly renamer.dependency("maven.modrinth:woodworks:236Amnif")
     implementation renamer.dependency("maven.modrinth:blueprint:AiaPEN6q")
 
+    runtimeOnly renamer.dependency("maven.modrinth:quad:1.2.9+1.20.4-Forge")
+    implementation renamer.dependency("maven.modrinth:more-chest-variants-lieonlion:1.5.6+1.20.2-Forge")
+
     implementation renamer.dependency("maven.modrinth:every-compat:1.20-2.9.24-forge")
 	implementation renamer.dependency("maven.modrinth:moonlight:1.20-2.16.34-forge")
 

@@ -12,7 +12,6 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 
-import fr.madu59.obe.client.renderer.blockentity.BlockEntityModelsManager;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager.RenderMode;
@@ -34,45 +33,36 @@ import net.minecraft.world.level.block.state.BlockState;
 
 @Pseudo
 @Mixin(value = ChunkBuilderMeshingTask.class, remap = false)
-public class ChunkBuilderMeshingTaskMixin {
+public abstract class ChunkBuilderMeshingTaskMixin {
 
-    @Unique private final BlockEntityModelsManager blockEntityModelsManager = new BlockEntityModelsManager();
     @Unique private SectionPos sectionPos;
 
-    @WrapOperation(method = "execute", at = @At(value = "INVOKE", target = "Lme/jellysquid/mods/sodium/client/world/WorldSlice;getBlockState(III)Lnet/minecraft/world/level/block/state/BlockState;"))
-    private BlockState obe$getBlockState(WorldSlice slice, int x, int y, int z, Operation<BlockState> original, @Share("be") LocalRef<BlockEntity> beRef){
-        BlockState state = original.call(slice, x, y, z);
-        beRef.set(state.hasBlockEntity() ? slice.getBlockEntity(x, y, z) : null);
-        return state;
-    }
-
-    @WrapOperation(method = "execute", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getRenderShape()Lnet/minecraft/world/level/block/RenderShape;"), require = 0)
-    private RenderShape obe$getRenderShape(BlockState state, Operation<RenderShape> original, @Share("be") LocalRef<BlockEntity> beRef, @Local(ordinal = 0) MutableBlockPos pos){
-        if(sectionPos == null){
-            sectionPos = SectionPos.of(pos);
-        }
-        return SectionMeshingUtil.getCorrectedRenderShape(state, beRef.get(), sectionPos, original.call(state));
-    }
-
-    @WrapOperation(method = "execute", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;m_60799_()Lnet/minecraft/world/level/block/RenderShape;"), require = 0)
-    private RenderShape obe$getRenderShape2(BlockState state, Operation<RenderShape> original, @Share("be") LocalRef<BlockEntity> beRef, @Local(ordinal = 0) MutableBlockPos pos){
+    @WrapOperation(method = "execute", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getRenderShape()Lnet/minecraft/world/level/block/RenderShape;"))
+    private RenderShape obe$getRenderShape(BlockState state, Operation<RenderShape> original, @Share("be") LocalRef<BlockEntity> beRef, @Local WorldSlice slice, @Local(ordinal = 0) MutableBlockPos pos){
+        RenderShape renderShape = original.call(state);
         if(state.hasBlockEntity()){
-            BlockEntity be = beRef.get();
-            BlockEntityExt ext = (BlockEntityExt) be;
-            if(ext != null && ext.obe$isSupported()) {
-                if(sectionPos == null){
-                    sectionPos = SectionPos.of(pos);
-                }
-                RenderModeManager.updateBlockEntityOnChunkRemesh(ext, sectionPos);
-                if(ext.obe$forceEntity()){
-                    return RenderShape.INVISIBLE;
-                }
-                if(ext.obe$isEnabled() && ext.obe$renderModeDelayed() == RenderMode.TERRAIN){
-                    return RenderShape.MODEL;
-                }
+            if(sectionPos == null){
+                sectionPos = SectionPos.of(pos);
             }
+            BlockEntity be = slice.getBlockEntity(pos);
+            beRef.set(be);
+            return SectionMeshingUtil.getCorrectedRenderShape(state, be, sectionPos, renderShape);
         }
-        return original.call(state);
+        else return renderShape;
+    }
+
+    @WrapOperation(method = "execute", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;m_60799_()Lnet/minecraft/world/level/block/RenderShape;"))
+    private RenderShape obe$getRenderShape2(BlockState state, Operation<RenderShape> original, @Share("be") LocalRef<BlockEntity> beRef, @Local WorldSlice slice, @Local(ordinal = 0) MutableBlockPos pos){
+        RenderShape renderShape = original.call(state);
+        if(state.hasBlockEntity()){
+            if(sectionPos == null){
+                sectionPos = SectionPos.of(pos);
+            }
+            BlockEntity be = slice.getBlockEntity(pos);
+            beRef.set(be);
+            return SectionMeshingUtil.getCorrectedRenderShape(state, be, sectionPos, renderShape);
+        }
+        else return renderShape;
     }
 
     @WrapOperation(
@@ -107,12 +97,12 @@ public class ChunkBuilderMeshingTaskMixin {
     }
 
     @WrapOperation(
-        method = "execute",
-        at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/client/renderer/blockentity/BlockEntityRenderDispatcher;m_112265_(Lnet/minecraft/world/level/block/entity/BlockEntity;)Lnet/minecraft/client/renderer/blockentity/BlockEntityRenderer;"
-        ),
-        require = 0
+            method = "execute",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/renderer/blockentity/BlockEntityRenderDispatcher;m_112265_(Lnet/minecraft/world/level/block/entity/BlockEntity;)Lnet/minecraft/client/renderer/blockentity/BlockEntityRenderer;"
+            ),
+            require = 0
     )
     private BlockEntityRenderer<?> obe$wrapShouldRender2(BlockEntityRenderDispatcher instance, BlockEntity be, Operation<BlockEntityRenderer<?>> original) {
         BlockEntityExt ext = (BlockEntityExt) be;

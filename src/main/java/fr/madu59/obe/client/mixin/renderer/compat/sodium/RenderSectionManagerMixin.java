@@ -14,7 +14,7 @@ import me.jellysquid.mods.sodium.client.render.chunk.RenderSectionManager;
 
 @Pseudo
 @Mixin(value = RenderSectionManager.class, remap = false)
-public class RenderSectionManagerMixin {
+public abstract class RenderSectionManagerMixin {
     @Inject(method = "updateSectionInfo", at = @At("HEAD"))
     private void obe$executeChunkTasks(CallbackInfo ci, @Local RenderSection section) {
         ChunkTaskHolder.executeTasks(section.getPosition());

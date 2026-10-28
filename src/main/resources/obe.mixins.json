@@ -37,7 +37,7 @@
 		"renderer.compat.sodium.ChunkBuilderMeshingTaskMixin",
 		"renderer.compat.sodium.RenderSectionManagerMixin",
 		"renderer.compat.sodium.SodiumWorldRendererMixin",
-		"core.ModelManagerMixin",
+		"resources.ModelManagerMixin",
 		"BlockStateModelSetMixin"
 	],
 	"mixins": [
