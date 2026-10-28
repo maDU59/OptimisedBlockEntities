@@ -50,13 +50,13 @@ public abstract class AbstractSignRendererMixin<S extends SignRenderState> {
     public void obe$cancelSignText(SignRenderState signRenderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, boolean bl, CallbackInfo ci){
         poseStack.pushPose();
         this.translateSignText(poseStack, bl, this.getTextOffset());
-        poseStack.popPose();
         if(SettingsManager.SIGN_TEXT_CULLING.getValue() && (ModCompat.isShadowPass() || !obe$isFacingCamera(poseStack))) {
             ci.cancel();
         }
+        poseStack.popPose();
     }
 
-    @Inject(method = "extractRenderState", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "extractRenderState", at = @At("HEAD"))
     public void obe$cancelExtract(CallbackInfo ci, @Local S state, @Local SignBlockEntity be){
         ((BlockEntityRenderStateExt)state).blockEntity(be);
     }
