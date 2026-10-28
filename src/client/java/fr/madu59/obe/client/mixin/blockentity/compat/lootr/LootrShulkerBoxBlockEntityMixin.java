@@ -19,14 +19,14 @@ import noobanidus.mods.lootr.common.block.entity.LootrShulkerBlockEntity;
 
 @Pseudo
 @Mixin(value = LootrShulkerBlockEntity.class, remap = false)
-public class LootrShulkerBoxBlockEntityMixin {
+public abstract class LootrShulkerBoxBlockEntityMixin {
     @Inject(method = "<init>", at = @At("TAIL"))
     private void obe$register(CallbackInfo ci){
         
         BlockEntity be = (BlockEntity)(Object)this;
         BlockEntityExt ext = (BlockEntityExt)be;
         
-        ext.obe$isSupported(Registry.isSupported("shulker_box", be.getType()));
+        ext.obe$isSupported(Registry.isSupported("shulker_box", be));
         ext.obe$hasSpecialRenderer(true);
     }
 

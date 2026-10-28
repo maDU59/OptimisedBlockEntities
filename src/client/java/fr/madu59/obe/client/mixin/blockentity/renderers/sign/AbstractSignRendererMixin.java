@@ -46,10 +46,10 @@ public abstract class AbstractSignRendererMixin {
     public void obe$cancelSignText(BlockPos blockPos, SignText signText, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j, int k, boolean bl, CallbackInfo ci){
         poseStack.pushPose();
         this.translateSignText(poseStack, bl, this.getTextOffset());
-        poseStack.popPose();
         if(SettingsManager.SIGN_TEXT_CULLING.getValue() && (ModCompat.isShadowPass() || !obe$isFacingCamera(poseStack))) {
             ci.cancel();
         }
+        poseStack.popPose();
     }
 
     @Inject(method = "renderSignWithText", at = @At("HEAD"), cancellable = true)

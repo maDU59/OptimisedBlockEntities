@@ -22,7 +22,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
 
 @Mixin(BlockModelShaper.class)
-public class BlockStateModelSetMixin {
+public abstract class BlockStateModelSetMixin {
 
     @Unique private final BlockEntityModelsManager blockEntityModelsManager = new BlockEntityModelsManager();
     @Unique private final ResourceLocation missingTexture = ResourceLocation.tryParse("minecraft:missingno");
