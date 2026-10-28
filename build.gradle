@@ -64,7 +64,7 @@ dependencies {
 	// runtimeOnly "maven.modrinth:worldweaver:26.101.1"
 	// runtimeOnly "maven.modrinth:bclib:26.101.1"
 
-	modCompileOnly "maven.modrinth:vulkanmod:jkDMvvWU"
+	modCompileOnly "maven.modrinth:vulkanmod:7pYvUnJk"
 
 	modCompileOnly "org.polyfrost.oneconfig:mod-toggles:1.0.0"
 }

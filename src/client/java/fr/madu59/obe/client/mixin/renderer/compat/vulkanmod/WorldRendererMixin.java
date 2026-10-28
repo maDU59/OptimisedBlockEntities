@@ -22,7 +22,7 @@ public abstract class WorldRendererMixin {
             method = "renderBlockEntities",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/renderer/blockentity/BlockEntityRenderDispatcher;render(Lnet/minecraft/world/level/block/entity/BlockEntity;FLnet/minecraft/client/renderer/pose/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;)V",
+                    target = "Lnet/minecraft/client/renderer/blockentity/BlockEntityRenderDispatcher;render(Lnet/minecraft/world/level/block/entity/BlockEntity;FLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;)V",
                     ordinal = 0
             )
     )
