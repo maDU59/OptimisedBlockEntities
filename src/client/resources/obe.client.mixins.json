@@ -3,6 +3,7 @@
 	"package": "fr.madu59.obe.client.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"client": [
+		"BlockStateModelSetMixin",
 		"blockentity.banner.BannerBlockEntityMixin",
 		"blockentity.bell.BellBlockEntityMixin",
 		"blockentity.sign.SignBlockEntityMixin",
@@ -17,6 +18,7 @@
 		"blockentity.compat.lootr.LootrChestBlockEntityMixin",
 		"blockentity.compat.lootr.LootrShulkerBoxBlockEntityMixin",
 		"blockentity.BlockEntityMixin",
+		"blockentity.BlockEntityRendererMixin",
 		"blockentity.ext.BlockEntityMixin",
 		"blockentity.renderers.chest.ChestRendererMixin",
 		"blockentity.renderers.skull.SkullBlockRendererMixin",
@@ -41,8 +43,7 @@
 		"renderer.compat.vulkanmod.BuildTaskMixin",
 		"renderer.compat.vulkanmod.CompileResultMixin",
 		"renderer.compat.vulkanmod.WorldRendererMixin",
-		"core.ModelManagerMixin",
-		"BlockStateModelSetMixin"
+		"resources.ModelManagerMixin"
 	],
 	"mixins": [
 	],

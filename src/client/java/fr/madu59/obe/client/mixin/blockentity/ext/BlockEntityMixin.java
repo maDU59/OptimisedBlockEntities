@@ -2,13 +2,22 @@ package fr.madu59.obe.client.mixin.blockentity.ext;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager.RenderMode;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.entity.BeaconBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BrushableBlockEntity;
+import net.minecraft.world.level.block.entity.CampfireBlockEntity;
+import net.minecraft.world.level.block.entity.SignBlockEntity;
+import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
+import net.minecraft.world.level.block.entity.vault.VaultBlockEntity;
 
 @Mixin(BlockEntity.class)
 public abstract class BlockEntityMixin implements BlockEntityExt {
@@ -22,6 +31,33 @@ public abstract class BlockEntityMixin implements BlockEntityExt {
     @Unique private boolean renderBoth = false;
     @Unique private boolean shouldSkipRendering = false;
     @Unique private boolean forceEntity = false;
+    @Unique private byte specialKind = 0;
+
+    @Inject(method = "<init>", at = @At("RETURN"))
+    private void obe$onInit(CallbackInfo ci) {
+        BlockEntity be = (BlockEntity) (Object) this;
+        if(be instanceof SignBlockEntity){
+            specialKind = 1;
+        }
+        else if(be instanceof BeaconBlockEntity){
+            specialKind = 2;
+        }
+        else if(be instanceof CampfireBlockEntity){
+            specialKind = 3;
+        }
+//        else if(be instanceof ShelfBlockEntity){
+//            specialKind = 4;
+//        }
+        else if(be instanceof SpawnerBlockEntity){
+            specialKind = 5;
+        }
+        else if(be instanceof VaultBlockEntity){
+            specialKind = 6;
+        }
+        else if(be instanceof BrushableBlockEntity){
+            specialKind = 7;
+        }
+    }
 
     @Override public boolean obe$isSupported() { return isSupported; }
     @Override public void obe$isSupported(boolean bl) {
@@ -56,7 +92,7 @@ public abstract class BlockEntityMixin implements BlockEntityExt {
 
     @Override public boolean obe$isTimerFinished(){
         if(timerStart == 0) return false;
-        else return Minecraft.getInstance().level.getGameTime() - timerStart > timerDuration;
+        else return Minecraft.getInstance().level != null && Minecraft.getInstance().level.getGameTime() - timerStart > timerDuration;
     }
 
     @Override public void obe$setTimer(long start, int duration){
@@ -73,6 +109,9 @@ public abstract class BlockEntityMixin implements BlockEntityExt {
             if(Minecraft.getInstance().level != null && Minecraft.getInstance().level.getChunkSource() != null) RenderModeManager.setDirty(pos);
         }
     }
+
+    @Override public byte obe$specialKind() { return specialKind; }
+    @Override public void obe$specialKind(byte b) { specialKind = b; }
 
     @Override public boolean obe$forceEntity() { return forceEntity; }
     @Override public void obe$forceEntity(boolean bl) { forceEntity = bl; }
