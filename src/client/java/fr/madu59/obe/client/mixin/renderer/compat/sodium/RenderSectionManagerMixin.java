@@ -15,7 +15,7 @@ import net.caffeinemc.mods.sodium.client.render.chunk.translucent_sorting.data.T
 
 @Pseudo
 @Mixin(value = RenderSectionManager.class, remap = false)
-public class RenderSectionManagerMixin {
+public abstract class RenderSectionManagerMixin {
     @WrapOperation(method = "processChunkBuildResults", at = @At(value = "INVOKE", target = "Lnet/caffeinemc/mods/sodium/client/render/chunk/RenderSection;getTranslucentData()Lnet/caffeinemc/mods/sodium/client/render/chunk/translucent_sorting/data/TranslucentData;"), require = 0) // Before Sodium 0.9.0
     private TranslucentData obe$wrapProcessChunkBuildResults(RenderSection section, Operation<TranslucentData> original) {
         ChunkTaskHolder.executeTasks(section.getPosition());

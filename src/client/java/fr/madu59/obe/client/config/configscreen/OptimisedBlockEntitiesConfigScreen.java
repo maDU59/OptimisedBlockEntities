@@ -44,8 +44,7 @@ public class OptimisedBlockEntitiesConfigScreen extends Screen {
 
         list.category("obe.config.category.general").build();
         list.button(SettingsManager.MOD_TOGGLE).build();
-        list.button(SettingsManager.EMF_COMPAT).build();
-        list.button(SettingsManager.MODEL_OPTIMIZATION).build();
+        list.slider(SettingsManager.BLOCK_ENTITY_RENDER_DISTANCE).range(8, 256).step(4).build();
 
         list.category("obe.config.category.chests").build();
         list.button(SettingsManager.OPTIMISED_CHESTS).build();
@@ -96,6 +95,19 @@ public class OptimisedBlockEntitiesConfigScreen extends Screen {
 
         list.category("obe.config.category.beacons").build();
         list.button(SettingsManager.OPTIMISED_BEACONS).build();
+
+        list.category("obe.config.category.spawners").build();
+        list.button(SettingsManager.OPTIMISED_SPAWNERS).build();
+
+        list.category("obe.config.category.vaults").build();
+        list.button(SettingsManager.OPTIMISED_VAULTS).build();
+
+        list.category("obe.config.category.brushables").build();
+        list.button(SettingsManager.OPTIMISED_BRUSHABLES).build();
+
+        list.category("obe.config.category.advanced").build();
+        list.button(SettingsManager.EMF_COMPAT).build();
+        list.button(SettingsManager.MODEL_OPTIMIZATION).build();
 
         Button doneButton = Button.builder(Component.translatable("obe.config.done"), b -> {
             this.minecraft.setScreen(this.parent);

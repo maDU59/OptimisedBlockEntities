@@ -15,6 +15,8 @@ public class ChunkTaskHolder {
     }
 
     public static void executeTasks(SectionPos pos) {
+        if (tasks.isEmpty()) return;
+        
         Queue<Runnable> taskQueue = tasks.remove(pos);
         
         if (taskQueue != null) {

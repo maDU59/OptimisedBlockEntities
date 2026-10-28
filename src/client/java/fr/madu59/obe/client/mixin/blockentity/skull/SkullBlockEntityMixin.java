@@ -25,7 +25,7 @@ public abstract class SkullBlockEntityMixin{
         BlockEntityExt ext = (BlockEntityExt)be;
         
         if(obe$isDynamicTexture(be)) ext.obe$renderMode(RenderMode.ENTITY);
-        ext.obe$isSupported(Registry.isSupported("skull", be.getType()));
+        ext.obe$isSupported(Registry.isSupported("skull", be));
         ext.obe$hasSpecialRenderer(SkullBlockUtil.hasBuiltInTexture(be));
     }
 

@@ -5,9 +5,11 @@ import java.util.List;
 
 import fr.madu59.obe.OBE;
 import fr.madu59.obe.client.compat.bclib.BclibCompat;
+import fr.madu59.obe.client.compat.carvedwood.CarvedWoodCompat;
 import fr.madu59.obe.client.compat.emf.EMFCompat;
 import fr.madu59.obe.client.compat.iris.IrisCompat;
 import fr.madu59.obe.client.compat.lootr.LootrCompat;
+import fr.madu59.obe.client.compat.morechestvariants.MoreChestVariantsCompat;
 import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.platform.PlatformHelper;
 import net.minecraft.client.model.geom.ModelPart;
@@ -22,23 +24,22 @@ public class ModCompat {
     private static final List<String> incompatibleMods = Arrays.asList("optifine","embeddium","optifabric");
 
     public static void init(){
-        if(PlatformHelper.isModLoaded("lootr")) {
-            try{
-                LootrCompat.init();
-            }
-            catch(Error e){
-                OBE.LOGGER.warn("Incompatible version of Lootr used, if you are using the latest one, please report that to OBE's author.");
-            }
-        }
+        runSafe("lootr", LootrCompat::init);
+        runSafe("lolmcv", MoreChestVariantsCompat::init);
+        runSafe("carved_wood", CarvedWoodCompat::init);
     }
 
     public static void onWorldLoad(){
-        if(PlatformHelper.isModLoaded("bclib")) {
+        runSafe("bclib", BclibCompat::init);
+    }
+
+    private static void runSafe(String modId, Runnable runnable){
+        if(PlatformHelper.isModLoaded(modId)) {
             try{
-                BclibCompat.init();
+                runnable.run();
             }
             catch(Error e){
-                OBE.LOGGER.warn("Incompatible version of Bclib used, if you are using the latest one, please report that to OBE's author.");
+                OBE.LOGGER.warn("Incompatible version of " + PlatformHelper.getModName(modId) + " used, if you are using the latest one, please report that to OBE's author.");
             }
         }
     }
