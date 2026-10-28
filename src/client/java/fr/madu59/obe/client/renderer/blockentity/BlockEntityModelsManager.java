@@ -1,5 +1,6 @@
 package fr.madu59.obe.client.renderer.blockentity;
 
+import net.minecraft.world.level.block.RenderShape;
 import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -91,7 +92,7 @@ public class BlockEntityModelsManager {
 
         model = new BlockEntityStateModel(layerLocation, material, poseStack, getAmbientOcclusion(group), state, originalModel.particleMaterial());
 
-        model = new CompositeBlockStateModel(model, originalModel);
+        if(state.getRenderShape() == RenderShape.MODEL) model = new CompositeBlockStateModel(model, originalModel);
         ResourceUtil.cache(state, model);
         return model;
     }

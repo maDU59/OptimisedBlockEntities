@@ -23,8 +23,8 @@ public class ModCompat {
     private static final List<String> incompatibleMods = Arrays.asList("optifine","embeddium","optifabric");
 
     public static void init(){
-        runSafe("lootr", LootrCompat::init);
-        runSafe("lolmcv", MoreChestVariantsCompat::init);
+        runSafe("lootr", () -> LootrCompat.init());
+        runSafe("lolmcv", () -> MoreChestVariantsCompat.init());
     }
 
     public static void onWorldLoad(){
