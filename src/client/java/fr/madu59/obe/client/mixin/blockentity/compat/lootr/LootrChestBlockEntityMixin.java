@@ -17,7 +17,7 @@ import net.zestyblaze.lootr.block.entities.LootrChestBlockEntity;
 
 @Pseudo
 @Mixin(value = LootrChestBlockEntity.class, remap = false)
-public class LootrChestBlockEntityMixin {
+public abstract class LootrChestBlockEntityMixin {
     @Inject(method = "<init>", at = @At("TAIL"))
     private void obe$register(CallbackInfo ci){
         

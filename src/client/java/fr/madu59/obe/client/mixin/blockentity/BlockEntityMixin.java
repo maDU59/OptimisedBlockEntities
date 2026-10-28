@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.LecternBlockEntity;
 
 @Mixin(BlockEntity.class)
-public class BlockEntityMixin {
+public abstract class BlockEntityMixin {
 
     @Inject(method = "setBlockState", at = @At("TAIL"))
     private void obe$onSetBlockState(BlockState newBlockState, CallbackInfo ci) {
