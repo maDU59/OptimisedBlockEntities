@@ -38,7 +38,7 @@ public class LootrCompat {
 
     public static Identifier getChestMaterial(BlockState state, BlockEntity be) {
         if(be instanceof LootrChestBlockEntity lootrChestBe){
-            boolean isOpened = Minecraft.getInstance().player != null && lootrChestBe.hasClientOpened(Minecraft.getInstance().player.getUUID());
+            boolean isOpened = Minecraft.getInstance().player != null && lootrChestBe.hasClientOpened(Minecraft.getInstance().player);
             if (LootrAPI.isVanillaTextures()) {
                 Identifier id;
                 switch (LootrChestType.fromState(state)) {
@@ -88,7 +88,7 @@ public class LootrCompat {
             if (LootrAPI.isVanillaTextures()) {
                 return Sheets.DEFAULT_SHULKER_TEXTURE_LOCATION.texture();
             } else {
-                return Minecraft.getInstance().player != null && lootrShulkerBoxBe.hasClientOpened(Minecraft.getInstance().player.getUUID()) ? SHULKER_BOX_MATERIAL2 : SHULKER_BOX_MATERIAL;
+                return Minecraft.getInstance().player != null && lootrShulkerBoxBe.hasClientOpened(Minecraft.getInstance().player) ? SHULKER_BOX_MATERIAL2 : SHULKER_BOX_MATERIAL;
             }
         }
         return ShulkerBoxUtil.getMaterial(state);
@@ -101,10 +101,10 @@ public class LootrCompat {
     }
 
     public static Object getChestCacheKey(BlockEntity be) {
-        return be instanceof LootrChestBlockEntity lootrChestBe && Minecraft.getInstance().player != null && lootrChestBe.hasClientOpened(Minecraft.getInstance().player.getUUID());
+        return be instanceof LootrChestBlockEntity lootrChestBe && Minecraft.getInstance().player != null && lootrChestBe.hasClientOpened(Minecraft.getInstance().player);
     }
 
     public static Object getShulkerBoxCacheKey(BlockEntity be) {
-        return be instanceof LootrShulkerBoxBlockEntity lootrShulkerBoxBe && Minecraft.getInstance().player != null && lootrShulkerBoxBe.hasClientOpened(Minecraft.getInstance().player.getUUID());
+        return be instanceof LootrShulkerBoxBlockEntity lootrShulkerBoxBe && Minecraft.getInstance().player != null && lootrShulkerBoxBe.hasClientOpened(Minecraft.getInstance().player);
     }
 }
