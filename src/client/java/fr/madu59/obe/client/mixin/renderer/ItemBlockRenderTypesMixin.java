@@ -2,11 +2,7 @@ package fr.madu59.obe.client.mixin.renderer;
 
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.world.level.block.AbstractSkullBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.CeilingHangingSignBlock;
-import net.minecraft.world.level.block.ShulkerBoxBlock;
-import net.minecraft.world.level.block.WallHangingSignBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -21,7 +17,7 @@ public class ItemBlockRenderTypesMixin {
         if(blockState.hasBlockEntity()){
             if(cir.getReturnValue() == RenderType.solid()){
                 Block block = blockState.getBlock();
-                if(block instanceof ShulkerBoxBlock || block instanceof AbstractSkullBlock || block instanceof CeilingHangingSignBlock || block instanceof WallHangingSignBlock){
+                if(block instanceof ShulkerBoxBlock || block instanceof AbstractSkullBlock || block instanceof CeilingHangingSignBlock || block instanceof WallHangingSignBlock || block instanceof ChestBlock){
                     cir.setReturnValue(RenderType.cutoutMipped());
                     return;
                 }

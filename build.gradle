@@ -13,6 +13,7 @@ repositories {
     maven{url = "https://maven.caffeinemc.net/snapshots"}
 	maven{url = "https://api.modrinth.com/maven"}
 	maven{url = "https://maven.terraformersmc.com/releases"}
+    maven{url = "https://repo.polyfrost.org/releases"}
 }
 
 loom {
@@ -32,7 +33,7 @@ dependencies {
 	// To change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings loom.officialMojangMappings()
-	
+
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
@@ -52,12 +53,17 @@ dependencies {
 	modImplementation "maven.modrinth:lootr:C5cP6if7"
 	modImplementation "maven.modrinth:cloth-config:qA00xo1O"
 
+	modRuntimeOnly "maven.modrinth:quad:1.2.14+1.21.8-Fabric"
+	modImplementation "maven.modrinth:more-chest-variants-lieonlion:1.5.12+1.21.5-fabric"
+
 	// runtimeOnly "maven.modrinth:betterend:21.800.1"
 	// runtimeOnly "maven.modrinth:betternether:21.800.1"
 	// runtimeOnly "maven.modrinth:worldweaver:21.800.1"
 	// runtimeOnly "maven.modrinth:bclib:21.800.1"
 
 	modCompileOnly "maven.modrinth:vulkanmod:7pYvUnJk"
+
+	modCompileOnly "org.polyfrost.oneconfig:mod-toggles:1.0.0"
 }
 
 processResources {
