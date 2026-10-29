@@ -24,7 +24,11 @@ public class CompositeBlockStateModel implements BakedModel {
 
     @Override
     public TextureAtlasSprite getParticleIcon() {
-        return models[0].getParticleIcon();
+        for(BakedModel model : models){
+            TextureAtlasSprite particleIcon = model.getParticleIcon();
+            if(particleIcon != null) return particleIcon;
+        }
+        return null;
     }
 
     @Override
