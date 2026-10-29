@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import fr.madu59.obe.client.OBEClient;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 
@@ -34,7 +35,7 @@ import net.minecraft.world.level.block.ShulkerBoxBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class BlockEntityStateModel implements BlockStateModel{
-    private SimpleModelWrapper modelPart;
+    private final SimpleModelWrapper modelPart;
     private final TextureAtlasSprite particleMaterial;
 
     public BlockEntityStateModel(ModelLayerLocation modelLayerLocation, ResourceLocation texture, boolean useAo, BlockState state, TextureAtlasSprite particleMaterial){
@@ -42,18 +43,26 @@ public class BlockEntityStateModel implements BlockStateModel{
     }
 
     public BlockEntityStateModel(ModelLayerLocation modelLayerLocation, ResourceLocation texture, PoseStack poseStack, boolean useAo, BlockState state, TextureAtlasSprite particleMaterial){
-        TextureAtlasSprite sprite = ResourceUtil.getSprite(texture);
-        this.particleMaterial = particleMaterial;
-        generateModel(modelLayerLocation, sprite, poseStack, useAo, state);
+        if(modelLayerLocation == OBEClient.EMPTY_MODEL_LAYER_LOCATION){
+            this.particleMaterial = null;
+            this.modelPart = null;
+        }
+        else {
+            TextureAtlasSprite sprite = ResourceUtil.getSprite(texture);
+            this.particleMaterial = particleMaterial;
+            this.modelPart = generateModel(modelLayerLocation, sprite, poseStack, useAo, state);
+        }
     }
 
     public BlockEntityStateModel(){
-        particleMaterial = null;
+        this(null);
     }
 
     public BlockEntityStateModel(TextureAtlasSprite particleMaterial){
         this.particleMaterial = particleMaterial;
+        this.modelPart = null;
     }
+
 
     @Override
     public void collectParts(RandomSource randomSource, List<BlockModelPart> output) {
@@ -65,7 +74,7 @@ public class BlockEntityStateModel implements BlockStateModel{
         output.add(modelPart);
     }
 
-    private void generateModel(ModelLayerLocation modelLayerLocation, TextureAtlasSprite sprite, PoseStack poseStack, boolean useAo, BlockState state){
+    private SimpleModelWrapper generateModel(ModelLayerLocation modelLayerLocation, TextureAtlasSprite sprite, PoseStack poseStack, boolean useAo, BlockState state){
         ModelPart root = Minecraft.getInstance().getEntityModels().bakeLayer(modelLayerLocation);
         ModCompat.applyEMFRestPose(root, state);
 
@@ -76,7 +85,7 @@ public class BlockEntityStateModel implements BlockStateModel{
         });
 
         QuadCollection collection = createQuadCollection(bakedQuadsList);
-        modelPart = new SimpleModelWrapper(collection, useAo, particleMaterial);
+        return new SimpleModelWrapper(collection, useAo, particleMaterial);
     }
 
     private void getBakedQuads(List<BakedQuad> output, ModelPart part, PoseStack poseStack, TextureAtlasSprite sprite, String partName, BlockState state){
@@ -102,7 +111,7 @@ public class BlockEntityStateModel implements BlockStateModel{
                 for (int i = 0; i < 4; i++) {
                     ModelPart.Vertex vertex = polygon.vertices()[i];
                     Vector3f vec = pose.pose().transformPosition(vertex.worldX(), vertex.worldY(), vertex.worldZ(), new Vector3f());
-                    
+
                     float u = sprite.getU(vertex.u());
                     float v = sprite.getV(vertex.v());
 
@@ -112,7 +121,7 @@ public class BlockEntityStateModel implements BlockStateModel{
                     packedVertices[offset + 1] = Float.floatToRawIntBits(vec.y());
                     packedVertices[offset + 2] = Float.floatToRawIntBits(vec.z());
 
-                    packedVertices[offset + 3] = -1; 
+                    packedVertices[offset + 3] = -1;
 
                     packedVertices[offset + 4] = Float.floatToRawIntBits(u);
                     packedVertices[offset + 5] = Float.floatToRawIntBits(v);
@@ -124,7 +133,7 @@ public class BlockEntityStateModel implements BlockStateModel{
                 }
 
                 if (shouldSkipQuad(polygon, positions, state, partName)) continue;
-       
+
                 if(isAxisAlignedRectangle(positions)){
                     FaceBakery.recalculateWinding(packedVertices, dir);
                 }

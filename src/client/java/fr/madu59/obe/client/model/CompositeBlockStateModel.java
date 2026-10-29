@@ -26,6 +26,10 @@ public class CompositeBlockStateModel implements BlockStateModel {
 
     @Override
     public TextureAtlasSprite particleIcon() {
-        return models[0].particleIcon();
+        for(BlockStateModel model : models){
+            TextureAtlasSprite particleIcon = model.particleIcon();
+            if(particleIcon != null) return particleIcon;
+        }
+        return null;
     }
 }

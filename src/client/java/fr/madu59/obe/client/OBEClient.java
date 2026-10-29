@@ -8,10 +8,13 @@ import fr.madu59.obe.client.registry.Registry;
 import fr.madu59.obe.client.resources.loader.SkullPackLoader;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
+import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 
 public class OBEClient implements ClientModInitializer {
+
+	public static final ModelLayerLocation EMPTY_MODEL_LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.tryBuild(OBE.MOD_ID, "empty_model_layer"), "empty_model_layer");
 
 	@Override
 	public void onInitializeClient() {
