@@ -19,12 +19,8 @@ public class MoreChestVariantsCompat {
     public static void init() {
         Registry.addBlockEntityTypeInGroup("chest", FabricMoreChestVariantsBlocks.MORE_CHEST_BLOCK_ENTITY, FabricMoreChestVariantsBlocks.MORE_TRAPPED_CHEST_BLOCK_ENTITY);
 
-        for(Block block : FabricMoreChestVariantsBlocks.more_chest) {
-            MaterialGetter.register(block, MoreChestVariantsCompat::getMaterial);
-        }
-        for(Block block : FabricMoreChestVariantsBlocks.more_trapped_chest) {
-            MaterialGetter.register(block, MoreChestVariantsCompat::getMaterial);
-        }
+        MaterialGetter.register(FabricMoreChestVariantsBlocks.MORE_CHEST_BLOCK_ENTITY, MoreChestVariantsCompat::getMaterial);
+        MaterialGetter.register(FabricMoreChestVariantsBlocks.MORE_TRAPPED_CHEST_BLOCK_ENTITY, MoreChestVariantsCompat::getMaterial);
     }
 
     public static ResourceLocation getMaterial(BlockState state) {
