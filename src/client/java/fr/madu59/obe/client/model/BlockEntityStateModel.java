@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import fr.madu59.obe.client.OBEClient;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 
@@ -33,7 +34,7 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.SimpleBakedModel;
 
 public class BlockEntityStateModel implements BakedModel{
-    private SimpleBakedModel modelPart;
+    private final SimpleBakedModel modelPart;
     private final TextureAtlasSprite particleMaterial;
     private boolean useAo = true;
 
@@ -42,21 +43,29 @@ public class BlockEntityStateModel implements BakedModel{
     }
 
     public BlockEntityStateModel(ModelLayerLocation modelLayerLocation, ResourceLocation texture, PoseStack poseStack, boolean useAo, BlockState state, TextureAtlasSprite particleMaterial){
-        TextureAtlasSprite sprite = ResourceUtil.getSprite(texture);
-        this.particleMaterial = particleMaterial;
-        this.useAo = useAo;
-        generateModel(modelLayerLocation, sprite, poseStack, useAo, state);
+        if(modelLayerLocation == OBEClient.EMPTY_MODEL_LAYER_LOCATION){
+            this.particleMaterial = null;
+            this.modelPart = null;
+        }
+        else {
+            TextureAtlasSprite sprite = ResourceUtil.getSprite(texture);
+            this.particleMaterial = particleMaterial;
+            this.useAo = useAo;
+            this.modelPart = generateModel(modelLayerLocation, sprite, poseStack, useAo, state);
+        }
     }
 
     public BlockEntityStateModel(){
-        particleMaterial = null;
+        this(null);
     }
 
     public BlockEntityStateModel(TextureAtlasSprite particleMaterial){
         this.particleMaterial = particleMaterial;
+        this.modelPart = null;
     }
 
-    private void generateModel(ModelLayerLocation modelLayerLocation, TextureAtlasSprite sprite, PoseStack poseStack, boolean useAo, BlockState state){
+
+    private SimpleBakedModel generateModel(ModelLayerLocation modelLayerLocation, TextureAtlasSprite sprite, PoseStack poseStack, boolean useAo, BlockState state){
         ModelPart root = Minecraft.getInstance().getEntityModels().bakeLayer(modelLayerLocation);
         ModCompat.applyEMFRestPose(root, state);
 
@@ -67,7 +76,7 @@ public class BlockEntityStateModel implements BakedModel{
         });
 
         Map<Direction, List<BakedQuad>> dirs = new HashMap<>();
-        modelPart = new SimpleBakedModel(bakedQuadsList, dirs, useAo, true, false, particleMaterial, null);
+        return new SimpleBakedModel(bakedQuadsList, dirs, useAo, true, false, particleMaterial, null);
     }
 
     private void getBakedQuads(List<BakedQuad> output, ModelPart part, PoseStack poseStack, TextureAtlasSprite sprite, String partName, BlockState state){
@@ -106,7 +115,7 @@ public class BlockEntityStateModel implements BakedModel{
                     packedVertices[offset + 1] = Float.floatToRawIntBits(vec.y());
                     packedVertices[offset + 2] = Float.floatToRawIntBits(vec.z());
 
-                    packedVertices[offset + 3] = -1; 
+                    packedVertices[offset + 3] = -1;
 
                     packedVertices[offset + 4] = Float.floatToRawIntBits(u);
                     packedVertices[offset + 5] = Float.floatToRawIntBits(v);
@@ -118,7 +127,7 @@ public class BlockEntityStateModel implements BakedModel{
                 }
 
                 if (shouldSkipQuad(polygon, positions, state, partName)) continue;
-       
+
                 if(isAxisAlignedRectangle(positions)){
                     FaceBakery.recalculateWinding(packedVertices, dir);
                 }
