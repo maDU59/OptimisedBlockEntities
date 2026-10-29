@@ -20,7 +20,7 @@ public class ModCompat {
     private final static boolean isIrisLoaded = PlatformHelper.isModLoaded("iris") || PlatformHelper.isModLoaded("oculus");
     private final static boolean isSodiumLoaded = PlatformHelper.isModLoaded("sodium") || PlatformHelper.isModLoaded("embeddium");
     private static boolean isEMFLoaded = PlatformHelper.isModLoaded("entity_model_features");
-    private final static boolean isPunchyLoaded = PlatformHelper.isModLoaded("punchy");
+    private final static boolean isAmendmentsLoaded = PlatformHelper.isModLoaded("amendments");
 
     private static final List<String> incompatibleMods = Arrays.asList("optifine","embeddium","optifabric");
 
@@ -59,8 +59,8 @@ public class ModCompat {
         return isEMFLoaded;
     }
 
-    public static boolean isPunchyLoaded(){
-        return isPunchyLoaded;
+    public static boolean isAmendmentsLoaded(){
+        return isAmendmentsLoaded;
     }
 
     public static boolean isShadowPass(){

@@ -5,6 +5,8 @@ import fr.madu59.obe.client.compat.ModCompat;
 import fr.madu59.obe.client.config.configscreen.OptimisedBlockEntitiesConfigScreen;
 import fr.madu59.obe.client.registry.Registry;
 import fr.madu59.obe.client.resources.loader.SkullPackLoader;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -16,6 +18,8 @@ import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 
 @Mod(value = OBE.MOD_ID, dist = Dist.CLIENT)
 public class OBEClient {
+
+	public static final ModelLayerLocation EMPTY_MODEL_LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.tryBuild(OBE.MOD_ID, "empty_model_layer"), "empty_model_layer");
 
 	public OBEClient(ModContainer container, IEventBus bus){
 		Registry.init();
