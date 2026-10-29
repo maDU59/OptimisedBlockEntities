@@ -124,6 +124,8 @@ dependencies {
 
     implementation "maven.modrinth:lootr:yUf7Q96A"
 
+    implementation "maven.modrinth:more-chest-variants-lieonlion:1.5.14+26.1.1-Neo"
+
     implementation "maven.modrinth:carved-wood:1.9.7-B-NeoForge-26.1"
 
     // Example optional mod dependency with JEI
