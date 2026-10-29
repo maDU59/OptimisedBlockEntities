@@ -32,6 +32,10 @@ public class CompositeBlockStateModel implements BlockStateModel {
 
     @Override
     public @MaterialFlags Material.Baked particleMaterial() {
-        return models[0].particleMaterial();
+        for(BlockStateModel model : models){
+            Material.Baked particleMaterial = model.particleMaterial();
+            if(particleMaterial != null) return particleMaterial;
+        }
+        return null;
     }
 }
