@@ -6,6 +6,8 @@ import fr.madu59.obe.client.config.configscreen.OptimisedBlockEntitiesConfigScre
 import fr.madu59.obe.client.platform.PlatformHelper;
 import fr.madu59.obe.client.registry.Registry;
 import fr.madu59.obe.client.resources.loader.SkullPackLoader;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
@@ -18,6 +20,8 @@ import net.minecraftforge.eventbus.api.IEventBus;
 
 @EventBusSubscriber(modid = OBE.MOD_ID, value = Dist.CLIENT)
 public class OBEClient {
+
+	public static final ModelLayerLocation EMPTY_MODEL_LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.tryBuild(OBE.MOD_ID, "empty_model_layer"), "empty_model_layer");
 
 
 	public OBEClient(IEventBus bus){
