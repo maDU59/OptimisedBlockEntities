@@ -28,7 +28,7 @@ public class ModCompat {
     }
 
     public static void onWorldLoad(){
-        runSafe("bclib", BclibCompat::init);
+        runSafe("bclib", () -> BclibCompat.init());
     }
 
     private static void runSafe(String modId, Runnable runnable){
