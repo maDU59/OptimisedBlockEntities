@@ -64,7 +64,8 @@ dependencies {
 	modImplementation "maven.modrinth:more-chest-variants-lieonlion:1.5.6+1.20.2-Fabric"
 
 	modImplementation ("net.mehvahdjukaar:everycomp-fabric:1.20-2.9.20") {transitive = false}
-	modImplementation("maven.modrinth:moonlight:1.20-2.16.34-fabric")
+	modImplementation ("maven.modrinth:moonlight:1.20-2.16.34-fabric")
+	modImplementation ("maven.modrinth:amendments:Rk9Vg3PM") {transitive = false}
 
 	modImplementation "maven.modrinth:carved-wood:1.9.7-E-Fabric-1.20.1"
 
