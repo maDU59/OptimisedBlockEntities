@@ -7,6 +7,7 @@ import fr.madu59.obe.OBE;
 import fr.madu59.obe.client.compat.bclib.BclibCompat;
 import fr.madu59.obe.client.compat.carvedwood.CarvedWoodCompat;
 import fr.madu59.obe.client.compat.emf.EMFCompat;
+import fr.madu59.obe.client.compat.immediatelyfast.ImmediatelyFastCompat;
 import fr.madu59.obe.client.compat.iris.IrisCompat;
 import fr.madu59.obe.client.compat.lootr.LootrCompat;
 import fr.madu59.obe.client.compat.morechestvariants.MoreChestVariantsCompat;
@@ -30,7 +31,7 @@ public class ModCompat {
     }
 
     public static void onWorldLoad(){
-        runSafe("bclib", BclibCompat::init);
+        runSafe("bclib", () -> BclibCompat.init());
     }
 
     private static void runSafe(String modId, Runnable runnable){
@@ -77,6 +78,11 @@ public class ModCompat {
             }
         }
         else return root;
+    }
+
+    public static boolean isSignTextBufferingEnabled() {
+        if(PlatformHelper.isModLoaded("immediatelyfast")) return ImmediatelyFastCompat.isSignTextBufferingEnabled();
+        else return false;
     }
 
     public static boolean isIncompatibilityDetected(){

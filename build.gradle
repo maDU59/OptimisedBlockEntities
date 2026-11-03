@@ -58,6 +58,9 @@ dependencies {
 	compileOnly "maven.modrinth:vulkanmod:0.6.8+26.1.2"
 
     compileOnly "org.polyfrost.oneconfig:mod-toggles:1.0.0"
+
+	implementation "maven.modrinth:immediatelyfast:1.15.3+26.1-fabric"
+
 }
 
 processResources {
