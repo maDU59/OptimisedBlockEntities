@@ -53,7 +53,9 @@ dependencies {
     compileOnly "org.polyfrost.oneconfig:mod-toggles:1.0.0"
 
     runtimeOnly "maven.modrinth:spark:iYFOl6lQ"
-	
+
+	implementation "maven.modrinth:immediatelyfast:1.17.1+26.3-fabric"
+
 }
 
 processResources {

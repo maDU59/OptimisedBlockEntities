@@ -6,6 +6,7 @@ import java.util.List;
 import fr.madu59.obe.OBE;
 import fr.madu59.obe.client.compat.bclib.BclibCompat;
 import fr.madu59.obe.client.compat.emf.EMFCompat;
+import fr.madu59.obe.client.compat.immediatelyfast.ImmediatelyFastCompat;
 import fr.madu59.obe.client.compat.iris.IrisCompat;
 import fr.madu59.obe.client.compat.lootr.LootrCompat;
 import fr.madu59.obe.client.compat.morechestvariants.MoreChestVariantsCompat;
@@ -75,6 +76,11 @@ public class ModCompat {
             }
         }
         else return root;
+    }
+
+    public static boolean isSignTextBufferingEnabled() {
+        if(PlatformHelper.isModLoaded("immediatelyfast")) return ImmediatelyFastCompat.isSignTextBufferingEnabled();
+        else return false;
     }
 
     public static boolean isIncompatibilityDetected(){

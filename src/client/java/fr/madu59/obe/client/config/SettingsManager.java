@@ -6,7 +6,6 @@ import com.google.gson.reflect.TypeToken;
 
 import fr.madu59.obe.OBE;
 import fr.madu59.obe.client.compat.ModCompat;
-import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.platform.PlatformHelper;
 import fr.madu59.obe.client.resources.ResourceUtil;
 import net.minecraft.client.Minecraft;
@@ -23,12 +22,12 @@ public class SettingsManager {
     private static final Path CONFIG_PATH = PlatformHelper.getConfigDir().resolve(OBE.MOD_ID + ".json");
     private static Map<String, String> loadedSettings = loadSettings();
 
-    private static Runnable EMPTY_ACTION = () -> {};
-    private static Runnable RELOAD_RESOURCES_ACTION = () -> {
+    private static final Runnable EMPTY_ACTION = () -> {};
+    private static final Runnable RELOAD_RESOURCES_ACTION = () -> {
         ResourceUtil.clearCache();
         Minecraft.getInstance().levelExtractor.allChanged();
     };
-    private static Runnable RELOAD_CHUNKS_ACTION = () -> Minecraft.getInstance().levelExtractor.allChanged();
+    private static final Runnable RELOAD_CHUNKS_ACTION = () -> Minecraft.getInstance().levelExtractor.allChanged();
 
     private static final boolean isIncompatible = ModCompat.isIncompatibilityDetected();
 
@@ -291,6 +290,7 @@ public class SettingsManager {
     @SuppressWarnings("unchecked")
     private static <T> T getOptionValue(String key, T defaultValue) {
         if (loadedSettings == null || !loadedSettings.containsKey(key)) return null;
+        if(key.equals("sign_text_culling") && ModCompat.isSignTextBufferingEnabled()) return (T) (Boolean) false;
         else if (defaultValue instanceof Enum<?> e){
             return (T) Enum.valueOf(e.getDeclaringClass(), loadedSettings.get(key));
         }
