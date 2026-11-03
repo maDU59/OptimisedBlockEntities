@@ -24,7 +24,7 @@ public class SpecialBlockEntityRenderingManager {
         if(!SettingsManager.MOD_TOGGLE.getValue()) return false;
         switch(((BlockEntityExt)be).obe$specialKind()){
             case 1 -> { // Sign
-                return SettingsManager.OPTIMISED_SIGNS.getValue() && isEmpty((SignBlockEntity)be);
+                return SettingsManager.OPTIMISED_SIGNS.getValue() && !((BlockEntityExt)be).obe$forceEntity() && !((BlockEntityExt)be).obe$renderBoth() && ((BlockEntityExt)be).obe$isEnabled() && isEmpty((SignBlockEntity)be);
             }
             case 2 -> { // Beacon
                 return SettingsManager.OPTIMISED_BEACONS.getValue() && ((BeaconBlockEntity)be).getBeamSections().isEmpty();

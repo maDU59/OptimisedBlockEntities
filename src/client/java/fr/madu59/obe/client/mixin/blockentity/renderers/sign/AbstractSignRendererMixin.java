@@ -21,7 +21,7 @@ import net.minecraft.client.renderer.blockentity.AbstractSignRenderer;
 @Mixin(AbstractSignRenderer.class)
 public abstract class AbstractSignRendererMixin {
     @Inject(method = "submitSignText", at = @At("HEAD"), cancellable = true)
-    public void obe$cancelSignText(CallbackInfo ci, @Local PoseStack poseStack){
+    public void obe$cancelSignText(CallbackInfo ci, @Local(argsOnly = true) PoseStack poseStack){
         if(SettingsManager.SIGN_TEXT_CULLING.getValue() && (ModCompat.isShadowPass() || !obe$isFacingCamera(poseStack))) ci.cancel();
     }
 
