@@ -51,6 +51,7 @@ jarJar.register() {
 
 renamer.enableMixinRefmaps {
     config "${mod_id}.mixins.json"
+    refMap = 'mixins.obe.refmap.json'
 }
 renamer.classes(tasks.named('jar', Jar)) {
     archiveClassifier = 'srg'
