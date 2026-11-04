@@ -3,7 +3,7 @@
 	"package": "fr.madu59.obe.client.mixin",
 	"compatibilityLevel": "JAVA_17",
 	"minVersion": "0.8",
-	"refmap":"main.refmap.json",
+	"refmap":"mixins.obe.refmap.json",
 	"client": [
 		"blockentity.banner.BannerBlockEntityMixin",
 		"blockentity.bell.BellBlockEntityMixin",
