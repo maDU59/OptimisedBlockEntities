@@ -17,7 +17,7 @@ plugins {
     id 'idea'
     id 'net.minecraftforge.gradle' version '[7.0.29,7.0.30)'
     id "me.modmuss50.mod-publish-plugin" version "2.0.0"
-    id 'net.minecraftforge.renamer' version '1.1.2'
+    id 'net.minecraftforge.renamer' version '1.1.8'
     id 'net.minecraftforge.jarjar' version '0.2.3'
 }
 
@@ -41,6 +41,7 @@ minecraft {
         register('client') {
             systemProperty 'forge.enabledGameTestNamespaces', mod_id
             systemProperty 'mixin.env.disableRefMap', true
+            systemProperty 'mixin.debug.export', 'true'
         }
     }
 }
@@ -51,7 +52,7 @@ jarJar.register() {
 
 renamer.enableMixinRefmaps {
     config "${mod_id}.mixins.json"
-    refMap = 'mixins.obe.refmap.json'
+    refMap = "mixins.${mod_id}.refmap.json"
 }
 renamer.classes(tasks.named('jar', Jar)) {
     archiveClassifier = 'srg'

@@ -6,3 +6,6 @@
 
 # Patch 2:
 - Fixed a crash
+
+# Patch 3:
+- Fixed latest build being broken due to a compiling error
