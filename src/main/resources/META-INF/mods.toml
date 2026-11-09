@@ -29,7 +29,7 @@ version="${mod_version}" #mandatory
 displayName="${mod_name}" #mandatory
 
 # A URL to query for updates for this mod. See the JSON update specification https://docs.neoforged.net/docs/misc/updatechecker/
-#updateJSONURL="https://change.me.example.invalid/updates.json" #optional
+updateJSONURL = "https://api.modrinth.com/updates/${mod_id}/forge_updates.json"
 
 # A URL for the "homepage" for this mod, displayed in the mod UI
 #displayURL="https://change.me.to.your.mods.homepage.example.invalid/" #optional
