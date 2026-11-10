@@ -4,16 +4,12 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import fr.madu59.obe.client.registry.*;
 import org.apache.commons.lang3.function.TriConsumer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import fr.madu59.obe.client.registry.SpecialModelGetter.SpecialModelProvider;
-import fr.madu59.obe.client.registry.SpecialModelGetter;
-import fr.madu59.obe.client.registry.MaterialGetter;
-import fr.madu59.obe.client.registry.ModelLayerLocationGetter;
-import fr.madu59.obe.client.registry.Registry;
-import fr.madu59.obe.client.registry.TransformationGetter;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.resources.Identifier;
@@ -178,6 +174,36 @@ public class RegistryApi {
      */
     public static void registerSpecialModelProvider(Block block, BiFunction<BlockState, BlockEntity, ModelLayerLocation> modelLayerLocationProvider, BiFunction<BlockState, BlockEntity, Identifier> materialProvider, TriConsumer<BlockState, BlockEntity, PoseStack> transformationProvider, Function<BlockEntity, Object> cacheKeyProvider){
         SpecialModelGetter.register(block, new SpecialModelProvider(modelLayerLocationProvider, materialProvider, transformationProvider, cacheKeyProvider));
+    }
+
+    /*
+     * Register a model builder provider for a group, this should only be used to bake complex models, otherwise use the model layer location and material providers
+     * @param id The group to which the model builder should be registered
+     * @param builder The model builder
+     * @since 1.2.2
+     */
+    public static void registerModelBuilder(String id, ModelGetter.ModelBuilder builder){
+        ModelGetter.registerDefault(id, builder);
+    }
+
+    /*
+     * Register a model builder provider for a block entity type, this should only be used to bake complex models, otherwise use the model layer location and material providers
+     * @param type The block entity type to which the model builder should be registered
+     * @param builder The model builder
+     * @since 1.2.2
+     */
+    public static void registerModelBuilder(BlockEntityType<?> type, ModelGetter.ModelBuilder builder){
+        ModelGetter.register(type, builder);
+    }
+
+    /*
+     * Register a model builder provider for a block, this should only be used to bake complex models, otherwise use the model layer location and material providers
+     * @param block The block to which the model builder should be registered
+     * @param builder The model builder
+     * @since 1.2.2
+     */
+    public static void registerModelBuilder(Block block, ModelGetter.ModelBuilder builder){
+        ModelGetter.register(block, builder);
     }
 
     /*

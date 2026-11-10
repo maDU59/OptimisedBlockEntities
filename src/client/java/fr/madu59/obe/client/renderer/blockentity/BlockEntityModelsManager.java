@@ -1,5 +1,6 @@
 package fr.madu59.obe.client.renderer.blockentity;
 
+import fr.madu59.obe.client.registry.*;
 import net.minecraft.world.level.block.RenderShape;
 import org.jetbrains.annotations.Nullable;
 
@@ -8,11 +9,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.model.BlockEntityStateModel;
 import fr.madu59.obe.client.model.CompositeBlockStateModel;
-import fr.madu59.obe.client.registry.SpecialModelGetter;
-import fr.madu59.obe.client.registry.MaterialGetter;
-import fr.madu59.obe.client.registry.ModelLayerLocationGetter;
-import fr.madu59.obe.client.registry.Registry;
-import fr.madu59.obe.client.registry.TransformationGetter;
 import fr.madu59.obe.client.registry.SpecialModelGetter.SpecialModelProvider;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager.RenderMode;
@@ -24,7 +20,6 @@ import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -72,9 +67,15 @@ public class BlockEntityModelsManager {
         return originalModel;
     }
 
-    public BlockStateModel getBlockModel(BlockState state, RandomSource random, BlockStateModel originalModel, String group) {
+    public BlockStateModel getBlockModel(BlockState state, BlockStateModel originalModel, String group) {
         BlockStateModel model = ResourceUtil.getModel(state);
         if(model != null) return model;
+
+        BlockStateModel builtModel = ModelGetter.getModel(state, originalModel, group);
+        if(builtModel != null) {
+            ResourceUtil.cache(state, builtModel);
+            return builtModel;
+        }
 
         PoseStack poseStack = new PoseStack();
         
@@ -93,7 +94,7 @@ public class BlockEntityModelsManager {
         return model;
     }
 
-    public BlockStateModel getDecoratedPotModel(BlockState state, RandomSource random, BlockStateModel originalModel) {
+    public BlockStateModel getDecoratedPotModel(BlockState state, BlockStateModel originalModel) {
         BlockStateModel model = ResourceUtil.getModel(state);
         if(model != null) return model;
 

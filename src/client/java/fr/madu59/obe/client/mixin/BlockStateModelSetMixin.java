@@ -57,8 +57,8 @@ public abstract class BlockStateModelSetMixin {
 
             BlockStateModel model = ResourceUtil.getModel(state);
             if(model == null){
-                if(group.equals("decorated_pot")) model = blockEntityModelsManager.getDecoratedPotModel(state, null, obe$getOriginalModel(state));
-                else model = blockEntityModelsManager.getBlockModel(state, null, obe$getOriginalModel(state), group);
+                if(group.equals("decorated_pot")) model = blockEntityModelsManager.getDecoratedPotModel(state, obe$getOriginalModel(state));
+                else model = blockEntityModelsManager.getBlockModel(state, obe$getOriginalModel(state), group);
             }
             if(model != null) cir.setReturnValue(model);
         }
