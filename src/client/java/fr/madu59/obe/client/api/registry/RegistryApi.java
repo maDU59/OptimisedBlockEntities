@@ -29,13 +29,23 @@ public class RegistryApi {
     }
 
     /*
-     * Register a new optimised block entity type inside of a group
+     * Register a new optimized block entity type in a group
      * @param type The block entity type to register
      * @param id The id of the group to register the block entity type in
      * @since 1.1.0
      */
     public static void registerBlockEntityType(BlockEntityType<?> type, String id){
         Registry.addBlockEntityTypeInGroup(id, type);
+    }
+
+    /*
+     * Register a new optimized block entity type in a group
+     * @param id The id of the group to register the block entity type in
+     * @param type The block entity type to register
+     * @since 1.2.2
+     */
+    public static void registerBlockEntityType(String id, BlockEntityType<?> ... types){
+        Registry.addBlockEntityTypeInGroup(id, types);
     }
 
     /*
