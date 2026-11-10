@@ -137,6 +137,9 @@ dependencies {
 	implementation ("net.mehvahdjukaar:codecui-neoforge:1.21.1-1.4.0") {transitive = false}
     implementation ("net.mehvahdjukaar:amendments-neoforge:1.21-2.2.4") {transitive = false}
 
+    implementation "maven.modrinth:sophisticated-core:1.21.1-1.5.32.2464"
+    implementation "maven.modrinth:sophisticated-storage:1.21.1-1.6.16.2222"
+
 	implementation "maven.modrinth:carved-wood:1.9.7-B-NeoForge-1.21.1"
 
     // Example optional mod dependency with JEI
