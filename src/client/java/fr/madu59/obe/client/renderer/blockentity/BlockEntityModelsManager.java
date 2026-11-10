@@ -39,26 +39,39 @@ public class BlockEntityModelsManager {
         BlockEntityExt ext = (BlockEntityExt)be;
         if (!ext.obe$isSupported() || !ext.obe$hasSpecialRenderer() || !ext.obe$isEnabled()) return null;
 
-        String group = Registry.getGroup(state);
-        SpecialModelProvider customModelProvider = SpecialModelGetter.getSpecialModelProvider(state, group);
         if(ext.obe$renderModeDelayed() == RenderMode.TERRAIN){
-            if(customModelProvider != null){
-                Object cacheKey = customModelProvider.getCacheKeyProvider().apply(be);
+            String group = Registry.getGroup(state);
+
+            SpecialModelBuilderGetter.SpecialModelBuilder specialModelBuilder = SpecialModelBuilderGetter.getSpecialModelProvider(state, group);
+
+            if(specialModelBuilder != null){
+                Object cacheKey = specialModelBuilder.getCacheKey(be);
+                BlockStateModel cached = ResourceUtil.getModel(state, cacheKey);
+                if(cached != null) return cached;
+                BlockStateModel model = specialModelBuilder.build(state, be, ResourceUtil.getDefaultModel(state));
+                ResourceUtil.cache(state, cacheKey, model);
+                return model;
+            }
+
+            SpecialModelProvider specialModelProvider = SpecialModelGetter.getSpecialModelProvider(state, group);
+
+            if(specialModelProvider != null){
+                Object cacheKey = specialModelProvider.getCacheKeyProvider().apply(be);
                 BlockStateModel cached = ResourceUtil.getModel(state, cacheKey);
                 if(cached != null) return cached;
 
                 PoseStack poseStack = new PoseStack();
 
-                ModelLayerLocation layerLocation = customModelProvider.getModelLayerLocationProvider().apply(state, be);
+                ModelLayerLocation layerLocation = specialModelProvider.getModelLayerLocationProvider().apply(state, be);
                 if(layerLocation == null) return fail(be);
 
                 TransformationGetter.applyTransformation(state, poseStack, group);
 
-                Identifier material = customModelProvider.getMaterialProvider().apply(state, be);
+                Identifier material = specialModelProvider.getMaterialProvider().apply(state, be);
                 if(material == null) return fail(be);
 
                 BlockStateModel model = new BlockEntityStateModel(layerLocation, material, poseStack, getAmbientOcclusion(group), state, originalModel.particleMaterial());
-                if(customModelProvider.shouldKeepOriginalModel()) model = new CompositeBlockStateModel(model, ResourceUtil.getDefaultModel(state));
+                if(specialModelProvider.shouldKeepOriginalModel()) model = new CompositeBlockStateModel(model, ResourceUtil.getDefaultModel(state));
                 ResourceUtil.cache(state, cacheKey, model);
                 return model;
             }

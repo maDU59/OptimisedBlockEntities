@@ -22,7 +22,7 @@ public class SpecialModelGetter {
 
     private final static Map<BlockEntityType<?>, SpecialModelProvider> specialModelProviders = new ConcurrentHashMap<>();
     private final static Map<Block, SpecialModelProvider> perBlockSpecialModelProviders = new ConcurrentHashMap<>();
-    private final static Map<String, SpecialModelProvider> defaultspecialModelProviders = new ConcurrentHashMap<>();
+    private final static Map<String, SpecialModelProvider> defaultSpecialModelProviders = new ConcurrentHashMap<>();
 
     public static void init(){
         registerDefault("skull", new SpecialModelProvider(SkullBlockUtil::getModelLayerLocation, SkullBlockUtil::getMaterial, SkullBlockUtil::transform, SkullBlockUtil::getBuiltInTexture));
@@ -30,10 +30,10 @@ public class SpecialModelGetter {
 
     public static void registerDefault(String group, SpecialModelProvider getter){
         if(!Registry.hasGroup(group)){
-            OBE.LOGGER.error("An external mod tried registering a default material getter in a non existing group: " + group);
+            OBE.LOGGER.error("An external mod tried registering a default special model getter in a non existing group: " + group);
         }
         else{
-            defaultspecialModelProviders.put(group, getter);
+            defaultSpecialModelProviders.put(group, getter);
         }
     }
 
@@ -62,7 +62,7 @@ public class SpecialModelGetter {
         if (provider != null) return provider;
 
         if (group == null) group = Registry.getGroup(beType);
-        if (group != null) provider = defaultspecialModelProviders.get(group);
+        if (group != null) provider = defaultSpecialModelProviders.get(group);
         if (provider != null) return provider;
         
         return null;
