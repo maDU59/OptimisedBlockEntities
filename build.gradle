@@ -56,6 +56,8 @@ dependencies {
 
 	implementation "maven.modrinth:immediatelyfast:1.17.1+26.3-fabric"
 
+	implementation "maven.modrinth:entityculling:fD6iRzOi"
+
 }
 
 processResources {
