@@ -66,6 +66,6 @@ public class SpecialModelBuilderGetter {
         @Nullable
         BlockStateModel build(BlockState state, BlockEntity entity, BlockStateModel originalModel);
 
-        ResourceUtil.ModelCacheKey getCacheKey(BlockEntity entity);
+        Object getCacheKey(BlockEntity entity);
     }
 }
