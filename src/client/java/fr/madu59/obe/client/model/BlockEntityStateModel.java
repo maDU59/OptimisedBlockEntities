@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import fr.madu59.obe.client.OBEClient;
+import org.joml.Matrix3fc;
+import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 
@@ -55,6 +57,14 @@ public class BlockEntityStateModel implements BlockStateModel{
             this.particleMaterial = particleMaterial;
             this.modelPart = generateModel(modelLayerLocation, sprite, poseStack, useAo, state);
         }
+    }
+
+    public BlockEntityStateModel(QuadCollection quadCollection, PoseStack poseStack, boolean useAo, BlockState state, Material.Baked particleMaterial){
+        this.particleMaterial = particleMaterial;
+
+        if(poseStack != null) quadCollection = rotateQuadCollection(quadCollection, poseStack, state);
+
+        this.modelPart = new SimpleModelWrapper(quadCollection, useAo, particleMaterial);
     }
 
     public BlockEntityStateModel(){
@@ -215,12 +225,59 @@ public class BlockEntityStateModel implements BlockStateModel{
     }
 
 
-    private QuadCollection createQuadCollection(List<BakedQuad> quads) {
+    private QuadCollection createQuadCollection(Iterable<BakedQuad> quads) {
         QuadCollection.Builder builder = new QuadCollection.Builder();
         for (BakedQuad quad : quads) {
-            builder.addUnculledFace(quad);
+            if(quad != null) builder.addUnculledFace(quad);
         }
         return builder.build();
+    }
+
+    private QuadCollection rotateQuadCollection(QuadCollection quadCollection, PoseStack poseStack, BlockState state) {
+        PoseStack.Pose pose = poseStack.last();
+        Matrix4f matrix = pose.pose();
+        Matrix3fc normal = pose.normal();
+
+        Vector3f[] positions = new Vector3f[4];
+        long[] uvs = new long[4];
+
+        Vector3f[] positionsCopy;
+        long[] uvsCopy;
+
+        List<BakedQuad> all = quadCollection.getAll();
+        BakedQuad[] out = new BakedQuad[all.size()];
+
+        for (int i = 0; i < out.length; i++) {
+            BakedQuad q = all.get(i);
+
+            positions[0] = matrix.transformPosition(new Vector3f(q.position0()));
+            positions[1] = matrix.transformPosition(new Vector3f(q.position1()));
+            positions[2] = matrix.transformPosition(new Vector3f(q.position2()));
+            positions[3] = matrix.transformPosition(new Vector3f(q.position3()));
+            uvs[0] = q.packedUV0();
+            uvs[1] = q.packedUV1();
+            uvs[2] = q.packedUV2();
+            uvs[3] = q.packedUV3();
+
+            Vector3fc d = q.direction().getUnitVec3f();
+            float nx = normal.m00() * d.x() + normal.m10() * d.y() + normal.m20() * d.z();
+            float ny = normal.m01() * d.x() + normal.m11() * d.y() + normal.m21() * d.z();
+            float nz = normal.m02() * d.x() + normal.m12() * d.y() + normal.m22() * d.z();
+            Direction dir = Direction.getApproximateNearest(nx, ny, nz);
+
+            positionsCopy = positions.clone();
+            uvsCopy = uvs.clone();
+            try {
+                FaceBakery.recalculateWinding(positions, uvs, dir);
+            } catch (Exception e) {
+                positions = positionsCopy;
+                uvs = uvsCopy;
+            }
+
+            out[i] = new BakedQuad(positions[0], positions[1], positions[2], positions[3], uvs[0], uvs[1], uvs[2], uvs[3], dir, q.materialInfo());
+        }
+
+        return createQuadCollection(List.of(out));
     }
 
     @Override
