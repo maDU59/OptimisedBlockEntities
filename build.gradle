@@ -142,6 +142,8 @@ dependencies {
     implementation ("net.mehvahdjukaar:codecui-neoforge:26.1.2-1.4.7") {transitive = false}
     implementation ("net.mehvahdjukaar:amendments-neoforge:26.1.2-3.0.2") {transitive = false}
 
+    implementation "maven.modrinth:framedblocks:HKuGyb68"
+
     // Example optional mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
     // compileOnly "mezz.jei:jei-${mc_version}-common-api:${jei_version}"

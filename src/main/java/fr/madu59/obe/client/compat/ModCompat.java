@@ -8,6 +8,7 @@ import fr.madu59.obe.client.compat.bclib.BclibCompat;
 import fr.madu59.obe.client.compat.carvedwood.CarvedWoodCompat;
 import fr.madu59.obe.client.compat.emf.EMFCompat;
 import fr.madu59.obe.client.compat.entityculling.EntityCullingCompat;
+import fr.madu59.obe.client.compat.framedblocks.FramedBlocksCompat;
 import fr.madu59.obe.client.compat.immediatelyfast.ImmediatelyFastCompat;
 import fr.madu59.obe.client.compat.iris.IrisCompat;
 import fr.madu59.obe.client.compat.ironchest.IronChestCompat;
@@ -34,6 +35,7 @@ public class ModCompat {
         runSafe("entityculling", () -> EntityCullingCompat.init());
         runSafe("pipez", () -> PipezCompat.init());
         runSafe("ironchest", () -> IronChestCompat.init());
+        runSafe("framedblocks", () -> FramedBlocksCompat.init());
     }
 
     public static void onWorldLoad(){
