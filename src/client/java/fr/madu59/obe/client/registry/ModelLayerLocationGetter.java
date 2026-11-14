@@ -18,9 +18,9 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class ModelLayerLocationGetter {
-    private static Map<BlockEntityType<?>, Function<BlockState, ModelLayerLocation>> modelLayerLocationsGetterProvider = new ConcurrentHashMap<>();
-    private static Map<Block, Function<BlockState, ModelLayerLocation>> perBlockModelLayerLocationsGetterProvider = new ConcurrentHashMap<>();
-    private static Map<String, Function<BlockState, ModelLayerLocation>> defaultModelLayerLocationsGetterProvider = new ConcurrentHashMap<>();
+    private final static Map<BlockEntityType<?>, Function<BlockState, ModelLayerLocation>> modelLayerLocationProviders = new ConcurrentHashMap<>();
+    private final static Map<Block, Function<BlockState, ModelLayerLocation>> perBlockModelLayerLocationProviders = new ConcurrentHashMap<>();
+    private final static Map<String, Function<BlockState, ModelLayerLocation>> defaultModelLayerLocationProviders = new ConcurrentHashMap<>();
 
     public static void init(){
         registerDefault("chest", ChestUtil::getModelLayerLocation);
@@ -37,16 +37,16 @@ public class ModelLayerLocationGetter {
             OBE.LOGGER.error("An external mod tried registering a default modelLayerLocation getter in a non existing group: " + group);
         }
         else{
-            defaultModelLayerLocationsGetterProvider.put(group, getter);
+            defaultModelLayerLocationProviders.put(group, getter);
         }
     }
 
     public static void register(BlockEntityType<?> beType, Function<BlockState, ModelLayerLocation> getter){
-        modelLayerLocationsGetterProvider.put(beType, getter);
+        modelLayerLocationProviders.put(beType, getter);
     }
 
     public static void register(Block block, Function<BlockState, ModelLayerLocation> getter){
-        perBlockModelLayerLocationsGetterProvider.put(block, getter);
+        perBlockModelLayerLocationProviders.put(block, getter);
     }
 
     public static ModelLayerLocation getModelLayerLocation(BlockState state){
@@ -57,16 +57,16 @@ public class ModelLayerLocationGetter {
         if(!state.hasBlockEntity()) return null;
 
         Block block = state.getBlock();
-        Function<BlockState, ModelLayerLocation> provider = perBlockModelLayerLocationsGetterProvider.get(block);
+        Function<BlockState, ModelLayerLocation> provider = perBlockModelLayerLocationProviders.get(block);
         if (provider != null) return provider.apply(state);
 
         BlockEntityType<?> beType = Registry.getBlockEntityType(state);
         if (beType == null) return null;
-        provider = modelLayerLocationsGetterProvider.get(beType);
+        provider = modelLayerLocationProviders.get(beType);
         if (provider != null) return provider.apply(state);
 
         if (group == null) group = Registry.getGroup(beType);
-        if (group != null) provider = defaultModelLayerLocationsGetterProvider.get(group);
+        if (group != null) provider = defaultModelLayerLocationProviders.get(group);
         if (provider != null) return provider.apply(state);
 
         return null;

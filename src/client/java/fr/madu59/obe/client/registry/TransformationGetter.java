@@ -19,9 +19,9 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class TransformationGetter {
-    private static Map<BlockEntityType<?>, BiConsumer<BlockState, PoseStack>> transformationsGetterProvider = new ConcurrentHashMap<>();
-    private static Map<Block, BiConsumer<BlockState, PoseStack>> perBlockTransformationsGetterProvider = new ConcurrentHashMap<>();
-    private static Map<String, BiConsumer<BlockState, PoseStack>> defaultTransformationsGetterProvider = new ConcurrentHashMap<>();
+    private final static Map<BlockEntityType<?>, BiConsumer<BlockState, PoseStack>> transformationProviders = new ConcurrentHashMap<>();
+    private final static Map<Block, BiConsumer<BlockState, PoseStack>> perBlockTransformationProviders = new ConcurrentHashMap<>();
+    private final static Map<String, BiConsumer<BlockState, PoseStack>> defaultTransformationProviders = new ConcurrentHashMap<>();
 
     public static void init(){
         registerDefault("chest", ChestUtil::transform);
@@ -38,16 +38,16 @@ public class TransformationGetter {
             OBE.LOGGER.error("An external mod tried registering a default transformation getter in a non existing group: " + group);
         }
         else{
-            defaultTransformationsGetterProvider.put(group, getter);
+            defaultTransformationProviders.put(group, getter);
         }
     }
 
     public static void register(BlockEntityType<?> beType, BiConsumer<BlockState, PoseStack> getter){
-        transformationsGetterProvider.put(beType, getter);
+        transformationProviders.put(beType, getter);
     }
 
     public static void register(Block block, BiConsumer<BlockState, PoseStack> getter){
-        perBlockTransformationsGetterProvider.put(block, getter);
+        perBlockTransformationProviders.put(block, getter);
     }
 
     public static void applyTransformation(BlockState state, PoseStack poseStack){
@@ -58,7 +58,7 @@ public class TransformationGetter {
         if(!state.hasBlockEntity()) return;
 
         Block block = state.getBlock();
-        BiConsumer<BlockState, PoseStack> provider = perBlockTransformationsGetterProvider.get(block);
+        BiConsumer<BlockState, PoseStack> provider = perBlockTransformationProviders.get(block);
         if (provider != null) {
             provider.accept(state, poseStack);
             return;
@@ -66,14 +66,14 @@ public class TransformationGetter {
 
         BlockEntityType<?> beType = Registry.getBlockEntityType(state);
         if (beType == null) return;
-        provider = transformationsGetterProvider.get(beType);
+        provider = transformationProviders.get(beType);
         if (provider != null) {
             provider.accept(state, poseStack);
             return;
         }
 
         if (group == null) group = Registry.getGroup(beType);
-        if (group != null) provider = defaultTransformationsGetterProvider.get(group);
+        if (group != null) provider = defaultTransformationProviders.get(group);
         if (provider != null) {
             provider.accept(state, poseStack);
             return;

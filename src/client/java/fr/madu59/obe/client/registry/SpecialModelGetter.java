@@ -20,9 +20,9 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class SpecialModelGetter {
 
-    private static Map<BlockEntityType<?>, SpecialModelProvider> specialModelGetterProvider = new ConcurrentHashMap<>();
-    private static Map<Block, SpecialModelProvider> perBlockSpecialModelGetterProvider = new ConcurrentHashMap<>();
-    private static Map<String, SpecialModelProvider> defaultspecialModelGetterProvider = new ConcurrentHashMap<>();
+    private final static Map<BlockEntityType<?>, SpecialModelProvider> specialModelProviders = new ConcurrentHashMap<>();
+    private final static Map<Block, SpecialModelProvider> perBlockSpecialModelProviders = new ConcurrentHashMap<>();
+    private final static Map<String, SpecialModelProvider> defaultSpecialModelProviders = new ConcurrentHashMap<>();
 
     public static void init(){
         registerDefault("skull", new SpecialModelProvider(SkullBlockUtil::getModelLayerLocation, SkullBlockUtil::getMaterial, SkullBlockUtil::transform, SkullBlockUtil::getBuiltInTexture));
@@ -30,19 +30,19 @@ public class SpecialModelGetter {
 
     public static void registerDefault(String group, SpecialModelProvider getter){
         if(!Registry.hasGroup(group)){
-            OBE.LOGGER.error("An external mod tried registering a default material getter in a non existing group: " + group);
+            OBE.LOGGER.error("An external mod tried registering a default special model getter in a non existing group: " + group);
         }
         else{
-            defaultspecialModelGetterProvider.put(group, getter);
+            defaultSpecialModelProviders.put(group, getter);
         }
     }
 
     public static void register(BlockEntityType<?> beType, SpecialModelProvider getter){
-        specialModelGetterProvider.put(beType, getter);
+        specialModelProviders.put(beType, getter);
     }
 
     public static void register(Block block, SpecialModelProvider getter){
-        perBlockSpecialModelGetterProvider.put(block, getter);
+        perBlockSpecialModelProviders.put(block, getter);
     }
 
     public static SpecialModelProvider getSpecialModelProvider(BlockState state){
@@ -53,16 +53,16 @@ public class SpecialModelGetter {
         if(!state.hasBlockEntity()) return null;
 
         Block block = state.getBlock();
-        SpecialModelProvider provider = perBlockSpecialModelGetterProvider.get(block);
+        SpecialModelProvider provider = perBlockSpecialModelProviders.get(block);
         if (provider != null) return provider;
 
         BlockEntityType<?> beType = Registry.getBlockEntityType(state);
         if (beType == null) return null;
-        provider = specialModelGetterProvider.get(beType);
+        provider = specialModelProviders.get(beType);
         if (provider != null) return provider;
 
         if (group == null) group = Registry.getGroup(beType);
-        if (group != null) provider = defaultspecialModelGetterProvider.get(group);
+        if (group != null) provider = defaultSpecialModelProviders.get(group);
         if (provider != null) return provider;
         
         return null;
