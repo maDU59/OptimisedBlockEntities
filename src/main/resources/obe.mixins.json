@@ -15,6 +15,7 @@
 		"blockentity.shulkerbox.ShulkerBoxBlockEntityMixin",
 		"blockentity.lectern.LecternBlockEntityMixin",
 		"blockentity.sign.SignTextMixin",
+		"blockentity.compat.ironchest.AbstractIronChestBlockEntityMixin",
 		"blockentity.compat.lootr.LootrChestBlockEntityMixin",
 		"blockentity.compat.lootr.LootrShulkerBoxBlockEntityMixin",
 		"blockentity.compat.pipez.PipeTileEntityMixin",
@@ -38,6 +39,7 @@
 		"renderer.compat.sodium.RenderSectionManagerMixin",
 		"renderer.compat.sodium.SodiumWorldRendererMixin",
 		"resources.ModelManagerMixin",
+		"resources.AtlasManagerMixin",
 		"BlockStateModelSetMixin"
 	],
 	"mixins": [

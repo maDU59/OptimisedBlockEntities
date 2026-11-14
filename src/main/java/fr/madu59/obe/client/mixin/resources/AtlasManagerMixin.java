@@ -22,6 +22,6 @@ public abstract class AtlasManagerMixin {
         Identifier texture = (Identifier) args[0];
         Identifier newAtlas = (Identifier) args[1];
         Identifier oldAtlas = (Identifier) args[2];
-        return !(texture.getPath().startsWith("entity/") && (newAtlas.equals(blockAtlas) || oldAtlas.equals(blockAtlas)));
+        return !((texture.getPath().startsWith("entity/") || texture.getPath().startsWith("model/")) && (newAtlas.equals(blockAtlas) || oldAtlas.equals(blockAtlas)));
     }
 }
