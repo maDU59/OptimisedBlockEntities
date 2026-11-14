@@ -107,36 +107,7 @@ public class BlockEntityModelsManager {
         return model;
     }
 
-    public BlockStateModel getDecoratedPotModel(BlockState state, BlockStateModel originalModel) {
-        BlockStateModel model = ResourceUtil.getModel(state);
-        if(model != null) return model;
-
-        String group = "decorated_pot";
-        
-        PoseStack poseStack = new PoseStack();
-        
-        ModelLayerLocation layerLocation = ModelLayerLocationGetter.getModelLayerLocation(state, group);
-        if(layerLocation == null) return null;
-
-        Identifier material = MaterialGetter.getMaterial(state, group);
-        if(material == null) return null;
-
-        TransformationGetter.applyTransformation(state, poseStack, group);
-
-        model = new BlockEntityStateModel(layerLocation, material, poseStack, getAmbientOcclusion(group), state, originalModel.particleMaterial());
-
-        layerLocation = DecoratedPotUtil.getSideModelLayerLocation(state);
-
-        BlockStateModel sideModel = ResourceUtil.getOrCreateSubModel(layerLocation, Sheets.DECORATED_POT_SIDE.texture(), state, poseStack, getAmbientOcclusion(group), originalModel.particleMaterial());
-        
-        model = new CompositeBlockStateModel(model, sideModel);
-
-        ResourceUtil.cache(state, model);
-
-        return model;
-    }
-
-    public boolean getAmbientOcclusion(String group){
+    public static boolean getAmbientOcclusion(String group){
         if (group == null) return false;
         return switch (group) {
             case "chest" -> SettingsManager.CHEST_AMBIENT_OCCLUSION.getValue();

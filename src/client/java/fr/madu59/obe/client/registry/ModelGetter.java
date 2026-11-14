@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import fr.madu59.obe.OBE;
+import fr.madu59.obe.client.util.blockentity.DecoratedPotUtil;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -16,6 +17,7 @@ public class ModelGetter {
     private final static Map<String, ModelBuilder> defaultModelBuilders = new ConcurrentHashMap<>();
 
     public static void init(){
+        registerDefault("decorated_pot", DecoratedPotUtil::getModel);
     }
 
     public static void registerDefault(String group, ModelBuilder builder){
