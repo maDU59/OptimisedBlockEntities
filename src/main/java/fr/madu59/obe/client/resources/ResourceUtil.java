@@ -21,7 +21,6 @@ public class ResourceUtil{
 
     private static Map<BlockState, BlockStateModel> transformedModelCache = new ConcurrentHashMap<>();
     private static Map<SpecialModelCacheKey, BlockStateModel> transformedSpecialModelCache = new ConcurrentHashMap<>();
-    private static Map<ModelCacheKey, BlockStateModel> transformedSubModelCache = new ConcurrentHashMap<>();
 
     public static TextureAtlasSprite getSprite(Identifier id) {
         return Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(AtlasIds.BLOCKS).getSprite(id);
@@ -33,10 +32,6 @@ public class ResourceUtil{
 
     public static BlockStateModel getOrCreateModel(ModelLayerLocation modelLayerLocation, Identifier texture, BlockState blockState, Object cacheKey, PoseStack poseStack, boolean useAo, Material.Baked particleMaterial){
         return transformedSpecialModelCache.computeIfAbsent(new SpecialModelCacheKey(blockState, cacheKey), layer -> new BlockEntityStateModel(modelLayerLocation, texture, poseStack, useAo, blockState, particleMaterial));
-    }
-
-    public static BlockStateModel getOrCreateSubModel(ModelLayerLocation modelLayerLocation, Identifier texture, BlockState blockState, PoseStack poseStack, boolean useAo, Material.Baked particleMaterial){
-        return transformedSubModelCache.computeIfAbsent(new ModelCacheKey(modelLayerLocation, blockState), layer -> new BlockEntityStateModel(modelLayerLocation, texture, poseStack, useAo, blockState, particleMaterial));
     }
 
     public static BlockStateModel getModel(BlockState state){
@@ -66,7 +61,6 @@ public class ResourceUtil{
     public static void clearCache(){
         transformedSpecialModelCache.clear();
         transformedModelCache.clear();
-        transformedSubModelCache.clear();
     }
 
     public static Identifier entityTextureFormatter(Identifier identifier){

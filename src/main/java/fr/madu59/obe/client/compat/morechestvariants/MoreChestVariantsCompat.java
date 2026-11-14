@@ -6,6 +6,7 @@ import dev.lieonlion.mcv.MoreChestVariants;
 import dev.lieonlion.mcv.block.MoreChestBlock;
 import dev.lieonlion.mcv.block.MoreTrappedChestBlock;
 import dev.lieonlion.mcv.init.NeoForgeMoreChestVariantsBlocks;
+import fr.madu59.obe.client.api.registry.RegistryApi;
 import fr.madu59.obe.client.registry.MaterialGetter;
 import fr.madu59.obe.client.registry.Registry;
 import fr.madu59.obe.client.util.blockentity.ChestUtil;
@@ -16,10 +17,10 @@ import net.minecraft.world.level.block.state.properties.ChestType;
 
 public class MoreChestVariantsCompat {
     public static void init() {
-        Registry.addBlockEntityTypeInGroup("chest", NeoForgeMoreChestVariantsBlocks.MORE_CHEST_BLOCK_ENTITY.get(), NeoForgeMoreChestVariantsBlocks.MORE_TRAPPED_CHEST_BLOCK_ENTITY.get());
+        RegistryApi.registerBlockEntityType("chest", NeoForgeMoreChestVariantsBlocks.MORE_CHEST_BLOCK_ENTITY.get(), NeoForgeMoreChestVariantsBlocks.MORE_TRAPPED_CHEST_BLOCK_ENTITY.get());
 
-        MaterialGetter.register(NeoForgeMoreChestVariantsBlocks.MORE_CHEST_BLOCK_ENTITY.get(), MoreChestVariantsCompat::getMaterial);
-        MaterialGetter.register(NeoForgeMoreChestVariantsBlocks.MORE_TRAPPED_CHEST_BLOCK_ENTITY.get(), MoreChestVariantsCompat::getMaterial);
+        RegistryApi.registerMaterialProvider(NeoForgeMoreChestVariantsBlocks.MORE_CHEST_BLOCK_ENTITY.get(), MoreChestVariantsCompat::getMaterial);
+        RegistryApi.registerMaterialProvider(NeoForgeMoreChestVariantsBlocks.MORE_TRAPPED_CHEST_BLOCK_ENTITY.get(), MoreChestVariantsCompat::getMaterial);
     }
 
     public static Identifier getMaterial(BlockState state) {

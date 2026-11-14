@@ -34,7 +34,7 @@ public abstract class AbstractSignRendererMixin<S extends SignRenderState> {
     public abstract void submitSignText(final S state, final PoseStack poseStack, final SubmitNodeCollector submitNodeCollector, final SignText signText);
 
     @Inject(method = "submitSignText", at = @At("HEAD"), cancellable = true)
-    public void obe$cancelSignText(CallbackInfo ci, @Local PoseStack poseStack){
+    public void obe$cancelSignText(CallbackInfo ci, @Local(argsOnly = true) PoseStack poseStack){
         if(SettingsManager.SIGN_TEXT_CULLING.getValue() && (ModCompat.isShadowPass() || !obe$isFacingCamera(poseStack))) ci.cancel();
     }
 

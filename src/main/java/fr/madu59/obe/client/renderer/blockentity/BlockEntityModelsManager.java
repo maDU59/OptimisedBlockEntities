@@ -1,5 +1,6 @@
 package fr.madu59.obe.client.renderer.blockentity;
 
+import fr.madu59.obe.client.registry.*;
 import net.minecraft.world.level.block.RenderShape;
 import org.jetbrains.annotations.Nullable;
 
@@ -8,11 +9,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.model.BlockEntityStateModel;
 import fr.madu59.obe.client.model.CompositeBlockStateModel;
-import fr.madu59.obe.client.registry.SpecialModelGetter;
-import fr.madu59.obe.client.registry.MaterialGetter;
-import fr.madu59.obe.client.registry.ModelLayerLocationGetter;
-import fr.madu59.obe.client.registry.Registry;
-import fr.madu59.obe.client.registry.TransformationGetter;
 import fr.madu59.obe.client.registry.SpecialModelGetter.SpecialModelProvider;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager.RenderMode;
@@ -24,7 +20,6 @@ import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.DecoratedPotPatterns;
 import net.minecraft.world.level.block.state.BlockState;
@@ -45,26 +40,39 @@ public class BlockEntityModelsManager {
         BlockEntityExt ext = (BlockEntityExt)be;
         if (!ext.obe$isSupported() || !ext.obe$hasSpecialRenderer() || !ext.obe$isEnabled()) return null;
 
-        String group = Registry.getGroup(state);
-        SpecialModelProvider customModelProvider = SpecialModelGetter.getSpecialModelProvider(state, group);
         if(ext.obe$renderModeDelayed() == RenderMode.TERRAIN){
-            if(customModelProvider != null){
-                Object cacheKey = customModelProvider.getCacheKeyProvider().apply(be);
+            String group = Registry.getGroup(state);
+
+            SpecialModelBuilderGetter.SpecialModelBuilder specialModelBuilder = SpecialModelBuilderGetter.getSpecialModelProvider(state, group);
+
+            if(specialModelBuilder != null){
+                Object cacheKey = specialModelBuilder.getCacheKey(be);
+                BlockStateModel cached = ResourceUtil.getModel(state, cacheKey);
+                if(cached != null) return cached;
+                BlockStateModel model = specialModelBuilder.build(state, be, ResourceUtil.getDefaultModel(state));
+                ResourceUtil.cache(state, cacheKey, model);
+                return model;
+            }
+
+            SpecialModelProvider specialModelProvider = SpecialModelGetter.getSpecialModelProvider(state, group);
+
+            if(specialModelProvider != null){
+                Object cacheKey = specialModelProvider.getCacheKeyProvider().apply(be);
                 BlockStateModel cached = ResourceUtil.getModel(state, cacheKey);
                 if(cached != null) return cached;
 
                 PoseStack poseStack = new PoseStack();
 
-                ModelLayerLocation layerLocation = customModelProvider.getModelLayerLocationProvider().apply(state, be);
+                ModelLayerLocation layerLocation = specialModelProvider.getModelLayerLocationProvider().apply(state, be);
                 if(layerLocation == null) return fail(be);
 
                 TransformationGetter.applyTransformation(state, poseStack, group);
 
-                Identifier material = customModelProvider.getMaterialProvider().apply(state, be);
+                Identifier material = specialModelProvider.getMaterialProvider().apply(state, be);
                 if(material == null) return fail(be);
 
                 BlockStateModel model = new BlockEntityStateModel(layerLocation, material, poseStack, getAmbientOcclusion(group), state, originalModel.particleMaterial());
-                if(customModelProvider.shouldKeepOriginalModel()) model = new CompositeBlockStateModel(model, ResourceUtil.getDefaultModel(state));
+                if(specialModelProvider.shouldKeepOriginalModel()) model = new CompositeBlockStateModel(model, ResourceUtil.getDefaultModel(state));
                 ResourceUtil.cache(state, cacheKey, model);
                 return model;
             }
@@ -73,9 +81,15 @@ public class BlockEntityModelsManager {
         return originalModel;
     }
 
-    public BlockStateModel getBlockModel(BlockState state, RandomSource random, BlockStateModel originalModel, String group) {
+    public BlockStateModel getBlockModel(BlockState state, BlockStateModel originalModel, String group) {
         BlockStateModel model = ResourceUtil.getModel(state);
         if(model != null) return model;
+
+        BlockStateModel builtModel = ModelGetter.getModel(state, originalModel, group);
+        if(builtModel != null) {
+            ResourceUtil.cache(state, builtModel);
+            return builtModel;
+        }
 
         PoseStack poseStack = new PoseStack();
         
@@ -94,36 +108,7 @@ public class BlockEntityModelsManager {
         return model;
     }
 
-    public BlockStateModel getDecoratedPotModel(BlockState state, RandomSource random, BlockStateModel originalModel) {
-        BlockStateModel model = ResourceUtil.getModel(state);
-        if(model != null) return model;
-
-        String group = "decorated_pot";
-        
-        PoseStack poseStack = new PoseStack();
-        
-        ModelLayerLocation layerLocation = ModelLayerLocationGetter.getModelLayerLocation(state, group);
-        if(layerLocation == null) return null;
-
-        Identifier material = MaterialGetter.getMaterial(state, group);
-        if(material == null) return null;
-
-        TransformationGetter.applyTransformation(state, poseStack, group);
-
-        model = new BlockEntityStateModel(layerLocation, material, poseStack, getAmbientOcclusion(group), state, originalModel.particleMaterial());
-
-        layerLocation = DecoratedPotUtil.getSideModelLayerLocation(state);
-
-        BlockStateModel sideModel = ResourceUtil.getOrCreateSubModel(layerLocation, Sheets.getDecoratedPotSprite(DecoratedPotPatterns.BLANK).texture(), state, poseStack, SettingsManager.DECORATED_POT_AMBIENT_OCCLUSION.getValue(), originalModel.particleMaterial());
-        
-        model = new CompositeBlockStateModel(model, sideModel);
-
-        ResourceUtil.cache(state, model);
-
-        return model;
-    }
-
-    public boolean getAmbientOcclusion(String group){
+    public static boolean getAmbientOcclusion(String group){
         if (group == null) return false;
         return switch (group) {
             case "chest" -> SettingsManager.CHEST_AMBIENT_OCCLUSION.getValue();

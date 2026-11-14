@@ -45,6 +45,8 @@ public class Registry {
         TransformationGetter.init();
         ModelLayerLocationGetter.init();
         SpecialModelGetter.init();
+        ModelGetter.init();
+        SpecialModelBuilderGetter.init();
         
         for(Runnable onInit : onInitList){
             onInit.run();

@@ -7,6 +7,8 @@ import fr.madu59.obe.OBE;
 import fr.madu59.obe.client.compat.bclib.BclibCompat;
 import fr.madu59.obe.client.compat.carvedwood.CarvedWoodCompat;
 import fr.madu59.obe.client.compat.emf.EMFCompat;
+import fr.madu59.obe.client.compat.entityculling.EntityCullingCompat;
+import fr.madu59.obe.client.compat.immediatelyfast.ImmediatelyFastCompat;
 import fr.madu59.obe.client.compat.iris.IrisCompat;
 import fr.madu59.obe.client.compat.lootr.LootrCompat;
 import fr.madu59.obe.client.compat.morechestvariants.MoreChestVariantsCompat;
@@ -19,18 +21,19 @@ public class ModCompat {
     private final static boolean isIrisLoaded = PlatformHelper.isModLoaded("iris") || PlatformHelper.isModLoaded("oculus");
     private final static boolean isSodiumLoaded = PlatformHelper.isModLoaded("sodium") || PlatformHelper.isModLoaded("embeddium");
     private static boolean isEMFLoaded = PlatformHelper.isModLoaded("entity_model_features");
-    private final static boolean isPunchyLoaded = PlatformHelper.isModLoaded("punchy");
+    private final static boolean isAmendmentsLoaded = PlatformHelper.isModLoaded("amendments");
 
     private static final List<String> incompatibleMods = Arrays.asList("optifine","embeddium","optifabric");
 
     public static void init(){
         runSafe("lootr", () -> LootrCompat.init());
         runSafe("lolmcv", () -> MoreChestVariantsCompat.init());
-        runSafe("carved_wood", CarvedWoodCompat::init);
+        runSafe("carved_wood", () -> CarvedWoodCompat.init());
+        runSafe("entityculling", () -> EntityCullingCompat.init());
     }
 
     public static void onWorldLoad(){
-        runSafe("bclib", BclibCompat::init);
+        runSafe("bclib", () -> BclibCompat.init());
     }
 
     private static void runSafe(String modId, Runnable runnable){
@@ -56,8 +59,8 @@ public class ModCompat {
         return isEMFLoaded;
     }
 
-    public static boolean isPunchyLoaded(){
-        return isPunchyLoaded;
+    public static boolean isAmendmentsLoaded(){
+        return isAmendmentsLoaded;
     }
 
     public static boolean isShadowPass(){
@@ -77,6 +80,11 @@ public class ModCompat {
             }
         }
         else return root;
+    }
+
+    public static boolean isSignTextBufferingEnabled() {
+        if(PlatformHelper.isModLoaded("immediatelyfast")) return ImmediatelyFastCompat.isSignTextBufferingEnabled();
+        else return false;
     }
 
     public static boolean isIncompatibilityDetected(){

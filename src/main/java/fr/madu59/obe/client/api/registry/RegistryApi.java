@@ -4,6 +4,7 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import fr.madu59.obe.client.registry.*;
 import org.apache.commons.lang3.function.TriConsumer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -33,13 +34,23 @@ public class RegistryApi {
     }
 
     /*
-     * Register a new optimised block entity type inside of a group
+     * Register a new optimized block entity type in a group
      * @param type The block entity type to register
      * @param id The id of the group to register the block entity type in
      * @since 1.1.0
      */
     public static void registerBlockEntityType(BlockEntityType<?> type, String id){
         Registry.addBlockEntityTypeInGroup(id, type);
+    }
+
+    /*
+     * Register a new optimized block entity type in a group
+     * @param id The id of the group to register the block entity type in
+     * @param type The block entity type to register
+     * @since 1.2.2
+     */
+    public static void registerBlockEntityType(String id, BlockEntityType<?> ... types){
+        Registry.addBlockEntityTypeInGroup(id, types);
     }
 
     /*
@@ -178,6 +189,66 @@ public class RegistryApi {
      */
     public static void registerSpecialModelProvider(Block block, BiFunction<BlockState, BlockEntity, ModelLayerLocation> modelLayerLocationProvider, BiFunction<BlockState, BlockEntity, Identifier> materialProvider, TriConsumer<BlockState, BlockEntity, PoseStack> transformationProvider, Function<BlockEntity, Object> cacheKeyProvider){
         SpecialModelGetter.register(block, new SpecialModelProvider(modelLayerLocationProvider, materialProvider, transformationProvider, cacheKeyProvider));
+    }
+
+    /*
+     * Register a model builder for a group, this should only be used to bake complex models, otherwise use the model layer location and material providers
+     * @param id The group to which the model builder should be registered
+     * @param builder The model builder
+     * @since 1.2.2
+     */
+    public static void registerModelBuilder(String id, ModelGetter.ModelBuilder builder){
+        ModelGetter.registerDefault(id, builder);
+    }
+
+    /*
+     * Register a model builder for a block entity type, this should only be used to bake complex models, otherwise use the model layer location and material providers
+     * @param type The block entity type to which the model builder should be registered
+     * @param builder The model builder
+     * @since 1.2.2
+     */
+    public static void registerModelBuilder(BlockEntityType<?> type, ModelGetter.ModelBuilder builder){
+        ModelGetter.register(type, builder);
+    }
+
+    /*
+     * Register a model builder for a block, this should only be used to bake complex models, otherwise use the model layer location and material providers
+     * @param block The block to which the model builder should be registered
+     * @param builder The model builder
+     * @since 1.2.2
+     */
+    public static void registerModelBuilder(Block block, ModelGetter.ModelBuilder builder){
+        ModelGetter.register(block, builder);
+    }
+
+    /*
+     * Register a model builder for a group, this should only be used to bake complex models, otherwise use the model layer location and material providers
+     * @param id The group to which the model builder should be registered
+     * @param builder The special model builder
+     * @since 1.2.2
+     */
+    public static void registerSpecialModelBuilder(String id, SpecialModelBuilderGetter.SpecialModelBuilder builder){
+        SpecialModelBuilderGetter.registerDefault(id, builder);
+    }
+
+    /*
+     * Register a special model builder for a block entity type, this should only be used to bake complex models, otherwise use the model layer location and material providers
+     * @param type The block entity type to which the model builder should be registered
+     * @param builder The special model builder
+     * @since 1.2.2
+     */
+    public static void registerSpecialModelBuilder(BlockEntityType<?> type, SpecialModelBuilderGetter.SpecialModelBuilder builder){
+        SpecialModelBuilderGetter.register(type, builder);
+    }
+
+    /*
+     * Register a special model builder for a block, this should only be used to bake complex models, otherwise use the model layer location and material providers
+     * @param block The block to which the model builder should be registered
+     * @param builder The special model builder
+     * @since 1.2.2
+     */
+    public static void registerSpecialModelBuilder(Block block, SpecialModelBuilderGetter.SpecialModelBuilder builder){
+        SpecialModelBuilderGetter.register(block, builder);
     }
 
     /*

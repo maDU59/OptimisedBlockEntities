@@ -19,6 +19,8 @@ import net.neoforged.neoforge.common.NeoForge;
 @Mod(value = OBE.MOD_ID, dist = Dist.CLIENT)
 public class OBEClient {
 
+	public static final ModelLayerLocation EMPTY_MODEL_LAYER_LOCATION = new ModelLayerLocation(Identifier.tryBuild(OBE.MOD_ID, "empty_model_layer"), "empty_model_layer");
+
 	public OBEClient(ModContainer container, IEventBus bus){
         NeoForge.EVENT_BUS.register(OptimisedBlockEntitiesConfigScreen.class);
         container.registerExtensionPoint(IConfigScreenFactory.class, (client, parent) -> {

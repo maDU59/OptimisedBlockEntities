@@ -1,6 +1,7 @@
 package fr.madu59.obe.client.config.configscreen;
 
 import fr.madu59.obe.OBE;
+import fr.madu59.obe.client.compat.ModCompat;
 import fr.madu59.obe.client.config.Option;
 import fr.madu59.obe.client.config.SettingsManager;
 import net.caffeinemc.mods.sodium.api.config.ConfigEntryPoint;
@@ -59,7 +60,7 @@ public class SodiumIntegration implements ConfigEntryPoint {
                 .setName(Component.translatable("obe.config.category.signs"))
                 .addOption(createBooleanOption(builder, SettingsManager.OPTIMISED_SIGNS))
                 .addOption(createBooleanOption(builder, SettingsManager.SIGN_AMBIENT_OCCLUSION, SettingsManager.OPTIMISED_SIGNS))
-                .addOption(createBooleanOption(builder, SettingsManager.SIGN_TEXT_CULLING))
+                .addOption(createBooleanOption(builder, SettingsManager.SIGN_TEXT_CULLING).setEnabled(!ModCompat.isSignTextBufferingEnabled()))
             )
             
             .addOptionGroup(builder.createOptionGroup()
@@ -80,7 +81,7 @@ public class SodiumIntegration implements ConfigEntryPoint {
                 .addOption(createBooleanOption(builder, SettingsManager.OPTIMISED_BEDS))
                 .addOption(createBooleanOption(builder, SettingsManager.BED_AMBIENT_OCCLUSION, SettingsManager.OPTIMISED_BEDS))
             )
-            
+
             .addOptionGroup(builder.createOptionGroup()
                 .setName(Component.translatable("obe.config.category.bells"))
                 .addOption(createBooleanOption(builder, SettingsManager.OPTIMISED_BELLS))
