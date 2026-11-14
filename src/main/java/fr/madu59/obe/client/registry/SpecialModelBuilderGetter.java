@@ -1,7 +1,6 @@
 package fr.madu59.obe.client.registry;
 
 import fr.madu59.obe.OBE;
-import fr.madu59.obe.client.resources.ResourceUtil;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -66,6 +65,6 @@ public class SpecialModelBuilderGetter {
         @Nullable
         BlockStateModel build(BlockState state, BlockEntity entity, BlockStateModel originalModel);
 
-        ResourceUtil.ModelCacheKey getCacheKey(BlockEntity entity);
+        Object getCacheKey(BlockEntity entity);
     }
 }
