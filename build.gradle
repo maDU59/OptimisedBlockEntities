@@ -61,7 +61,7 @@ dependencies {
 
 	implementation "maven.modrinth:immediatelyfast:1.15.3+26.1-fabric"
 
-	implementation "maven.modrinth:entityculling:kHxKicVG"
+	implementation "maven.modrinth:entityculling:5fl0jM6C"
 
 }
 
