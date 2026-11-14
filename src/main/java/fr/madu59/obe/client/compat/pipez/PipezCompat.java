@@ -3,13 +3,13 @@ package fr.madu59.obe.client.compat.pipez;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import de.maxhenkel.pipez.ModelRegistry;
-import de.maxhenkel.pipez.blocks.tileentity.ModTileEntities;
-import de.maxhenkel.pipez.blocks.tileentity.PipeTileEntity;
+import de.maxhenkel.pipez.blocks.tileentity.*;
 import fr.madu59.obe.client.api.registry.RegistryApi;
 import fr.madu59.obe.client.model.BlockEntityStateModel;
 import fr.madu59.obe.client.model.CompositeBlockStateModel;
 import fr.madu59.obe.client.registry.SpecialModelBuilderGetter;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
+import net.minecraft.client.resources.model.geometry.QuadCollection;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -19,7 +19,7 @@ import org.joml.Quaternionf;
 public class PipezCompat {
     public static void init() {
         RegistryApi.registerGroup("pipez_pipes");
-        RegistryApi.registerBlockEntityType("pipez_pipes", ModTileEntities.ITEM_PIPE.get());
+        RegistryApi.registerBlockEntityType("pipez_pipes", ModTileEntities.ITEM_PIPE.get(), ModTileEntities.FLUID_PIPE.get(), ModTileEntities.GAS_PIPE.get(), ModTileEntities.UNIVERSAL_PIPE.get(), ModTileEntities.ENERGY_PIPE.get());
         RegistryApi.registerSpecialModelBuilder("pipez_pipes", new PipezSpecialModelBuilder());
     }
 
@@ -52,6 +52,22 @@ public class PipezCompat {
         public @Nullable BlockStateModel build(BlockState state, BlockEntity entity, BlockStateModel originalModel){
             PoseStack poseStack = new PoseStack();
             if(entity instanceof PipeTileEntity pipeBe){
+                QuadCollection quadCollection;
+                if(pipeBe instanceof EnergyPipeTileEntity){
+                    quadCollection = ModelRegistry.Model.ENERGY_PIPE_EXTRACT.getModel().get();
+                }
+                else if(pipeBe instanceof GasPipeTileEntity){
+                    quadCollection = ModelRegistry.Model.GAS_PIPE_EXTRACT.getModel().get();
+                }
+                else if(pipeBe instanceof ItemPipeTileEntity){
+                    quadCollection = ModelRegistry.Model.ITEM_PIPE_EXTRACT.getModel().get();
+                }
+                else if(pipeBe instanceof FluidPipeTileEntity){
+                    quadCollection = ModelRegistry.Model.FLUID_PIPE_EXTRACT.getModel().get();
+                }
+                else{
+                    quadCollection = ModelRegistry.Model.UNIVERSAL_PIPE_EXTRACT.getModel().get();
+                }
                 for (Direction side : Direction.values()) {
                     if(pipeBe.isExtracting(side)){
                         poseStack.pushPose();
@@ -59,13 +75,12 @@ public class PipezCompat {
                         poseStack.translate(0.5D, 0.5D, 0.5D);
                         poseStack.mulPose(getRotation(side));
                         poseStack.translate(-0.5D, -0.5D, -0.5D);
-                        BlockEntityStateModel extractingModel = new BlockEntityStateModel(ModelRegistry.Model.ITEM_PIPE_EXTRACT.getModel().get(), poseStack, true, pipeBe.getBlockState(), null);
+                        BlockEntityStateModel extractingModel = new BlockEntityStateModel(quadCollection, poseStack, true, pipeBe.getBlockState(), null);
                         originalModel = new CompositeBlockStateModel(originalModel, extractingModel);
                         poseStack.popPose();
                     }
                 }
             }
-            System.out.println("Built model for pipe with state: " + state + " and entity: " + entity);
             return originalModel;
         }
 
