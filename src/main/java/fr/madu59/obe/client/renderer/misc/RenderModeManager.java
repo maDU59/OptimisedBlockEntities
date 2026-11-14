@@ -108,11 +108,10 @@ public class RenderModeManager {
         SpecialModelProvider customModelProvider = SpecialModelGetter.getSpecialModelProvider(state, group);
         SpecialModelBuilderGetter.SpecialModelBuilder specialModelBuilder = SpecialModelBuilderGetter.getSpecialModelProvider(state, group);
 
-        if(ext.obe$hasSpecialRenderer() && (customModelProvider != null || specialModelBuilder != null)){
-            if(specialModelBuilder != null){
+        if(ext.obe$hasSpecialRenderer() && (customModelProvider != null || specialModelBuilder != null)) {
+            if (specialModelBuilder != null) {
 
-            }
-            else if(customModelProvider != null) {
+            } else if (customModelProvider != null) {
                 if (customModelProvider.getModelLayerLocationProvider().apply(state, be) == null) return false;
                 if (customModelProvider.getMaterialProvider().apply(state, be) == null) return false;
             }

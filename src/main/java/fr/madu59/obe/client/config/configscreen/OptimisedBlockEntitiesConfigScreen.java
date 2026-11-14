@@ -4,6 +4,7 @@ import static net.minecraft.commands.Commands.literal;
 
 import fr.madu59.obe.client.compat.ModCompat;
 import fr.madu59.obe.client.config.SettingsManager;
+import fr.madu59.obe.client.platform.PlatformHelper;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.RegisterClientCommandsEvent;
 import net.minecraft.ChatFormatting;
@@ -104,6 +105,11 @@ public class OptimisedBlockEntitiesConfigScreen extends Screen {
 
         list.category("obe.config.category.brushables").build();
         list.button(SettingsManager.OPTIMISED_BRUSHABLES).build();
+
+        if(PlatformHelper.isModLoaded("pipez")) {
+            list.category("obe.config.category.pipez_pipes").build();
+            list.button(SettingsManager.OPTIMISED_PIPEZ_PIPES).build();
+        }
 
         list.category("obe.config.category.advanced").build();
         list.button(SettingsManager.EMF_COMPAT).build();
