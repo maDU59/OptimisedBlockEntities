@@ -7,6 +7,7 @@ import fr.madu59.obe.OBE;
 import fr.madu59.obe.client.compat.bclib.BclibCompat;
 import fr.madu59.obe.client.compat.carvedwood.CarvedWoodCompat;
 import fr.madu59.obe.client.compat.emf.EMFCompat;
+import fr.madu59.obe.client.compat.entityculling.EntityCullingCompat;
 import fr.madu59.obe.client.compat.immediatelyfast.ImmediatelyFastCompat;
 import fr.madu59.obe.client.compat.iris.IrisCompat;
 import fr.madu59.obe.client.compat.lootr.LootrCompat;
@@ -27,7 +28,8 @@ public class ModCompat {
     public static void init(){
         runSafe("lootr", () -> LootrCompat.init());
         runSafe("lolmcv", () -> MoreChestVariantsCompat.init());
-        runSafe("carved_wood", CarvedWoodCompat::init);
+        runSafe("carved_wood", () -> CarvedWoodCompat.init());
+        runSafe("entityculling", () -> EntityCullingCompat.init());
     }
 
     public static void onWorldLoad(){

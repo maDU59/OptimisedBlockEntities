@@ -79,10 +79,6 @@ Invisible block entities:
 
 > Only vanilla, indigo, sodium (embeddium on forge 1.20.1) and VulkanMod (with OBE 1.1.47+) rendering pipelines are fully supported, issues may happen with other ones like Optifine, Embeddium, Optifabric etc... in that case it is recommended to disable the OBE optimizations causing the issues using OBE's config screen.
 
-Crash on 1.20.1 Forge with Embeddium:
-
-> You need the Forgified Fabric API mod if you want to use OBE and Embeddium at the same time.
-
 ## Modpacks
 
 Feel free to include this mod in any of your modpacks, telling me would be nice but is not mandatory.
