@@ -37,22 +37,8 @@ public abstract class ChunkBuilderMeshingTaskMixin {
 
     @Unique private SectionPos sectionPos;
 
-    @WrapOperation(method = "execute", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getRenderShape()Lnet/minecraft/world/level/block/RenderShape;"), require = 0)
+    @WrapOperation(method = "execute", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getRenderShape()Lnet/minecraft/world/level/block/RenderShape;", remap = true))
     private RenderShape obe$getRenderShape(BlockState state, Operation<RenderShape> original, @Share("be") LocalRef<BlockEntity> beRef, @Local WorldSlice slice, @Local(ordinal = 0) MutableBlockPos pos){
-        RenderShape renderShape = original.call(state);
-        if(state.hasBlockEntity()){
-            if(sectionPos == null){
-                sectionPos = SectionPos.of(pos);
-            }
-            BlockEntity be = slice.getBlockEntity(pos);
-            beRef.set(be);
-            return SectionMeshingUtil.getCorrectedRenderShape(state, be, sectionPos, renderShape);
-        }
-        else return renderShape;
-    }
-
-    @WrapOperation(method = "execute", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;m_60799_()Lnet/minecraft/world/level/block/RenderShape;"), require = 0)
-    private RenderShape obe$getRenderShape2(BlockState state, Operation<RenderShape> original, @Share("be") LocalRef<BlockEntity> beRef, @Local WorldSlice slice, @Local(ordinal = 0) MutableBlockPos pos){
         RenderShape renderShape = original.call(state);
         if(state.hasBlockEntity()){
             if(sectionPos == null){
@@ -84,27 +70,11 @@ public abstract class ChunkBuilderMeshingTaskMixin {
         method = "execute",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/client/renderer/blockentity/BlockEntityRenderDispatcher;getRenderer(Lnet/minecraft/world/level/block/entity/BlockEntity;)Lnet/minecraft/client/renderer/blockentity/BlockEntityRenderer;"
-        ),
-        require = 0
+            target = "Lnet/minecraft/client/renderer/blockentity/BlockEntityRenderDispatcher;getRenderer(Lnet/minecraft/world/level/block/entity/BlockEntity;)Lnet/minecraft/client/renderer/blockentity/BlockEntityRenderer;",
+            remap = true
+        )
     )
     private BlockEntityRenderer<?> obe$wrapShouldRender(BlockEntityRenderDispatcher instance, BlockEntity be, Operation<BlockEntityRenderer<?>> original) {
-        BlockEntityExt ext = (BlockEntityExt) be;
-        if(ext != null && ext.obe$isEnabled() && (!(ext.obe$forceEntity() || !ext.obe$isSupported() || ext.obe$renderModeDelayed() == RenderMode.ENTITY || ext.obe$renderBoth()) || ext.obe$shouldSkipRendering())) {
-            return null;
-        }
-        return original.call(instance, be);
-    }
-
-    @WrapOperation(
-            method = "execute",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/client/renderer/blockentity/BlockEntityRenderDispatcher;m_112265_(Lnet/minecraft/world/level/block/entity/BlockEntity;)Lnet/minecraft/client/renderer/blockentity/BlockEntityRenderer;"
-            ),
-            require = 0
-    )
-    private BlockEntityRenderer<?> obe$wrapShouldRender2(BlockEntityRenderDispatcher instance, BlockEntity be, Operation<BlockEntityRenderer<?>> original) {
         BlockEntityExt ext = (BlockEntityExt) be;
         if(ext != null && ext.obe$isEnabled() && (!(ext.obe$forceEntity() || !ext.obe$isSupported() || ext.obe$renderModeDelayed() == RenderMode.ENTITY || ext.obe$renderBoth()) || ext.obe$shouldSkipRendering())) {
             return null;
