@@ -4,6 +4,7 @@ import static net.fabricmc.fabric.api.client.command.v2.ClientCommands.*;
 
 import fr.madu59.obe.client.compat.ModCompat;
 import fr.madu59.obe.client.config.SettingsManager;
+import fr.madu59.obe.client.platform.PlatformHelper;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -99,6 +100,11 @@ public class OptimisedBlockEntitiesConfigScreen extends Screen {
 
         list.category("obe.config.category.brushables").build();
         list.button(SettingsManager.OPTIMISED_BRUSHABLES).build();
+
+        if(PlatformHelper.isModLoaded("pipez")) {
+            list.category("obe.config.category.pipez_pipes").build();
+            list.button(SettingsManager.OPTIMISED_PIPEZ_PIPES).build();
+        }
 
         list.category("obe.config.category.cushions").build();
         list.button(SettingsManager.OPTIMISED_CUSHIONS).build();
