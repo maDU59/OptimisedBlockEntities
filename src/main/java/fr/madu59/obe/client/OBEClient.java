@@ -6,6 +6,7 @@ import fr.madu59.obe.client.config.configscreen.OptimisedBlockEntitiesConfigScre
 import fr.madu59.obe.client.platform.PlatformHelper;
 import fr.madu59.obe.client.registry.Registry;
 import fr.madu59.obe.client.resources.loader.SkullPackLoader;
+import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.resources.Identifier;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
