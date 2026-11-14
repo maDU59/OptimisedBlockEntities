@@ -63,6 +63,9 @@
     "obe.config.category.compatibility": "Compatibility",
     "obe.config.category.entities": "Entities",
 
+    "obe.config.category.pipez_pipes": "Pipez Pipes",
+    "obe.config.option.optimized_pipez_pipes": "Optimize Pipez Pipes",
+
     "obe.config.value.true": "Enabled",
     "obe.config.value.false": "Disabled",
 

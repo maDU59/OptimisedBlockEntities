@@ -3,10 +3,7 @@ package fr.madu59.obe.client.renderer.misc;
 import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.chunk.ChunkTaskHolder;
 import fr.madu59.obe.client.config.Option;
-import fr.madu59.obe.client.registry.MaterialGetter;
-import fr.madu59.obe.client.registry.ModelLayerLocationGetter;
-import fr.madu59.obe.client.registry.Registry;
-import fr.madu59.obe.client.registry.SpecialModelGetter;
+import fr.madu59.obe.client.registry.*;
 import fr.madu59.obe.client.registry.SpecialModelGetter.SpecialModelProvider;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityRenderStateExt;
@@ -108,10 +105,15 @@ public class RenderModeManager {
         String group = Registry.getGroup(state);
 
         SpecialModelProvider customModelProvider = SpecialModelGetter.getSpecialModelProvider(state, group);
+        SpecialModelBuilderGetter.SpecialModelBuilder specialModelBuilder = SpecialModelBuilderGetter.getSpecialModelProvider(state, group);
 
-        if(ext.obe$hasSpecialRenderer() && customModelProvider != null){
-            if(customModelProvider.getModelLayerLocationProvider().apply(state, be) == null) return false;
-            if(customModelProvider.getMaterialProvider().apply(state, be) == null) return false;
+        if(ext.obe$hasSpecialRenderer() && (customModelProvider != null || specialModelBuilder != null)) {
+            if (specialModelBuilder != null) {
+
+            } else if (customModelProvider != null) {
+                if (customModelProvider.getModelLayerLocationProvider().apply(state, be) == null) return false;
+                if (customModelProvider.getMaterialProvider().apply(state, be) == null) return false;
+            }
         }
         else{
             if(ModelLayerLocationGetter.getModelLayerLocation(state, group) == null) return false;

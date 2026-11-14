@@ -229,6 +229,14 @@ public class SettingsManager {
         RELOAD_RESOURCES_ACTION
     );
 
+    // MODDED BLOCK ENTITIES
+
+    public static Option<Boolean> OPTIMISED_PIPEZ_PIPES = loadOptionWithDefaults("optimized_pipez_pipes",
+            "obe.config.option.optimized_pipez_pipes",
+            true,
+            RELOAD_CHUNKS_ACTION
+    );
+
     public static final Map<String, Option<Boolean>> GROUP_TOGGLE_SETTINGS = Map.of(
         "chest", SettingsManager.OPTIMISED_CHESTS,
         "banner", SettingsManager.OPTIMISED_BANNERS,
@@ -238,7 +246,8 @@ public class SettingsManager {
         "decorated_pot", SettingsManager.OPTIMISED_DECORATED_POTS,
         "copper_golem_statue", SettingsManager.OPTIMISED_COPPER_GOLEMS,
         "sign", SettingsManager.OPTIMISED_SKULLS,
-        "bed", SettingsManager.OPTIMISED_BEDS
+        "bed", SettingsManager.OPTIMISED_BEDS,
+        "pipez_pipes", SettingsManager.OPTIMISED_PIPEZ_PIPES
     );
 
     public static void saveSettings() {
