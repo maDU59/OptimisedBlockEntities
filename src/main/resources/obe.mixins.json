@@ -19,6 +19,7 @@
 		"blockentity.compat.lootr.LootrChestBlockEntityMixin",
 		"blockentity.compat.lootr.LootrShulkerBoxBlockEntityMixin",
 		"blockentity.compat.pipez.PipeTileEntityMixin",
+		"blockentity.renderers.compat.CompatChestBlockRendererMixin",
 		"blockentity.BlockEntityMixin",
 		"blockentity.BlockEntityRendererMixin",
 		"blockentity.ext.BlockEntityMixin",

@@ -33,6 +33,7 @@ repositories {
         name = "sodium"
         url = "https://maven.caffeinemc.net/releases"
     }
+    maven{url = "https://registry.somethingcatchy.net/repository/maven-releases/"}
 }
 
 base {
@@ -135,6 +136,11 @@ dependencies {
     implementation "maven.modrinth:pipez:neoforge-1.2.31+26.1.2"
 
     implementation "maven.modrinth:iron-chests:26.1.2-neoforge-16.7.5"
+
+    compileOnly ("net.mehvahdjukaar:everycomp-neoforge:26.1.2-3.0.1") {transitive = false}
+    implementation ("net.mehvahdjukaar:moonlight-neoforge:26.1.2-4.3.0") {transitive = false}
+    implementation ("net.mehvahdjukaar:codecui-neoforge:26.1.2-1.4.7") {transitive = false}
+    implementation ("net.mehvahdjukaar:amendments-neoforge:26.1.2-3.0.2") {transitive = false}
 
     // Example optional mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime

@@ -2,6 +2,9 @@ package fr.madu59.obe.client.util.blockentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
+import fr.madu59.obe.client.OBEClient;
+import fr.madu59.obe.client.compat.ModCompat;
+import fr.madu59.obe.client.compat.amendments.AmendmentsCompat;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.Sheets;
@@ -22,6 +25,9 @@ public class SignUtil {
     }
 
     public static ModelLayerLocation getModelLayerLocation(BlockState state){
+        if(ModCompat.isAmendmentsLoaded() && AmendmentsCompat.isPixelConsistentSign(state)){
+            return OBEClient.EMPTY_MODEL_LAYER_LOCATION;
+        }
         WoodType woodType = SignBlock.getWoodType(state.getBlock());
         if (PlainSignBlock.getAttachmentPoint(state) == Attachment.WALL) {
             return ModelLayers.createWallSignModelName(woodType);
