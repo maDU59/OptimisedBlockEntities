@@ -14,6 +14,8 @@ repositories {
 	maven{url = "https://api.modrinth.com/maven"}
 	maven{url = "https://maven.terraformersmc.com/releases"}
     maven{url = "https://repo.polyfrost.org/releases"}
+	maven{url = "https://registry.somethingcatchy.net/repository/maven-releases/"}
+
 }
 
 loom {
@@ -62,6 +64,11 @@ dependencies {
 	implementation "maven.modrinth:immediatelyfast:1.15.3+26.1-fabric"
 
 	implementation "maven.modrinth:entityculling:5fl0jM6C"
+
+	compileOnly ("net.mehvahdjukaar:everycomp-fabric:26.1.2-3.0.1") {transitive = false}
+	implementation ("net.mehvahdjukaar:moonlight-fabric:26.1.2-4.3.0") {transitive = false}
+	implementation ("net.mehvahdjukaar:codecui-fabric:26.1.2-1.4.7") {transitive = false}
+	implementation ("net.mehvahdjukaar:amendments-fabric:26.1.2-3.0.2") {transitive = false}
 
 }
 

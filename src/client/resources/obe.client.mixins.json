@@ -18,6 +18,7 @@
 		"blockentity.sign.SignTextMixin",
 		"blockentity.compat.lootr.LootrChestBlockEntityMixin",
 		"blockentity.compat.lootr.LootrShulkerBoxBlockEntityMixin",
+		"blockentity.renderers.compat.CompatChestBlockRendererMixin",
 		"blockentity.BlockEntityMixin",
 		"blockentity.BlockEntityRendererMixin",
 		"blockentity.ext.BlockEntityMixin",
