@@ -6,7 +6,6 @@ import com.google.gson.reflect.TypeToken;
 
 import fr.madu59.obe.OBE;
 import fr.madu59.obe.client.compat.ModCompat;
-import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.platform.PlatformHelper;
 import fr.madu59.obe.client.resources.ResourceUtil;
 import net.minecraft.client.Minecraft;
@@ -23,12 +22,16 @@ public class SettingsManager {
     private static final Path CONFIG_PATH = PlatformHelper.getConfigDir().resolve(OBE.MOD_ID + ".json");
     private static Map<String, String> loadedSettings = loadSettings();
 
-    private static Runnable EMPTY_ACTION = () -> {};
-    private static Runnable RELOAD_RESOURCES_ACTION = () -> {
+    private static final Runnable EMPTY_ACTION = () -> {};
+    private static final Runnable RELOAD_RESOURCES_ACTION = () -> {
+        ModCompat.preventConflictsWithVanillin();
         ResourceUtil.clearCache();
         Minecraft.getInstance().levelRenderer.allChanged();
     };
-    private static Runnable RELOAD_CHUNKS_ACTION = () -> Minecraft.getInstance().levelRenderer.allChanged();
+    private static final Runnable RELOAD_CHUNKS_ACTION = () -> {
+        ModCompat.preventConflictsWithVanillin();
+        Minecraft.getInstance().levelRenderer.allChanged();
+    };
 
     private static final boolean isIncompatible = ModCompat.isIncompatibilityDetected();
 
@@ -230,6 +233,20 @@ public class SettingsManager {
         RELOAD_RESOURCES_ACTION
     );
 
+    // MODDED BLOCK ENTITIES
+
+    public static Option<Boolean> OPTIMISED_PIPEZ_PIPES = loadOptionWithDefaults("optimized_pipez_pipes",
+            "obe.config.option.optimized_pipez_pipes",
+            true,
+            RELOAD_CHUNKS_ACTION
+    );
+
+    public static Option<Boolean> VANILLIN_COMPAT = loadOptionWithDefaults("vanillin_compat",
+            "obe.config.option.vanillin_compat",
+            true,
+            RELOAD_CHUNKS_ACTION
+    );
+
     public static final Map<String, Option<Boolean>> GROUP_TOGGLE_SETTINGS = Map.of(
         "chest", SettingsManager.OPTIMISED_CHESTS,
         "banner", SettingsManager.OPTIMISED_BANNERS,
@@ -239,7 +256,8 @@ public class SettingsManager {
         "decorated_pot", SettingsManager.OPTIMISED_DECORATED_POTS,
         "copper_golem_statue", SettingsManager.OPTIMISED_COPPER_GOLEMS,
         "sign", SettingsManager.OPTIMISED_SKULLS,
-        "bed", SettingsManager.OPTIMISED_BEDS
+        "bed", SettingsManager.OPTIMISED_BEDS,
+        "pipez_pipes", SettingsManager.OPTIMISED_PIPEZ_PIPES
     );
 
     public static void saveSettings() {
@@ -263,7 +281,7 @@ public class SettingsManager {
                     }
                 }
             }
-            loadedSettings = map;
+            if(map != null) loadedSettings = map;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -291,6 +309,7 @@ public class SettingsManager {
     @SuppressWarnings("unchecked")
     private static <T> T getOptionValue(String key, T defaultValue) {
         if (loadedSettings == null || !loadedSettings.containsKey(key)) return null;
+        if(key.equals("sign_text_culling") && ModCompat.isSignTextBufferingEnabled()) return (T) (Boolean) false;
         else if (defaultValue instanceof Enum<?> e){
             return (T) Enum.valueOf(e.getDeclaringClass(), loadedSettings.get(key));
         }
