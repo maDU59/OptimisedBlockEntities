@@ -20,6 +20,7 @@
     "obe.config.option.optimised_copper_golems": "Optimize Copper Golems",
     "obe.config.option.copper_golem_ao": "Copper Golem Ambient Occlusion",
     "obe.config.option.emf_compat": "EMF Compatibility",
+    "obe.config.option.vanillin_compat": "Vanillin Compatibility",
     "obe.config.option.mod_toggle": "Mod Toggle",
     "obe.config.option.optimised_shelves": "Optimize Shelves",
     "obe.config.option.optimised_lecterns": "Optimize Lecterns",
@@ -62,6 +63,9 @@
     "obe.config.category.block_entities": "Block Entities",
     "obe.config.category.compatibility": "Compatibility",
     "obe.config.category.entities": "Entities",
+
+    "obe.config.category.pipez_pipes": "Pipez Pipes",
+    "obe.config.option.optimized_pipez_pipes": "Optimize Pipez Pipes",
 
     "obe.config.value.true": "Enabled",
     "obe.config.value.false": "Disabled",

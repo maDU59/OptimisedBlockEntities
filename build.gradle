@@ -14,6 +14,9 @@ repositories {
 	maven{url = "https://api.modrinth.com/maven"}
 	maven{url = "https://maven.terraformersmc.com/releases"}
     maven{url = "https://repo.polyfrost.org/releases"}
+	maven{url = "https://registry.somethingcatchy.net/repository/maven-releases/"}
+	maven{url = "https://cursemaven.com"}
+	maven{url = "https://maven.tr7zw.dev/repository/maven-public/"}
 }
 
 loom {
@@ -64,6 +67,13 @@ dependencies {
 	modCompileOnly "maven.modrinth:vulkanmod:0.6.8+1.21.11"
 
 	modCompileOnly "org.polyfrost.oneconfig:mod-toggles:1.0.0"
+
+	modCompileOnly "maven.modrinth:immediatelyfast:1.14.3+1.21.11-fabric"
+
+	modImplementation "maven.modrinth:entityculling:hsBqkNc8"
+	modImplementation "dev.tr7zw:TRansition:1.0.28-${project.minecraft_version}-fabric-SNAPSHOT"
+
+	modImplementation "maven.modrinth:create-fly:1.21.11-6.0.9-5"
 }
 
 processResources {

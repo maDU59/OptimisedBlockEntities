@@ -2,6 +2,7 @@ package fr.madu59.obe.client.compat.bclib;
 
 import java.util.List;
 
+import fr.madu59.obe.client.api.registry.RegistryApi;
 import fr.madu59.obe.client.registry.MaterialGetter;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -31,7 +32,7 @@ public class BclibCompat {
             Identifier blockId = BuiltInRegistries.BLOCK.getKey(block);
 
             if (BCLIB_MODS.contains(blockId.getNamespace())) {
-                MaterialGetter.register(block, (state) -> {
+                RegistryApi.registerMaterialProvider(block, (state) -> {
                     ChestType type = state.getValueOrElse(ChestBlock.TYPE, ChestType.SINGLE);
 
                     String texturePath = blockId.getPath();
