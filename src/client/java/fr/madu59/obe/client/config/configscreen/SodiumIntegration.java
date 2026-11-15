@@ -129,10 +129,11 @@ public class SodiumIntegration implements ConfigEntryPoint {
         .addPage(builder.createOptionPage()
             .setName(Component.translatable("obe.config.category.advanced"))
 
-            .addOptionGroup(builder.createOptionGroup()
-                .setName(Component.translatable("obe.config.category.compatibility"))
-                .addOption(createBooleanOption(builder, SettingsManager.EMF_COMPAT))
-                .addOption(createBooleanOption(builder, SettingsManager.MODEL_OPTIMIZATION))
+            .addOptionGroup(addConditionals(builder,
+                    builder.createOptionGroup()
+                    .setName(Component.translatable("obe.config.category.compatibility"))
+                    .addOption(createBooleanOption(builder, SettingsManager.MODEL_OPTIMIZATION))
+                )
             )
         );
     }
@@ -172,5 +173,11 @@ public class SodiumIntegration implements ConfigEntryPoint {
             );
         }
         return pageBuilder;
+    }
+
+    public OptionGroupBuilder addConditionals(ConfigBuilder builder, OptionGroupBuilder groupBuilder){
+        if(ModCompat.isEMFLoaded()) groupBuilder.addOption(createBooleanOption(builder, SettingsManager.EMF_COMPAT));
+        if(ModCompat.isVanillinLoaded()) groupBuilder.addOption(createBooleanOption(builder, SettingsManager.VANILLIN_COMPAT));
+        return groupBuilder;
     }
 }

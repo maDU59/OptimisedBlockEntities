@@ -107,8 +107,9 @@ public class OptimisedBlockEntitiesConfigScreen extends Screen {
         }
 
         list.category("obe.config.category.advanced").build();
-        list.button(SettingsManager.EMF_COMPAT).build();
         list.button(SettingsManager.MODEL_OPTIMIZATION).build();
+        if(ModCompat.isEMFLoaded()) list.button(SettingsManager.EMF_COMPAT).build();
+        if(ModCompat.isVanillinLoaded()) list.button(SettingsManager.VANILLIN_COMPAT).build();
 
         Button doneButton = Button.builder(Component.translatable("obe.config.done"), b -> {
             this.minecraft.gui.setScreen(this.parent);
