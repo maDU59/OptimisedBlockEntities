@@ -24,10 +24,14 @@ public class SettingsManager {
 
     private static final Runnable EMPTY_ACTION = () -> {};
     private static final Runnable RELOAD_RESOURCES_ACTION = () -> {
+        ModCompat.preventConflictsWithVanillin();
         ResourceUtil.clearCache();
         Minecraft.getInstance().levelRenderer.allChanged();
     };
-    private static final Runnable RELOAD_CHUNKS_ACTION = () -> Minecraft.getInstance().levelRenderer.allChanged();
+    private static final Runnable RELOAD_CHUNKS_ACTION = () -> {
+        ModCompat.preventConflictsWithVanillin();
+        Minecraft.getInstance().levelRenderer.allChanged();
+    };
 
     private static final boolean isIncompatible = ModCompat.isIncompatibilityDetected();
 
@@ -237,6 +241,12 @@ public class SettingsManager {
             RELOAD_CHUNKS_ACTION
     );
 
+    public static Option<Boolean> VANILLIN_COMPAT = loadOptionWithDefaults("vanillin_compat",
+            "obe.config.option.vanillin_compat",
+            true,
+            RELOAD_CHUNKS_ACTION
+    );
+
     public static final Map<String, Option<Boolean>> GROUP_TOGGLE_SETTINGS = Map.of(
         "chest", SettingsManager.OPTIMISED_CHESTS,
         "banner", SettingsManager.OPTIMISED_BANNERS,
@@ -271,7 +281,7 @@ public class SettingsManager {
                     }
                 }
             }
-            loadedSettings = map;
+            if(map != null) loadedSettings = map;
         } catch (IOException e) {
             e.printStackTrace();
         }

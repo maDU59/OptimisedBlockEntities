@@ -5,6 +5,7 @@ import fr.madu59.obe.client.compat.amendments.AmendmentsCompat;
 import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.chunk.ChunkTaskHolder;
 import fr.madu59.obe.client.config.Option;
+import fr.madu59.obe.client.model.BlockEntityStateModel;
 import fr.madu59.obe.client.registry.*;
 import fr.madu59.obe.client.registry.SpecialModelGetter.SpecialModelProvider;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
@@ -134,8 +135,13 @@ public class RenderModeManager {
             }
         }
         else{
-            if(ModelLayerLocationGetter.getModelLayerLocation(state, group) == null) return false;
-            if(MaterialGetter.getMaterial(state, group) == null) return false;
+            if(ModelGetter.getModel(state, new BlockEntityStateModel()) != null) {
+
+            }
+            else{
+                if(ModelLayerLocationGetter.getModelLayerLocation(state, group) == null) return false;
+                if(MaterialGetter.getMaterial(state, group) == null) return false;
+            }
         }
         return true;
     }

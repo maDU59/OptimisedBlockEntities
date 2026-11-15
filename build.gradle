@@ -70,6 +70,7 @@ dependencies {
 	implementation ("net.mehvahdjukaar:codecui-fabric:26.1.2-1.4.7") {transitive = false}
 	implementation ("net.mehvahdjukaar:amendments-fabric:26.1.2-3.0.2") {transitive = false}
 
+	implementation "maven.modrinth:create-fly:26.1.2-6.0.9-4"
 }
 
 processResources {
