@@ -263,7 +263,7 @@ public class BlockEntityStateModel implements BlockStateModel{
                 packedVertices[offset + 1] = Float.floatToRawIntBits(vec.y);
                 packedVertices[offset + 2] = Float.floatToRawIntBits(vec.z);
 
-                positions[i] = vec;
+                positions[v] = vec;
             }
 
             Vector3fc d = q.direction().getUnitVec3f();
