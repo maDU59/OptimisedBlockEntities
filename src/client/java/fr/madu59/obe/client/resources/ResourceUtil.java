@@ -19,7 +19,6 @@ public class ResourceUtil{
 
     private static Map<BlockState, BlockStateModel> transformedModelCache = new ConcurrentHashMap<>();
     private static Map<SpecialModelCacheKey, BlockStateModel> transformedSpecialModelCache = new ConcurrentHashMap<>();
-    private static Map<ModelCacheKey, BlockStateModel> transformedSubModelCache = new ConcurrentHashMap<>();
 
     private static ResourceLocation blockAtlas = ResourceLocation.tryParse("minecraft:textures/atlas/blocks.png");
 
@@ -33,10 +32,6 @@ public class ResourceUtil{
 
     public static BlockStateModel getOrCreateModel(ModelLayerLocation modelLayerLocation, ResourceLocation texture, BlockState blockState, Object cacheKey, PoseStack poseStack, boolean useAo, TextureAtlasSprite particleMaterial){
         return transformedSpecialModelCache.computeIfAbsent(new SpecialModelCacheKey(blockState, cacheKey), layer -> new BlockEntityStateModel(modelLayerLocation, texture, poseStack, useAo, blockState, particleMaterial));
-    }
-
-    public static BlockStateModel getOrCreateSubModel(ModelLayerLocation modelLayerLocation, ResourceLocation texture, BlockState blockState, PoseStack poseStack, boolean useAo, TextureAtlasSprite particleMaterial){
-        return transformedSubModelCache.computeIfAbsent(new ModelCacheKey(modelLayerLocation, blockState), layer -> new BlockEntityStateModel(modelLayerLocation, texture, poseStack, useAo, blockState, particleMaterial));
     }
 
     public static BlockStateModel getModel(BlockState state){
@@ -66,7 +61,6 @@ public class ResourceUtil{
     public static void clearCache(){
         transformedSpecialModelCache.clear();
         transformedModelCache.clear();
-        transformedSubModelCache.clear();
     }
 
     public static ResourceLocation entityTextureFormatter(ResourceLocation resourceLocation){
