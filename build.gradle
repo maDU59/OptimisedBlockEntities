@@ -35,6 +35,7 @@ repositories {
     }
     maven{url = "https://registry.somethingcatchy.net/repository/maven-releases/"}
     maven{url = "https://maven.createmod.net/"}
+    maven{url = "https://cursemaven.com"}
 }
 
 base {
@@ -146,6 +147,8 @@ dependencies {
     implementation "maven.modrinth:framedblocks:HKuGyb68"
 
     implementation "dev.engine-room.vanillin:vanillin-neoforge:1.1.4-mc26.1-16"
+
+    implementation "curse.maven:the-twilight-forest-227639:9556075"
 
     // Example optional mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime

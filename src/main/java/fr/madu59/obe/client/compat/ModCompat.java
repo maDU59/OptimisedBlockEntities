@@ -14,6 +14,7 @@ import fr.madu59.obe.client.compat.iris.IrisCompat;
 import fr.madu59.obe.client.compat.ironchest.IronChestCompat;
 import fr.madu59.obe.client.compat.lootr.LootrCompat;
 import fr.madu59.obe.client.compat.morechestvariants.MoreChestVariantsCompat;
+import fr.madu59.obe.client.compat.twilightforest.TwilightForestCompat;
 import fr.madu59.obe.client.compat.vanillin.VanillinCompat;
 import fr.madu59.obe.client.compat.pipez.PipezCompat;
 import fr.madu59.obe.client.config.SettingsManager;
@@ -38,6 +39,7 @@ public class ModCompat {
         runSafe("pipez", () -> PipezCompat.init());
         runSafe("ironchest", () -> IronChestCompat.init());
         runSafe("framedblocks", () -> FramedBlocksCompat.init());
+        runSafe("twilightforest", () -> TwilightForestCompat.init());
     }
 
     public static void onWorldLoad(){
