@@ -35,6 +35,7 @@
 		"blockentity.renderers.sign.AbstractSignRendererMixin",
 		"blockentity.renderers.bed.BedRendererMixin",
 		"renderer.SectionCompilerMixin",
+		"compat.vanillin.VanillinVisualsMixin",
 		"renderer.LevelRendererMixin",
 		"renderer.SectionRenderDispatcherMixin",
 		"renderer.compat.sodium.ChunkBuilderMeshingTaskMixin",

@@ -1,2 +1,2 @@
 # What's new:
-- Added optimization for the [Framed Blocks mod](https://www.curseforge.com/minecraft/mc-mods/framedblocks)
+- Improved compatilbity with Vanillin (and Create Fly which includes Vanillin)

@@ -20,6 +20,7 @@
     "obe.config.option.optimised_copper_golems": "Optimize Copper Golems",
     "obe.config.option.copper_golem_ao": "Copper Golem Ambient Occlusion",
     "obe.config.option.emf_compat": "EMF Compatibility",
+    "obe.config.option.vanillin_compat": "Vanillin Compatibility",
     "obe.config.option.mod_toggle": "Mod Toggle",
     "obe.config.option.optimised_shelves": "Optimize Shelves",
     "obe.config.option.optimised_lecterns": "Optimize Lecterns",

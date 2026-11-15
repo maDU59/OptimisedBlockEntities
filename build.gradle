@@ -34,6 +34,7 @@ repositories {
         url = "https://maven.caffeinemc.net/releases"
     }
     maven{url = "https://registry.somethingcatchy.net/repository/maven-releases/"}
+    maven{url = "https://maven.createmod.net/"}
 }
 
 base {
@@ -143,6 +144,8 @@ dependencies {
     implementation ("net.mehvahdjukaar:amendments-neoforge:26.1.2-3.0.2") {transitive = false}
 
     implementation "maven.modrinth:framedblocks:HKuGyb68"
+
+    implementation "dev.engine-room.vanillin:vanillin-neoforge:1.1.4-mc26.1-16"
 
     // Example optional mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime

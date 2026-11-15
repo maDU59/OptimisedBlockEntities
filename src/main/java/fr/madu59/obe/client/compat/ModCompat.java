@@ -14,6 +14,7 @@ import fr.madu59.obe.client.compat.iris.IrisCompat;
 import fr.madu59.obe.client.compat.ironchest.IronChestCompat;
 import fr.madu59.obe.client.compat.lootr.LootrCompat;
 import fr.madu59.obe.client.compat.morechestvariants.MoreChestVariantsCompat;
+import fr.madu59.obe.client.compat.vanillin.VanillinCompat;
 import fr.madu59.obe.client.compat.pipez.PipezCompat;
 import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.platform.PlatformHelper;
@@ -25,6 +26,7 @@ public class ModCompat {
     private final static boolean isSodiumLoaded = PlatformHelper.isModLoaded("sodium") || PlatformHelper.isModLoaded("embeddium");
     private static boolean isEMFLoaded = PlatformHelper.isModLoaded("entity_model_features");
     private final static boolean isAmendmentsLoaded = PlatformHelper.isModLoaded("amendments");
+    private final static boolean isVanillinLoaded = ((PlatformHelper.isModLoaded("create") || PlatformHelper.isModLoaded("create-fly")) && PlatformHelper.getPlatformName().equals("Fabric")) || PlatformHelper.isModLoaded("vanillin");
 
     private static final List<String> incompatibleMods = Arrays.asList("optifine","embeddium","optifabric");
 
@@ -69,6 +71,10 @@ public class ModCompat {
         return isAmendmentsLoaded;
     }
 
+    public static boolean isVanillinLoaded(){
+        return isVanillinLoaded;
+    }
+
     public static boolean isShadowPass(){
         if(isIrisLoaded()) return IrisCompat.isShadowPass();
         else return false;
@@ -91,6 +97,17 @@ public class ModCompat {
     public static boolean isSignTextBufferingEnabled() {
         if(PlatformHelper.isModLoaded("immediatelyfast")) return ImmediatelyFastCompat.isSignTextBufferingEnabled();
         else return false;
+    }
+
+    public static void preventConflictsWithVanillin() {
+        if(isVanillinLoaded() && SettingsManager.VANILLIN_COMPAT.getValue()) {
+            try{
+                VanillinCompat.preventConflicts();
+            }
+            catch(Error e){
+                OBE.LOGGER.warn("Incompatible version of vanillin used, if you are using the latest one, please report that to OBE's author.");
+            }
+        }
     }
 
     public static boolean isIncompatibilityDetected(){
