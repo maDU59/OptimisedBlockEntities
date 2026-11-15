@@ -15,7 +15,7 @@ repositories {
 	maven{url = "https://maven.terraformersmc.com/releases"}
     maven{url = "https://repo.polyfrost.org/releases"}
 	maven{url = "https://registry.somethingcatchy.net/repository/maven-releases/"}
-
+	maven{url = "https://cursemaven.com"}
 }
 
 loom {
@@ -71,6 +71,8 @@ dependencies {
 	implementation ("net.mehvahdjukaar:amendments-fabric:26.1.2-3.0.2") {transitive = false}
 
 	implementation "maven.modrinth:create-fly:26.1.2-6.0.9-4"
+
+	compileOnly "curse.maven:the-twilight-forest-227639:9556107"
 }
 
 processResources {
