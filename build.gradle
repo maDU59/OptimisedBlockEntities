@@ -28,6 +28,11 @@ repositories {
     maven{url = "https://maven.su5ed.dev/releases"}
     maven{url = "https://maven.terraformersmc.com/releases"}
 	maven{url = "https://registry.somethingcatchy.net/repository/maven-releases/"}
+    maven{url = "https://repo.polyfrost.org/releases"}
+	maven{url = "https://registry.somethingcatchy.net/repository/maven-releases/"}
+	maven{url = "https://cursemaven.com"}
+	maven{url = "https://maven.tr7zw.dev/repository/maven-public/"}
+	maven{url = "https://mvn.devos.one/releases/"}
 }
 
 base {
@@ -141,6 +146,21 @@ dependencies {
     implementation "maven.modrinth:sophisticated-storage:1.21.1-1.6.16.2222"
 
 	implementation "maven.modrinth:carved-wood:1.9.7-B-NeoForge-1.21.1"
+
+	compileOnly "maven.modrinth:immediatelyfast:1.6.15+1.21.1-neoforge"
+
+	implementation "maven.modrinth:entityculling:DDaDZQ47"
+	implementation "dev.tr7zw:TRansition:1.0.28-${project.minecraft_version}-neoforge-SNAPSHOT"
+
+	compileOnly "maven.modrinth:flw-vanillin:Qn76dRvj"
+
+    implementation "curse.maven:the-twilight-forest-227639:7797302"
+
+    implementation "maven.modrinth:pipez:neoforge-1.21.1-1.2.31"
+
+    implementation "maven.modrinth:framedblocks:10.6.3"
+
+    implementation "curse.maven:iron-chests-228756:5491156"
 
     // Example optional mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime

@@ -1,5 +1,6 @@
 package fr.madu59.obe.client.compat.carvedwood;
 
+import fr.madu59.obe.client.api.registry.RegistryApi;
 import fr.madu59.obe.client.registry.MaterialGetter;
 import fr.madu59.obe.client.registry.ModelLayerLocationGetter;
 import fr.madu59.obe.client.registry.Registry;
@@ -25,9 +26,9 @@ import net.minecraft.world.level.block.state.properties.ChestType;
 public class CarvedWoodCompat {
 
     public static void init(){
-        Registry.addBlockEntityTypeInGroup("chest", CWBlockEntities.CHEST.get(), CWBlockEntities.TRAPPED_CHEST.get());
-        MaterialGetter.register(CWBlockEntities.CHEST.get(), CarvedWoodCompat::getChestMaterial);
-        MaterialGetter.register(CWBlockEntities.TRAPPED_CHEST.get(), CarvedWoodCompat::getChestMaterial);
+        RegistryApi.registerBlockEntityType("chest", CWBlockEntities.CHEST.get(), CWBlockEntities.TRAPPED_CHEST.get());
+        RegistryApi.registerMaterialProvider(CWBlockEntities.CHEST.get(), CarvedWoodCompat::getChestMaterial);
+        RegistryApi.registerMaterialProvider(CWBlockEntities.TRAPPED_CHEST.get(), CarvedWoodCompat::getChestMaterial);
         ModelLayerLocationGetter.register(CWBlockEntities.CHEST.get(), CarvedWoodCompat::getChestModelLayerLocation);
         ModelLayerLocationGetter.register(CWBlockEntities.TRAPPED_CHEST.get(), CarvedWoodCompat::getChestModelLayerLocation);
     }
