@@ -24,10 +24,14 @@ public class SettingsManager {
 
     private static final Runnable EMPTY_ACTION = () -> {};
     private static final Runnable RELOAD_RESOURCES_ACTION = () -> {
+        ModCompat.preventConflictsWithVanillin();
         ResourceUtil.clearCache();
         Minecraft.getInstance().levelExtractor.allChanged();
     };
-    private static final Runnable RELOAD_CHUNKS_ACTION = () -> Minecraft.getInstance().levelExtractor.allChanged();
+    private static final Runnable RELOAD_CHUNKS_ACTION = () -> {
+        ModCompat.preventConflictsWithVanillin();
+        Minecraft.getInstance().levelExtractor.allChanged();
+    };
 
     private static final boolean isIncompatible = ModCompat.isIncompatibilityDetected();
 
@@ -233,6 +237,12 @@ public class SettingsManager {
 
     public static Option<Boolean> OPTIMISED_PIPEZ_PIPES = loadOptionWithDefaults("optimized_pipez_pipes",
             "obe.config.option.optimized_pipez_pipes",
+            true,
+            RELOAD_CHUNKS_ACTION
+    );
+
+    public static Option<Boolean> VANILLIN_COMPAT = loadOptionWithDefaults("vanillin_compat",
+            "obe.config.option.vanillin_compat",
             true,
             RELOAD_CHUNKS_ACTION
     );

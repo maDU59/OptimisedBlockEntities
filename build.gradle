@@ -58,6 +58,8 @@ dependencies {
 
 	implementation "maven.modrinth:entityculling:fD6iRzOi"
 
+	implementation "maven.modrinth:create-fly:26.3-6.0.9-2"
+
 }
 
 processResources {

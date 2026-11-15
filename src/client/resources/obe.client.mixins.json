@@ -28,6 +28,7 @@
 		"blockentity.shulkerbox.ShulkerBoxBlockEntityMixin",
 		"blockentity.sign.SignTextMixin",
 		"blockentity.skull.SkullBlockEntityMixin",
+		"compat.vanillin.VanillinVisualsMixin",
 		"entity.EntityMixin",
 		"entity.cushion.CushionMixin",
 		"entity.ext.EntityMixin",
