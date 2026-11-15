@@ -66,12 +66,12 @@ dependencies {
 
 	modCompileOnly "org.polyfrost.oneconfig:mod-toggles:1.0.0"
 
-	modCompileOnly "maven.modrinth:immediatelyfast:1.14.3+1.21.11-fabric"
+	modCompileOnly "maven.modrinth:immediatelyfast:1.13.6+1.21.10-fabric"
 
-	modImplementation "maven.modrinth:entityculling:hsBqkNc8"
+	modImplementation "maven.modrinth:entityculling:Qromw6PT"
 	modImplementation "dev.tr7zw:TRansition:1.0.28-${project.minecraft_version}-fabric-SNAPSHOT"
 
-	modImplementation "maven.modrinth:create-fly:1.21.11-6.0.9-5"
+	modImplementation "maven.modrinth:create-fly:1.21.10-6.0.9-2"
 }
 
 processResources {

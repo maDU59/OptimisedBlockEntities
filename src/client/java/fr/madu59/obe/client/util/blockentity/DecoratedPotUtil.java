@@ -51,7 +51,7 @@ public class DecoratedPotUtil {
         ModelLayerLocation layerLocation = ModelLayerLocationGetter.getModelLayerLocation(state, group);
         if(layerLocation == null) return null;
 
-        Identifier material = MaterialGetter.getMaterial(state, group);
+        ResourceLocation material = MaterialGetter.getMaterial(state, group);
         if(material == null) return null;
 
         TransformationGetter.applyTransformation(state, poseStack, group);

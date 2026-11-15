@@ -244,10 +244,6 @@ public class BlockEntityStateModel implements BlockStateModel{
         Matrix3fc normal = pose.normal();
 
         Vector3f[] positions = new Vector3f[4];
-        long[] uvs = new long[4];
-
-        Vector3f[] positionsCopy;
-        long[] uvsCopy;
 
         List<BakedQuad> all = quadCollection.getAll();
         BakedQuad[] out = new BakedQuad[all.size()];
@@ -255,14 +251,20 @@ public class BlockEntityStateModel implements BlockStateModel{
         for (int i = 0; i < out.length; i++) {
             BakedQuad q = all.get(i);
 
-            positions[0] = matrix.transformPosition(new Vector3f(q.position0()));
-            positions[1] = matrix.transformPosition(new Vector3f(q.position1()));
-            positions[2] = matrix.transformPosition(new Vector3f(q.position2()));
-            positions[3] = matrix.transformPosition(new Vector3f(q.position3()));
-            uvs[0] = q.packedUV0();
-            uvs[1] = q.packedUV1();
-            uvs[2] = q.packedUV2();
-            uvs[3] = q.packedUV3();
+            int[] packedVertices = q.vertices().clone();
+            for (int v = 0; v < 4; v++) {
+                Vector3f vec = new Vector3f();
+                int offset = v * 8;
+                vec.set(Float.intBitsToFloat(packedVertices[offset]),
+                        Float.intBitsToFloat(packedVertices[offset + 1]),
+                        Float.intBitsToFloat(packedVertices[offset + 2]));
+                matrix.transformPosition(vec);
+                packedVertices[offset]     = Float.floatToRawIntBits(vec.x);
+                packedVertices[offset + 1] = Float.floatToRawIntBits(vec.y);
+                packedVertices[offset + 2] = Float.floatToRawIntBits(vec.z);
+
+                positions[i] = vec;
+            }
 
             Vector3fc d = q.direction().getUnitVec3f();
             float nx = normal.m00() * d.x() + normal.m10() * d.y() + normal.m20() * d.z();
@@ -270,16 +272,11 @@ public class BlockEntityStateModel implements BlockStateModel{
             float nz = normal.m02() * d.x() + normal.m12() * d.y() + normal.m22() * d.z();
             Direction dir = Direction.getApproximateNearest(nx, ny, nz);
 
-            positionsCopy = positions.clone();
-            uvsCopy = uvs.clone();
-            try {
-                FaceBakery.recalculateWinding(positions, uvs, dir);
-            } catch (Exception e) {
-                positions = positionsCopy;
-                uvs = uvsCopy;
+            if(isAxisAlignedRectangle(positions)){
+                FaceBakery.recalculateWinding(packedVertices, dir);
             }
 
-            out[i] = new BakedQuad(positions[0], positions[1], positions[2], positions[3], uvs[0], uvs[1], uvs[2], uvs[3], q.tintIndex(), dir, q.sprite(), q.shade(), q.lightEmission());
+            out[i] = new BakedQuad(packedVertices, q.tintIndex(), dir, q.sprite(), q.shade(), q.lightEmission());
         }
 
         return createQuadCollection(List.of(out));
