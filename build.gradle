@@ -82,9 +82,9 @@ dependencies {
 	modImplementation "maven.modrinth:entityculling:ePsqkPkO"
 	modImplementation "dev.tr7zw:TRansition:1.0.28-${project.minecraft_version}-fabric-SNAPSHOT"
 
-	modCompileOnly "maven.modrinth:create-fly:1.21.8-6.0.9-2"
+	modCompileOnly "maven.modrinth:flw-vanillin:JvVNmEal"
 
-	modCompileOnly "curse.maven:the-twilight-forest-227639:9091040"
+	modCompileOnly "curse.maven:the-twilight-forest-227639:9348759"
 }
 
 processResources {

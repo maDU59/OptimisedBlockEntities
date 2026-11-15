@@ -171,4 +171,8 @@ public class Registry {
         beTypeCache.put(block, Optional.ofNullable(match));
         return match;
     }
+
+    public static void registerBlock(Block block, BlockEntityType<?> type){
+        beTypeCache.put(block, Optional.ofNullable(type));
+    }
 }

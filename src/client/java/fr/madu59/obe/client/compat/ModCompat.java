@@ -12,6 +12,7 @@ import fr.madu59.obe.client.compat.immediatelyfast.ImmediatelyFastCompat;
 import fr.madu59.obe.client.compat.iris.IrisCompat;
 import fr.madu59.obe.client.compat.lootr.LootrCompat;
 import fr.madu59.obe.client.compat.morechestvariants.MoreChestVariantsCompat;
+import fr.madu59.obe.client.compat.twilightforest.TwilightForestCompat;
 import fr.madu59.obe.client.compat.vanillin.VanillinCompat;
 import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.platform.PlatformHelper;
@@ -23,7 +24,7 @@ public class ModCompat {
     private final static boolean isSodiumLoaded = PlatformHelper.isModLoaded("sodium") || PlatformHelper.isModLoaded("embeddium");
     private static boolean isEMFLoaded = PlatformHelper.isModLoaded("entity_model_features");
     private final static boolean isAmendmentsLoaded = PlatformHelper.isModLoaded("amendments");
-    private final static boolean isVanillinLoaded = ((PlatformHelper.isModLoaded("create") || PlatformHelper.isModLoaded("create-fly")) && PlatformHelper.getPlatformName().equals("Fabric")) || PlatformHelper.isModLoaded("vanillin");
+    private final static boolean isVanillinLoaded = PlatformHelper.isModLoaded("vanillin");
 
     private static final List<String> incompatibleMods = Arrays.asList("optifine","embeddium","optifabric");
 
@@ -33,6 +34,7 @@ public class ModCompat {
         runSafe("bclib", () -> BclibCompat.init());
         runSafe("carved_wood", () -> CarvedWoodCompat.init());
         runSafe("entityculling", () -> EntityCullingCompat.init());
+        runSafe("twilightforest", () -> TwilightForestCompat.init());
     }
 
     private static void runSafe(String modId, Runnable runnable){
