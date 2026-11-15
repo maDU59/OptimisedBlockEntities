@@ -15,6 +15,10 @@ repositories {
 	maven{url = "https://maven.terraformersmc.com/releases"}
 	maven{url = "https://registry.somethingcatchy.net/repository/maven-releases/"}
     maven{url = "https://repo.polyfrost.org/releases"}
+	maven{url = "https://registry.somethingcatchy.net/repository/maven-releases/"}
+	maven{url = "https://cursemaven.com"}
+	maven{url = "https://maven.tr7zw.dev/repository/maven-public/"}
+	maven { url = "https://mvn.devos.one/releases/" }
 }
 
 loom {
@@ -72,6 +76,15 @@ dependencies {
 	modCompileOnly "maven.modrinth:vulkanmod:0.6.7+1.21.1"
 
 	modCompileOnly "org.polyfrost.oneconfig:mod-toggles:1.0.0"
+
+	modCompileOnly "maven.modrinth:immediatelyfast:1.6.15+1.21.1-fabric"
+
+	modImplementation "maven.modrinth:entityculling:ePsqkPkO"
+	modImplementation "dev.tr7zw:TRansition:1.0.28-${project.minecraft_version}-fabric-SNAPSHOT"
+
+	modCompileOnly "maven.modrinth:create-fly:1.21.8-6.0.9-2"
+
+	modCompileOnly "curse.maven:the-twilight-forest-227639:9091040"
 }
 
 processResources {

@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import fr.madu59.obe.client.OBEClient;
+import org.joml.Matrix3fc;
+import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 
@@ -63,6 +65,16 @@ public class BlockEntityStateModel implements BakedModel{
             this.useAo = useAo;
             this.modelPart = generateModel(modelLayerLocation, sprite, poseStack, useAo, state);
         }
+    }
+
+    public BlockEntityStateModel(List<BakedQuad> quads, PoseStack poseStack, boolean useAo, BlockState state, TextureAtlasSprite particleMaterial){
+        this.particleMaterial = particleMaterial;
+        this.useAo = useAo;
+
+        if(poseStack != null) quads = rotateQuadCollection(quads, poseStack, state);
+
+        Map<Direction, List<BakedQuad>> dirs = new HashMap<>();
+        this.modelPart = new SimpleBakedModel(quads, dirs, useAo, true, false, particleMaterial, null, null);
     }
 
     public BlockEntityStateModel(){
@@ -242,6 +254,49 @@ public class BlockEntityStateModel implements BakedModel{
             }
         }
         return false;
+    }
+
+    private List<BakedQuad> rotateQuadCollection(List<BakedQuad> quads, PoseStack poseStack, BlockState state) {
+        PoseStack.Pose pose = poseStack.last();
+        Matrix4f matrix = pose.pose();
+        Matrix3fc normal = pose.normal();
+
+        Vector3f[] positions = new Vector3f[4];
+
+        BakedQuad[] out = new BakedQuad[quads.size()];
+
+        for (int i = 0; i < out.length; i++) {
+            BakedQuad q = quads.get(i);
+
+            int[] packedVertices = q.getVertices().clone();
+            for (int v = 0; v < 4; v++) {
+                Vector3f vec = new Vector3f();
+                int offset = v * 8;
+                vec.set(Float.intBitsToFloat(packedVertices[offset]),
+                        Float.intBitsToFloat(packedVertices[offset + 1]),
+                        Float.intBitsToFloat(packedVertices[offset + 2]));
+                matrix.transformPosition(vec);
+                packedVertices[offset]     = Float.floatToRawIntBits(vec.x);
+                packedVertices[offset + 1] = Float.floatToRawIntBits(vec.y);
+                packedVertices[offset + 2] = Float.floatToRawIntBits(vec.z);
+
+                positions[i] = vec;
+            }
+
+            Vector3fc d = q.getDirection().step();
+            float nx = normal.m00() * d.x() + normal.m10() * d.y() + normal.m20() * d.z();
+            float ny = normal.m01() * d.x() + normal.m11() * d.y() + normal.m21() * d.z();
+            float nz = normal.m02() * d.x() + normal.m12() * d.y() + normal.m22() * d.z();
+            Direction dir = Direction.getNearest(nx, ny, nz);
+
+            if(isAxisAlignedRectangle(positions)){
+                FACE_BAKERY.recalculateWinding(packedVertices, dir);
+            }
+
+            out[i] = new BakedQuad(packedVertices, q.getTintIndex(), dir, q.getSprite(), q.isShade());
+        }
+
+        return List.of(out);
     }
 
     @Override
