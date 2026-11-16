@@ -1,2 +1,2 @@
 # What's new:
-- Added optimization for Oh The Biomes We've Gone signs
+- Fixed incorrect hanging sign models on 1.21.3 and older
