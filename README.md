@@ -43,6 +43,7 @@ While OBE by default does not optimize modded block entities, the following ones
 - [Framed Blocks](https://modrinth.com/mod/framedblocks)
 - [The Twilight Forest](https://www.curseforge.com/minecraft/mc-mods/the-twilight-forest)
 - [Vanilla Backport](https://modrinth.com/mod/vanillabackport)
+- [Oh The Biomes We've Gone](https://modrinth.com/mod/oh-the-biomes-weve-gone)
 
 ## Why
 
