@@ -3,9 +3,6 @@ package fr.madu59.obe.client.compat.lootr;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import fr.madu59.obe.client.api.registry.RegistryApi;
-import fr.madu59.obe.client.registry.Registry;
-import fr.madu59.obe.client.registry.SpecialModelGetter;
-import fr.madu59.obe.client.registry.SpecialModelGetter.SpecialModelProvider;
 import fr.madu59.obe.client.util.blockentity.ChestUtil;
 import fr.madu59.obe.client.util.blockentity.ShulkerBoxUtil;
 import net.minecraft.client.Minecraft;
@@ -53,7 +50,7 @@ public class LootrCompat {
    }
 
     public static Identifier getChestMaterial(BlockState state) {
-        getChestMaterial(state, false);
+        return getChestMaterial(state, false);
     }
 
     public static Identifier getChestMaterial(BlockState state, boolean isOpened) {
