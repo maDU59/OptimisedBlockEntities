@@ -3,6 +3,7 @@ package fr.madu59.obe.client.compat;
 import java.util.Arrays;
 import java.util.List;
 
+import fr.madu59.obe.client.compat.biomeswevegone.BiomesWeveGoneCompat;
 import fr.madu59.obe.client.compat.carvedwood.CarvedWoodCompat;
 import fr.madu59.obe.OBE;
 import fr.madu59.obe.client.compat.bclib.BclibCompat;
@@ -37,6 +38,7 @@ public class ModCompat {
         runSafe("entityculling", () -> EntityCullingCompat.init());
         runSafe("twilightforest", () -> TwilightForestCompat.init());
         runSafe("vanillabackport", () -> VanillaBackportCompat.init());
+        runSafe("biomeswevegone", () -> BiomesWeveGoneCompat.init());
     }
 
     private static void runSafe(String modId, Runnable runnable){
