@@ -1,2 +1,2 @@
 # What's new:
-- Added optimizations for Vanilla Backport copper chests
+- Added optimization for Oh The Biomes We've Gone signs

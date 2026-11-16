@@ -151,6 +151,8 @@ dependencies {
 
     compileOnly renamer.dependency("maven.modrinth:vanillabackport:oWVWW4Xg")
 
+    compileOnly renamer.dependency("maven.modrinth:oh-the-biomes-weve-gone:1.8.2-Forge")
+
     annotationProcessor 'org.spongepowered:mixin:0.8.7:processor'
 }
 
