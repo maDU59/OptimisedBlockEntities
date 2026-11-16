@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import fr.madu59.obe.client.OBEClient;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.joml.Matrix3fc;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
@@ -108,7 +109,8 @@ public class BlockEntityStateModel implements BakedModel{
             return !key.equals("vChains");
         }
         else if(state.getBlock() instanceof CeilingHangingSignBlock){
-            return !key.equals("normalChains");
+            boolean isAttached = state.getValue(BlockStateProperties.ATTACHED);
+            return !key.equals("plank") && (!key.equals("vChains") || isAttached) && (!key.equals("normalChains") || !isAttached);
         }
         else if(state.getBlock() instanceof WallBannerBlock){
             return !key.equals("pole") && !key.equals("flag");
