@@ -186,6 +186,7 @@ public class BlockEntityStateModel implements BlockStateModel{
     }
 
     private boolean shouldFixBFC(BlockState state, String key){
+        if(key.endsWith("_nobfc")) return true;
         if(state != null && state.getBlock() instanceof AbstractSkullBlock) return true;
         return key.equals("vChains") || key.equals("normalChains");
     }
