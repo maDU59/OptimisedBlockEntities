@@ -16,6 +16,7 @@ This mod renders supported block entities just like any other block, this means 
 - Better lighting on block entities : they now support smooth lighting and ambient occlusion.
 - Better render distance : block entities can be seen from a lot further away
 - Config : Every block entity optimization can be toggled, same for the ambient occlusion.
+- Improved LODs: LODs from Distant Horizons and Voxy will render block entities more accurately.
 
 ## Performances
 
