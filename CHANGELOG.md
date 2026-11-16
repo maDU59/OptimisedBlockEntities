@@ -1,2 +1,2 @@
 # What's new:
-- Added optimizations for Twilight Forest chests
+- Fixed incorrect hanging sign models on 1.21.3 and older
