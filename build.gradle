@@ -85,6 +85,8 @@ dependencies {
 	modImplementation "dev.tr7zw:TRansition:1.0.28-${project.minecraft_version}-fabric-SNAPSHOT"
 
 	modCompileOnly "maven.modrinth:flw-vanillin:8D4rKWc2"
+
+	modCompileOnly "maven.modrinth:vanillabackport:SgvHEKg5"
 }
 
 processResources {
