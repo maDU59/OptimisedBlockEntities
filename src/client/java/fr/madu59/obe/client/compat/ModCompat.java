@@ -13,6 +13,7 @@ import fr.madu59.obe.client.compat.iris.IrisCompat;
 import fr.madu59.obe.client.compat.lootr.LootrCompat;
 import fr.madu59.obe.client.compat.morechestvariants.MoreChestVariantsCompat;
 import fr.madu59.obe.client.compat.twilightforest.TwilightForestCompat;
+import fr.madu59.obe.client.compat.vanillabackport.VanillaBackportCompat;
 import fr.madu59.obe.client.compat.vanillin.VanillinCompat;
 import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.platform.PlatformHelper;
@@ -35,6 +36,7 @@ public class ModCompat {
         runSafe("carved_wood", () -> CarvedWoodCompat.init());
         runSafe("entityculling", () -> EntityCullingCompat.init());
         runSafe("twilightforest", () -> TwilightForestCompat.init());
+        runSafe("vanillabackport", () -> VanillaBackportCompat.init());
     }
 
     private static void runSafe(String modId, Runnable runnable){

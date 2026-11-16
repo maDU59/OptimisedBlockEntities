@@ -85,6 +85,9 @@ dependencies {
 	modCompileOnly "maven.modrinth:flw-vanillin:JvVNmEal"
 
 	modCompileOnly "curse.maven:the-twilight-forest-227639:9348759"
+
+	modImplementation "maven.modrinth:vanillabackport:pdLJZwZ1"
+	modRuntimeOnly "maven.modrinth:platform:UBpoaJQa"
 }
 
 processResources {
