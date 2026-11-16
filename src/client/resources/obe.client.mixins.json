@@ -30,6 +30,7 @@
 		"blockentity.renderers.bed.BedRendererMixin",
 		"blockentity.renderers.compat.everycompat.CompatChestBlockRendererMixin",
 		"renderer.SectionCompilerMixin",
+        "compat.vanillin.FabricVanillinConfigMixin",
 		"renderer.LevelRendererMixin",
 		"renderer.ItemBlockRenderTypesMixin",
 		"renderer.BlockRenderDispatcherMixin",

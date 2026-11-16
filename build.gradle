@@ -15,6 +15,10 @@ repositories {
 	maven{url = "https://maven.terraformersmc.com/releases"}
 	maven{url = "https://registry.somethingcatchy.net/repository/maven-releases/"}
     maven{url = "https://repo.polyfrost.org/releases"}
+	maven{url = "https://registry.somethingcatchy.net/repository/maven-releases/"}
+	maven{url = "https://cursemaven.com"}
+	maven{url = "https://maven.tr7zw.dev/repository/maven-public/"}
+	maven { url = "https://mvn.devos.one/releases/" }
 }
 
 loom {
@@ -74,6 +78,13 @@ dependencies {
 	modCompileOnly "maven.modrinth:vulkanmod:ZhvilXaM"
 
 	modCompileOnly "org.polyfrost.oneconfig:mod-toggles:1.0.0"
+
+	modCompileOnly "maven.modrinth:immediatelyfast:1.5.5+1.20.4-fabric"
+
+	modImplementation "maven.modrinth:entityculling:xM6y5W1N"
+	modImplementation "dev.tr7zw:TRansition:1.0.28-${project.minecraft_version}-fabric-SNAPSHOT"
+
+	modCompileOnly "maven.modrinth:flw-vanillin:8D4rKWc2"
 }
 
 processResources {

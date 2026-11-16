@@ -1,2 +1,2 @@
 # What's new:
-- Added compatibility for Amendments
+- Added optimizations for Twilight Forest chests

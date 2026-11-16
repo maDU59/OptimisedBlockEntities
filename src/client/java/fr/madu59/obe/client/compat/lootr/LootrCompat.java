@@ -5,9 +5,7 @@ import java.util.UUID;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
-import fr.madu59.obe.client.registry.Registry;
-import fr.madu59.obe.client.registry.SpecialModelGetter;
-import fr.madu59.obe.client.registry.SpecialModelGetter.SpecialModelProvider;
+import fr.madu59.obe.client.api.registry.RegistryApi;
 import fr.madu59.obe.client.util.blockentity.ChestUtil;
 import fr.madu59.obe.client.util.blockentity.ShulkerBoxUtil;
 import net.minecraft.client.Minecraft;
@@ -42,12 +40,12 @@ public class LootrCompat {
     private static UUID playerId = null;
 
     public static void init(){
-        Registry.addBlockEntityTypeInGroup("chest", ModBlockEntities.SPECIAL_LOOT_CHEST, ModBlockEntities.SPECIAL_TRAPPED_LOOT_CHEST);
-        SpecialModelGetter.register(ModBlockEntities.SPECIAL_LOOT_CHEST, new SpecialModelProvider(ChestUtil::getModelLayerLocation, LootrCompat::getChestMaterial, LootrCompat::transformChest, LootrCompat::getChestCacheKey));
-        SpecialModelGetter.register(ModBlockEntities.SPECIAL_TRAPPED_LOOT_CHEST, new SpecialModelProvider(ChestUtil::getModelLayerLocation, LootrCompat::getChestMaterial, LootrCompat::transformChest, LootrCompat::getChestCacheKey));
+        RegistryApi.registerBlockEntityType("chest", ModBlockEntities.SPECIAL_LOOT_CHEST, ModBlockEntities.SPECIAL_TRAPPED_LOOT_CHEST);
+        RegistryApi.registerSpecialModelProvider(ModBlockEntities.SPECIAL_LOOT_CHEST, ChestUtil::getModelLayerLocation, LootrCompat::getChestMaterial, LootrCompat::transformChest, LootrCompat::getChestCacheKey);
+        RegistryApi.registerSpecialModelProvider(ModBlockEntities.SPECIAL_TRAPPED_LOOT_CHEST, ChestUtil::getModelLayerLocation, LootrCompat::getChestMaterial, LootrCompat::transformChest, LootrCompat::getChestCacheKey);
 
-        Registry.addBlockEntityTypeInGroup("shulker_box", ModBlockEntities.SPECIAL_LOOT_SHULKER);
-        SpecialModelGetter.register(ModBlockEntities.SPECIAL_LOOT_SHULKER, new SpecialModelProvider(ShulkerBoxUtil::getModelLayerLocation, LootrCompat::getShulkerBoxMaterial, ShulkerBoxUtil::transform, LootrCompat::getShulkerBoxCacheKey));
+        RegistryApi.registerBlockEntityType("shulker_box", ModBlockEntities.SPECIAL_LOOT_SHULKER);
+        RegistryApi.registerSpecialModelProvider(ModBlockEntities.SPECIAL_LOOT_SHULKER, ShulkerBoxUtil::getModelLayerLocation, LootrCompat::getShulkerBoxMaterial, ShulkerBoxUtil::transform, LootrCompat::getShulkerBoxCacheKey);
     }
 
     public static <T extends LootrChestBlockEntity & ILootBlockEntity> ResourceLocation getChestMaterial(BlockState state, BlockEntity be) {

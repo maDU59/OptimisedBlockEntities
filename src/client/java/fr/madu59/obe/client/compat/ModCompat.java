@@ -7,9 +7,12 @@ import fr.madu59.obe.client.compat.carvedwood.CarvedWoodCompat;
 import fr.madu59.obe.OBE;
 import fr.madu59.obe.client.compat.bclib.BclibCompat;
 import fr.madu59.obe.client.compat.emf.EMFCompat;
+import fr.madu59.obe.client.compat.entityculling.EntityCullingCompat;
+import fr.madu59.obe.client.compat.immediatelyfast.ImmediatelyFastCompat;
 import fr.madu59.obe.client.compat.iris.IrisCompat;
 import fr.madu59.obe.client.compat.lootr.LootrCompat;
 import fr.madu59.obe.client.compat.morechestvariants.MoreChestVariantsCompat;
+import fr.madu59.obe.client.compat.vanillin.VanillinCompat;
 import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.platform.PlatformHelper;
 import net.minecraft.client.model.geom.ModelPart;
@@ -20,6 +23,7 @@ public class ModCompat {
     private final static boolean isSodiumLoaded = PlatformHelper.isModLoaded("sodium") || PlatformHelper.isModLoaded("embeddium");
     private static boolean isEMFLoaded = PlatformHelper.isModLoaded("entity_model_features");
     private final static boolean isAmendmentsLoaded = PlatformHelper.isModLoaded("amendments");
+    private final static boolean isVanillinLoaded = PlatformHelper.isModLoaded("vanillin");
 
     private static final List<String> incompatibleMods = Arrays.asList("optifine","embeddium","optifabric");
 
@@ -28,6 +32,7 @@ public class ModCompat {
         runSafe("lolmcv", () -> MoreChestVariantsCompat.init());
         runSafe("bclib", () -> BclibCompat.init());
         runSafe("carved_wood", () -> CarvedWoodCompat.init());
+        runSafe("entityculling", () -> EntityCullingCompat.init());
     }
 
     private static void runSafe(String modId, Runnable runnable){
@@ -61,6 +66,10 @@ public class ModCompat {
         return isAmendmentsLoaded;
     }
 
+    public static boolean isVanillinLoaded(){
+        return isVanillinLoaded;
+    }
+
     public static boolean isShadowPass(){
         if(isIrisLoaded()) return IrisCompat.isShadowPass();
         else return false;
@@ -78,6 +87,22 @@ public class ModCompat {
             }
         }
         else return root;
+    }
+
+    public static boolean isSignTextBufferingEnabled() {
+        if(PlatformHelper.isModLoaded("immediatelyfast")) return ImmediatelyFastCompat.isSignTextBufferingEnabled();
+        else return false;
+    }
+
+    public static void preventConflictsWithVanillin() {
+        if(isVanillinLoaded() && SettingsManager.VANILLIN_COMPAT.getValue()) {
+            try{
+                VanillinCompat.preventConflicts();
+            }
+            catch(Error e){
+                OBE.LOGGER.warn("Incompatible version of vanillin used, if you are using the latest one, please report that to OBE's author.");
+            }
+        }
     }
 
     public static boolean isIncompatibilityDetected(){

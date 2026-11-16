@@ -2,6 +2,7 @@ package fr.madu59.obe.client.compat.bclib;
 
 import org.betterx.bclib.registry.BaseBlockEntities;
 
+import fr.madu59.obe.client.api.registry.RegistryApi;
 import fr.madu59.obe.client.registry.MaterialGetter;
 import fr.madu59.obe.client.registry.Registry;
 import fr.madu59.obe.client.util.BackportUtil;
@@ -14,9 +15,9 @@ public class BclibCompat {
     
     public static void init() {
 
-        Registry.addBlockEntityTypeInGroup("chest", BaseBlockEntities.CHEST);
-        
-        MaterialGetter.register(BaseBlockEntities.CHEST, (state) -> {
+        RegistryApi.registerBlockEntityType("chest", BaseBlockEntities.CHEST);
+
+        RegistryApi.registerMaterialProvider(BaseBlockEntities.CHEST, (state) -> {
             ChestType type = BackportUtil.getValueOrElse(state, ChestBlock.TYPE, ChestType.SINGLE);
 
             ResourceLocation blockId = BuiltInRegistries.BLOCK.getKey(state.getBlock());
