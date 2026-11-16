@@ -30,7 +30,7 @@ This mod renders supported block entities just like any other block, this means 
 
 ## Modded block entities compatibility
 
-While OBE by default does not optimize modded block entities, the following ones have been implemented:
+OBE also optimizes block entities from the following mods:
 - [Quark](https://modrinth.com/mod/quark)
 - [Lootr](https://modrinth.com/mod/lootr)
 - [Carved Wood](https://modrinth.com/mod/carved-wood)
@@ -88,7 +88,7 @@ Both are awesome, the developers did great work but I wanted to make one that:
 
 Invisible or duplicate block entities:
 
-> Only vanilla, indigo, sodium (embeddium on forge 1.20.1) and VulkanMod rendering pipelines are fully supported, issues may happen with other ones like Optifine, Embeddium, Optifabric etc... in that case it is recommended to disable the OBE optimizations causing the issues using OBE's config screen.
+> Only vanilla, Indigo, Sodium (embeddium on forge 1.20.1), Nvidium and VulkanMod rendering pipelines are fully supported, issues may happen with other ones like Optifine, Embeddium, Optifabric etc... in that case it is recommended to disable the OBE optimizations causing the issues using OBE's config screen.
 
 ## Modpacks
 
