@@ -32,7 +32,7 @@ public class LootrCompat {
         RegistryApi.registerSpecialModelProvider(LootrRegistry.getChestBlockEntity(), ChestUtil::getModelLayerLocation, LootrCompat::getChestMaterial, LootrCompat::transformChest, LootrCompat::getChestCacheKey);
         RegistryApi.registerSpecialModelProvider(LootrRegistry.getTrappedChestBlockEntity(), ChestUtil::getModelLayerLocation, LootrCompat::getChestMaterial, LootrCompat::transformChest, LootrCompat::getChestCacheKey);
 
-        RegistryApi.registerBlockEntityType("shulker_box", LootrRegistry.getShulkerBoxBlockEntity());;
+        RegistryApi.registerBlockEntityType("shulker_box", LootrRegistry.getShulkerBoxBlockEntity());
         RegistryApi.registerSpecialModelProvider(LootrRegistry.getShulkerBoxBlockEntity(), ShulkerBoxUtil::getModelLayerLocation, LootrCompat::getShulkerBoxMaterial, ShulkerBoxUtil::transform, LootrCompat::getShulkerBoxCacheKey);
 
         // While this is not mandatory, it helps when an LOD mod is being used (e.g. Voxy or Distant Horizons), it avoids the LOD mod from using the default chest texture for the Lootr chests
