@@ -3,6 +3,7 @@ package fr.madu59.obe.client.compat;
 import java.util.Arrays;
 import java.util.List;
 
+import fr.madu59.obe.client.compat.biomeswevegone.BiomesWeveGoneCompat;
 import fr.madu59.obe.client.compat.blueprint.BlueprintCompat;
 import fr.madu59.obe.client.compat.carvedwood.CarvedWoodCompat;
 import fr.madu59.obe.OBE;
@@ -45,6 +46,7 @@ public class ModCompat {
         runSafe("framedblocks", () -> FramedBlocksCompat.init());
         runSafe("pipez", () -> PipezCompat.init());
         runSafe("vanillabackport", () -> VanillaBackportCompat.init());
+        runSafe("biomeswevegone", () -> BiomesWeveGoneCompat.init());
     }
 
     private static void runSafe(String modId, Runnable runnable){

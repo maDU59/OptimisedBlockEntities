@@ -165,6 +165,8 @@ dependencies {
     implementation "maven.modrinth:vanillabackport:mGS7BxD4"
     runtimeOnly "maven.modrinth:platform:rh4p4ixM"
 
+    compileOnly "maven.modrinth:oh-the-biomes-weve-gone:2.6.3-NeoForge"
+
     // Example optional mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
     // compileOnly "mezz.jei:jei-${mc_version}-common-api:${jei_version}"
