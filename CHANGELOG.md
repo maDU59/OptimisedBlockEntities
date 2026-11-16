@@ -1,2 +1,2 @@
 # What's new:
-- Improved compatilbity with Vanillin (and Create Fly which includes Vanillin)
+- Improved the visuals of optimized lootr chests when displayed through LODs from an LOD mod (e.g., Voxy or Distant Horizons)
