@@ -149,6 +149,8 @@ dependencies {
     implementation renamer.dependency("maven.modrinth:framedblocks:lSiHA1qU")
     implementation renamer.dependency("curse.maven:the-twilight-forest-227639:5468648")
 
+    implementation renamer.dependency("maven.modrinth:vanillabackport:oWVWW4Xg")
+
     annotationProcessor 'org.spongepowered:mixin:0.8.7:processor'
 }
 

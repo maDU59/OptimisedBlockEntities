@@ -1,2 +1,2 @@
 # What's new:
-- Added optimizations for Twilight Forest chests
+- Added optimizations for Vanilla Backport copper chests
