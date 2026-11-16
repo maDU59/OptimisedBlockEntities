@@ -6,5 +6,6 @@ import net.potionstudios.biomeswevegone.world.level.block.entities.BWGBlockEntit
 public class BiomesWeveGoneCompat {
     public static void init() {
         RegistryApi.registerBlockEntityType("sign", BWGBlockEntityType.SIGNS.get());
+        RegistryApi.registerBlockEntityType("hanging_sign", BWGBlockEntityType.HANGING_SIGNS.get());
     }
 }
