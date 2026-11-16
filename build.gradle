@@ -162,6 +162,9 @@ dependencies {
 
     implementation "curse.maven:iron-chests-228756:5491156"
 
+    implementation "maven.modrinth:vanillabackport:mGS7BxD4"
+    runtimeOnly "maven.modrinth:platform:rh4p4ixM"
+
     // Example optional mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
     // compileOnly "mezz.jei:jei-${mc_version}-common-api:${jei_version}"
