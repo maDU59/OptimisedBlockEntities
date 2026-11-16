@@ -5,6 +5,7 @@ import java.util.List;
 
 import fr.madu59.obe.OBE;
 import fr.madu59.obe.client.compat.bclib.BclibCompat;
+import fr.madu59.obe.client.compat.biomeswevegone.BiomesWeveGoneCompat;
 import fr.madu59.obe.client.compat.carvedwood.CarvedWoodCompat;
 import fr.madu59.obe.client.compat.emf.EMFCompat;
 import fr.madu59.obe.client.compat.entityculling.EntityCullingCompat;
@@ -32,6 +33,7 @@ public class ModCompat {
         runSafe("lolmcv", () -> MoreChestVariantsCompat.init());
         runSafe("carved_wood", () -> CarvedWoodCompat.init());
         runSafe("entityculling", () -> EntityCullingCompat.init());
+        runSafe("biomeswevegone", () -> BiomesWeveGoneCompat.init());
     }
 
     public static void onWorldLoad(){
