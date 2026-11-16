@@ -1,5 +1,7 @@
 package fr.madu59.obe.client.mixin.blockentity.renderers.sign;
 
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
+import com.llamalad7.mixinextras.sugar.Local;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Mixin;
@@ -52,18 +54,12 @@ public abstract class AbstractSignRendererMixin {
         poseStack.popPose();
     }
 
-    @Inject(method = "renderSignWithText", at = @At("HEAD"), cancellable = true)
-    public void obe$cancelSubmit(SignBlockEntity signBlockEntity, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j, BlockState blockState, SignBlock signBlock, WoodType woodType, Model model, CallbackInfo ci){
-        if(!RenderModeManager.shouldRenderEntity(!SettingsManager.OPTIMISED_SIGNS.getValue(), signBlockEntity)){
-            ci.cancel();
-
-            poseStack.pushPose();
-            this.translateSign(poseStack, -signBlock.getYRotationDegrees(blockState), blockState);
-            //   this.renderSign(poseStack, multiBufferSource, i, j, woodType, model);
-            this.renderSignText(signBlockEntity.getBlockPos(), signBlockEntity.getFrontText(), poseStack, multiBufferSource, i, signBlockEntity.getTextLineHeight(), signBlockEntity.getMaxTextLineWidth(), true);
-            this.renderSignText(signBlockEntity.getBlockPos(), signBlockEntity.getBackText(), poseStack, multiBufferSource, i, signBlockEntity.getTextLineHeight(), signBlockEntity.getMaxTextLineWidth(), false);
-            poseStack.popPose();
-        }
+    @WrapWithCondition(
+            method = "renderSignWithText",
+            at = @At(value = "INVOKE",
+                    target = "Lnet/minecraft/client/renderer/blockentity/SignRenderer;renderSign(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;IILnet/minecraft/world/level/block/state/properties/WoodType;Lnet/minecraft/client/model/Model;)V"))
+    private boolean obe$renderSignModel(SignRenderer self, PoseStack ps, MultiBufferSource buf, int light, int overlay, WoodType type, Model model, @Local(argsOnly = true) SignBlockEntity signBlockEntity) {
+        return RenderModeManager.shouldRenderEntity(!SettingsManager.OPTIMISED_SIGNS.getValue(), signBlockEntity);
     }
 
     @Unique

@@ -17,6 +17,7 @@
     { "type": "single", "resource": "minecraft:entity/banner_base" },
     { "type": "directory", "source": "quark_variant_chests", "prefix": "quark_variant_chests/" },
     { "type": "directory", "source": "entity/shulker_box", "prefix": "entity/shulker_box/" },
+    { "type": "directory", "source": "model/chest", "prefix": "model/chest/" },
     { "type": "single", "resource": "lootr:chest" },
     { "type": "single", "resource": "lootr:chest_opened" },
     { "type": "single", "resource": "lootr:chest_trapped" },
@@ -28,6 +29,20 @@
     { "type": "single", "resource": "lootr:shulker" },
     { "type": "single", "resource": "lootr:shulker_opened" },
     { "type": "single", "resource": "lootr:old_shulker" },
-    { "type": "single", "resource": "lootr:old_shulker_opened" }
+    { "type": "single", "resource": "lootr:old_shulker_opened" },
+    { "type": "single", "resource": "ironchest:model/copper_chest" },
+    { "type": "single", "resource": "ironchest:model/diamond_chest" },
+    { "type": "single", "resource": "ironchest:model/dirt_chest" },
+    { "type": "single", "resource": "ironchest:model/gold_chest" },
+    { "type": "single", "resource": "ironchest:model/iron_chest" },
+    { "type": "single", "resource": "ironchest:model/netherite_chest" },
+    { "type": "single", "resource": "ironchest:model/obsidian_chest" },
+    { "type": "single", "resource": "ironchest:model/trapped_copper_chest" },
+    { "type": "single", "resource": "ironchest:model/trapped_diamond_chest" },
+    { "type": "single", "resource": "ironchest:model/trapped_dirt_chest" },
+    { "type": "single", "resource": "ironchest:model/trapped_gold_chest" },
+    { "type": "single", "resource": "ironchest:model/trapped_iron_chest" },
+    { "type": "single", "resource": "ironchest:model/trapped_netherite_chest" },
+    { "type": "single", "resource": "ironchest:model/trapped_obsidian_chest" }
   ]
 }

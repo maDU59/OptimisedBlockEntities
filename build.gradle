@@ -103,6 +103,9 @@ repositories {
     maven { url "https://maven.su5ed.dev/releases"}
     maven { url "https://cursemaven.com"}
     maven { url = "https://registry.somethingcatchy.net/repository/maven-releases/"}
+    maven{url = "https://cursemaven.com"}
+    maven{url = "https://maven.tr7zw.dev/repository/maven-public/"}
+    maven { url = "https://mvn.devos.one/releases/" }
 }
 
 dependencies {
@@ -133,6 +136,18 @@ dependencies {
     implementation renamer.dependency("maven.modrinth:amendments:nJORWvdh")
 
 	implementation renamer.dependency("maven.modrinth:carved-wood:1.9.7-E-Forge-1.20.1")
+
+    compileOnly renamer.dependency("maven.modrinth:immediatelyfast:1.5.5+1.20.4-forge")
+
+    implementation renamer.dependency("maven.modrinth:entityculling:Udu5Sovd")
+    implementation renamer.dependency("dev.tr7zw:TRansition:1.0.28-${project.minecraft_version}-forge-SNAPSHOT")
+
+    compileOnly renamer.dependency("maven.modrinth:flw-vanillin:szOuf0j1")
+
+    implementation renamer.dependency("maven.modrinth:pipez:forge-1.20.1-1.2.26")
+    implementation renamer.dependency("maven.modrinth:iron-chests:1.20.1-14.4.4")
+    implementation renamer.dependency("maven.modrinth:framedblocks:lSiHA1qU")
+    implementation renamer.dependency("curse.maven:the-twilight-forest-227639:5468648")
 
     annotationProcessor 'org.spongepowered:mixin:0.8.7:processor'
 }

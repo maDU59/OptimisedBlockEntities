@@ -45,6 +45,8 @@ public class Registry {
         TransformationGetter.init();
         ModelLayerLocationGetter.init();
         SpecialModelGetter.init();
+        ModelGetter.init();
+        SpecialModelBuilderGetter.init();
         
         for(Runnable onInit : onInitList){
             onInit.run();
@@ -168,5 +170,9 @@ public class Registry {
 
         beTypeCache.put(block, Optional.ofNullable(match));
         return match;
+    }
+
+    public static void registerBlock(Block block, BlockEntityType<?> type){
+        beTypeCache.put(block, Optional.ofNullable(type));
     }
 }

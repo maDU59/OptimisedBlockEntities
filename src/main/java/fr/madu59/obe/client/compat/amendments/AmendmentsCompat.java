@@ -5,9 +5,10 @@ import net.mehvahdjukaar.amendments.common.IBellConnection;
 import net.mehvahdjukaar.amendments.configs.ClientConfigs;
 import net.mehvahdjukaar.amendments.configs.CommonConfigs;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class AmendmentsCompat {
-    public static boolean isPixelConsistentSign(net.minecraft.world.level.block.state.BlockState state) {
+    public static boolean isPixelConsistentSign(BlockState state) {
         return ClientConfigs.isPixelConsistentSign(state);
     }
 
