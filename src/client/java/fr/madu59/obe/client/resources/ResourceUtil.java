@@ -5,6 +5,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
+import fr.madu59.obe.client.compat.ModCompat;
+import fr.madu59.obe.client.compat.emf.EMFCompat;
+import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.model.BlockEntityStateModel;
 import fr.madu59.obe.client.registry.Registry;
 import fr.madu59.obe.client.util.entity.CushionUtil;
@@ -18,6 +21,7 @@ import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.data.AtlasIds;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 
 public class ResourceUtil{
 
@@ -61,8 +65,14 @@ public class ResourceUtil{
         transformedSpecialModelCache.put(new SpecialModelCacheKey(blockState, cacheKey), model);
     }
 
-    public static ModelPart bakeLayer(ModelLayerLocation modelLayerLocation){
-        return bakedLayersCache.computeIfAbsent(modelLayerLocation, key -> Minecraft.getInstance().getEntityModels().bakeLayer(key));
+    public static ModelPart bakeLayer(ModelLayerLocation modelLayerLocation, @Nullable BlockState state){
+        return bakedLayersCache.computeIfAbsent(modelLayerLocation, key -> {
+            boolean shouldApplyEmfCompatibility = state != null && ModCompat.isEMFLoaded() && SettingsManager.EMF_COMPAT.getValue();
+            if(shouldApplyEmfCompatibility) EMFCompat.setCurrentSpecifiedModelLoading(state);
+            ModelPart modelPart = Minecraft.getInstance().getEntityModels().bakeLayer(key);
+            if(shouldApplyEmfCompatibility) EMFCompat.resetCurrentSpecifiedModelLoading();
+            return modelPart;
+        });
     }
 
     public static void clearCache(){

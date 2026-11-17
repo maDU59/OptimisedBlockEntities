@@ -16,7 +16,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import fr.madu59.obe.client.compat.ModCompat;
 import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.resources.ResourceUtil;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.ModelPart.Polygon;
@@ -88,7 +87,8 @@ public class BlockEntityStateModel implements BlockStateModel{
     }
 
     private SimpleModelWrapper generateModel(ModelLayerLocation modelLayerLocation, TextureAtlasSprite sprite, PoseStack poseStack, boolean useAo, BlockState state){
-        ModelPart root = ResourceUtil.bakeLayer(modelLayerLocation);
+        ModelPart root = ResourceUtil.bakeLayer(modelLayerLocation, state);
+
         ModCompat.applyEMFRestPose(root, state);
 
         Map<String, ModelPart> children = root.children;
