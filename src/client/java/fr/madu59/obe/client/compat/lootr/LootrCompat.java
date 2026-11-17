@@ -44,7 +44,7 @@ public class LootrCompat {
     public static Identifier getChestMaterial(BlockState state, BlockEntity be) {
         if(be instanceof LootrChestBlockEntity lootrChestBe){
             boolean isOpened = Minecraft.getInstance().player != null && lootrChestBe.hasClientOpened(Minecraft.getInstance().player);
-            getChestMaterial(state, isOpened);
+            return getChestMaterial(state, isOpened);
         }
         return ChestUtil.getMaterial(state);
    }

@@ -88,7 +88,7 @@ public class BlockEntityStateModel implements BlockStateModel{
     }
 
     private SimpleModelWrapper generateModel(ModelLayerLocation modelLayerLocation, TextureAtlasSprite sprite, PoseStack poseStack, boolean useAo, BlockState state){
-        ModelPart root = Minecraft.getInstance().getEntityModels().bakeLayer(modelLayerLocation);
+        ModelPart root = ResourceUtil.bakeLayer(modelLayerLocation);
         ModCompat.applyEMFRestPose(root, state);
 
         Map<String, ModelPart> children = root.children;

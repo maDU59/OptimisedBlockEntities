@@ -10,6 +10,7 @@ import fr.madu59.obe.client.registry.Registry;
 import fr.madu59.obe.client.util.entity.CushionUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.block.BlockStateModelSet;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -22,6 +23,7 @@ public class ResourceUtil{
 
     private static Map<BlockState, BlockStateModel> transformedModelCache = new ConcurrentHashMap<>();
     private static Map<SpecialModelCacheKey, BlockStateModel> transformedSpecialModelCache = new ConcurrentHashMap<>();
+    private static Map<ModelLayerLocation, ModelPart> bakedLayersCache = new ConcurrentHashMap<>();
 
     public static TextureAtlasSprite getSprite(Identifier id) {
         return Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(AtlasIds.BLOCKS).getSprite(id);
@@ -59,9 +61,14 @@ public class ResourceUtil{
         transformedSpecialModelCache.put(new SpecialModelCacheKey(blockState, cacheKey), model);
     }
 
+    public static ModelPart bakeLayer(ModelLayerLocation modelLayerLocation){
+        return bakedLayersCache.computeIfAbsent(modelLayerLocation, key -> Minecraft.getInstance().getEntityModels().bakeLayer(key));
+    }
+
     public static void clearCache(){
         transformedSpecialModelCache.clear();
         transformedModelCache.clear();
+        bakedLayersCache.clear();
         CushionUtil.clearCache();
     }
 
