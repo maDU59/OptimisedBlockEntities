@@ -52,6 +52,9 @@ public abstract class DecoratedPotBlockEntityMixin{
     public void obe$triggerEvent(final int event, final int data, CallbackInfoReturnable<Boolean> ci) {
         DecoratedPotBlockEntity be = (DecoratedPotBlockEntity)(Object)this;
         BlockEntityExt ext = (BlockEntityExt)be;
+
+        if(!ext.obe$isSupported() || !ext.obe$isEnabled()) return;
+
         RenderModeManager.setRenderModeDelayed(ext, RenderMode.ENTITY, be.getBlockPos());
         ext.obe$setTimer(be.wobbleStartedAtTick, be.lastWobbleStyle.duration);
     }
@@ -60,6 +63,9 @@ public abstract class DecoratedPotBlockEntityMixin{
     public void obe$updateTimer(CallbackInfoReturnable<PotDecorations> cir) {
         DecoratedPotBlockEntity be = (DecoratedPotBlockEntity)(Object)this;
         BlockEntityExt ext = (BlockEntityExt)be;
+
+        if(!ext.obe$isSupported() || !ext.obe$isEnabled()) return;
+
         if(ext.obe$isTimerFinished()) RenderModeManager.setRenderModeDelayed(ext, RenderMode.TERRAIN, be.getBlockPos());
     }
 
