@@ -1,3 +1,4 @@
 # What's new:
-- Fixed compatibility with Camol
-- Improved compatibility with Better Beds and other mods canceling block entity renderers
+- Improved compatibility with Fancy World Animations and Immediately Fast
+- Added a new API to register meshing predicates, allow mods to control which block entities should be meshed or not
+- Improved the API

@@ -7,6 +7,7 @@ import fr.madu59.obe.OBE;
 import fr.madu59.obe.client.compat.bclib.BclibCompat;
 import fr.madu59.obe.client.compat.emf.EMFCompat;
 import fr.madu59.obe.client.compat.entityculling.EntityCullingCompat;
+import fr.madu59.obe.client.compat.fancyworldanimations.FancyWorldAnimationsCompat;
 import fr.madu59.obe.client.compat.immediatelyfast.ImmediatelyFastCompat;
 import fr.madu59.obe.client.compat.iris.IrisCompat;
 import fr.madu59.obe.client.compat.lootr.LootrCompat;
@@ -30,6 +31,7 @@ public class ModCompat {
         runSafe("lootr", () -> LootrCompat.init());
         runSafe("lolmcv", () -> MoreChestVariantsCompat.init());
         runSafe("entityculling", () -> EntityCullingCompat.init());
+        runSafe("fwa", () -> FancyWorldAnimationsCompat.init());
     }
 
     public static void onWorldLoad(){

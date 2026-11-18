@@ -1,5 +1,6 @@
 package fr.madu59.obe.client.renderer.misc;
 
+import fr.madu59.obe.client.api.rendering.MeshingPredicatesAPI;
 import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.chunk.ChunkTaskHolder;
 import fr.madu59.obe.client.config.Option;
@@ -101,7 +102,11 @@ public class RenderModeManager {
             String group = Registry.getGroup(((BlockEntity)ext).getType());
             if(group == null) return;
             Option<Boolean> option = SettingsManager.GROUP_TOGGLE_SETTINGS.get(group);
-            if(option != null) ext.obe$isEnabled(option.getValue());
+            boolean isConfigEnabled = true;
+            if(option != null) isConfigEnabled = option.getValue();
+
+            ext.obe$isEnabled(isConfigEnabled && MeshingPredicatesAPI.shouldMesh((BlockEntity)ext));
+
             if(ext.obe$isEnabled()){
                 if(ext.obe$isTimerFinished()){
                     ChunkTaskHolder.addTask(pos, () -> ext.obe$renderMode(RenderMode.TERRAIN));
