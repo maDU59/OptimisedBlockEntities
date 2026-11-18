@@ -3,6 +3,7 @@ package fr.madu59.obe.client.compat;
 import java.util.Arrays;
 import java.util.List;
 
+import fr.madu59.obe.client.compat.betterbeds.BetterBedsCompat;
 import fr.madu59.obe.OBE;
 import fr.madu59.obe.client.compat.bclib.BclibCompat;
 import fr.madu59.obe.client.compat.emf.EMFCompat;
@@ -30,6 +31,7 @@ public class ModCompat {
         runSafe("lootr", () -> LootrCompat.init());
         runSafe("lolmcv", () -> MoreChestVariantsCompat.init());
         runSafe("entityculling", () -> EntityCullingCompat.init());
+        runSafe("betterbeds", () -> BetterBedsCompat.init());
     }
 
     public static void onWorldLoad(){
