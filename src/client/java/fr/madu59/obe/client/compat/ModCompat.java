@@ -7,6 +7,7 @@ import fr.madu59.obe.OBE;
 import fr.madu59.obe.client.compat.bclib.BclibCompat;
 import fr.madu59.obe.client.compat.biomeswevegone.BiomesWeveGoneCompat;
 import fr.madu59.obe.client.compat.carvedwood.CarvedWoodCompat;
+import fr.madu59.obe.client.compat.ecologics.EcologicsCompat;
 import fr.madu59.obe.client.compat.emf.EMFCompat;
 import fr.madu59.obe.client.compat.entityculling.EntityCullingCompat;
 import fr.madu59.obe.client.compat.fancyworldanimations.FancyWorldAnimationsCompat;
@@ -36,6 +37,7 @@ public class ModCompat {
         runSafe("entityculling", () -> EntityCullingCompat.init());
         runSafe("biomeswevegone", () -> BiomesWeveGoneCompat.init());
         runSafe("fwa", () -> FancyWorldAnimationsCompat.init());
+        runSafe("ecologics", () -> EcologicsCompat.init());
     }
 
     public static void onWorldLoad(){

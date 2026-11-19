@@ -75,8 +75,6 @@ dependencies {
 
 	modImplementation "maven.modrinth:create-fly:1.21.11-6.0.9-5"
 
-	modCompileOnly "maven.modrinth:oh-the-biomes-weve-gone:4.4.2-Fabric"
-
 	modCompileOnly "maven.modrinth:fwa:h7I6qfpm"
 }
 
