@@ -3,9 +3,6 @@ package fr.madu59.obe.client.compat.lootr;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import fr.madu59.obe.client.api.registry.RegistryApi;
-import fr.madu59.obe.client.registry.Registry;
-import fr.madu59.obe.client.registry.SpecialModelGetter;
-import fr.madu59.obe.client.registry.SpecialModelGetter.SpecialModelProvider;
 import fr.madu59.obe.client.util.blockentity.ChestUtil;
 import fr.madu59.obe.client.util.blockentity.ShulkerBoxUtil;
 import net.minecraft.client.Minecraft;
@@ -33,66 +30,88 @@ public class LootrCompat {
         RegistryApi.registerSpecialModelProvider(LootrRegistry.getChestBlockEntity(), ChestUtil::getModelLayerLocation, LootrCompat::getChestMaterial, LootrCompat::transformChest, LootrCompat::getChestCacheKey);
         RegistryApi.registerSpecialModelProvider(LootrRegistry.getTrappedChestBlockEntity(), ChestUtil::getModelLayerLocation, LootrCompat::getChestMaterial, LootrCompat::transformChest, LootrCompat::getChestCacheKey);
 
-        RegistryApi.registerBlockEntityType("shulker_box", LootrRegistry.getShulkerBoxBlockEntity());;
+        RegistryApi.registerBlockEntityType("shulker_box", LootrRegistry.getShulkerBoxBlockEntity());
         RegistryApi.registerSpecialModelProvider(LootrRegistry.getShulkerBoxBlockEntity(), ShulkerBoxUtil::getModelLayerLocation, LootrCompat::getShulkerBoxMaterial, ShulkerBoxUtil::transform, LootrCompat::getShulkerBoxCacheKey);
+
+        // While this is not mandatory, it helps when an LOD mod is being used (e.g. Voxy or Distant Horizons), it avoids the LOD mod from using the default chest texture for the Lootr chests
+        RegistryApi.registerMaterialProvider(LootrRegistry.getChestBlockEntity(), LootrCompat::getChestMaterial);
+        RegistryApi.registerMaterialProvider(LootrRegistry.getTrappedChestBlockEntity(), LootrCompat::getChestMaterial);
+        RegistryApi.registerMaterialProvider(LootrRegistry.getShulkerBoxBlockEntity(), LootrCompat::getShulkerBoxMaterial);
     }
 
     public static Identifier getChestMaterial(BlockState state, BlockEntity be) {
         if(be instanceof LootrChestBlockEntity lootrChestBe){
             boolean isOpened = Minecraft.getInstance().player != null && lootrChestBe.hasClientOpened(Minecraft.getInstance().player);
-            if (LootrAPI.isVanillaTextures()) {
-                Identifier id;
-                switch (LootrChestType.fromState(state)) {
-                    case NORMAL -> id = Sheets.CHEST_REGULAR.single().texture();
-                    case COPPER -> id = Sheets.CHEST_COPPER_UNAFFECTED.single().texture();
-                    case WEATHERED -> id = Sheets.CHEST_COPPER_WEATHERED.single().texture();
-                    case EXPOSED -> id = Sheets.CHEST_COPPER_EXPOSED.single().texture();
-                    case OXIDIZED -> id = Sheets.CHEST_COPPER_OXIDIZED.single().texture();
-                    case TRAPPED -> id = Sheets.CHEST_TRAPPED.single().texture();
-                    default -> throw new MatchException((String)null, (Throwable)null);
-                }
-
-                return id;
-            } else if (isOpened) {
-                Identifier id;
-                switch (LootrChestType.fromState(state)) {
-                    case NORMAL -> id = LootrChestBlockRenderer.NORMAL_OPENED.texture();
-                    case COPPER -> id = LootrChestBlockRenderer.COPPER_OPENED.texture();
-                    case WEATHERED -> id = LootrChestBlockRenderer.COPPER_WEATHERED_OPENED.texture();
-                    case EXPOSED -> id = LootrChestBlockRenderer.COPPER_EXPOSED_OPENED.texture();
-                    case OXIDIZED -> id = LootrChestBlockRenderer.COPPER_OXIDIZED_OPENED.texture();
-                    case TRAPPED -> id = LootrChestBlockRenderer.TRAPPED_OPENED.texture();
-                    default -> throw new MatchException((String)null, (Throwable)null);
-                }
-
-                return id;
-            } else {
-                Identifier id;
-                switch (LootrChestType.fromState(state)) {
-                    case NORMAL -> id = LootrChestBlockRenderer.NORMAL.texture();
-                    case COPPER -> id = LootrChestBlockRenderer.COPPER.texture();
-                    case WEATHERED -> id = LootrChestBlockRenderer.COPPER_WEATHERED.texture();
-                    case EXPOSED -> id = LootrChestBlockRenderer.COPPER_EXPOSED.texture();
-                    case OXIDIZED -> id = LootrChestBlockRenderer.COPPER_OXIDIZED.texture();
-                    case TRAPPED -> id = LootrChestBlockRenderer.TRAPPED.texture();
-                    default -> throw new MatchException((String)null, (Throwable)null);
-                }
-
-                return id;
-            }
+            return getChestMaterial(state, isOpened);
         }
         return ChestUtil.getMaterial(state);
    }
 
+    public static Identifier getChestMaterial(BlockState state) {
+        return getChestMaterial(state, false);
+    }
+
+    public static Identifier getChestMaterial(BlockState state, boolean isOpened) {
+        if (LootrAPI.isVanillaTextures()) {
+            Identifier id;
+            switch (LootrChestType.fromState(state)) {
+                case NORMAL -> id = Sheets.CHEST_REGULAR.single().texture();
+                case COPPER -> id = Sheets.CHEST_COPPER_UNAFFECTED.single().texture();
+                case WEATHERED -> id = Sheets.CHEST_COPPER_WEATHERED.single().texture();
+                case EXPOSED -> id = Sheets.CHEST_COPPER_EXPOSED.single().texture();
+                case OXIDIZED -> id = Sheets.CHEST_COPPER_OXIDIZED.single().texture();
+                case TRAPPED -> id = Sheets.CHEST_TRAPPED.single().texture();
+                default -> throw new MatchException((String)null, (Throwable)null);
+            }
+
+            return id;
+        } else if (isOpened) {
+            Identifier id;
+            switch (LootrChestType.fromState(state)) {
+                case NORMAL -> id = LootrChestBlockRenderer.NORMAL_OPENED.texture();
+                case COPPER -> id = LootrChestBlockRenderer.COPPER_OPENED.texture();
+                case WEATHERED -> id = LootrChestBlockRenderer.COPPER_WEATHERED_OPENED.texture();
+                case EXPOSED -> id = LootrChestBlockRenderer.COPPER_EXPOSED_OPENED.texture();
+                case OXIDIZED -> id = LootrChestBlockRenderer.COPPER_OXIDIZED_OPENED.texture();
+                case TRAPPED -> id = LootrChestBlockRenderer.TRAPPED_OPENED.texture();
+                default -> throw new MatchException((String)null, (Throwable)null);
+            }
+
+            return id;
+        } else {
+            Identifier id;
+            switch (LootrChestType.fromState(state)) {
+                case NORMAL -> id = LootrChestBlockRenderer.NORMAL.texture();
+                case COPPER -> id = LootrChestBlockRenderer.COPPER.texture();
+                case WEATHERED -> id = LootrChestBlockRenderer.COPPER_WEATHERED.texture();
+                case EXPOSED -> id = LootrChestBlockRenderer.COPPER_EXPOSED.texture();
+                case OXIDIZED -> id = LootrChestBlockRenderer.COPPER_OXIDIZED.texture();
+                case TRAPPED -> id = LootrChestBlockRenderer.TRAPPED.texture();
+                default -> throw new MatchException((String)null, (Throwable)null);
+            }
+
+            return id;
+        }
+    }
+
     public static Identifier getShulkerBoxMaterial(BlockState state, BlockEntity be) {
         if(be instanceof LootrShulkerBoxBlockEntity lootrShulkerBoxBe){
-            if (LootrAPI.isVanillaTextures()) {
-                return Sheets.DEFAULT_SHULKER_TEXTURE_LOCATION.texture();
-            } else {
-                return Minecraft.getInstance().player != null && lootrShulkerBoxBe.hasClientOpened(Minecraft.getInstance().player) ? SHULKER_BOX_MATERIAL2 : SHULKER_BOX_MATERIAL;
-            }
+            boolean isOpened = Minecraft.getInstance().player != null && lootrShulkerBoxBe.hasClientOpened(Minecraft.getInstance().player);
+            return getShulkerBoxMaterial(state, isOpened);
         }
         return ShulkerBoxUtil.getMaterial(state);
+   }
+
+   public static Identifier getShulkerBoxMaterial(BlockState state) {
+        return getShulkerBoxMaterial(state, false);
+   }
+
+   public static Identifier getShulkerBoxMaterial(BlockState state, boolean isOpened) {
+       if (LootrAPI.isVanillaTextures()) {
+           return Sheets.DEFAULT_SHULKER_TEXTURE_LOCATION.texture();
+       } else {
+           return isOpened ? SHULKER_BOX_MATERIAL2 : SHULKER_BOX_MATERIAL;
+       }
    }
 
     public static void transformChest(BlockState state, BlockEntity be, PoseStack poseStack) {

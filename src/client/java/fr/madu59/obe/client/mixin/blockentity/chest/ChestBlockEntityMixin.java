@@ -35,6 +35,7 @@ public abstract class ChestBlockEntityMixin{
         original.call(level, pos, state, entity);
         
         BlockEntityExt ext = (BlockEntityExt)entity;
+        if(!ext.obe$isSupported() || !ext.obe$isEnabled()) return;
 
         ChestBlockEntity doubleChest = ChestUtil.getOtherHalf(level, pos, state);
         float openness = entity.getOpenNess(0.5f);

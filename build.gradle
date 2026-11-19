@@ -44,7 +44,7 @@ dependencies {
 	implementation "net.caffeinemc:sodium-fabric-api:0.8.12+mc26.1.2"
 	implementation "net.caffeinemc:sodium-fabric:0.8.12+mc26.1.2"
 	implementation "maven.modrinth:iris:1.10.9+26.1-fabric"
-	
+
 	implementation "maven.modrinth:entitytexturefeatures:7.2.1-fabric-26.1"
 	implementation "maven.modrinth:entity-model-features:3.3.2-fabric-26.1"
 	implementation "maven.modrinth:lootr:m1PLActz"
@@ -73,6 +73,8 @@ dependencies {
 	implementation "maven.modrinth:create-fly:26.1.2-6.0.9-4"
 
 	compileOnly "curse.maven:the-twilight-forest-227639:9556107"
+
+	compileOnly "maven.modrinth:fwa:ehVKFtpJ"
 }
 
 processResources {

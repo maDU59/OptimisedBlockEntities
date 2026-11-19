@@ -30,6 +30,10 @@ public abstract class ShulkerBoxBlockEntityMixin{
     @Inject(method = "updateAnimation", at = @At("RETURN"))
     public void obe$updateAnimation(final Level level, final BlockPos pos, final BlockState blockState, CallbackInfo ci){
         ShulkerBoxBlockEntity be = (ShulkerBoxBlockEntity) (Object) this;
+
+        BlockEntityExt ext = (BlockEntityExt)be;
+        if(!ext.obe$isSupported() || !ext.obe$isEnabled()) return;
+
         if(be.getAnimationStatus() != AnimationStatus.CLOSED){
             RenderModeManager.setRenderModeDelayed(be, RenderMode.ENTITY, be.getBlockPos());
         }
