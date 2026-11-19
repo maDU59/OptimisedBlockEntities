@@ -12,6 +12,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.TrappedChestBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
@@ -73,7 +74,7 @@ public class LootrCompat {
     public static ResourceLocation getChestMaterial(BlockState state, boolean isOpened) {
         boolean isTrapped = state.is(LootrTags.Blocks.TRAPPED_CHESTS);
         if (ConfigManager.isVanillaTextures()) {
-            return ChestUtil.getMaterial(state);
+            return isTrapped ? Sheets.CHEST_TRAP_LOCATION.texture() : Sheets.CHEST_LOCATION.texture();
         } else if (ConfigManager.get().client.old_textures) {
             return isOpened ? OLD_MATERIAL2 : OLD_MATERIAL;
         } else {
