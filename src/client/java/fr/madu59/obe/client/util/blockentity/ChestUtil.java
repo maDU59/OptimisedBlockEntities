@@ -75,32 +75,32 @@ public class ChestUtil {
 
     // Legacy methods, kept here to not break Quark's compatibility
 
-    @Deprecated
+    @Deprecated(forRemoval = true)
     public static ResourceLocation getChestMaterial(BlockState state) {
         return getMaterial(state);
     }
 
-    @Deprecated
+    @Deprecated(forRemoval = true)
     public static ModelLayerLocation getChestModelLayerLocation(BlockState state){
         return getModelLayerLocation(state);
     }
 
-    @Deprecated
+    @Deprecated(forRemoval = true)
     public static void transformChest(BlockState state, PoseStack poseStack){
         transform(state, poseStack);
     }
 
-    @Deprecated
+    @Deprecated(forRemoval = true)
     public static ResourceLocation getChestMaterial(BlockState state, BlockEntity be) {
         return getMaterial(state);
     }
 
-    @Deprecated
+    @Deprecated(forRemoval = true)
     public static ModelLayerLocation getChestModelLayerLocation(BlockState state, BlockEntity be){
         return getModelLayerLocation(state, be);
     }
 
-    @Deprecated
+    @Deprecated(forRemoval = true)
     public static void transformChest(BlockState state, BlockEntity be, PoseStack poseStack){
         transform(state, be, poseStack);
     }

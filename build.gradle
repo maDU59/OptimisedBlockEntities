@@ -90,6 +90,8 @@ dependencies {
 	modRuntimeOnly "maven.modrinth:platform:UBpoaJQa"
 
 	modCompileOnly "maven.modrinth:oh-the-biomes-weve-gone:2.6.3-Fabric"
+
+	modCompileOnly "maven.modrinth:fwa:ALikGbmR"
 }
 
 processResources {

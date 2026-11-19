@@ -1,5 +1,6 @@
 package fr.madu59.obe.client.compat.amendments;
 
+import fr.madu59.obe.client.api.rendering.MeshingPredicatesAPI;
 import net.mehvahdjukaar.amendments.common.ExtendedHangingSign;
 import net.mehvahdjukaar.amendments.common.IBellConnection;
 import net.mehvahdjukaar.amendments.configs.ClientConfigs;
@@ -24,5 +25,13 @@ public class AmendmentsCompat {
 
     public static boolean isExtendedBell(BlockEntity be){
         return be instanceof IBellConnection bell && !bell.amendments$getConnection().isEmpty();
+    }
+
+    public static void init(){
+        MeshingPredicatesAPI.registerPredicate(blockEntity -> {
+            if (AmendmentsCompat.isSwingingHangingSign(blockEntity)) return false;
+            if (AmendmentsCompat.isConnectedBell(blockEntity)) return false;
+            return true;
+        });
     }
 }

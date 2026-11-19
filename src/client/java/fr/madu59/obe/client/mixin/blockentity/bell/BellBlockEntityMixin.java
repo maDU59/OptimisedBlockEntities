@@ -32,6 +32,7 @@ public abstract class BellBlockEntityMixin {
     private static void tick(final Level level, final BlockPos pos, final BlockState state, final BellBlockEntity entity, final @Coerce Object onResonationEnd, CallbackInfo ci) {
         if (level != null && !level.isClientSide()) return;
         BlockEntityExt ext = (BlockEntityExt)entity;
+        if(!ext.obe$isSupported() || !ext.obe$isEnabled()) return;
         if(entity.shaking){
             RenderModeManager.setRenderModeDelayed(ext, RenderMode.ENTITY, pos);
         }
