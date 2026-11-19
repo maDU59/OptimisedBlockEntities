@@ -15,6 +15,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
+import net.zestyblaze.lootr.LootrTags;
 import net.zestyblaze.lootr.api.blockentity.ILootBlockEntity;
 import net.zestyblaze.lootr.block.entities.LootrChestBlockEntity;
 import net.zestyblaze.lootr.block.entities.LootrShulkerBlockEntity;
@@ -46,84 +47,68 @@ public class LootrCompat {
 
         RegistryApi.registerBlockEntityType("shulker_box", ModBlockEntities.SPECIAL_LOOT_SHULKER);
         RegistryApi.registerSpecialModelProvider(ModBlockEntities.SPECIAL_LOOT_SHULKER, ShulkerBoxUtil::getModelLayerLocation, LootrCompat::getShulkerBoxMaterial, ShulkerBoxUtil::transform, LootrCompat::getShulkerBoxCacheKey);
+
+        // While this is not mandatory, it helps when an LOD mod is being used (e.g. Voxy or Distant Horizons), it avoids the LOD mod from using the default chest texture for the Lootr chests
+        RegistryApi.registerMaterialProvider(ModBlockEntities.SPECIAL_LOOT_CHEST, LootrCompat::getChestMaterial);
+        RegistryApi.registerMaterialProvider(ModBlockEntities.SPECIAL_TRAPPED_LOOT_CHEST, LootrCompat::getChestMaterial);
+        RegistryApi.registerMaterialProvider(ModBlockEntities.SPECIAL_LOOT_SHULKER, LootrCompat::getShulkerBoxMaterial);
     }
 
     public static <T extends LootrChestBlockEntity & ILootBlockEntity> ResourceLocation getChestMaterial(BlockState state, BlockEntity be) {
         if(be instanceof LootrChestBlockEntity lootrChestBe){
-            if (ConfigManager.isVanillaTextures()) {
-                return lootrChestBe.getType() == ModBlockEntities.SPECIAL_TRAPPED_LOOT_CHEST ? Sheets.CHEST_TRAP_LOCATION.texture() : Sheets.chooseMaterial(lootrChestBe, ChestType.SINGLE, false).texture();
-            } else if (ConfigManager.get().client.old_textures) {
-                if (playerId == null) {
-                    Player player = Minecraft.getInstance().player;
-                    if (player == null) {
-                    return OLD_MATERIAL;
-                    }
-
-                    playerId = player.getUUID();
-                }
-
-                if (lootrChestBe.isOpened()) {
-                    return OLD_MATERIAL2;
-                } else {
-                    return lootrChestBe.getOpeners().contains(playerId) ? OLD_MATERIAL2 : OLD_MATERIAL;
-                }
-            } else {
-                if (playerId == null) {
-                    Player player = Minecraft.getInstance().player;
-                    if (player == null) {
-                    if (lootrChestBe.getType() == ModBlockEntities.SPECIAL_TRAPPED_LOOT_CHEST) {
-                        return MATERIAL3;
-                    }
-
-                    return MATERIAL;
-                    }
-
-                    playerId = player.getUUID();
-                }
-
-                if (lootrChestBe.isOpened()) {
-                    return lootrChestBe.getType() == ModBlockEntities.SPECIAL_TRAPPED_LOOT_CHEST ? MATERIAL4 : MATERIAL2;
-                } else if (lootrChestBe.getOpeners().contains(playerId)) {
-                    return lootrChestBe.getType() == ModBlockEntities.SPECIAL_TRAPPED_LOOT_CHEST ? MATERIAL4 : MATERIAL2;
-                } else {
-                    return lootrChestBe.getType() == ModBlockEntities.SPECIAL_TRAPPED_LOOT_CHEST ? MATERIAL3 : MATERIAL;
-                }
+            if (playerId == null) {
+                Player player = Minecraft.getInstance().player;
+                if (player != null)  playerId = player.getUUID();
             }
+            boolean isOpened = lootrChestBe.isOpened() || (playerId != null && lootrChestBe.getOpeners().contains(playerId));
+            return getChestMaterial(state, isOpened);
         }
-        else{
-            return ChestUtil.getMaterial(state);
-        }
+        return ChestUtil.getMaterial(state);
    }
 
+    public static ResourceLocation getChestMaterial(BlockState state) {
+        return getChestMaterial(state, false);
+    }
+
+    public static ResourceLocation getChestMaterial(BlockState state, boolean isOpened) {
+        boolean isTrapped = state.is(LootrTags.Blocks.TRAPPED_CHESTS);
+        if (ConfigManager.isVanillaTextures()) {
+            return ChestUtil.getMaterial(state);
+        } else if (ConfigManager.get().client.old_textures) {
+            return isOpened ? OLD_MATERIAL2 : OLD_MATERIAL;
+        } else {
+            if (isOpened) {
+                return isTrapped ? MATERIAL4 : MATERIAL2;
+            } else {
+                return isTrapped ? MATERIAL3 : MATERIAL;
+            }
+        }
+    }
+
     public static ResourceLocation getShulkerBoxMaterial(BlockState state, BlockEntity be) {
-        if(be instanceof LootrShulkerBlockEntity lootrShulkerBe){
+        if(be instanceof LootrShulkerBlockEntity lootrShulkerBoxBe){
+            if (playerId == null) {
+                Player player = Minecraft.getInstance().player;
+                if (player != null)  playerId = player.getUUID();
+            }
+            boolean isOpened = playerId!= null && lootrShulkerBoxBe.getOpeners().contains(playerId);
+            return getShulkerBoxMaterial(state, isOpened);
+        }
+        return ShulkerBoxUtil.getMaterial(state);
+   }
+
+   public static ResourceLocation getShulkerBoxMaterial(BlockState state) {
+        return getShulkerBoxMaterial(state, false);
+   }
+
+   public static ResourceLocation getShulkerBoxMaterial(BlockState state, boolean isOpened) {
             if (ConfigManager.get().client.vanilla_textures) {
                 return Sheets.DEFAULT_SHULKER_TEXTURE_LOCATION.texture();
             } else if (ConfigManager.get().client.old_textures) {
-                if (playerId == null) {
-                    Minecraft mc = Minecraft.getInstance();
-                    if (mc.player == null) {
-                        return SHULKER_BOX_OLD_MATERIAL;
-                    }
-
-                    playerId = mc.player.getUUID();
-                }
-
-                return lootrShulkerBe.getOpeners().contains(playerId) ? SHULKER_BOX_OLD_MATERIAL2 : SHULKER_BOX_OLD_MATERIAL;
+                return isOpened ? SHULKER_BOX_OLD_MATERIAL2 : SHULKER_BOX_OLD_MATERIAL;
             } else {
-                if (playerId == null) {
-                    Minecraft mc = Minecraft.getInstance();
-                    if (mc.player == null) {
-                        return SHULKER_BOX_MATERIAL;
-                    }
-
-                    playerId = mc.player.getUUID();
-                }
-
-                return lootrShulkerBe.getOpeners().contains(playerId) ? SHULKER_BOX_MATERIAL2 : SHULKER_BOX_MATERIAL;
+                return isOpened ? SHULKER_BOX_MATERIAL2 : SHULKER_BOX_MATERIAL;
             }
-        }
-        else return ShulkerBoxUtil.getMaterial(state);
    }
 
     public static void transformChest(BlockState state, BlockEntity be, PoseStack poseStack) {

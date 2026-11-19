@@ -89,6 +89,8 @@ dependencies {
 	modCompileOnly "maven.modrinth:vanillabackport:SgvHEKg5"
 
 	modCompileOnly "maven.modrinth:oh-the-biomes-weve-gone:1.8.2-Fabric"
+
+	modCompileOnly "maven.modrinth:fwa:lAPNVbxI"
 }
 
 processResources {

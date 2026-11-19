@@ -19,8 +19,8 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class RegistryApi {
-    /*
-     * Register a new group of optimised block entities
+    /**
+     * Registers a new group of optimised block entities
      * @param id The id of the group to register
      * @since 1.1.0
      */
@@ -28,28 +28,30 @@ public class RegistryApi {
         Registry.registerGroup(id);
     }
 
-    /*
-     * Register a new optimized block entity type in a group
+    /**
+     * Registers a block entity type in a group
      * @param type The block entity type to register
      * @param id The id of the group to register the block entity type in
      * @since 1.1.0
+     * @deprecated Use {@link #registerBlockEntityType(String, BlockEntityType[])} instead
      */
-    public static void registerBlockEntityType(BlockEntityType<?> type, String id){
+    @Deprecated
+    private static void registerBlockEntityType(BlockEntityType<?> type, String id){
         Registry.addBlockEntityTypeInGroup(id, type);
     }
 
-    /*
-     * Register a new optimized block entity type in a group
+    /**
+     * Registers one or multiple block entity type(s) in a given group
      * @param id The id of the group to register the block entity type in
-     * @param type The block entity type to register
+     * @param types The block entity types to register
      * @since 1.2.2
      */
     public static void registerBlockEntityType(String id, BlockEntityType<?> ... types){
         Registry.addBlockEntityTypeInGroup(id, types);
     }
 
-    /*
-     * Register a material provider for a group
+    /**
+     * Registers a material provider for a group
      * @param id The group to which the material provider should be registered
      * @param provider The material provider, it must be a function accepting a BlockState and returning an ResourceLocation
      * @since 1.1.0
@@ -58,8 +60,8 @@ public class RegistryApi {
         MaterialGetter.registerDefault(id, provider);
     }
 
-    /*
-     * Register a material provider for a block entity type
+    /**
+     * Registers a material provider for a block entity type
      * @param type The block entity type to which the material provider should be registered
      * @param provider The material provider, it must be a function accepting a BlockState and returning an ResourceLocation
      * @since 1.1.0
@@ -68,8 +70,8 @@ public class RegistryApi {
         MaterialGetter.register(type, provider);
     }
 
-    /*
-     * Register a material provider for a block
+    /**
+     * Registers a material provider for a block
      * @param block The block to which the material provider should be registered
      * @param provider The material provider, it must be a function accepting a BlockState and returning an ResourceLocation
      * @since 1.1.0
@@ -78,8 +80,8 @@ public class RegistryApi {
         MaterialGetter.register(block, provider);
     }
 
-    /*
-     * Register a block entity as supported - note that if the block entity type of this block entity has already been registered in one of the vanilla groups, this may not be needed
+    /**
+     * Registers a block entity as supported - note that if the block entity type of this block entity has already been registered in one of the vanilla groups, this may not be needed
      * @param be The block entity to register as supported - this must be done at the block entity init
      * @since 1.1.0
      */
@@ -87,8 +89,8 @@ public class RegistryApi {
         ((BlockEntityExt)be).obe$isSupported(true);
     }
 
-    /*
-     * Register a transformation provider for a group
+    /**
+     * Registers a transformation provider for a group
      * @param id The group to which the transformation provider should be registered
      * @param provider The transformation provider, it must be a consumer accepting a BlockState and a PoseStack
      * @since 1.1.7
@@ -97,8 +99,8 @@ public class RegistryApi {
         TransformationGetter.registerDefault(id, provider);
     }
 
-    /*
-     * Register a transformation provider for a block entity type
+    /**
+     * Registers a transformation provider for a block entity type
      * @param type The block entity type to which the transformation provider should be registered
      * @param provider The transformation provider, it must be a consumer accepting a BlockState and a PoseStack
      * @since 1.1.7
@@ -107,8 +109,8 @@ public class RegistryApi {
         TransformationGetter.register(type, provider);
     }
 
-    /*
-     * Register a transformation provider for a block
+    /**
+     * Registers a transformation provider for a block
      * @param block The block to which the transformation provider should be registered
      * @param provider The transformation provider, it must be a consumer accepting a BlockState and a PoseStack
      * @since 1.1.7
@@ -117,8 +119,8 @@ public class RegistryApi {
         TransformationGetter.register(block, provider);
     }
 
-    /*
-     * Register a model layer location provider for a group
+    /**
+     * Registers a model layer location provider for a group
      * @param id The group to which the model layer location provider should be registered
      * @param provider The model layer location provider, it must be a function accepting a BlockState and returning a ModelLayerLocation
      * @since 1.1.7
@@ -127,8 +129,8 @@ public class RegistryApi {
         ModelLayerLocationGetter.registerDefault(id, provider);
     }
 
-    /*
-     * Register a model layer location provider for a block entity type
+    /**
+     * Registers a model layer location provider for a block entity type
      * @param type The block entity type to which the model layer location provider should be registered
      * @param provider The model layer location provider, it must be a function accepting a BlockState and returning a ModelLayerLocation
      * @since 1.1.7
@@ -137,8 +139,8 @@ public class RegistryApi {
         ModelLayerLocationGetter.register(type, provider);
     }
 
-    /*
-     * Register a model layer location provider for a block
+    /**
+     * Registers a model layer location provider for a block
      * @param block The block to which the model layer location provider should be registered
      * @param provider The model layer location provider, it must be a function accepting a BlockState and returning a ModelLayerLocation
      * @since 1.1.7
@@ -147,8 +149,8 @@ public class RegistryApi {
         ModelLayerLocationGetter.register(block, provider);
     }
 
-    /*
-     * Register a special model provider for a block entity type
+    /**
+     * Registers a special model provider for a block entity type
      * @param type The block entity type to which the model layer location provider should be registered
      * @param modelLayerLocationProvider The model layer location provider, it must be a function accepting a BlockState and returning a ModelLayerLocation
      * @param materialProvider The material provider, it must be a function accepting a BlockState and returning an ResourceLocation
@@ -160,9 +162,9 @@ public class RegistryApi {
         SpecialModelGetter.register(type, new SpecialModelProvider(modelLayerLocationProvider, materialProvider, transformationProvider, cacheKeyProvider));
     }
 
-    /*
-     * Register a special model provider for a group
-     * @param type The block entity type to which the model layer location provider should be registered
+    /**
+     * Registers a special model provider for a group
+     * @param id The ID of the group to which the model layer location provider should be registered
      * @param modelLayerLocationProvider The model layer location provider, it must be a function accepting a BlockState and returning a ModelLayerLocation
      * @param materialProvider The material provider, it must be a function accepting a BlockState and returning an ResourceLocation
      * @param transformationProvider The transformation provider, it must be a consumer accepting a BlockState and a PoseStack
@@ -173,8 +175,8 @@ public class RegistryApi {
         SpecialModelGetter.registerDefault(id, new SpecialModelProvider(modelLayerLocationProvider, materialProvider, transformationProvider, cacheKeyProvider));
     }
 
-    /*
-     * Register a special model provider for a block
+    /**
+     * Registers a special model provider for a block
      * @param block The block for which to register the model provider
      * @param modelLayerLocationProvider The model layer location provider, it must be a function accepting a BlockState and returning a ModelLayerLocation
      * @param materialProvider The material provider, it must be a function accepting a BlockState and returning an ResourceLocation
@@ -186,8 +188,8 @@ public class RegistryApi {
         SpecialModelGetter.register(block, new SpecialModelProvider(modelLayerLocationProvider, materialProvider, transformationProvider, cacheKeyProvider));
     }
 
-    /*
-     * Register a model builder for a group, this should only be used to bake complex models, otherwise use the model layer location and material providers
+    /**
+     * Registers a model builder for a group, this should only be used to bake complex models, otherwise use the model layer location and material providers
      * @param id The group to which the model builder should be registered
      * @param builder The model builder
      * @since 1.2.2
@@ -196,8 +198,8 @@ public class RegistryApi {
         ModelGetter.registerDefault(id, builder);
     }
 
-    /*
-     * Register a model builder for a block entity type, this should only be used to bake complex models, otherwise use the model layer location and material providers
+    /**
+     * Registers a model builder for a block entity type, this should only be used to bake complex models, otherwise use the model layer location and material providers
      * @param type The block entity type to which the model builder should be registered
      * @param builder The model builder
      * @since 1.2.2
@@ -206,8 +208,8 @@ public class RegistryApi {
         ModelGetter.register(type, builder);
     }
 
-    /*
-     * Register a model builder for a block, this should only be used to bake complex models, otherwise use the model layer location and material providers
+    /**
+     * Registers a model builder for a block, this should only be used to bake complex models, otherwise use the model layer location and material providers
      * @param block The block to which the model builder should be registered
      * @param builder The model builder
      * @since 1.2.2
@@ -216,8 +218,8 @@ public class RegistryApi {
         ModelGetter.register(block, builder);
     }
 
-    /*
-     * Register a model builder for a group, this should only be used to bake complex models, otherwise use the model layer location and material providers
+    /**
+     * Registers a model builder for a group, this should only be used to bake complex models, otherwise use the model layer location and material providers
      * @param id The group to which the model builder should be registered
      * @param builder The special model builder
      * @since 1.2.2
@@ -226,8 +228,8 @@ public class RegistryApi {
         SpecialModelBuilderGetter.registerDefault(id, builder);
     }
 
-    /*
-     * Register a special model builder for a block entity type, this should only be used to bake complex models, otherwise use the model layer location and material providers
+    /**
+     * Registers a special model builder for a block entity type, this should only be used to bake complex models, otherwise use the model layer location and material providers
      * @param type The block entity type to which the model builder should be registered
      * @param builder The special model builder
      * @since 1.2.2
@@ -236,8 +238,8 @@ public class RegistryApi {
         SpecialModelBuilderGetter.register(type, builder);
     }
 
-    /*
-     * Register a special model builder for a block, this should only be used to bake complex models, otherwise use the model layer location and material providers
+    /**
+     * Registers a special model builder for a block, this should only be used to bake complex models, otherwise use the model layer location and material providers
      * @param block The block to which the model builder should be registered
      * @param builder The special model builder
      * @since 1.2.2
@@ -246,7 +248,7 @@ public class RegistryApi {
         SpecialModelBuilderGetter.register(block, builder);
     }
 
-    /*
+    /**
      * Executes code if the registry is ready, delays it otherwise
      * @param runnable The code to run once the registry is ready
      * @since 1.1.46

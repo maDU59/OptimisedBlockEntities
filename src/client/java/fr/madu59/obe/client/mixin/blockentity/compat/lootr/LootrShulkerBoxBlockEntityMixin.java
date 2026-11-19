@@ -33,6 +33,10 @@ public abstract class LootrShulkerBoxBlockEntityMixin {
     @Inject(method = "updateAnimation", at = @At("HEAD"))
     private void obe$lidAnimateTick(final Level level, final BlockPos pos, final BlockState state, CallbackInfo ci) {
         LootrShulkerBlockEntity be = (LootrShulkerBlockEntity)(Object)this;
+
+        BlockEntityExt ext = (BlockEntityExt)be;
+        if(!ext.obe$isSupported() || !ext.obe$isEnabled()) return;
+
         if(be.getAnimationStatus() != AnimationStatus.CLOSED){
             RenderModeManager.setRenderModeDelayed(be, RenderMode.ENTITY, be.getBlockPos());
         }
