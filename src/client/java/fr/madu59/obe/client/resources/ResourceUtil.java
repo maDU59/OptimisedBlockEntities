@@ -5,21 +5,27 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
+import fr.madu59.obe.client.compat.ModCompat;
+import fr.madu59.obe.client.compat.emf.EMFCompat;
+import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.model.BlockEntityStateModel;
 import fr.madu59.obe.client.registry.Registry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.block.BlockModelShaper;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.data.AtlasIds;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 
 public class ResourceUtil{
 
     private static Map<BlockState, BlockStateModel> transformedModelCache = new ConcurrentHashMap<>();
     private static Map<SpecialModelCacheKey, BlockStateModel> transformedSpecialModelCache = new ConcurrentHashMap<>();
+    private static Map<ModelLayerLocation, ModelPart> bakedLayersCache = new ConcurrentHashMap<>();
 
     public static TextureAtlasSprite getSprite(Identifier id) {
         return Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(AtlasIds.BLOCKS).getSprite(id);
@@ -57,9 +63,20 @@ public class ResourceUtil{
         transformedSpecialModelCache.put(new SpecialModelCacheKey(blockState, cacheKey), model);
     }
 
+    public static ModelPart bakeLayer(ModelLayerLocation modelLayerLocation, @Nullable BlockState state){
+        return bakedLayersCache.computeIfAbsent(modelLayerLocation, key -> {
+            boolean shouldApplyEmfCompatibility = state != null && ModCompat.isEMFLoaded() && SettingsManager.EMF_COMPAT.getValue();
+            if(shouldApplyEmfCompatibility) EMFCompat.setCurrentSpecifiedModelLoading(state);
+            ModelPart modelPart = Minecraft.getInstance().getEntityModels().bakeLayer(key);
+            if(shouldApplyEmfCompatibility) EMFCompat.resetCurrentSpecifiedModelLoading();
+            return modelPart;
+        });
+    }
+
     public static void clearCache(){
         transformedSpecialModelCache.clear();
         transformedModelCache.clear();
+        bakedLayersCache.clear();
     }
 
     public static Identifier entityTextureFormatter(Identifier identifier){

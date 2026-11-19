@@ -308,8 +308,8 @@ public class SettingsManager {
 
     @SuppressWarnings("unchecked")
     private static <T> T getOptionValue(String key, T defaultValue) {
-        if (loadedSettings == null || !loadedSettings.containsKey(key)) return null;
         if(key.equals("sign_text_culling") && ModCompat.isSignTextBufferingEnabled()) return (T) (Boolean) false;
+        if (loadedSettings == null || !loadedSettings.containsKey(key)) return null;
         else if (defaultValue instanceof Enum<?> e){
             return (T) Enum.valueOf(e.getDeclaringClass(), loadedSettings.get(key));
         }

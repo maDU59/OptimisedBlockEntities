@@ -49,7 +49,7 @@ dependencies {
 	localRuntime 'org.anarres:jcpp:1.4.14'
     localRuntime 'io.github.douira:glsl-transformer:3.0.0-pre3'
 	modImplementation "maven.modrinth:iris:1.10.7+1.21.11-fabric"
-	
+
 	modImplementation "maven.modrinth:entitytexturefeatures:7.2.1-fabric-1.21.11"
 	modImplementation "maven.modrinth:entity-model-features:3.3.2-fabric-1.21.11"
 
@@ -76,6 +76,8 @@ dependencies {
 	modImplementation "maven.modrinth:create-fly:1.21.11-6.0.9-5"
 
 	modCompileOnly "maven.modrinth:oh-the-biomes-weve-gone:4.4.2-Fabric"
+
+	modCompileOnly "maven.modrinth:fwa:h7I6qfpm"
 }
 
 processResources {
