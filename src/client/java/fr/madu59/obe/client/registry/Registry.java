@@ -12,6 +12,8 @@ import java.util.Set;
 
 import fr.madu59.obe.OBE;
 import fr.madu59.obe.client.compat.blacklist.Blacklist;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -90,6 +92,11 @@ public class Registry {
 
     public static boolean isSupported(String group, BlockEntity be){
         if(Blacklist.isBlacklisted(be.getBlockState(), group)) return false;
+
+        // If a block entity has no renderer, then there's nothing to optimize anyway. It also highly likely means that another mod is modifying the block entity's rendering, so it should not try to optimize it as it will probably cause issues.
+        BlockEntityRenderDispatcher beRenderDispatcher = Minecraft.getInstance().getBlockEntityRenderDispatcher();
+        if(beRenderDispatcher != null && beRenderDispatcher.getRenderer(be) == null) return false;
+
         if(!supportedBeTypes.containsKey(group)){
             OBE.LOGGER.warn("An external mod tried accessing a non existing group: " + group);
             return false;
@@ -164,5 +171,9 @@ public class Registry {
 
         beTypeCache.put(block, Optional.ofNullable(match));
         return match;
+    }
+
+    public static void registerBlock(Block block, BlockEntityType<?> type){
+        beTypeCache.put(block, Optional.ofNullable(type));
     }
 }
