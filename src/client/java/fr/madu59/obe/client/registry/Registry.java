@@ -19,6 +19,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 
 public class Registry {
     private static boolean isInit = false;
@@ -147,8 +148,8 @@ public class Registry {
         });
     }
 
-    public static BlockEntityType<?> getBlockEntityType(BlockState state){
-        if(!state.hasBlockEntity()) return null;
+    public static BlockEntityType<?> getBlockEntityType(@Nullable BlockState state){
+        if(state == null || !state.hasBlockEntity()) return null;
         Block block = state.getBlock();
 
         Optional<BlockEntityType<?>> cached = beTypeCache.get(block);

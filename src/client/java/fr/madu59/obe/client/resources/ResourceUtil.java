@@ -66,14 +66,13 @@ public class ResourceUtil{
     }
 
     public static ModelPart bakeLayer(ModelLayerLocation modelLayerLocation, @Nullable BlockState state){
-        BlockEntityType<?> type;
+        BlockEntityType<?> type = null;
         if(ModCompat.isEMFLoaded() && SettingsManager.EMF_COMPAT.getValue()) type = Registry.getBlockEntityType(state);
-        else type = null;
         BakedLayerKey key = new BakedLayerKey(modelLayerLocation, type);
         return bakedLayersCache.computeIfAbsent(key, k -> {
-            if(type != null) EMFCompat.setCurrentSpecifiedModelLoading(type);
+            if(k.type != null) EMFCompat.setCurrentSpecifiedModelLoading(k.type);
             ModelPart modelPart = Minecraft.getInstance().getEntityModels().bakeLayer(k.layer);
-            if(type != null) EMFCompat.resetCurrentSpecifiedModelLoading();
+            if(k.type != null) EMFCompat.resetCurrentSpecifiedModelLoading();
             return modelPart;
         });
     }
@@ -98,7 +97,6 @@ public class ResourceUtil{
         }
     }
 
-    public record ModelCacheKey(ModelLayerLocation modelLayerLocation, BlockState blockState) {}
     public record SpecialModelCacheKey(BlockState blockState, Object cacheKey) {}
-    public record BakedLayerKey( ModelLayerLocation layer, @Nullable BlockEntityType<?> blockEntityType) {}
+    public record BakedLayerKey( ModelLayerLocation layer, @Nullable BlockEntityType<?> type) {}
 }
