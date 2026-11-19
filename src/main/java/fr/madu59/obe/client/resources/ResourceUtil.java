@@ -5,20 +5,27 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
+import fr.madu59.obe.client.compat.ModCompat;
+import fr.madu59.obe.client.compat.emf.EMFCompat;
+import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.model.BlockEntityStateModel;
 import fr.madu59.obe.client.registry.Registry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.block.BlockModelShaper;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.resources.model.BakedModel;
+import org.jetbrains.annotations.Nullable;
 
 public class ResourceUtil{
 
     private static Map<BlockState, BakedModel> transformedModelCache = new ConcurrentHashMap<>();
     private static Map<SpecialModelCacheKey, BakedModel> transformedSpecialModelCache = new ConcurrentHashMap<>();
+    private static Map<BakedLayerKey, ModelPart> bakedLayersCache = new ConcurrentHashMap<>();
 
     private static ResourceLocation blockAtlas = ResourceLocation.tryParse("minecraft:textures/atlas/blocks.png");
 
@@ -58,9 +65,22 @@ public class ResourceUtil{
         transformedSpecialModelCache.put(new SpecialModelCacheKey(blockState, cacheKey), model);
     }
 
+    public static ModelPart bakeLayer(ModelLayerLocation modelLayerLocation, @Nullable BlockState state){
+        BlockEntityType<?> type = null;
+        if(ModCompat.isEMFLoaded() && SettingsManager.EMF_COMPAT.getValue()) type = Registry.getBlockEntityType(state);
+        BakedLayerKey key = new BakedLayerKey(modelLayerLocation, type);
+        return bakedLayersCache.computeIfAbsent(key, k -> {
+            if(k.type != null) EMFCompat.setCurrentSpecifiedModelLoading(k.type);
+            ModelPart modelPart = Minecraft.getInstance().getEntityModels().bakeLayer(k.layer);
+            if(k.type != null) EMFCompat.resetCurrentSpecifiedModelLoading();
+            return modelPart;
+        });
+    }
+
     public static void clearCache(){
         transformedSpecialModelCache.clear();
         transformedModelCache.clear();
+        bakedLayersCache.clear();
     }
 
     public static ResourceLocation entityTextureFormatter(ResourceLocation resourceLocation){
@@ -77,6 +97,6 @@ public class ResourceUtil{
         }
     }
 
-    public record ModelCacheKey(ModelLayerLocation modelLayerLocation, BlockState blockState) {}
     public record SpecialModelCacheKey(BlockState blockState, Object cacheKey) {}
+    public record BakedLayerKey( ModelLayerLocation layer, @Nullable BlockEntityType<?> type) {}
 }
