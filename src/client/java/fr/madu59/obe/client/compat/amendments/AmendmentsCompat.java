@@ -23,6 +23,6 @@ public class AmendmentsCompat {
     }
 
     public static boolean isExtendedBell(BlockEntity be){
-        return be instanceof IBellConnection;
+        return be instanceof IBellConnection bell && !bell.amendments$getConnection().isEmpty();
     }
 }
