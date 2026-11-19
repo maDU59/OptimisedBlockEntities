@@ -16,6 +16,7 @@ This mod renders supported block entities just like any other block, this means 
 - Better lighting on block entities : they now support smooth lighting and ambient occlusion.
 - Better render distance : block entities can be seen from a lot further away
 - Config : Every block entity optimization can be toggled, same for the ambient occlusion.
+- Improved LODs: LODs from Distant Horizons and Voxy will render block entities more accurately.
 
 ## Performances
 
@@ -28,17 +29,27 @@ This mod renders supported block entities just like any other block, this means 
 
 <sub>*Performance tests ran on Minecraft 26.1.2 with OBE 1.1.27 and BBE 1.3.5 with Sodium 0.9.0 in FHD on a RTX 5060 laptop, an AMD Ryzen 7 260 w and 16Go of DDR5 RAM*</sub>
 
-## Compatibility
+## Modded block entities compatibility
 
-- Compatible with EMF/ETF and any resource packs made for those (like FA: Objects) *Since OBE 1.1.4*
-- Compatible with Quark's chests *Since OBE 1.1.3 and Quark 4.1-481*
-- Compatible with Lootr *Since OBE 1.1.23*
-- Compatible with mods using Blueprint (Woodworks and more) *Since OBE 1.1.36*
+OBE also optimizes block entities from the following mods:
+- [Quark](https://modrinth.com/mod/quark)
+- [Lootr](https://modrinth.com/mod/lootr)
+- [Carved Wood](https://modrinth.com/mod/carved-wood)
+- [Iron chests](https://modrinth.com/mod/iron-chests)
+- [More Chest variants](https://modrinth.com/mod/more-chest-variants-lieonlion)
+- Mods using [Blueprint](https://modrinth.com/mod/blueprint) (Woodworks and more)
+- Mods using [BCLIB](https://modrinth.com/mod/bclib) (BetterEnd and BetterNether)
+- [Every Compat](https://modrinth.com/mod/every-compat)
+- [Pipez](https://modrinth.com/mod/pipez)
+- [Framed Blocks](https://modrinth.com/mod/framedblocks)
+- [The Twilight Forest](https://www.curseforge.com/minecraft/mc-mods/the-twilight-forest)
+- [Vanilla Backport](https://modrinth.com/mod/vanillabackport)
+- [Oh The Biomes We've Gone](https://modrinth.com/mod/oh-the-biomes-weve-gone)
 
 ## Why
 
 Mods like this already exists like:
-- [BBE](https://modrinth.com/mod/better-block-entities), but it requires Sodium to run, isn't available on Neoforge (at least not at the time of OBE development) and heavily modifies Minecraft's rendering pipeling
+- [BBE](https://modrinth.com/mod/better-block-entities), but it requires Sodium to run, isn't available on Neoforge (at least not at the time of OBE development) and heavily modifies Minecraft's block entity rendering pipeling
 - [EBE](https://modrinth.com/mod/ebe), but it is sadly not updated anymore and isn't available on Neoforge
 
 Both are awesome, the developers did great work but I wanted to make one that:
@@ -46,8 +57,6 @@ Both are awesome, the developers did great work but I wanted to make one that:
 - Is less intrusive, which means better compatibility with other mods
 - Is available on Neoforge as well as Fabric
 - Includes a way to support modded block entities
-
-and I even managed to make it faster somehow even though they are both really well done and optimized
 
 ## List of all optimized block entities
 
@@ -67,6 +76,9 @@ and I even managed to make it faster somehow even though they are both really we
 <li>Lecterns</li>
 <li>Campfires</li>
 <li>Shelves</li>
+<li>Brushable blocks</li>
+<li>Spawners</li>
+<li>Vaults</li>
 </ul>
 
 <sub>¹: Some skulls with custom textures from Hypixel's Skyblock can also be optimized by using [this resource pack](https://modrinth.com/resourcepack/obe-x-hypixel-skyblock)</sub>
@@ -75,9 +87,9 @@ and I even managed to make it faster somehow even though they are both really we
 
 ## Trouble shooting
 
-Invisible block entities:
+Invisible or duplicate block entities:
 
-> Only vanilla, indigo, sodium (embeddium on forge 1.20.1) and VulkanMod (with OBE 1.1.47+) rendering pipelines are fully supported, issues may happen with other ones like Optifine, Embeddium, Optifabric etc... in that case it is recommended to disable the OBE optimizations causing the issues using OBE's config screen.
+> Only vanilla, Indigo, Sodium (embeddium on forge 1.20.1), Nvidium and VulkanMod rendering pipelines are fully supported, issues may happen with other ones like Optifine, Embeddium, Optifabric etc... in that case it is recommended to disable the OBE optimizations causing the issues using OBE's config screen.
 
 ## Modpacks
 
