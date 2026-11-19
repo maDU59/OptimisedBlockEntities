@@ -34,6 +34,8 @@ public abstract class EnderChestBlockEntityMixin{
         original.call(level, pos, state, entity);
         
         BlockEntityExt ext = (BlockEntityExt)entity;
+        if(!ext.obe$isSupported() || !ext.obe$isEnabled()) return;
+
         if(entity.getOpenNess(0.5f) > 0){
             RenderModeManager.setRenderModeDelayed(ext, RenderMode.ENTITY, pos);
         }

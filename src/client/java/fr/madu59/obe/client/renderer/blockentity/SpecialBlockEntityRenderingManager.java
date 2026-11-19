@@ -1,11 +1,10 @@
 package fr.madu59.obe.client.renderer.blockentity;
 
-import java.util.List;
-
 import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import fr.madu59.obe.client.renderer.blockentity.sign.ext.SignTextExt;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.NonNullList;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BeaconBlockEntity;
@@ -52,9 +51,9 @@ public class SpecialBlockEntityRenderingManager {
         }
     }
 
-    private static boolean isContainerEmpty(List<ItemStack> items) {
+    private static boolean isContainerEmpty(NonNullList<ItemStack> items) {
         for (int i = 0; i < items.size(); i++) {
-            if (items.get(i) != null && !items.get(i).isEmpty()) {
+            if (!items.get(i).isEmpty()) {
                 return false;
             }
         }

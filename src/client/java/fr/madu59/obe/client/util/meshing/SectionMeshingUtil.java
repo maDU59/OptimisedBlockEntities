@@ -35,11 +35,11 @@ public class SectionMeshingUtil {
             BlockEntityExt ext = (BlockEntityExt) be;
 
             if(ext.obe$renderModeDelayed() != RenderMode.TERRAIN || !ext.obe$isSupported() || !ext.obe$isEnabled() || ext.obe$forceEntity()){
-                model = ResourceUtil.getDefaultModel(be.getBlockState());
+                model = ResourceUtil.getDefaultModel(state);
             }
             else if(ext.obe$hasSpecialRenderer()) model = blockEntityModelsManager.getModel(state, originalModel, be);
 
-            if(model == null) model = ResourceUtil.getDefaultModel(be.getBlockState());
+            if(model == null) model = ResourceUtil.getDefaultModel(state);
 
             return model;
         }
