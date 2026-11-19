@@ -36,8 +36,7 @@ public class EMFCompat {
         }
     }
 
-    public static void setCurrentSpecifiedModelLoading(BlockState blockState) {
-        BlockEntityType<?> type = Registry.getBlockEntityType(blockState);
+    public static void setCurrentSpecifiedModelLoading(BlockEntityType<?> type) {
         if (type == null) return;
         EMFManager.getInstance().currentBlockEntityTypeLoading = type;
         if (UEntityTypes.ENCHANTING_TABLE.equals(type))
