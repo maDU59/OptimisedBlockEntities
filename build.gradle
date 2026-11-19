@@ -66,11 +66,11 @@ dependencies {
 	implementation "maven.modrinth:entityculling:5fl0jM6C"
 
 	compileOnly ("net.mehvahdjukaar:everycomp-fabric:26.1.2-3.0.1") {transitive = false}
-	implementation ("net.mehvahdjukaar:moonlight-fabric:26.1.2-4.3.0") {transitive = false}
-	implementation ("net.mehvahdjukaar:codecui-fabric:26.1.2-1.4.7") {transitive = false}
-	implementation ("net.mehvahdjukaar:amendments-fabric:26.1.2-3.0.2") {transitive = false}
+	compileOnly ("net.mehvahdjukaar:moonlight-fabric:26.1.2-4.3.0") {transitive = false}
+	// runtimeOnly ("net.mehvahdjukaar:codecui-fabric:26.1.2-1.4.7") {transitive = false}
+	compileOnly ("net.mehvahdjukaar:amendments-fabric:26.1.2-3.0.2") {transitive = false}
 
-	implementation "maven.modrinth:create-fly:26.1.2-6.0.9-4"
+	compileOnly "maven.modrinth:create-fly:26.1.2-6.0.9-4"
 
 	compileOnly "curse.maven:the-twilight-forest-227639:9556107"
 
