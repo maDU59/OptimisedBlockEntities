@@ -30,11 +30,15 @@ public abstract class LootrChestBlockEntityMixin {
     @Inject(method = "defaultTick", at = @At("HEAD"))
     private void obe$lidAnimateTick(final Level level, final BlockPos pos, final BlockState state, CallbackInfo ci) {
         LootrChestBlockEntity be = (LootrChestBlockEntity)(Object)this;
+
+        BlockEntityExt ext = (BlockEntityExt)be;
+        if(!ext.obe$isSupported() || !ext.obe$isEnabled()) return;
+
         if(be.getOpenNess(0.5f) > 0.0001){
-            RenderModeManager.setRenderModeDelayed(be, RenderMode.ENTITY, pos);
+            RenderModeManager.setRenderModeDelayed(ext, RenderMode.ENTITY, pos);
         }
         else{
-            RenderModeManager.setRenderModeDelayed(be, RenderMode.TERRAIN, pos);
+            RenderModeManager.setRenderModeDelayed(ext, RenderMode.TERRAIN, pos);
         }
     }
 }

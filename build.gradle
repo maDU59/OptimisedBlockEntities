@@ -74,6 +74,10 @@ dependencies {
 	modImplementation "dev.tr7zw:TRansition:1.0.28-${project.minecraft_version}-fabric-SNAPSHOT"
 
 	modCompileOnly "maven.modrinth:create-fly:1.21.8-6.0.9-2"
+
+	modCompileOnly "maven.modrinth:fwa:EX5WnVBd"
+
+	modCompileOnly "maven.modrinth:oh-the-biomes-weve-gone:NCZAogvP"
 }
 
 processResources {

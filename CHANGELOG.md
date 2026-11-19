@@ -1,2 +1,2 @@
 # What's new:
-- Added optimizations for Twilight Forest chests
+- Improved compatibility with EMF and modded block entities
