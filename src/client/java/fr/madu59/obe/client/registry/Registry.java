@@ -11,7 +11,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.Set;
 
 import fr.madu59.obe.OBE;
+import fr.madu59.obe.client.api.registry.RegistryApi;
 import fr.madu59.obe.client.compat.blacklist.Blacklist;
+import fr.madu59.obe.client.util.blockentity.type.BlockEntityTypeUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -176,5 +178,13 @@ public class Registry {
 
     public static void registerBlock(Block block, BlockEntityType<?> type){
         beTypeCache.put(block, Optional.ofNullable(type));
+    }
+
+    public static void tryRegisterBlockEntityType(String group, String namespace, String path){
+        BlockEntityType<?> type = BlockEntityTypeUtil.getBlockEntityType(namespace, path);
+        if(type == null){
+            return;
+        }
+        RegistryApi.registerBlockEntityType(group, type);
     }
 }
