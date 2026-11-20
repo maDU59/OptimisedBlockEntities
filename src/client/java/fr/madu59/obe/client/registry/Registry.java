@@ -109,13 +109,7 @@ public class Registry {
             return false;
         }
         else{
-            boolean isSupported = supportedBeTypes.get(group).contains(be.getType());
-            if(isSupported){
-                Block block = be.getBlockState().getBlock();
-                registerBlock(block, be.getType());
-                blockGroupCache.put(block, group);
-            }
-            return isSupported;
+            return supportedBeTypes.get(group).contains(be.getType());
         }
     }
 

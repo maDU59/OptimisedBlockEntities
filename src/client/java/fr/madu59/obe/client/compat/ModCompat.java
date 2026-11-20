@@ -40,6 +40,8 @@ public class ModCompat {
         runSafe("twilightforest", () -> TwilightForestCompat.init());
         runSafe("fwa", () -> FancyWorldAnimationsCompat.init());
         runSafe("amendments", () -> AmendmentsCompat.init());
+        runSafe("ecologics", () -> EcologicsCompat.init());
+        runSafe("biomeswevegone", () -> BiomesWeveGoneCompat.init());
     }
 
     public static void onWorldLoad(){
