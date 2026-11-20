@@ -66,10 +66,11 @@ public class Registry {
     }
 
     private static void register(String group, BlockEntityType<?> ... types){
-        Collections.addAll(
-            supportedBeTypes.computeIfAbsent(group, k -> new HashSet<>()), 
-            types
-        );
+        for(BlockEntityType<?> type : types){
+            if(type == null) continue;
+            supportedBeTypes.computeIfAbsent(group, k -> new HashSet<>()).add(type);
+            beTypeGroupCache.put(type, group);
+        }
     }
 
     public static void registerGroup(String group){
@@ -86,10 +87,11 @@ public class Registry {
             OBE.LOGGER.error("An external mod tried registering a block entity type in a non existing group: " + group);
         }
         else{
-            Collections.addAll(
-                supportedBeTypes.get(group), 
-                types
-            );
+            for(BlockEntityType<?> type : types){
+                if(type == null) continue;
+                supportedBeTypes.get(group).add(type);
+                beTypeGroupCache.put(type, group);
+            }
         }
     }
 
@@ -105,7 +107,13 @@ public class Registry {
             return false;
         }
         else{
-            return supportedBeTypes.get(group).contains(be.getType());
+            boolean isSupported = supportedBeTypes.get(group).contains(be.getType());
+            if(isSupported){
+                Block block = be.getBlockState().getBlock();
+                registerBlock(block, be.getType());
+                blockGroupCache.put(block, group);
+            }
+            return isSupported;
         }
     }
 
