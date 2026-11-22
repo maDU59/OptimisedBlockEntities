@@ -66,7 +66,7 @@ Both are awesome, the developers did great work but I wanted to make one that:
 <li>Chests</li>
 <li>Shulker boxes</li>
 <li>Signs</li>
-<li>Decorated pots (with no pattern)</li>
+<li>Decorated pots</li>
 <li>Skulls (with no custom texture¹)</li>
 <li>Beds</li>
 <li>Copper golems</li>

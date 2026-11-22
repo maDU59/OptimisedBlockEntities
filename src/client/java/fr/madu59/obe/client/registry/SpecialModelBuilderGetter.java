@@ -2,6 +2,7 @@ package fr.madu59.obe.client.registry;
 
 import fr.madu59.obe.OBE;
 import fr.madu59.obe.client.resources.ResourceUtil;
+import fr.madu59.obe.client.util.blockentity.DecoratedPotUtil;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -19,7 +20,7 @@ public class SpecialModelBuilderGetter {
     private final static Map<String, SpecialModelBuilder> defaultSpecialModelBuilders = new ConcurrentHashMap<>();
 
     public static void init(){
-
+        registerDefault("decorated_pot", new DecoratedPotUtil.PotWithDecorationsBuilder());
     }
 
     public static void registerDefault(String group, SpecialModelBuilder getter){
@@ -64,8 +65,8 @@ public class SpecialModelBuilderGetter {
 
     public interface SpecialModelBuilder{
         @Nullable
-        BlockStateModel build(BlockState state, BlockEntity entity, BlockStateModel originalModel);
+        BlockStateModel build(BlockState state, BlockEntity be, BlockStateModel originalModel);
 
-        Object getCacheKey(BlockEntity entity);
+        Object getCacheKey(BlockEntity be);
     }
 }

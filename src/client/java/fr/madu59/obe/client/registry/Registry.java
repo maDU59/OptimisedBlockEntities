@@ -1,7 +1,6 @@
 package fr.madu59.obe.client.registry;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -26,10 +25,10 @@ import org.jetbrains.annotations.Nullable;
 public class Registry {
     private static boolean isInit = false;
 
-    private static Map<String, Set<BlockEntityType<?>>> supportedBeTypes = new ConcurrentHashMap<>();
-    private static Map<Block, Optional<BlockEntityType<?>>> beTypeCache = new ConcurrentHashMap<>();
-    private static Map<Block, String> blockGroupCache = new ConcurrentHashMap<>();
-    private static Map<BlockEntityType<?>, String> beTypeGroupCache = new ConcurrentHashMap<>();
+    private static final Map<String, Set<BlockEntityType<?>>> supportedBeTypes = new ConcurrentHashMap<>();
+    private static final Map<Block, Optional<BlockEntityType<?>>> beTypeCache = new ConcurrentHashMap<>();
+    private static final Map<Block, String> blockGroupCache = new ConcurrentHashMap<>();
+    private static final Map<BlockEntityType<?>, String> beTypeGroupCache = new ConcurrentHashMap<>();
     private static final List<Runnable> onInitList = new ArrayList<>();
 
     private static final String noneGroupKey = "OBE_NONE";
@@ -131,7 +130,9 @@ public class Registry {
 
     public static String getGroup(BlockState state){
         if(!state.hasBlockEntity()) return null;
-        String group = blockGroupCache.computeIfAbsent(state.getBlock(), (key) -> {
+        Block block = state.getBlock();
+        String group = blockGroupCache.get(block);
+        if(group == null) group = blockGroupCache.computeIfAbsent(block, (key) -> {
             BlockEntityType<?> beType = getBlockEntityType(state);
             return getGroupInternal(beType);
         });
@@ -147,7 +148,7 @@ public class Registry {
         if(beType == null) return noneGroupKey;
         return beTypeGroupCache.computeIfAbsent(beType, (key) -> {
             for(Entry<String,Set<BlockEntityType<?>>> entry : supportedBeTypes.entrySet()){
-                if(entry.getValue().contains(beType)) return entry.getKey();
+                if(entry.getValue().contains(key)) return entry.getKey();
             }
             return noneGroupKey;
         });
