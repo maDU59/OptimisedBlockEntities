@@ -115,9 +115,9 @@ public class DecoratedPotUtil {
 
     private static Identifier resolveSideTexture(Optional<Item> item) {
         if (item.isPresent()) {
-            Identifier result = DECORATED_POT_SPRITES.get((item.get()).builtInRegistryHolder().key()).texture();
+            SpriteId result = DECORATED_POT_SPRITES.get((item.get()).builtInRegistryHolder().key());
             if (result != null) {
-                return result;
+                return result.texture();
             }
         }
         return Sheets.DECORATED_POT_SIDE.texture();
