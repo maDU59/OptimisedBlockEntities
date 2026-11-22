@@ -1,2 +1,3 @@
 # What's new:
-- Improved compatibility with EMF and modded block entities
+- Added optimization for Ecologics' signs
+- Minor improvements
