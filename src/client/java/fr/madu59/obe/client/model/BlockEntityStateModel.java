@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import fr.madu59.obe.client.OBEClient;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.joml.Matrix3fc;
 import org.joml.Matrix4f;
@@ -27,14 +28,6 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.block.BannerBlock;
-import net.minecraft.world.level.block.CeilingHangingSignBlock;
-import net.minecraft.world.level.block.WallBannerBlock;
-import net.minecraft.world.level.block.WallHangingSignBlock;
-import net.minecraft.world.level.block.AbstractSkullBlock;
-import net.minecraft.world.level.block.ChestBlock;
-import net.minecraft.world.level.block.EnderChestBlock;
-import net.minecraft.world.level.block.ShulkerBoxBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.SimpleBakedModel;
@@ -104,6 +97,9 @@ public class BlockEntityStateModel implements BakedModel{
 
     private boolean shouldAddModelPart(String key, BlockState state){
         if(state == null || key == null) return true;
+        else if(state.getBlock() instanceof DecoratedPotBlock){
+            return !(key.equals("back") || key.equals("left") || key.equals("right"));
+        }
         else if(state.getBlock() instanceof WallHangingSignBlock){
             return !key.equals("vChains");
         }
