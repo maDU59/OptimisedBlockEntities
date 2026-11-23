@@ -6,6 +6,7 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
+import net.minecraft.client.resources.model.Material;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.SignBlock;
 import net.minecraft.world.level.block.WallSignBlock;
@@ -15,7 +16,8 @@ import net.minecraft.world.level.block.state.properties.WoodType;
 public class SignUtil {
     public static Identifier getMaterial(BlockState state){
         WoodType woodType = SignBlock.getWoodType(state.getBlock());
-        return Sheets.getSignMaterial(woodType).texture();
+        Material sprite = Sheets.getSignMaterial(woodType);
+        return sprite == null? null : sprite.texture();
     }
 
     public static ModelLayerLocation getModelLayerLocation(BlockState state){

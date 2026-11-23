@@ -1,2 +1,4 @@
 # What's new:
-- Added optimization for Ecologics's signs
+- Decorated pots with patterns are now optimized too
+- Added optimization for Ecologics' signs
+- Minor improvements
