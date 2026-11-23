@@ -9,6 +9,7 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.StandingSignRenderer;
+import net.minecraft.client.resources.model.sprite.SpriteId;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.PlainSignBlock;
@@ -21,7 +22,8 @@ import net.minecraft.world.level.block.state.properties.WoodType;
 public class SignUtil {
     public static Identifier getMaterial(BlockState state){
         WoodType woodType = SignBlock.getWoodType(state.getBlock());
-        return Sheets.getSignSprite(woodType).texture();
+        SpriteId sprite = Sheets.getSignSprite(woodType);
+        return sprite == null? null : sprite.texture();
     }
 
     public static ModelLayerLocation getModelLayerLocation(BlockState state){

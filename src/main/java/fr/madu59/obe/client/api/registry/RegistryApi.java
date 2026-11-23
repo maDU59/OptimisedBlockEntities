@@ -41,7 +41,7 @@ public class RegistryApi {
      * @deprecated Use {@link #registerBlockEntityType(String, BlockEntityType[])} instead
      */
     @Deprecated
-    private static void registerBlockEntityType(BlockEntityType<?> type, String id){
+    public static void registerBlockEntityType(BlockEntityType<?> type, String id){
         Registry.addBlockEntityTypeInGroup(id, type);
     }
 
