@@ -1,10 +1,9 @@
 package fr.madu59.obe.client.mixin;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import fr.madu59.obe.client.config.Option;
 import fr.madu59.obe.client.config.SettingsManager;
@@ -30,14 +29,13 @@ public abstract class BlockStateModelSetMixin {
     @Shadow
     private ModelManager modelManager;
 
-    @Inject(method = "getBlockModel", at = @At("HEAD"), cancellable = true)
-    public void obe$getBlockStateModel(BlockState state, CallbackInfoReturnable<BakedModel> cir){
-        if (!state.hasBlockEntity()) return;
+    @ModifyReturnValue(method = "getBlockModel", at = @At("RETURN"))
+    public BakedModel obe$getBlockStateModel(BakedModel original, BlockState state){
+        if (!state.hasBlockEntity() || !SettingsManager.MOD_TOGGLE.getValue()) return original;
 
-        if(!SettingsManager.MOD_TOGGLE.getValue()) return;
         try{ // In case of another mod trying to access the block states before the entity model set is populated
             String group = Registry.getGroup(state);
-            if(group == null) return;
+            if(group == null) return original;
 
             Option<Boolean> toggle = switch (group) {
                 case "sign" -> SettingsManager.OPTIMISED_SIGNS;
@@ -51,20 +49,18 @@ public abstract class BlockStateModelSetMixin {
                 case "decorated_pot" -> SettingsManager.OPTIMISED_DECORATED_POTS;
                 default -> null;
             };
-            if(toggle != null && !toggle.getValue()) return;
+            if(toggle != null && !toggle.getValue()) return original;
 
             BakedModel model = ResourceUtil.getModel(state);
-            if(model == null) model = blockEntityModelsManager.getBlockModel(state, obe$getOriginalModel(state), group);
-            if(model != null) cir.setReturnValue(model);
+            if(model == null){
+                if(original == null) original = new BlockEntityStateModel(ResourceUtil.getSprite(missingTexture));
+                model = blockEntityModelsManager.getBlockModel(state, original, group);
+            }
+            if(model != null) return model;
+            return original;
         }
         catch(Exception e){
-
+            return original;
         }
-    }
-
-    @Unique
-    public BakedModel obe$getOriginalModel(BlockState state){
-        BakedModel model = ResourceUtil.getDefaultModel(state);
-        return model == null? new BlockEntityStateModel(ResourceUtil.getSprite(missingTexture)) : model;
     }
 }

@@ -1,7 +1,6 @@
 package fr.madu59.obe.client.registry;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +10,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.Set;
 
 import fr.madu59.obe.OBE;
+import fr.madu59.obe.client.api.registry.RegistryApi;
 import fr.madu59.obe.client.compat.blacklist.Blacklist;
+import fr.madu59.obe.client.util.blockentity.type.BlockEntityTypeUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -24,10 +25,10 @@ import org.jetbrains.annotations.Nullable;
 public class Registry {
     private static boolean isInit = false;
 
-    private static Map<String, Set<BlockEntityType<?>>> supportedBeTypes = new ConcurrentHashMap<>();
-    private static Map<Block, Optional<BlockEntityType<?>>> beTypeCache = new ConcurrentHashMap<>();
-    private static Map<Block, String> blockGroupCache = new ConcurrentHashMap<>();
-    private static Map<BlockEntityType<?>, String> beTypeGroupCache = new ConcurrentHashMap<>();
+    private static final Map<String, Set<BlockEntityType<?>>> supportedBeTypes = new ConcurrentHashMap<>();
+    private static final Map<Block, Optional<BlockEntityType<?>>> beTypeCache = new ConcurrentHashMap<>();
+    private static final Map<Block, String> blockGroupCache = new ConcurrentHashMap<>();
+    private static final Map<BlockEntityType<?>, String> beTypeGroupCache = new ConcurrentHashMap<>();
     private static final List<Runnable> onInitList = new ArrayList<>();
 
     private static final String noneGroupKey = "OBE_NONE";
@@ -66,10 +67,11 @@ public class Registry {
     }
 
     private static void register(String group, BlockEntityType<?> ... types){
-        Collections.addAll(
-            supportedBeTypes.computeIfAbsent(group, k -> new HashSet<>()), 
-            types
-        );
+        for(BlockEntityType<?> type : types){
+            if(type == null) continue;
+            supportedBeTypes.computeIfAbsent(group, k -> new HashSet<>()).add(type);
+            beTypeGroupCache.put(type, group);
+        }
     }
 
     public static void registerGroup(String group){
@@ -88,10 +90,11 @@ public class Registry {
             OBE.LOGGER.error("An external mod tried registering a block entity type in a non existing group: " + group);
         }
         else{
-            Collections.addAll(
-                supportedBeTypes.get(group), 
-                types
-            );
+            for(BlockEntityType<?> type : types){
+                if(type == null) continue;
+                supportedBeTypes.get(group).add(type);
+                beTypeGroupCache.put(type, group);
+            }
         }
     }
 
@@ -131,7 +134,9 @@ public class Registry {
 
     public static String getGroup(BlockState state){
         if(!state.hasBlockEntity()) return null;
-        String group = blockGroupCache.computeIfAbsent(state.getBlock(), (key) -> {
+        Block block = state.getBlock();
+        String group = blockGroupCache.get(block);
+        if(group == null) group = blockGroupCache.computeIfAbsent(block, (key) -> {
             BlockEntityType<?> beType = getBlockEntityType(state);
             return getGroupInternal(beType);
         });
@@ -147,7 +152,7 @@ public class Registry {
         if(beType == null) return noneGroupKey;
         return beTypeGroupCache.computeIfAbsent(beType, (key) -> {
             for(Entry<String,Set<BlockEntityType<?>>> entry : supportedBeTypes.entrySet()){
-                if(entry.getValue().contains(beType)) return entry.getKey();
+                if(entry.getValue().contains(key)) return entry.getKey();
             }
             return noneGroupKey;
         });
@@ -182,5 +187,13 @@ public class Registry {
 
     public static void registerBlock(Block block, BlockEntityType<?> type){
         beTypeCache.put(block, Optional.ofNullable(type));
+    }
+
+    public static void tryRegisterBlockEntityType(String group, String namespace, String path){
+        BlockEntityType<?> type = BlockEntityTypeUtil.getBlockEntityType(namespace, path);
+        if(type == null){
+            return;
+        }
+        RegistryApi.registerBlockEntityType(group, type);
     }
 }
