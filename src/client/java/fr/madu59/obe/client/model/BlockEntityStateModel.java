@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import fr.madu59.obe.client.OBEClient;
+import net.minecraft.world.level.block.*;
 import org.joml.Matrix3fc;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
@@ -26,10 +27,6 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.block.AbstractSkullBlock;
-import net.minecraft.world.level.block.ChestBlock;
-import net.minecraft.world.level.block.EnderChestBlock;
-import net.minecraft.world.level.block.ShulkerBoxBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.SimpleBakedModel;
@@ -83,11 +80,21 @@ public class BlockEntityStateModel implements BakedModel{
         Map<String, ModelPart> children = root.children;
         List<BakedQuad> bakedQuadsList = new ArrayList<>();
         children.forEach((key, part) -> {
-            getBakedQuads(bakedQuadsList, part, poseStack, sprite, key, state);
+            if(shouldAddModelPart(key, state)) {
+                getBakedQuads(bakedQuadsList, part, poseStack, sprite, key, state);
+            }
         });
 
         Map<Direction, List<BakedQuad>> dirs = new HashMap<>();
         return new SimpleBakedModel(bakedQuadsList, dirs, useAo, true, false, particleMaterial, null);
+    }
+
+    private boolean shouldAddModelPart(String key, BlockState state) {
+        if(state == null || key == null) return true;
+        if(state.getBlock() instanceof DecoratedPotBlock){
+            return !(key.equals("back") || key.equals("left") || key.equals("right"));
+        }
+        return true;
     }
 
     private void getBakedQuads(List<BakedQuad> output, ModelPart part, PoseStack poseStack, TextureAtlasSprite sprite, String partName, BlockState state){
