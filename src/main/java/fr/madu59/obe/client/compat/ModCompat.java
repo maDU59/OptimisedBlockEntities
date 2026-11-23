@@ -9,6 +9,8 @@ import fr.madu59.obe.client.compat.carvedwood.CarvedWoodCompat;
 import fr.madu59.obe.OBE;
 import fr.madu59.obe.client.compat.bclib.BclibCompat;
 import fr.madu59.obe.client.compat.biomeswevegone.BiomesWeveGoneCompat;
+import fr.madu59.obe.client.compat.clayworks.ClayworksCompat;
+import fr.madu59.obe.client.compat.ecologics.EcologicsCompat;
 import fr.madu59.obe.client.compat.emf.EMFCompat;
 import fr.madu59.obe.client.compat.entityculling.EntityCullingCompat;
 import fr.madu59.obe.client.compat.framedblocks.FramedBlocksCompat;
@@ -52,6 +54,8 @@ public class ModCompat {
         runSafe("biomeswevegone", () -> BiomesWeveGoneCompat.init());
         runSafe("fwa", () -> FancyWorldAnimationsCompat.init());
         runSafe("amendments", () -> AmendmentsCompat.init());
+        runSafe("ecologics", () -> EcologicsCompat.init());
+        runSafe("clayworks", () -> ClayworksCompat.init());
     }
 
     private static void runSafe(String modId, Runnable runnable){

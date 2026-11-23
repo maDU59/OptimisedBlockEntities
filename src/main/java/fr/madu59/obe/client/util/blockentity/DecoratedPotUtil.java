@@ -7,19 +7,26 @@ import fr.madu59.obe.client.model.BlockEntityStateModel;
 import fr.madu59.obe.client.model.CompositeBlockStateModel;
 import fr.madu59.obe.client.registry.MaterialGetter;
 import fr.madu59.obe.client.registry.ModelLayerLocationGetter;
+import fr.madu59.obe.client.registry.SpecialModelBuilderGetter;
 import fr.madu59.obe.client.registry.TransformationGetter;
 import fr.madu59.obe.client.renderer.blockentity.BlockEntityModelsManager;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.model.Material;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.entity.DecoratedPotPatterns;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.DecoratedPotBlockEntity;
+import net.minecraft.world.level.block.entity.DecoratedPotPatterns;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import org.jetbrains.annotations.Nullable;
 
 public class DecoratedPotUtil {
     public static ResourceLocation getMaterial(BlockState state){
@@ -43,8 +50,10 @@ public class DecoratedPotUtil {
     }
 
     public static BakedModel getModel(BlockState state, BakedModel originalModel){
-        BakedModel model;
+        return getModel(state, originalModel, null);
+    }
 
+    public static BakedModel getModel(BlockState state, BakedModel originalModel, @Nullable BlockEntity blockEntity) {
         String group = "decorated_pot";
 
         PoseStack poseStack = new PoseStack();
@@ -57,16 +66,62 @@ public class DecoratedPotUtil {
 
         TransformationGetter.applyTransformation(state, poseStack, group);
 
-        model = new BlockEntityStateModel(layerLocation, material, poseStack, BlockEntityModelsManager.getAmbientOcclusion(group), state, originalModel.getParticleIcon());
+        boolean ao = BlockEntityModelsManager.getAmbientOcclusion(group);
+        TextureAtlasSprite particleMaterial = originalModel.getParticleIcon();
+
+        BakedModel model = new BlockEntityStateModel(layerLocation, material, poseStack, ao, state, particleMaterial);
 
         layerLocation = DecoratedPotUtil.getSideModelLayerLocation(state);
+        DecoratedPotBlockEntity.Decorations decorations = (blockEntity instanceof DecoratedPotBlockEntity decoratedPotBlockEntity)? decoratedPotBlockEntity.getDecorations() : DecoratedPotBlockEntity.Decorations.EMPTY;
 
-        BakedModel sideModel = new BlockEntityStateModel(layerLocation, Sheets.getDecoratedPotMaterial(DecoratedPotPatterns.getResourceKey(Items.BRICK)).texture(), poseStack, BlockEntityModelsManager.getAmbientOcclusion(group), state, originalModel.getParticleIcon());
-
-        model = new CompositeBlockStateModel(model, sideModel);
+        model = appendRotatedSideModel(model, state, poseStack, ao, particleMaterial, layerLocation, decorations.front(), 0.0F);
+        model = appendRotatedSideModel(model, state, poseStack, ao, particleMaterial, layerLocation, decorations.right(), (float) (Math.PI / 2));
+        model = appendRotatedSideModel(model, state, poseStack, ao, particleMaterial, layerLocation, decorations.back(),  (float) Math.PI);
+        model = appendRotatedSideModel(model, state, poseStack, ao, particleMaterial, layerLocation, decorations.left(),  (float) (-Math.PI / 2));
 
         if(state.getRenderShape() == RenderShape.MODEL) model = new CompositeBlockStateModel(model, originalModel);
 
         return model;
+    }
+
+    private static BakedModel appendRotatedSideModel(BakedModel model, BlockState state, PoseStack poseStack, boolean ao, TextureAtlasSprite particleMaterial, ModelLayerLocation frontSideLayer, Item sherdItem, float rot) {
+        poseStack.pushPose();
+
+        if (rot != 0.0F)  poseStack.rotateAround(Axis.YP.rotation(rot), 0.5F, 0.5F, 0.5F);
+
+        BakedModel sideModel = new BlockEntityStateModel(frontSideLayer, resolveSideTexture(sherdItem), poseStack, ao, state, particleMaterial);
+
+        poseStack.popPose();
+
+        return new CompositeBlockStateModel(model, sideModel);
+    }
+
+    private static ResourceLocation resolveSideTexture(Item item) {
+        Material material = Sheets.getDecoratedPotMaterial(DecoratedPotPatterns.getResourceKey(item));
+        if (material == null) {
+            material = Sheets.getDecoratedPotMaterial(DecoratedPotPatterns.getResourceKey(Items.BRICK));
+        }
+
+        return material.texture();
+    }
+
+    private static DecoratedPotBlockEntity.Decorations getCacheKey(BlockEntity be){
+        if(be instanceof DecoratedPotBlockEntity decoratedPotBlockEntity){
+            return decoratedPotBlockEntity.getDecorations();
+        }
+        return DecoratedPotBlockEntity.Decorations.EMPTY;
+    }
+
+    public static class PotWithDecorationsBuilder implements SpecialModelBuilderGetter.SpecialModelBuilder{
+
+        @Override
+        public @Nullable BakedModel build(BlockState state, BlockEntity be, BakedModel originalModel) {
+            return DecoratedPotUtil.getModel(state, originalModel, be);
+        }
+
+        @Override
+        public Object getCacheKey(BlockEntity be) {
+            return DecoratedPotUtil.getCacheKey(be);
+        }
     }
 }
