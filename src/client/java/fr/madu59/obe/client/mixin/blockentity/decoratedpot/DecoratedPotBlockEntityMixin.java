@@ -68,10 +68,10 @@ public abstract class DecoratedPotBlockEntityMixin{
         DecoratedPotBlockEntity be = (DecoratedPotBlockEntity)(Object)this;
         BlockEntityExt ext = (BlockEntityExt)be;
         if(!decorations.equals(PotDecorations.EMPTY)){
-            ext.obe$forceEntity(true);
+            ext.obe$hasSpecialRenderer(true);
         }
         else{
-            ext.obe$forceEntity(false);
+            ext.obe$hasSpecialRenderer(false);
         }
     }
 }
