@@ -1,4 +1,3 @@
 # What's new:
-- Decorated pots with patterns are now optimized too
-- Added optimization for Ecologics' signs
-- Minor improvements
+- Added optimization for BiomesOPlenty
+- Added minimal EMF version on Forge and Neoforge, the game will now tell you an unsupported version of EMF is used instead of crashing
