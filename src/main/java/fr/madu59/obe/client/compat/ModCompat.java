@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import fr.madu59.obe.client.compat.amendments.AmendmentsCompat;
+import fr.madu59.obe.client.compat.biomesoplenty.BiomesOPlentyCompat;
 import fr.madu59.obe.client.compat.biomeswevegone.BiomesWeveGoneCompat;
 import fr.madu59.obe.client.compat.blueprint.BlueprintCompat;
 import fr.madu59.obe.client.compat.carvedwood.CarvedWoodCompat;
@@ -55,6 +56,7 @@ public class ModCompat {
         runSafe("amendments", () -> AmendmentsCompat.init());
         runSafe("ecologics", () -> EcologicsCompat.init());
         runSafe("clayworks", () -> ClayworksCompat.init());
+        runSafe("biomesoplenty", () -> BiomesOPlentyCompat.init());
     }
 
     private static void runSafe(String modId, Runnable runnable){
