@@ -30,32 +30,20 @@ public class RenderModeManager {
         }
     }
 
-    public static boolean shouldRenderEntity(BlockEntityRenderState state){
-        return shouldRenderEntity(((BlockEntityRenderStateExt)state).blockEntity());
-    }
-
-    public static <T extends BlockEntity> boolean shouldRenderEntity(boolean setting, BlockEntityRenderState state){
-        return shouldRenderEntity(setting, ((BlockEntityRenderStateExt)state).blockEntity());
-    }
-
-    public static <T extends BlockEntity> boolean shouldRenderEntity(boolean setting, T be){
-        return shouldRenderEntity(setting, (BlockEntityExt) be, be);
-    }
-
-    public static <T extends BlockEntity> boolean shouldRenderEntity(boolean setting, BlockEntityExt ext, BlockEntity be){
-        return ext == null || !be.hasLevel() || !ext.obe$isSupported() || !ext.obe$isEnabled() || ext.obe$forceEntity() || setting || !SettingsManager.MOD_TOGGLE.getValue();
-    }
-
-    public static <T extends BlockEntity> boolean shouldRenderEntity(T be){
-        return shouldRenderEntity((BlockEntityExt) be, be);
-    }
-
-    public static <T extends BlockEntity> boolean shouldRenderEntity(BlockEntityExt ext, T be){
-        return ext == null || !be.hasLevel() || ext.obe$forceEntity() || !ext.obe$isEnabled() || !ext.obe$isSupported() || ext.obe$renderMode() == RenderMode.ENTITY || ext.obe$renderModeDelayed() == RenderMode.ENTITY || ext.obe$renderBoth();
-    }
-
     public static <T extends BlockEntity> boolean shouldRenderEntityFast(BlockEntityExt ext){
-        return ext.obe$forceEntity() || !ext.obe$isSupported() || ext.obe$renderMode() == RenderMode.ENTITY || ext.obe$renderModeDelayed() == RenderMode.ENTITY || ext.obe$renderBoth();
+        return ext.obe$forceEntity() || !ext.obe$isSupported() || ext.obe$renderMode() == RenderMode.ENTITY || ext.obe$renderBoth();
+    }
+
+    public static boolean isBaked(BlockEntityRenderState state){
+        return isBaked(((BlockEntityRenderStateExt)state).blockEntity());
+    }
+
+    public static <T extends BlockEntity> boolean isBaked(T be){
+        return isBaked((BlockEntityExt)be);
+    }
+
+    public static <T extends BlockEntity> boolean isBaked(BlockEntityExt ext){
+        return ext.obe$isEnabled() && ext.obe$renderMode() == RenderMode.TERRAIN && !ext.obe$forceEntity() && ext.obe$isSupported();
     }
 
     public static <T extends BlockEntity> void setRenderModeDelayed(T be, RenderMode mode, BlockPos pos){
