@@ -59,7 +59,7 @@ public class RenderModeManager {
     }
 
     public static <T extends BlockEntity> boolean shouldRenderEntity(boolean setting, BlockEntityExt ext, BlockEntity be){
-        return ext == null || !be.hasLevel() || !ext.obe$isSupported() || setting || !SettingsManager.MOD_TOGGLE.getValue();
+        return ext == null || !be.hasLevel() || !ext.obe$isSupported() || !ext.obe$isEnabled() || ext.obe$forceEntity() || setting || !SettingsManager.MOD_TOGGLE.getValue();
     }
 
     public static <T extends BlockEntity> boolean shouldRenderEntity(T be){
@@ -67,7 +67,7 @@ public class RenderModeManager {
     }
 
     public static <T extends BlockEntity> boolean shouldRenderEntity(BlockEntityExt ext, T be){
-        return ext == null || !be.hasLevel() || ext.obe$forceEntity() || !ext.obe$isSupported() || ext.obe$renderMode() == RenderMode.ENTITY || ext.obe$renderModeDelayed() == RenderMode.ENTITY || ext.obe$renderBoth();
+        return ext == null || !be.hasLevel() || ext.obe$forceEntity() || !ext.obe$isEnabled() || !ext.obe$isSupported() || ext.obe$renderMode() == RenderMode.ENTITY || ext.obe$renderModeDelayed() == RenderMode.ENTITY || ext.obe$renderBoth();
     }
 
     public static <T extends BlockEntity> boolean shouldRenderEntityFast(BlockEntityExt ext){
