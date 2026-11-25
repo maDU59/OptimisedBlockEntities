@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 public class FancyWorldAnimationsCompat {
     public static void init(){
         MeshingPredicatesAPI.registerPredicate(blockEntity -> {
+            if(!SettingsManager.MOD_TOGGLE.getValue()) return true;
             BlockEntityRenderer<?, ?> renderer = Minecraft.getInstance().getBlockEntityRenderDispatcher().getRenderer(blockEntity);
             if(renderer instanceof BellRenderer){
                 return !SettingsManager.BELL_STATE.getValue();
