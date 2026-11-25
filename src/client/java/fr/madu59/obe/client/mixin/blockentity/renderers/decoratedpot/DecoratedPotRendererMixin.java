@@ -18,12 +18,12 @@ import net.minecraft.world.level.block.entity.DecoratedPotBlockEntity;
 public abstract class DecoratedPotRendererMixin {
     @Inject(method = "submit", at = @At("HEAD"), cancellable = true)
     public void obe$cancelSubmit(CallbackInfo ci, @Local DecoratedPotRenderState state){
-        if(!RenderModeManager.shouldRenderEntity(state) && SettingsManager.OPTIMISED_DECORATED_POTS.getValue()) ci.cancel();
+        if(RenderModeManager.isBaked(state)) ci.cancel();
     }
 
     @Inject(method = "extractRenderState", at = @At("HEAD"), cancellable = true)
     public void obe$cancelExtract(CallbackInfo ci, @Local DecoratedPotRenderState state, @Local DecoratedPotBlockEntity be){
         ((BlockEntityRenderStateExt)state).blockEntity(be);
-        if(!RenderModeManager.shouldRenderEntity(be) && SettingsManager.OPTIMISED_DECORATED_POTS.getValue()) ci.cancel();
+        if(RenderModeManager.isBaked(be)) ci.cancel();
     }
 }
