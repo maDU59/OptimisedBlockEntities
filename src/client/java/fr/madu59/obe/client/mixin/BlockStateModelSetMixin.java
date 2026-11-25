@@ -41,16 +41,7 @@ public abstract class BlockStateModelSetMixin {
             String group = Registry.getGroup(state);
             if(group == null) return original;
 
-            Option<Boolean> toggle = switch (group) {
-                case "skull" -> SettingsManager.OPTIMISED_SKULLS;
-                case "chest" -> SettingsManager.OPTIMISED_CHESTS;
-                case "banner" -> SettingsManager.OPTIMISED_BANNERS;
-                case "bell" -> SettingsManager.OPTIMISED_BELLS;
-                case "copper_golem_statue" -> SettingsManager.OPTIMISED_COPPER_GOLEMS;
-                case "shulker_box" -> SettingsManager.OPTIMISED_SHULKER_BOXES;
-                case "decorated_pot" -> SettingsManager.OPTIMISED_DECORATED_POTS;
-                default -> null;
-            };
+            Option<Boolean> toggle = SettingsManager.GROUP_TOGGLE_SETTINGS.get(group);
             if(toggle != null && !toggle.getValue()) return original;
 
             BlockStateModel model = ResourceUtil.getModel(state);
