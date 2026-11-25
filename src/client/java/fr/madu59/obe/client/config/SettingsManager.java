@@ -247,17 +247,18 @@ public class SettingsManager {
             RELOAD_CHUNKS_ACTION
     );
 
-    public static final Map<String, Option<Boolean>> GROUP_TOGGLE_SETTINGS = Map.of(
-        "chest", SettingsManager.OPTIMISED_CHESTS,
-        "banner", SettingsManager.OPTIMISED_BANNERS,
-        "shulker_box", SettingsManager.OPTIMISED_SHULKER_BOXES,
-        "skull", SettingsManager.OPTIMISED_SKULLS,
-        "bell", SettingsManager.OPTIMISED_BELLS,
-        "decorated_pot", SettingsManager.OPTIMISED_DECORATED_POTS,
-        "copper_golem_statue", SettingsManager.OPTIMISED_COPPER_GOLEMS,
-        "sign", SettingsManager.OPTIMISED_SKULLS,
-        "bed", SettingsManager.OPTIMISED_BEDS,
-        "pipez_pipes", SettingsManager.OPTIMISED_PIPEZ_PIPES
+    public static final Map<String, Option<Boolean>> GROUP_TOGGLE_SETTINGS = Map.ofEntries(
+            Map.entry("chest", SettingsManager.OPTIMISED_CHESTS),
+            Map.entry("banner", SettingsManager.OPTIMISED_BANNERS),
+            Map.entry("shulker_box", SettingsManager.OPTIMISED_SHULKER_BOXES),
+            Map.entry("skull", SettingsManager.OPTIMISED_SKULLS),
+            Map.entry("bell", SettingsManager.OPTIMISED_BELLS),
+            Map.entry("decorated_pot", SettingsManager.OPTIMISED_DECORATED_POTS),
+            Map.entry("copper_golem_statue", SettingsManager.OPTIMISED_COPPER_GOLEMS),
+            Map.entry("sign", SettingsManager.OPTIMISED_SIGNS),
+            Map.entry("hanging_sign", SettingsManager.OPTIMISED_SIGNS),
+            Map.entry("bed", SettingsManager.OPTIMISED_BEDS),
+            Map.entry("pipez_pipes", SettingsManager.OPTIMISED_PIPEZ_PIPES)
     );
 
     public static void saveSettings() {
