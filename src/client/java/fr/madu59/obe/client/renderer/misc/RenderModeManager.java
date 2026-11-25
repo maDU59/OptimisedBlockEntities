@@ -43,11 +43,11 @@ public class RenderModeManager {
     }
 
     public static <T extends Entity> boolean shouldRenderEntity(EntityExt ext){
-        return ext.obe$renderMode() == RenderMode.ENTITY;
+        return !isBaked(ext);
     }
 
-    public static <T extends BlockEntity> boolean shouldRenderEntityFast(BlockEntityExt ext){
-        return ext.obe$forceEntity() || !ext.obe$isSupported() || ext.obe$renderMode() == RenderMode.ENTITY || ext.obe$renderBoth();
+    public static <T extends BlockEntity> boolean shouldRenderEntity(BlockEntityExt ext){
+        return !isBaked(ext) || ext.obe$renderBoth();
     }
 
     public static boolean isBaked(BlockEntityRenderState state){

@@ -39,7 +39,7 @@ public abstract class LevelRendererMixin {
 
         for (int i = original.size() - 1; i >= 0; i--) {
             if (original.get(i) instanceof BlockEntityExt ext){
-                if(ext.obe$isEnabled() && (!RenderModeManager.shouldRenderEntityFast(ext) || ext.obe$shouldSkipRendering() || SpecialBlockEntityRenderingManager.shouldSkipRendering((BlockEntity)ext))){
+                if(ext.obe$isEnabled() && (!RenderModeManager.shouldRenderEntity(ext) || ext.obe$shouldSkipRendering() || SpecialBlockEntityRenderingManager.shouldSkipRendering((BlockEntity)ext))){
                     original.remove(i);
                 }
             }
