@@ -18,12 +18,12 @@ import net.minecraft.world.level.block.entity.CopperGolemStatueBlockEntity;
 public abstract class CopperGolemStatueBlockRendererMixin {
     @Inject(method = "submit", at = @At("HEAD"), cancellable = true)
     public void obe$cancelSubmit(CallbackInfo ci, @Local CopperGolemStatueRenderState state){
-        if(!RenderModeManager.shouldRenderEntity(!SettingsManager.OPTIMISED_COPPER_GOLEMS.getValue(), state)) ci.cancel();
+        if(RenderModeManager.isBaked(state)) ci.cancel();
     }
 
     @Inject(method = "extractRenderState", at = @At("HEAD"), cancellable = true)
     public void obe$cancelExtract(CallbackInfo ci, @Local CopperGolemStatueRenderState state, @Local CopperGolemStatueBlockEntity be){
         ((BlockEntityRenderStateExt)state).blockEntity(be);
-         if(!RenderModeManager.shouldRenderEntity(!SettingsManager.OPTIMISED_COPPER_GOLEMS.getValue(), be)) ci.cancel();
+         if(RenderModeManager.isBaked(be)) ci.cancel();
     }
 }

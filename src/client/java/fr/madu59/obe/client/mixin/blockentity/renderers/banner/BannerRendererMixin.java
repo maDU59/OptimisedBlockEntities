@@ -44,7 +44,7 @@ public abstract class BannerRendererMixin {
 
     @Inject(method = "submit", at = @At("HEAD"), cancellable = true)
     public void obe$cancelSubmit(final BannerRenderState state, final PoseStack poseStack, final SubmitNodeCollector submitNodeCollector, final CameraRenderState camera, CallbackInfo ci){
-        if(!RenderModeManager.shouldRenderEntity(!SettingsManager.OPTIMISED_BANNERS.getValue(), state)) {
+        if(RenderModeManager.isBaked(state)) {
             ci.cancel();
             poseStack.pushPose();
             poseStack.mulPose(state.transformation);

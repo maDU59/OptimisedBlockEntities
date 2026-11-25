@@ -18,12 +18,12 @@ import net.minecraft.world.level.block.entity.ShulkerBoxBlockEntity;
 public abstract class ShulkerBoxRendererMixin {
     @Inject(method = "submit", at = @At("HEAD"), cancellable = true)
     public void obe$cancelSubmit(CallbackInfo ci, @Local ShulkerBoxRenderState state){
-        if(!RenderModeManager.shouldRenderEntity(state) && SettingsManager.OPTIMISED_SHULKER_BOXES.getValue()) ci.cancel();
+        if(RenderModeManager.isBaked(state)) ci.cancel();
     }
 
     @Inject(method = "extractRenderState", at = @At("HEAD"), cancellable = true)
     public void obe$cancelExtract(CallbackInfo ci, @Local ShulkerBoxRenderState state, @Local ShulkerBoxBlockEntity be){
         ((BlockEntityRenderStateExt)state).blockEntity(be);
-        if(!RenderModeManager.shouldRenderEntity(be) && SettingsManager.OPTIMISED_SHULKER_BOXES.getValue()) ci.cancel();
+        if(RenderModeManager.isBaked(be)) ci.cancel();
     }
 }
