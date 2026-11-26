@@ -18,12 +18,12 @@ import net.minecraft.world.level.block.entity.BedBlockEntity;
 public abstract class BedRendererMixin {
     @Inject(method = "submit", at = @At("HEAD"), cancellable = true)
     public void obe$cancelSubmit(CallbackInfo ci, @Local BedRenderState state){
-        if(!RenderModeManager.shouldRenderEntity(!SettingsManager.OPTIMISED_BEDS.getValue(), state)) ci.cancel();
+        if(RenderModeManager.isBaked(state)) ci.cancel();
     }
 
     @Inject(method = "extractRenderState", at = @At("HEAD"), cancellable = true)
     public void obe$cancelExtract(CallbackInfo ci, @Local BedRenderState state, @Local BedBlockEntity be){
         ((BlockEntityRenderStateExt)state).blockEntity(be);
-        if(!RenderModeManager.shouldRenderEntity(!SettingsManager.OPTIMISED_BEDS.getValue(), be)) ci.cancel();
+        if(RenderModeManager.isBaked(state)) ci.cancel();
     }
 }

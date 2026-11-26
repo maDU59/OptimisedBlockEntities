@@ -7,8 +7,6 @@ import dev.lieonlion.mcv.block.MoreChestBlock;
 import dev.lieonlion.mcv.block.MoreTrappedChestBlock;
 import dev.lieonlion.mcv.init.NeoForgeMoreChestVariantsBlocks;
 import fr.madu59.obe.client.api.registry.RegistryApi;
-import fr.madu59.obe.client.registry.MaterialGetter;
-import fr.madu59.obe.client.registry.Registry;
 import fr.madu59.obe.client.util.blockentity.ChestUtil;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.ChestBlock;

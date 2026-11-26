@@ -1,5 +1,6 @@
 package fr.madu59.obe.client.mixin.blockentity.renderers.sign;
 
+import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Math;
 import org.joml.Matrix3f;
@@ -38,14 +39,14 @@ public abstract class AbstractSignRendererMixin<S extends SignRenderState> {
         if(SettingsManager.SIGN_TEXT_CULLING.getValue() && (ModCompat.isShadowPass() || !obe$isFacingCamera(poseStack))) ci.cancel();
     }
 
-    @Inject(method = "extractRenderState", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "extractRenderState", at = @At("HEAD"))
     public void obe$cancelExtract(CallbackInfo ci, @Local S state, @Local SignBlockEntity be){
         ((BlockEntityRenderStateExt)state).blockEntity(be);
     }
 
     @Inject(method = "submitSignWithText", at = @At("HEAD"), cancellable = true)
     public void obe$cancelSubmit(final S state, final PoseStack poseStack, final ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress, final SubmitNodeCollector submitNodeCollector, CallbackInfo ci){
-        if(!RenderModeManager.shouldRenderEntity(!SettingsManager.OPTIMISED_SIGNS.getValue(), state)){
+        if(RenderModeManager.isBaked(state)){
             ci.cancel();
 
             // poseStack.pushPose();

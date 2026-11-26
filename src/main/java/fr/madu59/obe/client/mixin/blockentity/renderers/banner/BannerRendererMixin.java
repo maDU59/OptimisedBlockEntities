@@ -11,7 +11,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityRenderStateExt;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager;
 import net.minecraft.client.model.object.banner.BannerFlagModel;
@@ -44,7 +43,7 @@ public abstract class BannerRendererMixin {
 
     @Inject(method = "submit", at = @At("HEAD"), cancellable = true)
     public void obe$cancelSubmit(final BannerRenderState state, final PoseStack poseStack, final SubmitNodeCollector submitNodeCollector, final CameraRenderState camera, CallbackInfo ci){
-        if(!RenderModeManager.shouldRenderEntity(!SettingsManager.OPTIMISED_BANNERS.getValue(), state)) {
+        if(RenderModeManager.isBaked(state)) {
             ci.cancel();
             poseStack.pushPose();
             poseStack.mulPose(state.transformation);

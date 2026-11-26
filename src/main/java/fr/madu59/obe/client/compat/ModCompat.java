@@ -62,7 +62,7 @@ public class ModCompat {
                 runnable.run();
             }
             catch(Error e){
-                OBE.LOGGER.warn("Incompatible version of " + PlatformHelper.getModName(modId) + " used, if you are using the latest one, please report that to OBE's author.");
+                OBE.LOGGER.warn("Incompatible version of {} used, if you are using the latest one, please report that to OBE's author.", PlatformHelper.getModName(modId));
             }
         }
     }

@@ -3,6 +3,7 @@ package fr.madu59.obe.client;
 import fr.madu59.obe.OBE;
 import fr.madu59.obe.client.compat.ModCompat;
 import fr.madu59.obe.client.config.configscreen.OptimisedBlockEntitiesConfigScreen;
+import fr.madu59.obe.client.model.BlockEntityStateModel;
 import fr.madu59.obe.client.platform.PlatformHelper;
 import fr.madu59.obe.client.registry.Registry;
 import fr.madu59.obe.client.resources.loader.SkullPackLoader;
@@ -20,6 +21,7 @@ import net.neoforged.neoforge.common.NeoForge;
 @Mod(value = OBE.MOD_ID, dist = Dist.CLIENT)
 public class OBEClient {
 
+	public static final BlockEntityStateModel EMPTY_BAKED_MODEL = new BlockEntityStateModel();
 	public static final ModelLayerLocation EMPTY_MODEL_LAYER_LOCATION = new ModelLayerLocation(Identifier.tryBuild(OBE.MOD_ID, "empty_model_layer"), "empty_model_layer");
 
 	public OBEClient(ModContainer container, IEventBus bus){

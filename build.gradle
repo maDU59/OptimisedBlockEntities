@@ -141,8 +141,8 @@ dependencies {
 
     compileOnly ("net.mehvahdjukaar:everycomp-neoforge:26.1.2-3.0.1") {transitive = false}
     implementation ("net.mehvahdjukaar:moonlight-neoforge:26.1.2-4.3.0") {transitive = false}
-    implementation ("net.mehvahdjukaar:codecui-neoforge:26.1.2-1.4.7") {transitive = false}
-    implementation ("net.mehvahdjukaar:amendments-neoforge:26.1.2-3.0.2") {transitive = false}
+    compileOnly ("net.mehvahdjukaar:codecui-neoforge:26.1.2-1.4.7") {transitive = false}
+    compileOnly ("net.mehvahdjukaar:amendments-neoforge:26.1.2-3.0.2") {transitive = false}
 
     implementation "maven.modrinth:framedblocks:HKuGyb68"
 

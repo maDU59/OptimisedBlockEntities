@@ -122,7 +122,7 @@ public class BlockEntityStateModel implements BlockStateModel{
 
             Transparency transparency = Transparency.TRANSPARENT;
 
-            if(state != null && state.getBlock() instanceof AbstractSkullBlock && partPath.equals("")){
+            if(state != null && state.getBlock() instanceof AbstractSkullBlock && partPath.isEmpty()){
                 transparency = Transparency.NONE;
             }
 
