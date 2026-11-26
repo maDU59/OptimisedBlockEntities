@@ -74,7 +74,7 @@ public class Registry {
 
     public static void registerGroup(String group){
         if(supportedBeTypes.containsKey(group)){
-            OBE.LOGGER.warn("An external mod tried to register an already-existing group (" + group + "), this may cause issues and is probably due to to an incompatibility between 2 mods");
+            OBE.LOGGER.warn("An external mod tried to register an already-existing group ({}), this may cause issues and is probably due to to an incompatibility between 2 mods", group);
         }
         else{
             supportedBeTypes.put(group, new HashSet<>());
@@ -83,7 +83,7 @@ public class Registry {
 
     public static void addBlockEntityTypeInGroup(String group, BlockEntityType<?> ... types){
         if(!supportedBeTypes.containsKey(group)){
-            OBE.LOGGER.error("An external mod tried registering a block entity type in a non existing group: " + group);
+            OBE.LOGGER.error("An external mod tried registering a block entity type in a non existing group: {}", group);
         }
         else{
             for(BlockEntityType<?> type : types){
@@ -102,7 +102,7 @@ public class Registry {
         if(beRenderDispatcher != null && beRenderDispatcher.getRenderer(be) == null) return false;
 
         if(!supportedBeTypes.containsKey(group)){
-            OBE.LOGGER.warn("An external mod tried accessing a non existing group: " + group);
+            OBE.LOGGER.warn("An external mod tried accessing a non existing group: {}", group);
             return false;
         }
         else{
@@ -114,7 +114,7 @@ public class Registry {
         if(!state.hasBlockEntity()) return false;
         if(Blacklist.isBlacklisted(state, group)) return false;
         if(!supportedBeTypes.containsKey(group)){
-            OBE.LOGGER.warn("An external mod tried accessing a non existing group: " + group);
+            OBE.LOGGER.warn("An external mod tried accessing a non existing group: {}", group);
             return false;
         }
         else{
@@ -167,7 +167,7 @@ public class Registry {
                 if(type.isValid(state)){
                     if(match != null){
                         // This tries to fix #69 (and #30 and # 13) where a block is considered as valid in a BlockEntityType where it shouldn't. EnderScape is causing issues
-                        OBE.LOGGER.warn("Inconsistent BlockEntityType match detected for block " + block + " (" + BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(match).toString() + " / " + BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(type).toString() + "), skipping cache for this query.");
+                        OBE.LOGGER.warn("Inconsistent BlockEntityType match detected for block {} ({}/{}), skipping cache for this query.", block, BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(match), BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(type));
                         return null;
                     }
                     match = type;

@@ -11,7 +11,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityRenderStateExt;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager;
 import net.minecraft.client.model.object.banner.BannerFlagModel;

@@ -1,7 +1,6 @@
 package fr.madu59.obe.client.registry;
 
 import fr.madu59.obe.OBE;
-import fr.madu59.obe.client.resources.ResourceUtil;
 import fr.madu59.obe.client.util.blockentity.DecoratedPotUtil;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.world.level.block.Block;
@@ -25,7 +24,7 @@ public class SpecialModelBuilderGetter {
 
     public static void registerDefault(String group, SpecialModelBuilder getter){
         if(!Registry.hasGroup(group)){
-            OBE.LOGGER.error("An external mod tried registering a default special model builder in a non existing group: " + group);
+            OBE.LOGGER.error("An external mod tried registering a default special model builder in a non existing group: {}", group);
         }
         else{
             defaultSpecialModelBuilders.put(group, getter);
