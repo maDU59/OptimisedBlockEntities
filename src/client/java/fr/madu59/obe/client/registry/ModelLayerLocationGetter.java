@@ -34,7 +34,7 @@ public class ModelLayerLocationGetter {
 
     public static void registerDefault(String group, Function<BlockState, ModelLayerLocation> getter){
         if(!Registry.hasGroup(group)){
-            OBE.LOGGER.error("An external mod tried registering a default modelLayerLocation getter in a non existing group: " + group);
+            OBE.LOGGER.error("An external mod tried registering a default modelLayerLocation getter in a non existing group: {}", group);
         }
         else{
             defaultModelLayerLocationProviders.put(group, getter);

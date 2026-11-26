@@ -34,7 +34,7 @@ public class MaterialGetter {
 
     public static void registerDefault(String group, Function<BlockState, Identifier> getter){
         if(!Registry.hasGroup(group)){
-            OBE.LOGGER.error("An external mod tried registering a default material getter in a non existing group: " + group);
+            OBE.LOGGER.error("An external mod tried registering a default material getter in a non existing group: {}", group);
         }
         else{
             defaultMaterialProviders.put(group, getter);
