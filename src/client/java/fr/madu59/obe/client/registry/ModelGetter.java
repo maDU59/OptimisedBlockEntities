@@ -22,7 +22,7 @@ public class ModelGetter {
 
     public static void registerDefault(String group, ModelBuilder builder){
         if(!Registry.hasGroup(group)){
-            OBE.LOGGER.error("An external mod tried registering a default model builder in a non existing group: " + group);
+            OBE.LOGGER.error("An external mod tried registering a default model builder in a non existing group: {}", group);
         }
         else{
             defaultModelBuilders.put(group, builder);

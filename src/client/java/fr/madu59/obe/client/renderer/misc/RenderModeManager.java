@@ -1,10 +1,11 @@
 package fr.madu59.obe.client.renderer.misc;
 
+import fr.madu59.obe.OBE;
+import fr.madu59.obe.client.OBEClient;
 import fr.madu59.obe.client.api.rendering.MeshingPredicatesAPI;
 import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.chunk.ChunkTaskHolder;
 import fr.madu59.obe.client.config.Option;
-import fr.madu59.obe.client.model.BlockEntityStateModel;
 import fr.madu59.obe.client.registry.*;
 import fr.madu59.obe.client.registry.SpecialModelGetter.SpecialModelProvider;
 import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
@@ -30,8 +31,8 @@ public class RenderModeManager {
         }
     }
 
-    public static <T extends BlockEntity> boolean shouldRenderEntityFast(BlockEntityExt ext){
-        return ext.obe$forceEntity() || !ext.obe$isSupported() || ext.obe$renderMode() == RenderMode.ENTITY || ext.obe$renderBoth();
+    public static <T extends BlockEntity> boolean shouldRenderEntity(BlockEntityExt ext){
+        return !isBaked(ext) || ext.obe$renderBoth();
     }
 
     public static boolean isBaked(BlockEntityRenderState state){
@@ -99,27 +100,31 @@ public class RenderModeManager {
         BlockState state = be.getBlockState();
         String group = Registry.getGroup(state);
 
-        SpecialModelProvider customModelProvider = SpecialModelGetter.getSpecialModelProvider(state, group);
-        SpecialModelBuilderGetter.SpecialModelBuilder specialModelBuilder = SpecialModelBuilderGetter.getSpecialModelProvider(state, group);
+        try {
+            SpecialModelProvider customModelProvider = SpecialModelGetter.getSpecialModelProvider(state, group);
+            SpecialModelBuilderGetter.SpecialModelBuilder specialModelBuilder = SpecialModelBuilderGetter.getSpecialModelProvider(state, group);
 
-        if(ext.obe$hasSpecialRenderer() && (customModelProvider != null || specialModelBuilder != null)) {
-            if (specialModelBuilder != null) {
+            if (ext.obe$hasSpecialRenderer() && (customModelProvider != null || specialModelBuilder != null)) {
+                if (specialModelBuilder != null) {
 
-            } else if (customModelProvider != null) {
-                if (customModelProvider.getModelLayerLocationProvider().apply(state, be) == null) return false;
-                if (customModelProvider.getMaterialProvider().apply(state, be) == null) return false;
+                } else if (customModelProvider != null) {
+                    if (customModelProvider.getModelLayerLocationProvider().apply(state, be) == null) return false;
+                    if (customModelProvider.getMaterialProvider().apply(state, be) == null) return false;
+                }
+            } else {
+                if (ModelGetter.getModel(state, OBEClient.EMPTY_BAKED_MODEL) != null) {
+                    return true;
+                } else {
+                    if (ModelLayerLocationGetter.getModelLayerLocation(state, group) == null) return false;
+                    if (MaterialGetter.getMaterial(state, group) == null) return false;
+                }
             }
+            return true;
         }
-        else{
-            if(ModelGetter.getModel(state, new BlockEntityStateModel()) != null) {
-
-            }
-            else{
-                if(ModelLayerLocationGetter.getModelLayerLocation(state, group) == null) return false;
-                if(MaterialGetter.getMaterial(state, group) == null) return false;
-            }
+        catch(Exception e){
+            OBE.LOGGER.warn("Exception while checking if block entity can be rendered as terrain: ", e);
+            return false;
         }
-        return true;
     }
 
     public static enum RenderMode {
