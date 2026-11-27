@@ -29,23 +29,6 @@ This mod renders supported block entities just like any other block, this means 
 
 <sub>*Performance tests ran on Minecraft 26.1.2 with OBE 1.1.27 and BBE 1.3.5 with Sodium 0.9.0 in FHD on a RTX 5060 laptop, an AMD Ryzen 7 260 w and 16Go of DDR5 RAM*</sub>
 
-## Modded block entities compatibility
-
-OBE also optimizes block entities from the following mods:
-- [Quark](https://modrinth.com/mod/quark)
-- [Lootr](https://modrinth.com/mod/lootr)
-- [Carved Wood](https://modrinth.com/mod/carved-wood)
-- [Iron chests](https://modrinth.com/mod/iron-chests)
-- [More Chest variants](https://modrinth.com/mod/more-chest-variants-lieonlion)
-- Mods using [Blueprint](https://modrinth.com/mod/blueprint) (Woodworks and more)
-- Mods using [BCLIB](https://modrinth.com/mod/bclib) (BetterEnd and BetterNether)
-- [Every Compat](https://modrinth.com/mod/every-compat)
-- [Pipez](https://modrinth.com/mod/pipez)
-- [Framed Blocks](https://modrinth.com/mod/framedblocks)
-- [The Twilight Forest](https://www.curseforge.com/minecraft/mc-mods/the-twilight-forest)
-- [Vanilla Backport](https://modrinth.com/mod/vanillabackport)
-- [Oh The Biomes We've Gone](https://modrinth.com/mod/oh-the-biomes-weve-gone)
-
 ## Why
 
 Mods like this already exists like:
@@ -84,6 +67,25 @@ Both are awesome, the developers did great work but I wanted to make one that:
 <sub>¹: Some skulls with custom textures from Hypixel's Skyblock can also be optimized by using [this resource pack](https://modrinth.com/resourcepack/obe-x-hypixel-skyblock)</sub>
 
 </details>
+
+## Modded block entities optimizations
+
+OBE also optimizes block entities from the following mods:
+- [Quark](https://modrinth.com/mod/quark)
+- [Lootr](https://modrinth.com/mod/lootr)
+- [Carved Wood](https://modrinth.com/mod/carved-wood)
+- [Iron chests](https://modrinth.com/mod/iron-chests)
+- [More Chest variants](https://modrinth.com/mod/more-chest-variants-lieonlion)
+- Mods using [Blueprint](https://modrinth.com/mod/blueprint) (Woodworks and more)
+- Mods using [BCLIB](https://modrinth.com/mod/bclib) (BetterEnd and BetterNether)
+- [Every Compat](https://modrinth.com/mod/every-compat)
+- [Pipez](https://modrinth.com/mod/pipez)
+- [Framed Blocks](https://modrinth.com/mod/framedblocks)
+- [The Twilight Forest](https://www.curseforge.com/minecraft/mc-mods/the-twilight-forest)
+- [Vanilla Backport](https://modrinth.com/mod/vanillabackport)
+- [Oh The Biomes We've Gone](https://modrinth.com/mod/oh-the-biomes-weve-gone)
+- [Biomes O' Plenty](https://modrinth.com/mod/biomes-o-plenty)
+- [Ecologics](https://modrinth.com/mod/ecologics)
 
 ## Trouble shooting
 

@@ -17,6 +17,6 @@ import net.minecraft.world.level.block.entity.LidBlockEntity;
 public abstract class ChestRendererMixin<T extends BlockEntity & LidBlockEntity> {
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
     public void obe$cancelSubmit(CallbackInfo ci, @Local T be){
-        if(!RenderModeManager.shouldRenderEntity(be) && SettingsManager.OPTIMISED_CHESTS.getValue()) ci.cancel();
+        if(RenderModeManager.isBaked(be)) ci.cancel();
     }
 }
