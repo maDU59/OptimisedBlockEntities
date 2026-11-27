@@ -10,7 +10,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
-import fr.madu59.obe.client.config.SettingsManager;
 import fr.madu59.obe.client.renderer.misc.RenderModeManager;
 import net.minecraft.client.model.BannerFlagModel;
 import net.minecraft.client.model.BannerModel;
@@ -43,7 +42,7 @@ public abstract class BannerRendererMixin {
 
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
     public void obe$cancelSubmit(BannerBlockEntity bannerBlockEntity, float f, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j, CallbackInfo ci){
-        if(!RenderModeManager.shouldRenderEntity(!SettingsManager.OPTIMISED_BANNERS.getValue(), bannerBlockEntity)) {
+        if(RenderModeManager.isBaked(bannerBlockEntity)) {
             ci.cancel();
 
             BlockState blockState = bannerBlockEntity.getBlockState();
