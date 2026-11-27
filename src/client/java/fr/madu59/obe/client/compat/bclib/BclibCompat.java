@@ -3,7 +3,6 @@ package fr.madu59.obe.client.compat.bclib;
 import java.util.List;
 
 import fr.madu59.obe.client.api.registry.RegistryApi;
-import fr.madu59.obe.client.registry.MaterialGetter;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;

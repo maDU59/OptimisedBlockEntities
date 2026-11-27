@@ -21,7 +21,7 @@ public abstract class LevelRendererMixin {
         method = "extractVisibleBlockEntities",
         at = @At(
             value = "INVOKE", 
-            target = "Lnet/minecraft/client/renderer/chunk/SectionMesh;getRenderableBlockEntities()Ljava/util/List;" 
+            target = "Lnet/minecraft/client/renderer/chunk/SectionMesh;getRenderableBlockEntities()Ljava/util/List;"
         )
     )
     private <T extends SectionMesh> List<BlockEntity> obe$redirectGetRenderableBlockEntities(T sectionMeshInstance, Operation<List<BlockEntity>> originalCall) {
@@ -31,7 +31,7 @@ public abstract class LevelRendererMixin {
 
         for (int i = original.size() - 1; i >= 0; i--) {
             if (original.get(i) instanceof BlockEntityExt ext){
-                if(ext.obe$isEnabled() && (!RenderModeManager.shouldRenderEntityFast(ext) || ext.obe$shouldSkipRendering() || SpecialBlockEntityRenderingManager.shouldSkipRendering((BlockEntity)ext))){
+                if(ext.obe$isEnabled() && (!RenderModeManager.shouldRenderEntity(ext) || ext.obe$shouldSkipRendering() || SpecialBlockEntityRenderingManager.shouldSkipRendering((BlockEntity)ext))){
                     original.remove(i);
                 }
             }
