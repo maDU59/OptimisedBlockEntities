@@ -7,8 +7,6 @@ import dev.lieonlion.mcv.block.MoreChestBlock;
 import dev.lieonlion.mcv.block.MoreTrappedChestBlock;
 import dev.lieonlion.mcv.init.FabricMoreChestVariantsBlocks;
 import fr.madu59.obe.client.api.registry.RegistryApi;
-import fr.madu59.obe.client.registry.MaterialGetter;
-import fr.madu59.obe.client.registry.Registry;
 import fr.madu59.obe.client.util.blockentity.ChestUtil;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;

@@ -44,7 +44,7 @@ public abstract class BannerRendererMixin {
 
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
     public void obe$cancelSubmit(BannerBlockEntity bannerBlockEntity, float f, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j, Vec3 vec3, CallbackInfo ci){
-        if(!RenderModeManager.shouldRenderEntity(!SettingsManager.OPTIMISED_BANNERS.getValue(), bannerBlockEntity)) {
+        if(RenderModeManager.isBaked(bannerBlockEntity)) {
             ci.cancel();
 
             BlockState blockState = bannerBlockEntity.getBlockState();
