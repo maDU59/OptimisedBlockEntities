@@ -14,10 +14,10 @@ import net.minecraft.world.level.block.state.properties.ChestType;
 
 public class MoreChestVariantsCompat {
     public static void init() {
-        Registry.addBlockEntityTypeInGroup("chest", McvBlockInit.MORE_CHEST_BLOCK_ENTITY, McvBlockInit.MORE_TRAPPED_CHEST_BLOCK_ENTITY);
+        RegistryApi.registerBlockEntityType("chest", McvBlockInit.MORE_CHEST_BLOCK_ENTITY, McvBlockInit.MORE_TRAPPED_CHEST_BLOCK_ENTITY);
 
-        MaterialGetter.register(McvBlockInit.MORE_CHEST_BLOCK_ENTITY, MoreChestVariantsCompat::getMaterial);
-        MaterialGetter.register(McvBlockInit.MORE_TRAPPED_CHEST_BLOCK_ENTITY, MoreChestVariantsCompat::getMaterial);
+        RegistryApi.registerMaterialProvider(McvBlockInit.MORE_CHEST_BLOCK_ENTITY, MoreChestVariantsCompat::getMaterial);
+        RegistryApi.registerMaterialProvider(McvBlockInit.MORE_TRAPPED_CHEST_BLOCK_ENTITY, MoreChestVariantsCompat::getMaterial);
     }
 
     public static ResourceLocation getMaterial(BlockState state) {
