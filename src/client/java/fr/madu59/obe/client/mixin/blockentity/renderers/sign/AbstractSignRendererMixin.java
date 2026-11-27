@@ -1,5 +1,6 @@
 package fr.madu59.obe.client.mixin.blockentity.renderers.sign;
 
+import fr.madu59.obe.client.renderer.blockentity.ext.BlockEntityExt;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Math;
 import org.joml.Matrix3f;
@@ -63,7 +64,7 @@ public abstract class AbstractSignRendererMixin<S extends SignRenderState> {
 
     @Inject(method = "submitSignWithText", at = @At("HEAD"), cancellable = true)
     public void obe$cancelSubmit(SignRenderState signRenderState, PoseStack poseStack, BlockState blockState, SignBlock signBlock, WoodType woodType, Model.Simple simple, ModelFeatureRenderer.@Nullable CrumblingOverlay crumblingOverlay, SubmitNodeCollector submitNodeCollector, CallbackInfo ci){
-        if(!RenderModeManager.shouldRenderEntity(!SettingsManager.OPTIMISED_SIGNS.getValue(), signRenderState)){
+        if(RenderModeManager.isBaked(signRenderState)){
             ci.cancel();
 
             poseStack.pushPose();
