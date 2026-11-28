@@ -59,7 +59,7 @@ public abstract class AbstractSignRendererMixin {
             at = @At(value = "INVOKE",
                     target = "Lnet/minecraft/client/renderer/blockentity/SignRenderer;renderSign(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;IILnet/minecraft/world/level/block/state/properties/WoodType;Lnet/minecraft/client/model/Model;)V"))
     private boolean obe$renderSignModel(SignRenderer instance, PoseStack poseStack, MultiBufferSource bufferSource, int light, int overlay, WoodType woodType, Model model, @Local(argsOnly = true) SignBlockEntity signBlockEntity) {
-        return RenderModeManager.shouldRenderEntity(!SettingsManager.OPTIMISED_SIGNS.getValue(), signBlockEntity);
+        return !RenderModeManager.isBaked(signBlockEntity);
     }
 
     @Unique

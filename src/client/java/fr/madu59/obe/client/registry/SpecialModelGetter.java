@@ -30,7 +30,7 @@ public class SpecialModelGetter {
 
     public static void registerDefault(String group, SpecialModelProvider getter){
         if(!Registry.hasGroup(group)){
-            OBE.LOGGER.error("An external mod tried registering a default special model getter in a non existing group: " + group);
+            OBE.LOGGER.error("An external mod tried registering a default special model getter in a non existing group: {}", group);
         }
         else{
             defaultSpecialModelProviders.put(group, getter);
