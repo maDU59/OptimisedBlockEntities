@@ -16,6 +16,6 @@ import net.minecraft.world.level.block.entity.DecoratedPotBlockEntity;
 public abstract class DecoratedPotRendererMixin {
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
     public void obe$cancelSubmit(CallbackInfo ci, @Local DecoratedPotBlockEntity be){
-        if(!RenderModeManager.shouldRenderEntity(be) && SettingsManager.OPTIMISED_DECORATED_POTS.getValue()) ci.cancel();
+        if(RenderModeManager.isBaked(be)) ci.cancel();
     }
 }
