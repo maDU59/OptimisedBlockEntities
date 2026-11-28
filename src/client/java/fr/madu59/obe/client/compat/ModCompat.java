@@ -5,6 +5,7 @@ import java.util.List;
 
 import fr.madu59.obe.OBE;
 import fr.madu59.obe.client.compat.bclib.BclibCompat;
+import fr.madu59.obe.client.compat.biomesoplenty.BiomesOPlentyCompat;
 import fr.madu59.obe.client.compat.biomeswevegone.BiomesWeveGoneCompat;
 import fr.madu59.obe.client.compat.ecologics.EcologicsCompat;
 import fr.madu59.obe.client.compat.emf.EMFCompat;
@@ -36,6 +37,7 @@ public class ModCompat {
         runSafe("biomeswevegone", () -> BiomesWeveGoneCompat.init());
         runSafe("fwa", () -> FancyWorldAnimationsCompat.init());
         runSafe("ecologics", () -> EcologicsCompat.init());
+        runSafe("biomesoplenty", () -> BiomesOPlentyCompat.init());
     }
 
     public static void onWorldLoad(){
@@ -48,7 +50,7 @@ public class ModCompat {
                 runnable.run();
             }
             catch(Error e){
-                OBE.LOGGER.warn("Incompatible version of " + PlatformHelper.getModName(modId) + " used, if you are using the latest one, please report that to OBE's author.");
+                OBE.LOGGER.warn("Incompatible version of {} used, if you are using the latest one, please report that to OBE's author.", PlatformHelper.getModName(modId));
             }
         }
     }

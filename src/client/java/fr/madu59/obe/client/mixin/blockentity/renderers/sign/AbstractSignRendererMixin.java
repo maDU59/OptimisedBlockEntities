@@ -54,7 +54,7 @@ public abstract class AbstractSignRendererMixin {
 
     @Inject(method = "renderSignWithText", at = @At("HEAD"), cancellable = true)
     public void obe$cancelSubmit(SignBlockEntity signBlockEntity, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j, BlockState blockState, SignBlock signBlock, WoodType woodType, Model model, CallbackInfo ci){
-        if(!RenderModeManager.shouldRenderEntity(!SettingsManager.OPTIMISED_SIGNS.getValue(), signBlockEntity)){
+        if(RenderModeManager.isBaked(signBlockEntity)){
             ci.cancel();
 
             poseStack.pushPose();

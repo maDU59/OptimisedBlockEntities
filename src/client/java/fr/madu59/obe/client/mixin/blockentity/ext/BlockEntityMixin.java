@@ -61,7 +61,7 @@ public abstract class BlockEntityMixin implements BlockEntityExt {
 
     @Override public boolean obe$isSupported() { return isSupported; }
     @Override public void obe$isSupported(boolean bl) {
-        if(bl && bl != isSupported && renderModeDelayed == RenderMode.TERRAIN){
+        if(bl && !isSupported && renderModeDelayed == RenderMode.TERRAIN){
             if(!RenderModeManager.canBeTerrain(this)) {
                 renderModeDelayed = RenderMode.ENTITY;
             }
