@@ -8,6 +8,7 @@ import fr.madu59.obe.client.compat.biomeswevegone.BiomesWeveGoneCompat;
 import fr.madu59.obe.client.compat.carvedwood.CarvedWoodCompat;
 import fr.madu59.obe.OBE;
 import fr.madu59.obe.client.compat.bclib.BclibCompat;
+import fr.madu59.obe.client.compat.biomesoplenty.BiomesOPlentyCompat;
 import fr.madu59.obe.client.compat.biomeswevegone.BiomesWeveGoneCompat;
 import fr.madu59.obe.client.compat.ecologics.EcologicsCompat;
 import fr.madu59.obe.client.compat.emf.EMFCompat;
@@ -46,6 +47,7 @@ public class ModCompat {
         runSafe("fwa", () -> FancyWorldAnimationsCompat.init());
         runSafe("amendments", () -> AmendmentsCompat.init());
         runSafe("ecologics", () -> EcologicsCompat.init());
+        runSafe("biomesoplenty", () -> BiomesOPlentyCompat.init());
     }
 
     private static void runSafe(String modId, Runnable runnable){
@@ -54,7 +56,7 @@ public class ModCompat {
                 runnable.run();
             }
             catch(Error e){
-                OBE.LOGGER.warn("Incompatible version of " + PlatformHelper.getModName(modId) + " used, if you are using the latest one, please report that to OBE's author.");
+                OBE.LOGGER.warn("Incompatible version of {} used, if you are using the latest one, please report that to OBE's author.", PlatformHelper.getModName(modId));
             }
         }
     }
